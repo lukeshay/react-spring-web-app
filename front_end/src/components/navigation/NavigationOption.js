@@ -1,22 +1,26 @@
-import React from "react"
-import "./NavigationOption.css"
+import React from "react";
+import "./NavigationOption.css";
 
-const NavigationOption = (props) => {
-    if (props.img) {
-        return (
-            <li className="img">
-                <img src={props.img} alt={props.img} />
-                <a id={props.id} href={props.link}>{props.title}</a>
-            </li>
-        )
+export default class NavigationOption extends React.Component {
+    constructor() {
+        super();
     }
-    else {
-        return (
-            <li className={props.align}>
-                <a id={props.id} href={props.link}>{props.title}</a>
-            </li>
-        )
+
+    render() {
+        if (this.props.img) {
+            return (
+                <li className="img">
+                    <img src={this.props.img} alt={this.props.img} />
+                    <a href={this.props.link}>{this.props.title}</a>
+                </li>
+            );
+        }
+        else {
+            return (
+                <li className={this.props.align}>
+                    <a href={this.props.link}>{this.props.title}</a>
+                </li>
+            );
+        }
     }
 }
-
-export default NavigationOption
