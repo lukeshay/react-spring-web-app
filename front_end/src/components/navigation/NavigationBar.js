@@ -7,6 +7,10 @@ export default class NavigationBar extends React.Component {
         super();
     }
 
+    componentWillMount() {
+        // fetch(back-end/api/navigation)
+    }
+
     render() {
         return (
             <ul className="navigation-bar">
@@ -22,6 +26,10 @@ export default class NavigationBar extends React.Component {
                     align="left"
                     title="Reminders"
                     link="/reminders"/>
+                <NavigationOption
+                    align="left"
+                    title="Todo"
+                    link="/todo"/>
                 <NavigationOption
                     align="left"
                     title="Calendar"
