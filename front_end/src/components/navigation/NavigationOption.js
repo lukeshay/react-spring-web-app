@@ -2,10 +2,6 @@ import React from "react";
 import "./NavigationOption.css";
 
 export default class NavigationOption extends React.Component {
-    constructor() {
-        super();
-    }
-
     render() {
         if (this.props.img) {
             return (

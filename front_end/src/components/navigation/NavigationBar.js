@@ -3,14 +3,6 @@ import NavigationOption from "./NavigationOption.js";
 import "./NavigationBar.css";
 
 export default class NavigationBar extends React.Component {
-    constructor() {
-        super();
-    }
-
-    componentWillMount() {
-        // fetch(back-end/api/navigation)
-    }
-
     render() {
         return (
             <ul className="navigation-bar">

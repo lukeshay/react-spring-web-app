@@ -14,15 +14,11 @@ export default class Todo extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-        // const todos = fetch("http://localhost:5000/todo/thisuserid");
-
-        this.setState(prevState => {
-            return {
-                loading: false,
-                todos: todosData
-            };
-        });
+    async componentDidMount() {
+        const response = await fetch('http://localhost:8080/todo/user1');
+        const data = await response.json();
+        console.log(data);
+        this.setState({ todos: data, loading: false });
     }
 
     handleChange(id) {
