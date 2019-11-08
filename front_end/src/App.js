@@ -1,7 +1,9 @@
 import React from 'react';
-import './App.css';
 import NavigationBar from "./components/navigation/NavigationBar.js";
-import Todo from "./components/todo/Todo";
+import TodoPage from "./components/TodoPage";
+import { Route, Switch, Redirect } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -12,9 +14,12 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div className="App">
+            <div className="container-fluid" >
                 <NavigationBar />
-                <Todo />
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route path="/todo" component={TodoPage} />>
+                </Switch>
             </div>
         );
     }

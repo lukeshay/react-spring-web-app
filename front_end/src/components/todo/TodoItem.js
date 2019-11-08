@@ -1,28 +1,47 @@
-import React from 'react';
-import "./todoItem.css";
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-export default class TodoItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.state = {};
-    }
+const TodoItem = props => {
+    const completedStyle = {
+        textDecoration: "line-through"
+    };
 
-    render() {
-        const completedStyle = {
-            textDecoration: "line-through"
-        };
-
-        return (
-            <div className="todo-item">
-                <input type="checkbox"
-                       checked={this.props.item.completed}
-                       onChange={() => this.props.handleChange(this.props.item.id)}
-                />
-                <p style={this.props.item.completed ? completedStyle: null}>
-                    {this.props.item.text}
-                </p>
+    return (
+        <div className="input-group mb-3">
+            <div className="input-group-prepend">
+                <div className="input-group-text">
+                    <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={props.item.completed}
+                        onChange={() =>
+                            props.handleCheckboxChange(props.item.id)
+                        }
+                    />
+                </div>
             </div>
-        );
-    }
-}
+            <span
+                className="form-control"
+                style={props.item.completed ? completedStyle : {}}
+            >
+                {props.item.text}
+            </span>
+            <div className="input-group-prepend">
+                <div className="input-group-text">
+                    <button
+                        name={props.item.id}
+                        className="close"
+                        aria-label="Close"
+                        onClick={() =>
+                            props.handleDeleteButtonClick(props.item.id)
+                        }
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default TodoItem;
