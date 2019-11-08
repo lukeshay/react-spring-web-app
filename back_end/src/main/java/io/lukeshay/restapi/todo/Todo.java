@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Auditable;
+
+import java.util.Date;
 
 /**
  * The type Todo.
@@ -12,13 +13,8 @@ import org.springframework.data.domain.Auditable;
 public class Todo {
 	@Id
 	private String id;
-
-	@CreatedDate
 	private String createdDate;
-
-	@LastModifiedDate
 	private String modifiedDate;
-
 	private String userId;
 	private String text;
 	private boolean completed;
@@ -34,6 +30,8 @@ public class Todo {
 		this.userId = userId;
 		this.text = text;
 		this.completed = completed;
+		this.createdDate = new Date().toString();
+		this.modifiedDate = new Date().toString();
 	}
 
 	/**

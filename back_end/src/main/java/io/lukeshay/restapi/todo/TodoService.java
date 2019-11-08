@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The type Todo service.
  */
 @Service
 public class TodoService {
+	private static Logger logger = Logger.getLogger(TodoService.class.getName());
 	private TodoRepository todoRepository;
 
 	/**
@@ -32,6 +34,7 @@ public class TodoService {
 	 * @return the all todos from user
 	 */
 	public List<Todo> getAllTodosFromUser(String userId) {
+		logger.info(String.format("Getting user %s todos.", userId));
 		return todoRepository.findAllByUserId(userId);
 	}
 
@@ -42,6 +45,11 @@ public class TodoService {
 	 * @return the todo
 	 */
 	public Todo saveTodo(Todo newTodo) {
+		logger.info(String.format("Saving todo text: %s", newTodo.getText()));
+		if (newTodo.getId() != null) {
+			throw new IllegalArgumentException("Todo should not have an id.");
+		}
+
 		todoRepository.save(newTodo);
 		return todoRepository.findById(newTodo.getId()).orElseThrow(() -> new IllegalArgumentException("Todo was not saved"));
 	}
@@ -53,6 +61,7 @@ public class TodoService {
 	 * @return the string
 	 */
 	public String deleteTodo(String todoId) {
+		logger.info(String.format("Deleting todo id: %s", todoId));
 		todoRepository.deleteById(todoId);
 		return todoDeletedResponse(todoId, !todoRepository.existsById(todoId));
 	}
@@ -65,6 +74,7 @@ public class TodoService {
 	 * @return the todo
 	 */
 	public Todo updateTodo(String todoId, Todo updatedTodo) {
+		logger.info(String.format("Updating todo id: %s", todoId));
 		Todo toUpdate = todoRepository.findById(todoId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid todoId"));
 
@@ -76,7 +86,16 @@ public class TodoService {
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Todo %s is no longer in the database", todoId)));
 	}
 
-	private String todoDeletedResponse(String todoId, boolean deleted) {
+	public String deleteAllTodos() {
+		logger.warning("DELETING ALL TODOS");
+		List<Todo> todos = todoRepository.findAll();
+
+		todos.forEach(todo -> todoRepository.delete(todo));
+
+		return todoDeletedResponse("all", todoRepository.findAll().size() == 0);
+	}
+
+	private static String todoDeletedResponse(String todoId, boolean deleted) {
 		Map<String, String> map = new HashMap<>();
 
 		map.put("todoId", todoId);

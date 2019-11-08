@@ -57,6 +57,16 @@ public class TodoController {
 	}
 
 	/**
+	 * Delete all todos.
+	 *
+	 * @return the string
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, value = "/all")
+	public String deleteAllTodos() {
+		return todoService.deleteAllTodos();
+	}
+
+	/**
 	 * Update todo todo.
 	 *
 	 * @param todoId      the todo id
