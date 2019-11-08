@@ -15,6 +15,7 @@ function App() {
             <NavigationBar />
             <Switch>
                 <Route exact path="/" component={HomePage} />
+                <Route exact path="/index" component={HomePage} />
                 <Route path="/todo" component={TodoPage} />
                 <Route component={NotFoundPage} />
             </Switch>
