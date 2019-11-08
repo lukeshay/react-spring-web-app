@@ -1,26 +1,25 @@
-import React from 'react';
+import React from "react";
 import NavigationBar from "./components/navigation/NavigationBar.js";
+import HomePage from "./components/HomePage";
+import NotFoundPage from "./components/NotFoundPage";
 import TodoPage from "./components/TodoPage";
 import { Route, Switch, Redirect } from "react-router-dom";
-import HomePage from "./components/HomePage";
+import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
-export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.state = {};
-    }
-
-    render() {
-        return (
-            <div className="container-fluid" >
-                <NavigationBar />
-                <Switch>
-                    <Route exact path="/" component={HomePage} />
-                    <Route path="/todo" component={TodoPage} />>
-                </Switch>
-            </div>
-        );
-    }
+function App() {
+    return (
+        <div className="container-fluid">
+            <ToastContainer autoClose={3000} hideProgressBar />
+            <NavigationBar />
+            <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/todo" component={TodoPage} />
+                <Route component={NotFoundPage} />
+            </Switch>
+        </div>
+    );
 }
+
+export default App;

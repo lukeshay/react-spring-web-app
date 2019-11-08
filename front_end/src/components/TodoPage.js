@@ -1,115 +1,104 @@
-import React from "react";
-import TodoItem from "./todo/TodoItem";
-import todosData from "./todo/data/todosData";
+import React, { useState, useEffect } from "react";
+import TodoList from "./todo/TodoList";
 import "bootstrap/dist/css/bootstrap.min.css";
+import todoStore from "../stores/todoStore";
+import { loadTodos, saveTodo, deleteTodo } from "../actions/todoActions";
+import { toast } from "react-toastify";
 
-export default class TodoPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.state = {
-            loading: true,
-            adding: false,
-            todos: []
-        };
-        this.onCheckboxChange = this.onCheckboxChange.bind(this);
-        this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
-        this.onAddClick = this.onAddClick.bind(this);
-        this.onInputChange = this.onInputChange.bind(this);
-    }
+function TodoPage() {
+    const [loading, setLoading] = useState(true);
+    const [adding, setAdding] = useState(false);
+    const [todos, setTodos] = useState([]);
+    const [newTodo, setNewTodo] = useState({
+        text: "",
+        completed: false
+    });
 
-    async componentDidMount() {
-        this.setState({ todos: todosData, loading: false });
-    }
+    useEffect(() => {
+        todoStore.addChangeListener(onChange);
+        if (todoStore.getTodos().length === 0) {
+            loadTodos();
+            setLoading(false);
+        }
+        return () => todoStore.removeChangeListener(onChange);
+    }, []);
 
-    onCheckboxChange(id) {
-        this.setState(prevState => {
-            const updatedTodos = prevState.todos.map(todo => {
-                return todo.id === id
-                    ? { ...todo, completed: !todo.completed }
-                    : todo;
+    useEffect(() => {
+        todoStore.addChangeListener(onChange);
+        if (!adding && newTodo.text !== "") {
+            saveTodo(newTodo);
+            setNewTodo({
+                slug: "",
+                text: "",
+                completed: false
             });
+            toast.success("Todo saved.");
+        }
+        return () => todoStore.removeChangeListener(onChange);
+    }, [adding, newTodo]);
 
-            return { todos: updatedTodos };
-        });
+    function onChange() {
+        setTodos(todoStore.getTodos());
     }
 
-    onDeleteButtonClick(id) {
-        this.setState(prevState => {
-            const updatedTodos = prevState.todos.filter(item => item.id !== id);
-            return { todos: updatedTodos };
-        });
+    function onCheckboxChange(id) {
+        var todoToUpdate = todos.find(todo => todo.id === id);
+        todoToUpdate.completed = !todoToUpdate.completed;
+        saveTodo(todoToUpdate);
     }
 
-    onAddClick() {
-        if (!this.state.adding) {
-            this.setState({
-                adding: true
-            });
-        } else {
-            // postToServer
-            this.setState(prevState => {
-                const updatedTodos = prevState.todos;
-                updatedTodos.push({
-                    id: 10,
-                    text: this.state.newTodo,
-                    completed: false
-                });
+    function onDeleteButtonClick(id) {
+        deleteTodo(id);
+    }
 
-                return {
-                    todos: updatedTodos,
-                    adding: false
-                };
-            });
+    function onAddClick() {
+        setAdding(!adding);
+    }
+
+    function onInputChange(event) {
+        const { value } = event.target;
+        setNewTodo({ ...newTodo, text: value });
+    }
+
+    function handleKeyPress({ target, key }) {
+        if (key === "Enter" && target.name === "newTodo") {
+            setAdding(false);
         }
     }
 
-    onInputChange(event) {
-        const { name, value } = event;
-        this.setState({ newTodo: value });
-    }
+    if (loading) {
+        return <h1>Loading...</h1>;
+    } else {
+        return (
+            <div className="col-lg-12">
+                <div className="card px-3">
+                    <div className="card-body">
+                        <h4 className="card-title text-center">Todo list</h4>
+                        <TodoList
+                            todos={todos}
+                            onCheckboxChange={onCheckboxChange}
+                            onDeleteButtonClick={onDeleteButtonClick}
+                        />
+                        {adding ? (
+                            <input
+                                type="text"
+                                name="newTodo"
+                                value={newTodo.text}
+                                onChange={onInputChange}
+                                onKeyPress={handleKeyPress}
+                            />
+                        ) : (
+                            <></>
+                        )}
 
-    render() {
-        const items = this.state.todos.map(item => (
-            <TodoItem
-                key={item.id}
-                item={item}
-                handleCheckboxChange={this.onCheckboxChange}
-                handleDeleteButtonClick={this.onDeleteButtonClick}
-            />
-        ));
-
-        if (this.state.loading) {
-            return <h1>Loading...</h1>;
-        } else {
-            return (
-                <div className="col-lg-12">
-                    <div className="card px-3">
-                        <div className="card-body">
-                            <h4 className="card-title text-center">
-                                Todo list
-                            </h4>
-                            <div className="list-wrapper">
-                                <ul className="todo-list">{items}</ul>
-                            </div>
-                            {this.state.adding ? (
-                                <input
-                                    type="text"
-                                    name="newTodo"
-                                    value={this.state.newTodo}
-                                    onChange={this.onInputChange}
-                                />
-                            ) : (
-                                <></>
-                            )}
-
-                            <button className="" onClick={this.onAddClick}>
-                                Add Todo
-                            </button>
-                        </div>
+                        <button className="" name="add" onClick={onAddClick}>
+                            Add Todo
+                        </button>
                     </div>
                 </div>
-            );
-        }
+            </div>
+        );
     }
 }
+
+export default TodoPage;
