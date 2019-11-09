@@ -1,2 +1,2 @@
-# recipe_web_app
-Web application for saving recipes. Will be continually working on this as i learn more about React.js and Rust.
+# React Spring Web App
+As I learn reactjs, I am going to be working on this web app. My plans are to make it an all-in-one productivity app that integrates with your google account
