@@ -1,5 +1,5 @@
 import { handleResponse, handleError } from "./apiUtils";
-const baseUrl = process.env.REACT_APP_REST_API_URL + "/todos/";
+const baseUrl = process.env.REACT_APP_REST_API_URL + "/todo/";
 
 export function getTodos() {
     return fetch(baseUrl + "all")
@@ -14,8 +14,6 @@ export function getUsersTodos(userId) {
 }
 
 export function saveTodo(todo) {
-    console.log("yee");
-
     return fetch(baseUrl + (todo.id || ""), {
         method: todo.id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
         headers: { "content-type": "application/json" },

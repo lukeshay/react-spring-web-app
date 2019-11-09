@@ -88,9 +88,7 @@ public class TodoService {
 
 	public String deleteAllTodos() {
 		logger.warning("DELETING ALL TODOS");
-		List<Todo> todos = todoRepository.findAll();
-
-		todos.forEach(todo -> todoRepository.delete(todo));
+		todoRepository.findAll().forEach(todo -> todoRepository.delete(todo));
 
 		return todoDeletedResponse("all", todoRepository.findAll().size() == 0);
 	}

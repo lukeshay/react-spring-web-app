@@ -3,7 +3,7 @@ import NavigationBar from "./components/navigation/NavigationBar.js";
 import HomePage from "./components/HomePage";
 import NotFoundPage from "./components/NotFoundPage";
 import TodoPage from "./components/TodoPage";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
