@@ -67,6 +67,16 @@ public class TodoController {
 	}
 
 	/**
+	 * Delete all todos.
+	 *
+	 * @return the string
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/all")
+	public List<Todo> getAllTodos() {
+		return todoService.getAllTodos();
+	}
+
+	/**
 	 * Update todo todo.
 	 *
 	 * @param todoId      the todo id

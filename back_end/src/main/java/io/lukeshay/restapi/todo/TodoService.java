@@ -103,4 +103,8 @@ public class TodoService {
 
 		return new Gson().toJson(map);
 	}
+
+	public List<Todo> getAllTodos() {
+		return todoRepository.findAll();
+	}
 }

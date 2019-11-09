@@ -79,7 +79,7 @@ function TodoPage() {
                             onCheckboxChange={onCheckboxChange}
                             onDeleteButtonClick={onDeleteButtonClick}
                         />
-                        {adding ? (
+                        {adding && (
                             <input
                                 type="text"
                                 name="newTodo"
@@ -87,8 +87,6 @@ function TodoPage() {
                                 onChange={onInputChange}
                                 onKeyPress={handleKeyPress}
                             />
-                        ) : (
-                            <></>
                         )}
 
                         <button className="" name="add" onClick={onAddClick}>
