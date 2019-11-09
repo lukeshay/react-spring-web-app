@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import TodoList from "./todo/TodoList";
+import TodoList from "./TodoList";
 import "bootstrap/dist/css/bootstrap.min.css";
-import todoStore from "../stores/todoStore";
-import { loadTodos, saveTodo, deleteTodo } from "../actions/todoActions";
+import todoStore from "../../stores/todoStore";
+import { loadTodos, saveTodo, deleteTodo } from "../../actions/todoActions";
 import { toast } from "react-toastify";
 
 function TodoPage() {
