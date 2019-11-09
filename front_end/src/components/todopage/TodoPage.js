@@ -41,14 +41,14 @@ function TodoPage() {
         setTodos(todoStore.getTodos());
     }
 
-    function onCheckboxChange(id) {
-        var todoToUpdate = todos.find(todo => todo.id === id);
+    function onCheckboxChange(event) {
+        var todoToUpdate = todos.find(todo => todo.id === event.target.name);
         todoToUpdate.completed = !todoToUpdate.completed;
         saveTodo(todoToUpdate);
     }
 
-    function onDeleteButtonClick(id) {
-        deleteTodo(id);
+    function onDeleteButtonClick(event) {
+        deleteTodo(event.target.name);
     }
 
     function onAddClick() {
