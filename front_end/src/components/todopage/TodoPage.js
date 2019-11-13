@@ -13,6 +13,7 @@ function TodoPage() {
         text: "",
         completed: false
     });
+    const [key, setKey] = useState(Math.random() * 10000);
 
     useEffect(() => {
         todoStore.addChangeListener(onChange);
@@ -24,26 +25,24 @@ function TodoPage() {
     }, []);
 
     useEffect(() => {
-        console.log(newTodo);
-
         if (!adding && newTodo.text !== "") {
             saveTodo(newTodo);
             toast.success("Todo saved.");
-        }
 
-        setNewTodo({
-            text: "",
-            completed: false
-        });
-    }, [adding]);
+            setNewTodo({
+                text: "",
+                completed: false
+            });
+        }
+    }, [adding, newTodo]);
 
     async function onChange() {
         setTodos(todoStore.getTodos());
+
+        setKey(Math.random() * 10000);
     }
 
     async function onCheckboxChange({ target }) {
-        console.log(target.name);
-
         var todoToUpdate = todos.find(
             todo => todo.id === parseInt(target.name)
         );
@@ -79,6 +78,7 @@ function TodoPage() {
                     <div className="card-body">
                         <h4 className="card-title text-center">Todo list</h4>
                         <TodoList
+                            key={key}
                             todos={todos}
                             onCheckboxChange={onCheckboxChange}
                             onDeleteButtonClick={onDeleteButtonClick}
