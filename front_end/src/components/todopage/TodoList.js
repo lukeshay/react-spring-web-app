@@ -21,8 +21,9 @@ function TodoList(props) {
                         <td>
                             <input
                                 type="checkbox"
+                                name={todo.id}
                                 checked={todo.completed}
-                                onChange={() => props.onCheckboxChange(todo.id)}
+                                onChange={props.onCheckboxChange}
                             />
                         </td>
                         <td style={todo.completed ? completedStyle : {}}>
@@ -31,10 +32,8 @@ function TodoList(props) {
                         <td>
                             <button
                                 className="btn btn btn-danger"
-                                name="delete"
-                                onClick={() =>
-                                    props.onDeleteButtonClick(todo.id)
-                                }
+                                name={todo.id}
+                                onClick={props.onDeleteButtonClick}
                             >
                                 Delete
                             </button>

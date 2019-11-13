@@ -13,6 +13,7 @@ function TodoPage() {
         text: "",
         completed: false
     });
+    const [key, setKey] = useState(Math.random() * 10000);
 
     useEffect(() => {
         todoStore.addChangeListener(onChange);
@@ -24,43 +25,45 @@ function TodoPage() {
     }, []);
 
     useEffect(() => {
-        todoStore.addChangeListener(onChange);
         if (!adding && newTodo.text !== "") {
             saveTodo(newTodo);
+            toast.success("Todo saved.");
+
             setNewTodo({
-                slug: "",
                 text: "",
                 completed: false
             });
-            toast.success("Todo saved.");
         }
-        return () => todoStore.removeChangeListener(onChange);
     }, [adding, newTodo]);
 
-    function onChange() {
+    async function onChange() {
         setTodos(todoStore.getTodos());
+
+        setKey(Math.random() * 10000);
     }
 
-    function onCheckboxChange(id) {
-        var todoToUpdate = todos.find(todo => todo.id === id);
+    async function onCheckboxChange({ target }) {
+        var todoToUpdate = todos.find(
+            todo => todo.id === parseInt(target.name)
+        );
         todoToUpdate.completed = !todoToUpdate.completed;
         saveTodo(todoToUpdate);
     }
 
-    function onDeleteButtonClick(id) {
-        deleteTodo(id);
+    async function onDeleteButtonClick({ target }) {
+        deleteTodo(target.name);
     }
 
-    function onAddClick() {
+    async function onAddClick() {
         setAdding(!adding);
     }
 
-    function onInputChange(event) {
-        const { value } = event.target;
+    async function onInputChange({ target }) {
+        const { value } = target;
         setNewTodo({ ...newTodo, text: value });
     }
 
-    function handleKeyPress({ target, key }) {
+    async function handleKeyPress({ target, key }) {
         if (key === "Enter" && target.name === "newTodo") {
             setAdding(false);
         }
@@ -75,6 +78,7 @@ function TodoPage() {
                     <div className="card-body">
                         <h4 className="card-title text-center">Todo list</h4>
                         <TodoList
+                            key={key}
                             todos={todos}
                             onCheckboxChange={onCheckboxChange}
                             onDeleteButtonClick={onDeleteButtonClick}

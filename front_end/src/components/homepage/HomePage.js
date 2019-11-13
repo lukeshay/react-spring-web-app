@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const HomePage = () => {
@@ -14,6 +14,6 @@ const HomePage = () => {
             </ul>
         </div>
     );
-}
+};
 
 export default HomePage;
