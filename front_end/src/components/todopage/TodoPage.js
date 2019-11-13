@@ -24,7 +24,6 @@ function TodoPage() {
     }, []);
 
     useEffect(() => {
-        todoStore.addChangeListener(onChange);
         if (!adding && newTodo.text !== "") {
             saveTodo(newTodo);
             setNewTodo({
@@ -34,33 +33,34 @@ function TodoPage() {
             });
             toast.success("Todo saved.");
         }
-        return () => todoStore.removeChangeListener(onChange);
-    }, [adding, newTodo]);
+    }, [adding]);
 
-    function onChange() {
+    async function onChange() {
         setTodos(todoStore.getTodos());
     }
 
-    function onCheckboxChange(event) {
-        var todoToUpdate = todos.find(todo => todo.id === event.target.name);
+    async function onCheckboxChange(event) {
+        console.log(event.target.name);
+
+        var todoToUpdate = todos.find(todo => todo.id == event.target.name);
         todoToUpdate.completed = !todoToUpdate.completed;
         saveTodo(todoToUpdate);
     }
 
-    function onDeleteButtonClick(event) {
+    async function onDeleteButtonClick(event) {
         deleteTodo(event.target.name);
     }
 
-    function onAddClick() {
+    async function onAddClick() {
         setAdding(!adding);
     }
 
-    function onInputChange(event) {
+    async function onInputChange(event) {
         const { value } = event.target;
         setNewTodo({ ...newTodo, text: value });
     }
 
-    function handleKeyPress({ target, key }) {
+    async function handleKeyPress({ target, key }) {
         if (key === "Enter" && target.name === "newTodo") {
             setAdding(false);
         }
