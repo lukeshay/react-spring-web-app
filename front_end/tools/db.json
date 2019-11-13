@@ -1,10 +1,16 @@
 {
   "todos": [
     {
+      "id": 1,
+      "text": "Take out the trash",
+      "slug": "take-out-the-trash",
+      "completed": true
+    },
+    {
       "id": 2,
       "text": "Grocery shopping",
       "slug": "grocery-shopping",
-      "completed": true
+      "completed": false
     },
     {
       "id": 3,
@@ -19,17 +25,11 @@
       "completed": true
     },
     {
-      "id": 5,
-      "text": "Catch up on Arrested Development",
-      "slug": "catch-up-on-arrested-development",
-      "completed": false
-    },
-    {
-      "text": "Yeet",
+      "text": "Yeeter",
       "completed": false,
-      "createdAt": 1573611336536,
-      "slug": "yeet",
-      "id": 6
+      "createdAt": 1573612069824,
+      "slug": "yeeter",
+      "id": 5
     }
   ]
 }

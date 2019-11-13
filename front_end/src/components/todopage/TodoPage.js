@@ -24,39 +24,43 @@ function TodoPage() {
     }, []);
 
     useEffect(() => {
+        console.log(newTodo);
+
         if (!adding && newTodo.text !== "") {
             saveTodo(newTodo);
-            setNewTodo({
-                slug: "",
-                text: "",
-                completed: false
-            });
             toast.success("Todo saved.");
         }
+
+        setNewTodo({
+            text: "",
+            completed: false
+        });
     }, [adding]);
 
     async function onChange() {
         setTodos(todoStore.getTodos());
     }
 
-    async function onCheckboxChange(event) {
-        console.log(event.target.name);
+    async function onCheckboxChange({ target }) {
+        console.log(target.name);
 
-        var todoToUpdate = todos.find(todo => todo.id == event.target.name);
+        var todoToUpdate = todos.find(
+            todo => todo.id === parseInt(target.name)
+        );
         todoToUpdate.completed = !todoToUpdate.completed;
         saveTodo(todoToUpdate);
     }
 
-    async function onDeleteButtonClick(event) {
-        deleteTodo(event.target.name);
+    async function onDeleteButtonClick({ target }) {
+        deleteTodo(target.name);
     }
 
     async function onAddClick() {
         setAdding(!adding);
     }
 
-    async function onInputChange(event) {
-        const { value } = event.target;
+    async function onInputChange({ target }) {
+        const { value } = target;
         setNewTodo({ ...newTodo, text: value });
     }
 
