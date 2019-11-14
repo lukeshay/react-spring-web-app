@@ -9,7 +9,7 @@ function TodoList(props) {
     return (
         <table className="table">
             <thead>
-                <tr>
+                <tr className="table-secondary">
                     <th>Completed</th>
                     <th>Text</th>
                     <th>Delete</th>
