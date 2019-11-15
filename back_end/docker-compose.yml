@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  restapi:
+    build: .
+    restart: always
+    container_name: restapi
+    ports:
+      - 5000:8080
+    working_dir: /opt/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: restapi-mongo
+    volumes:
+      - $HOME/data/restapi-mongo-data:/data/db
+      - $HOME/data/restapi-mongo-bkp:/data/bkp
+    restart: always
