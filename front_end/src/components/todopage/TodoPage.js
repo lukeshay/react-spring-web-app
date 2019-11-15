@@ -85,17 +85,25 @@ function TodoPage() {
                         />
                         {adding && (
                             <input
+                                autoFocus
                                 type="text"
+                                className="form-control"
                                 name="newTodo"
+                                style={{ marginBottom: "5px" }}
                                 value={newTodo.text}
                                 onChange={onInputChange}
                                 onKeyPress={handleKeyPress}
                             />
                         )}
-
-                        <button className="" name="add" onClick={onAddClick}>
-                            Add Todo
-                        </button>
+                        <div class="col text-center">
+                            <button
+                                className="btn btn-secondary"
+                                name="add"
+                                onClick={onAddClick}
+                            >
+                                Add Todo
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
