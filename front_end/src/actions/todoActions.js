@@ -1,5 +1,5 @@
 import dispatcher from "../appDispatcher";
-import * as todoApi from "../api/todoApi";
+import * as todoApi from "../rest-api/todoRestApi";
 import actionTypes from "./actionTypes";
 
 export async function loadTodos() {
