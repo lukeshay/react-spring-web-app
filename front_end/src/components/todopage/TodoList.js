@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function TodoList(props) {
+function ToDoList(props) {
     const completedStyle = {
         textDecoration: "line-through"
     };
@@ -16,23 +16,23 @@ function TodoList(props) {
                 </tr>
             </thead>
             <tbody>
-                {props.todos.map(todo => (
-                    <tr key={todo.id}>
+                {props.toDos.map(toDo => (
+                    <tr key={toDo.id}>
                         <td>
                             <input
                                 type="checkbox"
-                                name={todo.id}
-                                checked={todo.completed}
+                                name={toDo.id}
+                                checked={toDo.completed}
                                 onChange={props.onCheckboxChange}
                             />
                         </td>
-                        <td style={todo.completed ? completedStyle : {}}>
-                            {todo.text}
+                        <td style={toDo.completed ? completedStyle : {}}>
+                            {toDo.text}
                         </td>
                         <td>
                             <button
                                 className="btn btn btn-danger"
-                                name={todo.id}
+                                name={toDo.id}
                                 onClick={props.onDeleteButtonClick}
                             >
                                 Delete
@@ -45,4 +45,4 @@ function TodoList(props) {
     );
 }
 
-export default TodoList;
+export default ToDoList;

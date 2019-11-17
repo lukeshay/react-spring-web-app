@@ -1,27 +1,27 @@
 import dispatcher from "../appDispatcher";
-import * as todoApi from "../rest-api/todoRestApi";
+import * as toDoApi from "../rest-api/toDoRestApi";
 import actionTypes from "./actionTypes";
 
-export async function loadTodos() {
-    const todos = await todoApi.getTodos();
+export async function loadToDos() {
+    const toDos = await toDoApi.getToDos();
 
     dispatcher.dispatch({
         actionType: actionTypes.LOAD_TODOS,
-        todos: todos
+        toDos: toDos
     });
 }
 
-export async function saveTodo(todo) {
-    const savedTodo = await todoApi.saveTodo(todo);
+export async function saveToDo(toDo) {
+    const savedToDo = await toDoApi.saveToDo(toDo);
 
     dispatcher.dispatch({
-        actionType: todo.id ? actionTypes.UPDATE_TODO : actionTypes.CREATE_TODO,
-        todo: savedTodo
+        actionType: toDo.id ? actionTypes.UPDATE_TODO : actionTypes.CREATE_TODO,
+        toDo: savedToDo
     });
 }
 
-export async function deleteTodo(id) {
-    await todoApi.deleteTodo(id);
+export async function deleteToDo(id) {
+    await toDoApi.deleteToDo(id);
 
     dispatcher.dispatch({
         actionType: actionTypes.DELETE_TODO,

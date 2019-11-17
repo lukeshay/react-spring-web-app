@@ -3,9 +3,9 @@ import Dispatcher from "../appDispatcher";
 import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
-let _todos = [];
+let _toDos = [];
 
-class TodoStore extends EventEmitter {
+class ToDoStore extends EventEmitter {
     addChangeListener(callback) {
         this.on(CHANGE_EVENT, callback);
     }
@@ -18,38 +18,38 @@ class TodoStore extends EventEmitter {
         this.emit(CHANGE_EVENT);
     }
 
-    getTodos() {
-        return _todos;
+    getToDos() {
+        return _toDos;
     }
 
-    getTodoBySlug(slug) {
-        return _todos.find(todo => todo.slug === slug);
+    getToDoBySlug(slug) {
+        return _toDos.find(toDo => toDo.slug === slug);
     }
 }
 
-const store = new TodoStore();
+const store = new ToDoStore();
 
 Dispatcher.register(action => {
     switch (action.actionType) {
         case actionTypes.DELETE_TODO:
-            _todos = _todos.filter(todo => todo.id !== parseInt(action.id, 10));
+            _toDos = _toDos.filter(toDo => toDo.id !== parseInt(action.id, 10));
             store.emitChange();
             break;
 
         case actionTypes.CREATE_TODO:
-            _todos.push(action.todo);
+            _toDos.push(action.toDo);
             store.emitChange();
             break;
 
         case actionTypes.UPDATE_TODO:
-            _todos = _todos.map(todo =>
-                todo.id === action.todo.id ? action.todo : todo
+            _toDos = _toDos.map(toDo =>
+                toDo.id === action.toDo.id ? action.toDo : toDo
             );
             store.emitChange();
             break;
 
         case actionTypes.LOAD_TODOS:
-            _todos = action.todos;
+            _toDos = action.toDos;
             store.emitChange();
             break;
 

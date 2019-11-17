@@ -1,57 +1,57 @@
 import React, { useState, useEffect } from "react";
-import TodoList from "./TodoList";
+import ToDoList from "./ToDoList";
 import "bootstrap/dist/css/bootstrap.min.css";
-import todoStore from "../../stores/todoStore";
-import { loadTodos, saveTodo, deleteTodo } from "../../actions/todoActions";
+import toDoStore from "../../stores/toDoStore";
+import { loadToDos, saveToDo, deleteToDo } from "../../actions/toDoActions";
 import { toast } from "react-toastify";
 
-function TodoPage() {
+function ToDoPage() {
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
-    const [todos, setTodos] = useState([]);
-    const [newTodo, setNewTodo] = useState({
+    const [toDos, setToDos] = useState([]);
+    const [newToDo, setNewToDo] = useState({
         text: "",
         completed: false
     });
     const [key, setKey] = useState(Math.random() * 10000);
 
     useEffect(() => {
-        todoStore.addChangeListener(onChange);
-        if (todoStore.getTodos().length === 0) {
-            loadTodos();
+        toDoStore.addChangeListener(onChange);
+        if (toDoStore.getToDos().length === 0) {
+            loadToDos();
             setLoading(false);
         }
-        return () => todoStore.removeChangeListener(onChange);
+        return () => toDoStore.removeChangeListener(onChange);
     }, []);
 
     useEffect(() => {
-        if (!adding && newTodo.text !== "") {
-            saveTodo(newTodo);
-            toast.success("Todo saved.");
+        if (!adding && newToDo.text !== "") {
+            saveToDo(newToDo);
+            toast.success("ToDo saved.");
 
-            setNewTodo({
+            setNewToDo({
                 text: "",
                 completed: false
             });
         }
-    }, [adding, newTodo]);
+    }, [adding, newToDo]);
 
     async function onChange() {
-        setTodos(todoStore.getTodos());
+        setToDos(toDoStore.getToDos());
 
         setKey(Math.random() * 10000);
     }
 
     async function onCheckboxChange({ target }) {
-        var todoToUpdate = todos.find(
-            todo => todo.id === parseInt(target.name)
+        var toDoToUpdate = toDos.find(
+            toDo => toDo.id === parseInt(target.name)
         );
-        todoToUpdate.completed = !todoToUpdate.completed;
-        saveTodo(todoToUpdate);
+        toDoToUpdate.completed = !toDoToUpdate.completed;
+        saveToDo(toDoToUpdate);
     }
 
     async function onDeleteButtonClick({ target }) {
-        deleteTodo(target.name);
+        deleteToDo(target.name);
         setKey(Math.random() * 10000);
     }
 
@@ -61,11 +61,11 @@ function TodoPage() {
 
     async function onInputChange({ target }) {
         const { value } = target;
-        setNewTodo({ ...newTodo, text: value });
+        setNewToDo({ ...newToDo, text: value });
     }
 
     async function handleKeyPress({ target, key }) {
-        if (key === "Enter" && target.name === "newTodo") {
+        if (key === "Enter" && target.name === "newToDo") {
             setAdding(false);
         }
     }
@@ -77,10 +77,10 @@ function TodoPage() {
             <div className="col-lg-12">
                 <div className="card px-3">
                     <div className="card-body">
-                        <h4 className="card-title text-center">Todo list</h4>
-                        <TodoList
+                        <h4 className="card-title text-center">ToDo list</h4>
+                        <ToDoList
                             key={key}
-                            todos={todos}
+                            toDos={toDos}
                             onCheckboxChange={onCheckboxChange}
                             onDeleteButtonClick={onDeleteButtonClick}
                         />
@@ -89,9 +89,9 @@ function TodoPage() {
                                 autoFocus
                                 type="text"
                                 className="form-control"
-                                name="newTodo"
+                                name="newToDo"
                                 style={{ marginBottom: "5px" }}
-                                value={newTodo.text}
+                                value={newToDo.text}
                                 onChange={onInputChange}
                                 onKeyPress={handleKeyPress}
                             />
@@ -102,7 +102,7 @@ function TodoPage() {
                                 name="add"
                                 onClick={onAddClick}
                             >
-                                Add Todo
+                                Add ToDo
                             </button>
                         </div>
                     </div>
@@ -112,4 +112,4 @@ function TodoPage() {
     }
 }
 
-export default TodoPage;
+export default ToDoPage;
