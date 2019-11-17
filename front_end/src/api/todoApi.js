@@ -1,5 +1,5 @@
 import { handleResponse, handleError } from "./apiUtils";
-const baseUrl = process.env.REACT_APP_API_URL + "/todos/";
+const baseUrl = "http://localhost:3001/todos/";
 
 export function getTodos() {
     return fetch(baseUrl)
