@@ -1,48 +1,38 @@
 package io.lukeshay.restapi;
 
-import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
+import java.io.IOException;
 
-@Configuration
-public class SimpleCORSFilter implements Filter {
+//@Component
+//@Order(1)
+public class CorsFilter implements Filter {
 
-    private static Logger log = LoggerFactory.getLogger(SimpleCORSFilter.class);
+    @Override
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+                                    final FilterChain filterChain) throws ServletException, IOException {
+        System.out.println(request.toString());
+        HttpServletResponse res = (HttpServletResponse) response;
 
-    public SimpleCORSFilter() {
-        log.info("SimpleCORSFilter init");
+        res.addHeader("Access-Control-Allow-Origin", "*");
+        res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
+        res.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+        res.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials");
+        res.addHeader("Access-Control-Allow-Credentials", "true");
+        res.addIntHeader("Access-Control-Max-Age", 10);
+        filterChain.doFilter(request, response);
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
-
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-
-        chain.doFilter(req, res);
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) {
     }
 
     @Override
     public void destroy() {
-    }
 
+    }
 }

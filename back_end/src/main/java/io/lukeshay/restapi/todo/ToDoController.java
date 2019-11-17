@@ -51,6 +51,17 @@ public class ToDoController {
 	 * @param toDoId the to-do id
 	 * @return the string
 	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/{toDoId}")
+	public ToDo getTodo(@PathVariable String toDoId) {
+		return toDoService.getTodo(toDoId);
+	}
+
+	/**
+	 * Delete to-do string.
+	 *
+	 * @param toDoId the to-do id
+	 * @return the string
+	 */
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{toDoId}")
 	public ToDo deleteTodo(@PathVariable String toDoId) {
 		return toDoService.deleteTodo(toDoId);

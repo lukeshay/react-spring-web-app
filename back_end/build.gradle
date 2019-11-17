@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.lukeshay'
-version = '0.0.2'
+version = '0.0.3'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -22,7 +22,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'com.google.code.gson:gson'

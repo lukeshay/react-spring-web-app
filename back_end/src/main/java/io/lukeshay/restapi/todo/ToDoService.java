@@ -106,4 +106,8 @@ public class ToDoService {
 	public List<ToDo> getAllTodos() {
 		return todoRepository.findAll();
 	}
+
+	public ToDo getTodo(String toDoId) {
+		return todoRepository.findById(toDoId).get();
+	}
 }
