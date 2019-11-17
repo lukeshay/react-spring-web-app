@@ -1,16 +1,14 @@
 package io.lukeshay.restapi.todo;
 
 import com.google.gson.Gson;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
 /**
  * The type Todo.
  */
-public class Todo {
+public class ToDo {
 	@Id
 	private String id;
 	private String createdDate;
@@ -26,7 +24,7 @@ public class Todo {
 	 * @param text      the text
 	 * @param completed the completed
 	 */
-	public Todo(String userId, String text, boolean completed) {
+	public ToDo(String userId, String text, boolean completed) {
 		this.userId = userId;
 		this.text = text;
 		this.completed = completed;
@@ -109,14 +107,14 @@ public class Todo {
 	/**
 	 * Update.
 	 *
-	 * @param updatedTodo the updated todo
+	 * @param updatedToDo the updated todo
 	 */
-	public void update(Todo updatedTodo) {
-		if (updatedTodo.getText() != null) {
-			this.text = updatedTodo.getText();
+	public void update(ToDo updatedToDo) {
+		if (updatedToDo.getText() != null) {
+			this.text = updatedToDo.getText();
 		}
 
-		this.completed = updatedTodo.isCompleted();
+		this.completed = updatedToDo.isCompleted();
 	}
 
 	/**

@@ -9,12 +9,12 @@ import java.util.List;
  * The interface Todo repository.
  */
 @Repository
-public interface TodoRepository extends MongoRepository<Todo, String> {
+public interface ToDoRepository extends MongoRepository<ToDo, String> {
 	/**
 	 * Find all by user id list.
 	 *
 	 * @param userId the user id
 	 * @return the list
 	 */
-	List<Todo> findAllByUserId(String userId);
+	List<ToDo> findAllByUserId(String userId);
 }

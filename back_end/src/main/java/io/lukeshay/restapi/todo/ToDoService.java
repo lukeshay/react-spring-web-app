@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  * The type Todo service.
  */
 @Service
-public class TodoService {
-	private static Logger logger = Logger.getLogger(TodoService.class.getName());
-	private TodoRepository todoRepository;
+public class ToDoService {
+	private static Logger logger = Logger.getLogger(ToDoService.class.getName());
+	private ToDoRepository todoRepository;
 
 	/**
 	 * Instantiates a new Todo service.
@@ -23,7 +23,7 @@ public class TodoService {
 	 * @param todoRepository the todo repository
 	 */
 	@Autowired
-	public TodoService(TodoRepository todoRepository) {
+	public ToDoService(ToDoRepository todoRepository) {
 		this.todoRepository = todoRepository;
 	}
 
@@ -33,7 +33,7 @@ public class TodoService {
 	 * @param userId the user id
 	 * @return the all todos from user
 	 */
-	public List<Todo> getAllTodosFromUser(String userId) {
+	public List<ToDo> getAllTodosFromUser(String userId) {
 		logger.info(String.format("Getting user %s todos.", userId));
 		return todoRepository.findAllByUserId(userId);
 	}
@@ -41,17 +41,17 @@ public class TodoService {
 	/**
 	 * Save todo todo.
 	 *
-	 * @param newTodo the new todo
+	 * @param newToDo the new todo
 	 * @return the todo
 	 */
-	public Todo saveTodo(Todo newTodo) {
-		logger.info(String.format("Saving todo text: %s", newTodo.getText()));
-		if (newTodo.getId() != null) {
+	public ToDo saveTodo(ToDo newToDo) {
+		logger.info(String.format("Saving todo text: %s", newToDo.getText()));
+		if (newToDo.getId() != null) {
 			throw new IllegalArgumentException("Todo should not have an id.");
 		}
 
-		todoRepository.save(newTodo);
-		return todoRepository.findById(newTodo.getId()).orElseThrow(() -> new IllegalArgumentException("Todo was not saved"));
+		todoRepository.save(newToDo);
+		return todoRepository.findById(newToDo.getId()).orElseThrow(() -> new IllegalArgumentException("Todo was not saved"));
 	}
 
 	/**
@@ -60,26 +60,26 @@ public class TodoService {
 	 * @param todoId the todo id
 	 * @return the string
 	 */
-	public Todo deleteTodo(String todoId) {
+	public ToDo deleteTodo(String todoId) {
 		logger.info(String.format("Deleting todo id: %s", todoId));
-		Todo deletedTodo = todoRepository.findById(todoId).get();
+		ToDo deletedToDo = todoRepository.findById(todoId).get();
 		todoRepository.deleteById(todoId);
-		return deletedTodo;
+		return deletedToDo;
 	}
 
 	/**
 	 * Update todo todo.
 	 *
 	 * @param todoId      the todo id
-	 * @param updatedTodo the updated todo
+	 * @param updatedToDo the updated todo
 	 * @return the todo
 	 */
-	public Todo updateTodo(String todoId, Todo updatedTodo) {
+	public ToDo updateTodo(String todoId, ToDo updatedToDo) {
 		logger.info(String.format("Updating todo id: %s", todoId));
-		Todo toUpdate = todoRepository.findById(todoId)
+		ToDo toUpdate = todoRepository.findById(todoId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid todoId"));
 
-		toUpdate.update(updatedTodo);
+		toUpdate.update(updatedToDo);
 
 		todoRepository.save(toUpdate);
 
@@ -89,7 +89,7 @@ public class TodoService {
 
 	public String deleteAllTodos() {
 		logger.warning("DELETING ALL TODOS");
-		todoRepository.findAll().forEach(todo -> todoRepository.delete(todo));
+		todoRepository.findAll().forEach(toDo -> todoRepository.delete(toDo));
 
 		return todoDeletedResponse("all", todoRepository.findAll().size() == 0);
 	}
@@ -103,7 +103,7 @@ public class TodoService {
 		return new Gson().toJson(map);
 	}
 
-	public List<Todo> getAllTodos() {
+	public List<ToDo> getAllTodos() {
 		return todoRepository.findAll();
 	}
 }
