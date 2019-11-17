@@ -9,7 +9,7 @@ import java.util.List;
  * The type Todo controller.
  */
 @RestController
-@RequestMapping("/to-do")
+@RequestMapping("/todo")
 public class ToDoController {
 	private ToDoService toDoService;
 
