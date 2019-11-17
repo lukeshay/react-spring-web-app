@@ -1,5 +1,5 @@
 import { handleResponse, handleError } from "./apiUtils";
-const baseUrl = "http://159.65.227.26:5000/todo/";
+const baseUrl = "http://localhost:5000/todo/";
 
 export function getToDos() {
     return fetch(baseUrl + "all")
@@ -16,7 +16,7 @@ export function getUsersToDos(userId) {
 export function saveToDo(toDo) {
     return fetch(baseUrl + (toDo.id || ""), {
         method: toDo.id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
-        headers: { "content-type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(toDo)
     })
         .then(handleResponse)

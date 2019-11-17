@@ -32,7 +32,7 @@ const store = new ToDoStore();
 Dispatcher.register(action => {
     switch (action.actionType) {
         case actionTypes.DELETE_TODO:
-            _toDos = _toDos.filter(toDo => toDo.id !== parseInt(action.id, 10));
+            _toDos = _toDos.filter(toDo => toDo.id !== action.id);
             store.emitChange();
             break;
 

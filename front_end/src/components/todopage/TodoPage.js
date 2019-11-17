@@ -21,6 +21,11 @@ function ToDoPage() {
             loadToDos();
             setLoading(false);
         }
+
+        if (toDoStore.getToDos().length !== 0) {
+            setLoading(false);
+        }
+
         return () => toDoStore.removeChangeListener(onChange);
     }, []);
 
@@ -38,21 +43,17 @@ function ToDoPage() {
 
     async function onChange() {
         setToDos(toDoStore.getToDos());
-
         setKey(Math.random() * 10000);
     }
 
     async function onCheckboxChange({ target }) {
-        var toDoToUpdate = toDos.find(
-            toDo => toDo.id === parseInt(target.name)
-        );
+        var toDoToUpdate = toDos.find(toDo => toDo.id === target.name);
         toDoToUpdate.completed = !toDoToUpdate.completed;
         saveToDo(toDoToUpdate);
     }
 
     async function onDeleteButtonClick({ target }) {
         deleteToDo(target.name);
-        setKey(Math.random() * 10000);
     }
 
     async function onAddClick() {

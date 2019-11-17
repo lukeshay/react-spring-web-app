@@ -15,7 +15,7 @@ export default class NavigationBar extends React.Component {
                 <NavLink to="/reminders" className="nav-item text-white">
                     Reminders
                 </NavLink>
-                <NavLink to="/toDo" className="nav-item text-white">
+                <NavLink to="/todo" className="nav-item text-white">
                     ToDo
                 </NavLink>
                 <NavLink to="/calendar" className="nav-item text-white">
