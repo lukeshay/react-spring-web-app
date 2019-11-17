@@ -52,6 +52,7 @@ function TodoPage() {
 
     async function onDeleteButtonClick({ target }) {
         deleteTodo(target.name);
+        setKey(Math.random() * 10000);
     }
 
     async function onAddClick() {
@@ -95,7 +96,7 @@ function TodoPage() {
                                 onKeyPress={handleKeyPress}
                             />
                         )}
-                        <div class="col text-center">
+                        <div className="col text-center">
                             <button
                                 className="btn btn-secondary"
                                 name="add"
