@@ -52,7 +52,7 @@ public class TodoController {
 	 * @return the string
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{todoId}")
-	public String deleteTodo(@PathVariable String todoId) {
+	public Todo deleteTodo(@PathVariable String todoId) {
 		return todoService.deleteTodo(todoId);
 	}
 

@@ -60,10 +60,11 @@ public class TodoService {
 	 * @param todoId the todo id
 	 * @return the string
 	 */
-	public String deleteTodo(String todoId) {
+	public Todo deleteTodo(String todoId) {
 		logger.info(String.format("Deleting todo id: %s", todoId));
+		Todo deletedTodo = todoRepository.findById(todoId).get();
 		todoRepository.deleteById(todoId);
-		return todoDeletedResponse(todoId, !todoRepository.existsById(todoId));
+		return deletedTodo;
 	}
 
 	/**
