@@ -17,7 +17,7 @@ function App() {
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/index" component={HomePage} />
-                <Route path="/todo" component={ToDoPage} />
+                <Route exact path="/todo" component={ToDoPage} />
                 <Route component={NotFoundPage} />
             </Switch>
             Version: {version}
