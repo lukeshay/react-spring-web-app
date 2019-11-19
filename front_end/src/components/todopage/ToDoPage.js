@@ -23,6 +23,7 @@ function ToDoPage() {
         }
 
         if (toDoStore.getToDos().length !== 0) {
+            onChange();
             setLoading(false);
         }
 
