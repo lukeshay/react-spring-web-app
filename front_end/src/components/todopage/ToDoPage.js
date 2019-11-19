@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ToDoList from "./ToDoList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import toDoStore from "../../stores/toDoStore";
+import "babel-polyfill";
 import { loadToDos, saveToDo, deleteToDo } from "../../actions/toDoActions";
 import { toast } from "react-toastify";
 
