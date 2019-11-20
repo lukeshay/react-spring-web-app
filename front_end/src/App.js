@@ -12,7 +12,7 @@ import { version } from "../package.json";
 function App() {
     const [load, setLoad] = useState("false");
 
-    function handleClick(event) {
+    function handleClick() {
         const enteredName = prompt("Please enter the super secret password");
 
         setLoad(enteredName === "choochie");
@@ -34,7 +34,14 @@ function App() {
         );
     } else {
         return (
-            <input type="button" value="load web app" onClick={handleClick} />
+            <>
+                <h1>Hello summoners</h1>
+                <input
+                    type="button"
+                    value="load web app"
+                    onClick={handleClick}
+                />
+            </>
         );
     }
 }
