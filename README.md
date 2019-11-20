@@ -1,17 +1,17 @@
 - [React Spring Web App](#react-spring-web-app)
 - [Directions](#directions)
-  - [Prereqs](#prereqs)
+  - [Pre-requisites](#pre-requisites)
   - [Front End](#front-end)
   - [Back End](#back-end)
 - [Digital Ocean Referral](#digital-ocean-referral)
 
 # React Spring Web App
 
-As I learn reactjs, I am going to be working on this web app. My plans are to make it an all-in-one productivity app that integrates with your google account. I will be using spring for the server.
+As I learn ReactJS, I am going to be working on this web app. My plans are to make it an all-in-one productivity app that integrates with your google account. I will be using spring for the server.
 
 # Directions
 
-## Prereqs
+## Pre-requisites
 
 -   Node
 -   npm
