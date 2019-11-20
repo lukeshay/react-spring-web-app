@@ -26,8 +26,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'com.google.code.gson:gson'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     implementation 'org.springframework.boot:spring-boot-starter-logging'
+
+    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'junit', module: 'junit'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 
 
 //    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
