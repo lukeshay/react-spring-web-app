@@ -1,6 +1,6 @@
 #!/bin/bash
-pm2 stop start
-pm2 delete start
+pm2 stop web-app
+pm2 delete web-app
 yarn
 yarn build
-pm2 serve dist
+pm2 serve dist --name web-app -- -p 80
