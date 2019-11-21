@@ -16,6 +16,7 @@ public class ToDo {
 	private String userId;
 	private String text;
 	private boolean completed;
+	private String dueDate;
 
 	/**
 	 * Instantiates a new Todo.
@@ -30,6 +31,23 @@ public class ToDo {
 		this.completed = completed;
 		this.createdDate = new Date().toString();
 		this.modifiedDate = new Date().toString();
+	}
+
+	/**
+	 * Instantiates a new Todo.
+	 *
+	 * @param userId    the user id
+	 * @param text      the text
+	 * @param completed the completed
+	 * @param dueDate   the due date
+	 */
+	public ToDo(String userId, String text, boolean completed, String dueDate) {
+		this.userId = userId;
+		this.text = text;
+		this.completed = completed;
+		this.createdDate = new Date().toString();
+		this.modifiedDate = new Date().toString();
+		this.dueDate = dueDate;
 	}
 
 	/**
@@ -151,6 +169,24 @@ public class ToDo {
 	 */
 	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	/**
+	 * Gets due date.
+	 *
+	 * @return the due date
+	 */
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	/**
+	 * Sets due date.
+	 *
+	 * @param dueDate the due date
+	 */
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	@Override
