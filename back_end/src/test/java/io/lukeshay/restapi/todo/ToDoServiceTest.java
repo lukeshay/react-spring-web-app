@@ -1,11 +1,13 @@
 package io.lukeshay.restapi.todo;
 
-import com.sun.tools.javac.comp.Todo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -21,11 +23,29 @@ class ToDoServiceTest {
 	void addToDoTest() {
 		ToDo addedToDo = new ToDo("id", "text", false);
 		toDoService.saveTodo(addedToDo);
+		ToDo getToDo = toDoService.getTodo(addedToDo.getId());
 
-		System.out.println("SOUT " + toDoService.getAllTodos().toString());
+		Assertions.assertAll(
+				() -> Assertions.assertEquals(addedToDo.getText(), getToDo.getText(), "The text does not match."),
+				() -> Assertions.assertEquals(addedToDo.getUserId(), getToDo.getUserId(), "The user id does not match."),
+				() -> Assertions.assertFalse(getToDo.isCompleted(), "Marked as completed but should not be"));
+	}
 
-		ToDo addedToDo = toDoService.getTodo();
+	@Test
+	void getAllToDosTest() {
+		List<ToDo> listOfToDos = new ArrayList<>();
 
-		Assertions.assertAll(() -> Assertions.assertEquals());
+		for (int i = 0; i < 10; i++) {
+			ToDo addedToDo = new ToDo(Integer.toString(i), "text" + i, i % 2 == 0);
+
+			toDoService.saveTodo(addedToDo);
+			listOfToDos.add(addedToDo);
+		}
+
+		List<ToDo> getTodos = toDoService.getAllTodos();
+
+		listOfToDos.forEach(toDo -> {
+			Assertions.assertTrue(getTodos.stream().anyMatch(e -> e.getId().equals(toDo.getId())), toDo.getId() +  " was not found in the database.");
+		});
 	}
 }
