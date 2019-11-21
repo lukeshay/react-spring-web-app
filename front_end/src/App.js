@@ -10,12 +10,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { version } from "../package.json";
 
 function App() {
-    const [load, setLoad] = useState("false");
+    const [load, setLoad] = useState(process.env.NODE_ENV === "development");
 
     function handleClick() {
         const enteredName = prompt("Please enter the super secret password");
 
-        setLoad(enteredName === "choochie");
+        setLoad(enteredName === process.env.LOAD_PASSWORD);
     }
 
     if (load === true) {

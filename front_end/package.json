@@ -12,7 +12,9 @@
         "react-toastify": "^5.4.0"
     },
     "scripts": {
+        "prestart": "yarn",
         "start": "webpack-dev-server --config webpack.config.js --env.env=dev",
+        "prebuild": "rm -rf dist",
         "build": "webpack --config webpack.config.js --env.env=prod",
         "build:analyze": "npm run build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer"
     },
