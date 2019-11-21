@@ -157,4 +157,20 @@ public class ToDo {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!obj.getClass().equals(this.getClass())) {
+			return false;
+		}
+		else {
+			ToDo toDo = (ToDo) obj;
+			return id.equals(toDo.getId())
+					&& createdDate.equals(toDo.getCreatedDate())
+					&& modifiedDate.equals(toDo.getModifiedDate())
+					&& userId.equals(toDo.getUserId())
+					&& text.equals(toDo.getText())
+					&& completed == toDo.isCompleted();
+		}
+	}
 }
