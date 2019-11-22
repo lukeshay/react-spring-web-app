@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id "de.lukaskoerfer.gradle.delombok" version "0.2"
 }
 
 group = 'io.lukeshay'
@@ -36,6 +37,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
 //    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 //    implementation 'org.springframework.boot:spring-boot-starter-security'

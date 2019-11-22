@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 /**
@@ -77,14 +78,14 @@ public class ToDoService {
 	public ToDo updateTodo(String todoId, ToDo updatedToDo) {
 		logger.info(String.format("Updating todo id: %s", todoId));
 		ToDo toUpdate = todoRepository.findById(todoId)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid todoId"));
+				.orElseThrow(() -> new NoSuchElementException("Invalid todoId"));
 
 		toUpdate.update(updatedToDo);
 
 		todoRepository.save(toUpdate);
 
 		return todoRepository.findById(todoId)
-				.orElseThrow(() -> new IllegalArgumentException(String.format("Todo %s is no longer in the database", todoId)));
+				.orElseThrow(() -> new NoSuchElementException(String.format("Todo %s is no longer in the database", todoId)));
 	}
 
 	public String deleteAllTodos() {
