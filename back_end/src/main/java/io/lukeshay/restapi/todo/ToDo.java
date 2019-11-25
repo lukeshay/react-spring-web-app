@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /**
@@ -86,7 +87,8 @@ public class ToDo {
 					&& modifiedDate.equals(toDo.modifiedDate)
 					&& userId.equals(toDo.userId)
 					&& text.equals(toDo.text)
-					&& completed == toDo.completed;
+					&& completed == toDo.completed
+          && dueDate.equals(toDo.dueDate);
 		}
 	}
 }

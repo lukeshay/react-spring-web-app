@@ -11,7 +11,7 @@ import java.util.List;
  * The type Todo controller.
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://lukeshay.com")
 @RequestMapping("/todo")
 public class ToDoController {
 	private ToDoService toDoService;
