@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ToDoList from "./ToDoList";
+import ToDoList from "./ToDoList.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import toDoStore from "../../stores/toDoStore";
 import { loadToDos, saveToDo, deleteToDo } from "../../actions/toDoActions";

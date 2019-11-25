@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import NavigationBar from "./components/navigation/NavigationBar.js";
-import HomePage from "./components/homepage/HomePage";
-import NotFoundPage from "./components/NotFoundPage";
-import ToDoPage from "./components/todopage/ToDoPage";
+import NavigationBar from "./components/navigation/NavigationBar.jsx";
+import HomePage from "./components/homepage/HomePage.jsx";
+import NotFoundPage from "./components/NotFoundPage.jsx";
+import ToDoPage from "./components/todopage/ToDoPage.jsx";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
