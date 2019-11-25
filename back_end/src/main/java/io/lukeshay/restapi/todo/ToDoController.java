@@ -32,7 +32,7 @@ public class ToDoController {
 	 * @param userId the user id
 	 * @return the all to-dos
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/{userId}")
+	@GetMapping("/{userId}")
 	public List<ToDo> getAllTodos(@PathVariable  String userId) {
 		return toDoService.getAllTodosFromUser(userId);
 	}
@@ -43,7 +43,7 @@ public class ToDoController {
 	 * @param newToDo the new to-do
 	 * @return the to-do
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "")
+  @PostMapping("")
 	public ToDo addTodo(@RequestBody ToDo newToDo) {
 		return toDoService.saveTodo(newToDo);
 	}
@@ -54,7 +54,7 @@ public class ToDoController {
 	 * @param toDoId the to-do id
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/{toDoId}")
+	@PostMapping("/{toDoId}")
 	public ToDo getTodo(@PathVariable String toDoId) {
 		return toDoService.getTodo(toDoId);
 	}
@@ -65,7 +65,7 @@ public class ToDoController {
 	 * @param toDoId the to-do id
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{toDoId}")
+	@DeleteMapping("/{toDoId}")
 	public ToDo deleteTodo(@PathVariable String toDoId) {
 		return toDoService.deleteTodo(toDoId);
 	}
@@ -75,7 +75,7 @@ public class ToDoController {
 	 *
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.DELETE, value = "/all")
+	@DeleteMapping("/all")
 	public String deleteAllTodos() {
 		return toDoService.deleteAllTodos();
 	}
@@ -85,7 +85,7 @@ public class ToDoController {
 	 *
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/all")
+	@GetMapping("/all")
 	public List<ToDo> getAllTodos() {
 		return toDoService.getAllTodos();
 	}
@@ -97,7 +97,7 @@ public class ToDoController {
 	 * @param updatedToDo the updated to-do
 	 * @return the to-do
 	 */
-	@RequestMapping(method = RequestMethod.PUT, value = "/{toDoId}")
+	@PutMapping("/{toDoId}")
 	public ToDo updateTodo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
 		return toDoService.updateTodo(toDoId, updatedToDo);
 	}
