@@ -11,6 +11,7 @@ import java.util.List;
  * The type Todo controller.
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/todo")
 public class ToDoController {
 	private ToDoService toDoService;
