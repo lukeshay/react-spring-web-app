@@ -24,3 +24,5 @@ const NavigationBar = () => (
         </NavLink>
     </nav>
 );
+
+export default NavigationBar;

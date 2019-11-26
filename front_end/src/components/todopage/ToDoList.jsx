@@ -12,6 +12,7 @@ function ToDoList(props) {
                 <tr className="table-secondary">
                     <th>Completed</th>
                     <th>Text</th>
+                    <th>Due</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -28,6 +29,9 @@ function ToDoList(props) {
                         </td>
                         <td style={toDo.completed ? completedStyle : {}}>
                             {toDo.text}
+                        </td>
+                        <td>
+                              {toDo.dueDate}
                         </td>
                         <td>
                             <button
