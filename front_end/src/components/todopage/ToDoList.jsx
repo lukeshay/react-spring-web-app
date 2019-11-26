@@ -1,5 +1,5 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 
 function ToDoList(props) {
     const completedStyle = {
@@ -30,9 +30,7 @@ function ToDoList(props) {
                         <td style={toDo.completed ? completedStyle : {}}>
                             {toDo.text}
                         </td>
-                        <td>
-                              {toDo.dueDate}
-                        </td>
+                        <td>{toDo.dueDate}</td>
                         <td>
                             <button
                                 className="btn btn btn-danger"
