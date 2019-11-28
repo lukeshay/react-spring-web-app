@@ -41,7 +41,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
 //    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
 //    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 //    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 //    testImplementation('org.springframework.boot:spring-boot-starter-test') {
