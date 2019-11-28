@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
@@ -17,8 +19,13 @@ import java.util.Date;
 public class ToDo {
 	@Id
 	private String id;
+
+	@CreatedDate
 	private String createdDate;
+
+	@LastModifiedDate
 	private String modifiedDate;
+
 	private String userId;
 	private String text;
 	private boolean completed;
@@ -35,8 +42,6 @@ public class ToDo {
 		this.userId = userId;
 		this.text = text;
 		this.completed = completed;
-		this.createdDate = new Date().toString();
-		this.modifiedDate = new Date().toString();
 		this.dueDate = "";
 	}
 
@@ -52,8 +57,6 @@ public class ToDo {
 		this.userId = userId;
 		this.text = text;
 		this.completed = completed;
-		this.createdDate = new Date().toString();
-		this.modifiedDate = new Date().toString();
 		this.dueDate = dueDate;
 	}
 
@@ -62,7 +65,7 @@ public class ToDo {
 	 *
 	 * @param updatedToDo the updated todo
 	 */
-	public void update(ToDo updatedToDo) {
+	void update(ToDo updatedToDo) {
 		if (!id.equals(updatedToDo.id)) return;
 		if (updatedToDo.text != null) this.text = updatedToDo.text;
 		this.completed = updatedToDo.completed;

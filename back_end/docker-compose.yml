@@ -4,7 +4,7 @@ services:
   restapi:
     build: .
     restart: always
-    container_name: restapi
+    container_name: rest-api
     ports:
       - 5000:8080
     working_dir: /opt/app
@@ -13,7 +13,7 @@ services:
 
   mongo:
     image: mongo
-    container_name: restapi-mongo
+    container_name: rest-api-mongo
     volumes:
       - $HOME/data/restapi-mongo-data:/data/db
       - $HOME/data/restapi-mongo-bkp:/data/bkp
