@@ -1,6 +1,6 @@
 {
     "name": "front_end",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "private": true,
     "homepage": "http://lukeshay.com",
     "dependencies": {
@@ -13,7 +13,7 @@
     },
     "scripts": {
         "prestart": "yarn",
-        "start": "webpack-dev-server --config webpack.config.js --env.env=dev",
+        "start": "webpack-dev-server --open --config webpack.config.js --env.env=dev",
         "prebuild": "rm -rf dist && yarn",
         "build": "webpack --config webpack.config.js --env.env=prod",
         "build:analyze": "npm run build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
