@@ -13,6 +13,9 @@ const TextInput = props => {
                 value={props.value}
                 onChange={props.handleChange}
             />
+            <small id={props.id + "Help"} class="form-text text-danger">
+                {props.helpText}
+            </small>
         </div>
     );
 };
@@ -21,7 +24,12 @@ TextInput.propTypes = {
     label: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    helpText: PropTypes.string
+};
+
+TextInput.defaultProps = {
+    helpText: ""
 };
 
 export default TextInput;
