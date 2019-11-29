@@ -3,6 +3,7 @@ import NavigationBar from "./components/navigation/NavigationBar.jsx";
 import HomePage from "./components/homepage/HomePage.jsx";
 import NotFoundPage from "./components/NotFoundPage.jsx";
 import ToDoPage from "./components/todopage/ToDoPage.jsx";
+import SignUpPage from "./components/profile/signuppage/SignUpPage.jsx"
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,6 +28,7 @@ function App() {
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/index" component={HomePage} />
                     <Route path="/todo" component={ToDoPage} />
+                    <Route path="/signup" component={SignUpPage} />
                     <Route component={NotFoundPage} />
                 </Switch>
                 Version: {version}

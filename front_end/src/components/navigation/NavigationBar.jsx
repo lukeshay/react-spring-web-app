@@ -3,26 +3,62 @@ import { NavLink } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavigationBar = () => (
-    <nav className="navbar navbar-light bg-dark">
-        <NavLink exact to="/" className="nav-item text-white">
-            Home
-        </NavLink>
-        <NavLink to="/items" className="nav-item text-white">
-            Items
-        </NavLink>
-        <NavLink to="/todo" className="nav-item text-white">
-            ToDo
-        </NavLink>
-        <NavLink to="/calendar" className="nav-item text-white">
-            Calendar
-        </NavLink>
-        <NavLink to="/email" className="nav-item text-white">
-            Email
-        </NavLink>
-        <NavLink to="/account" className="nav-item text-white">
-            Account
-        </NavLink>
-    </nav>
+    <div style={{ paddingBottom: "15px" }}>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light  sticky-top shadow rounded fixed-top">
+            <ul className="navbar-nav mr-auto">
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink exact to="/" className="nav-link">
+                        Home
+                    </NavLink>
+                </li>
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink to="/items" className="nav-link">
+                        Items
+                    </NavLink>
+                </li>
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink to="/todo" className="nav-link">
+                        ToDo
+                    </NavLink>
+                </li>
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink to="/calendar" className="nav-link">
+                        Calendar
+                    </NavLink>
+                </li>
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink to="/email" className="nav-link">
+                        Email
+                    </NavLink>
+                </li>
+            </ul>
+            <ul className="navbar-nav">
+                <li
+                    className="nav-item"
+                    style={{ marginRight: "15px", marginLeft: "15px" }}
+                >
+                    <NavLink to="/signup" className="nav-link">
+                        Account
+                    </NavLink>
+                </li>
+            </ul>
+        </nav>
+    </div>
 );
 
 export default NavigationBar;

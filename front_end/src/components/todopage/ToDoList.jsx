@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import RedButton from "../common/buttons/RedButton.jsx";
 
 function ToDoList(props) {
     const completedStyle = {
@@ -32,13 +33,10 @@ function ToDoList(props) {
                         </td>
                         <td>{toDo.dueDate}</td>
                         <td>
-                            <button
-                                className="btn btn btn-danger"
-                                name={toDo.id}
-                                onClick={props.onDeleteButtonClick}
-                            >
-                                Delete
-                            </button>
+                            <RedButton
+                                text="Delete"
+                                handleClick={props.onDeleteButtonClick}
+                            />
                         </td>
                     </tr>
                 ))}
