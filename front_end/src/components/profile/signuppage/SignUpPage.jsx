@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
 import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
@@ -72,11 +73,12 @@ const SignUpPage = () => {
             <div className="col-md-6">
                 <div className="card">
                     <header className="card-header">
-                        <BlueOutlineButton
-                            bootstrap="float-right mt-1"
-                            handleClick={handleLogin}
-                            text={"Log in"}
-                        />
+                        <Link
+                            to="/login"
+                            className="btn btn-outline-primary float-right mt-1"
+                        >
+                            Log in
+                        </Link>
                         <h4 className="card-title mt-2">Sign up</h4>
                     </header>
                     <article className="card-body">
