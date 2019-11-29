@@ -52,8 +52,8 @@ const NavigationBar = () => (
                     className="nav-item"
                     style={{ marginRight: "15px", marginLeft: "15px" }}
                 >
-                    <NavLink to="/signup" className="nav-link">
-                        Account
+                    <NavLink to="/profile" className="nav-link">
+                        Profile
                     </NavLink>
                 </li>
             </ul>

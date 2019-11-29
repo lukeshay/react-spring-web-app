@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
 import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
@@ -7,7 +6,7 @@ import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const SignUpPage = () => {
+function SignUpForm(props) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -66,19 +65,16 @@ const SignUpPage = () => {
 
     async function handleSubmit() {}
 
-    async function handleLogin() {}
-
     return (
         <div className="row justify-content-center">
             <div className="col-md-6">
                 <div className="card">
                     <header className="card-header">
-                        <Link
-                            to="/login"
-                            className="btn btn-outline-primary float-right mt-1"
-                        >
-                            Log in
-                        </Link>
+                        <BlueOutlineButton
+                            text="Log in"
+                            bootstrap="float-right mt-1"
+                            handleClick={props.handleLogInClick}
+                        />
                         <h4 className="card-title mt-2">Sign up</h4>
                     </header>
                     <article className="card-body">
@@ -112,7 +108,7 @@ const SignUpPage = () => {
                         </form>
                         <BlueButton
                             bootstrap="btn-block"
-                            text="Submit"
+                            text="Create Account"
                             handleClick={() => {}}
                         />
                     </article>
@@ -120,6 +116,6 @@ const SignUpPage = () => {
             </div>
         </div>
     );
-};
+}
 
-export default SignUpPage;
+export default SignUpForm;
