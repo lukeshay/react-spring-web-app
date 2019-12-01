@@ -71,7 +71,6 @@ public class ToDo {
 		if (!id.equals(updatedToDo.id)) return;
 		if (updatedToDo.text != null) this.text = updatedToDo.text;
 		this.completed = updatedToDo.completed;
-		this.modifiedDate = new Date().toString();
 	}
 
 	@Override
@@ -87,8 +86,8 @@ public class ToDo {
 		else {
 			ToDo toDo = (ToDo) obj;
 			return id.equals(toDo.id)
-					&& createdDate.equals(toDo.createdDate)
-					&& modifiedDate.equals(toDo.modifiedDate)
+//					&& createdDate.equals(toDo.createdDate)
+//					&& modifiedDate.equals(toDo.modifiedDate)
 					&& userId.equals(toDo.userId)
 					&& text.equals(toDo.text)
 					&& completed == toDo.completed
