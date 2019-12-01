@@ -1,6 +1,6 @@
 {
     "name": "front_end",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "private": true,
     "homepage": "http://lukeshay.com",
     "dependencies": {
@@ -17,7 +17,7 @@
         "prebuild": "rm -rf dist && yarn",
         "build": "webpack --config webpack.config.js --env.env=prod",
         "build:analyze": "npm run build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
-        "deploy": "pm2 serve dist --name web-app -- 80"
+        "deploy": "pm2 serve dist --name web-app -- 3000"
     },
     "eslintConfig": {
         "extends": "react-app"

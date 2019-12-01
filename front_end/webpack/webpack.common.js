@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { DefinePlugin } = require("webpack");
 
 module.exports = {
     entry: {
@@ -35,6 +36,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             filename: "./index.html"
+        }),
+        new DefinePlugin({
+            "process.env": {
+                REST_API_URL: "http://restapi.lukeshay.com/"
+            }
         })
     ]
 };
