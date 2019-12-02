@@ -34,7 +34,7 @@ public class ToDoController {
 	 */
 	@GetMapping("/{userId}")
 	public List<ToDo> getAllTodos(@PathVariable  String userId) {
-		return toDoService.getAllTodosFromUser(userId);
+		return toDoService.getAllToDosFromUser(userId);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ToDoController {
 	 */
   @PostMapping("")
 	public ToDo addTodo(@RequestBody ToDo newToDo) {
-		return toDoService.saveTodo(newToDo);
+		return toDoService.saveToDo(newToDo);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class ToDoController {
 	 */
 	@DeleteMapping("/{toDoId}")
 	public ToDo deleteTodo(@PathVariable String toDoId) {
-		return toDoService.deleteTodo(toDoId);
+		return toDoService.deleteToDo(toDoId);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class ToDoController {
 	 */
 	@DeleteMapping("/all")
 	public String deleteAllTodos() {
-		return toDoService.deleteAllTodos();
+		return toDoService.deleteAllToDos();
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class ToDoController {
 	 */
 	@GetMapping("/all")
 	public List<ToDo> getAllTodos() {
-		return toDoService.getAllTodos();
+		return toDoService.getAllToDos();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class ToDoController {
 	 */
 	@PutMapping("/{toDoId}")
 	public ToDo updateTodo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
-		return toDoService.updateTodo(toDoId, updatedToDo);
+		return toDoService.updateToDo(toDoId, updatedToDo);
 	}
 
 	@ExceptionHandler(RuntimeException.class)

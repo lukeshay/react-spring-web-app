@@ -7,9 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
+import org.springframework.data.domain.Persistable;
 
 /**
  * The type Todo.
@@ -17,8 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@Document
-public class ToDo {
+public class ToDo implements Persistable<String> {
 	@Id
 	private String id;
 
@@ -32,9 +29,10 @@ public class ToDo {
 	private String text;
 	private boolean completed;
 	private String dueDate;
+	private boolean persistable;
 
 	/**
-	 * Instantiates a new Todo.
+	 * Instantiates a new To-do.
 	 *
 	 * @param userId    the user id
 	 * @param text      the text
@@ -48,29 +46,15 @@ public class ToDo {
 	}
 
 	/**
-	 * Instantiates a new Todo.
-	 *
-	 * @param userId    the user id
-	 * @param text      the text
-	 * @param completed the completed
-	 * @param dueDate   the due date
-	 */
-	public ToDo(String userId, String text, boolean completed, String dueDate) {
-		this.userId = userId;
-		this.text = text;
-		this.completed = completed;
-		this.dueDate = dueDate;
-	}
-
-	/**
 	 * Update.
 	 *
-	 * @param updatedToDo the updated todo
+	 * @param updatedToDo the updated to-do
 	 */
 	void update(ToDo updatedToDo) {
 		if (!id.equals(updatedToDo.id)) return;
 		if (updatedToDo.text != null) this.text = updatedToDo.text;
 		this.completed = updatedToDo.completed;
+		this.persistable = true;
 	}
 
 	@Override
@@ -86,12 +70,22 @@ public class ToDo {
 		else {
 			ToDo toDo = (ToDo) obj;
 			return id.equals(toDo.id)
-//					&& createdDate.equals(toDo.createdDate)
-//					&& modifiedDate.equals(toDo.modifiedDate)
+					&& createdDate.equals(toDo.createdDate)
+					&& modifiedDate.equals(toDo.modifiedDate)
 					&& userId.equals(toDo.userId)
 					&& text.equals(toDo.text)
 					&& completed == toDo.completed
           && dueDate.equals(toDo.dueDate);
 		}
+	}
+
+	/**
+	 * Returns if the {@code Persistable} is new or was persisted already.
+	 *
+	 * @return if {@literal true} the object is new.
+	 */
+	@Override
+	public boolean isNew() {
+		return !persistable;
 	}
 }

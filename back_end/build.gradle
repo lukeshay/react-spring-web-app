@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+    // Spring boot dependencies
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
@@ -29,6 +30,7 @@ dependencies {
     implementation 'com.google.code.gson:gson'
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
+    // Test dependencies
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'junit', module: 'junit'
@@ -37,6 +39,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 
+    // Lombok dependencies
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
@@ -47,7 +50,6 @@ dependencies {
 //    testImplementation('org.springframework.boot:spring-boot-starter-test') {
 //        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 //    }
-//    testImplementation 'io.projectreactor:reactor-test'
 //    testImplementation 'org.springframework.security:spring-security-test'
 }
 

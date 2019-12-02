@@ -12,7 +12,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User saveUser(User user) {
+	User saveUser(User user) {
 		userRepository.save(user);
 
 		return userRepository.findByUserName(user.getUserName());

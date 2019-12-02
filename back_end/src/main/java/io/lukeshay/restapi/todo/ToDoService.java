@@ -2,30 +2,40 @@ package io.lukeshay.restapi.todo;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 /**
- * The type Todo service.
+ * The type To-do service.
  */
 @Service
 public class ToDoService {
 	private static Logger logger = Logger.getLogger(ToDoService.class.getName());
-	private ToDoRepository todoRepository;
+	private ToDoRepository toDoRepository;
 
 	/**
-	 * Instantiates a new Todo service.
+	 * Instantiates a new To-do service.
 	 *
-	 * @param todoRepository the todo repository
+	 * @param toDoRepository the to-do repository
 	 */
 	@Autowired
-	public ToDoService(ToDoRepository todoRepository) {
-		this.todoRepository = todoRepository;
+	public ToDoService(ToDoRepository toDoRepository) {
+		this.toDoRepository = toDoRepository;
+	}
+
+	private static String toDoDeletedResponse(String toDoId, boolean deleted) {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("toDoId", toDoId);
+		map.put("deleted", Boolean.toString(deleted));
+
+		return new Gson().toJson(map);
 	}
 
 	/**
@@ -34,81 +44,91 @@ public class ToDoService {
 	 * @param userId the user id
 	 * @return the all todos from user
 	 */
-	public List<ToDo> getAllTodosFromUser(String userId) {
+	public List<ToDo> getAllToDosFromUser(String userId) {
 		logger.info(String.format("Getting user %s todos.", userId));
-		return todoRepository.findAllByUserId(userId);
+		return toDoRepository.findAllByUserId(userId);
 	}
 
 	/**
-	 * Save todo todo.
+	 * Save to-do newToDo.
 	 *
-	 * @param newToDo the new todo
-	 * @return the todo
+	 * @param newToDo the new to-do
+	 * @return the to-do
 	 */
-	public ToDo saveTodo(ToDo newToDo) {
+	public ToDo saveToDo(ToDo newToDo) {
 		logger.info(String.format("Saving todo text: %s", newToDo.getText()));
 		if (newToDo.getId() != null) {
 			throw new IllegalArgumentException("Todo should not have an id.");
 		}
 
-		todoRepository.save(newToDo);
-		return todoRepository.findById(newToDo.getId()).orElseThrow(() -> new IllegalArgumentException("Todo was not saved"));
+		toDoRepository.save(newToDo);
+		return toDoRepository.findById(newToDo.getId())
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						String.format("Could not find todo after save id: %s", newToDo.getId())
+				));
 	}
 
 	/**
-	 * Delete todo string.
+	 * Delete to-do toDoId.
 	 *
-	 * @param todoId the todo id
+	 * @param toDoId the to-do id
 	 * @return the string
 	 */
-	public ToDo deleteTodo(String todoId) {
-		logger.info(String.format("Deleting todo id: %s", todoId));
-		ToDo deletedToDo = todoRepository.findById(todoId).get();
-		todoRepository.deleteById(todoId);
+	public ToDo deleteToDo(String toDoId) {
+		logger.info(String.format("Deleting todo id: %s", toDoId));
+		ToDo deletedToDo = toDoRepository.findById(toDoId)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						String.format("Could not find todo id: %s", toDoId)
+				));
+
+		toDoRepository.deleteById(toDoId);
 		return deletedToDo;
 	}
 
 	/**
-	 * Update todo todo.
+	 * Update to-do to-do.
 	 *
-	 * @param todoId      the todo id
-	 * @param updatedToDo the updated todo
-	 * @return the todo
+	 * @param toDoId      the to-do id
+	 * @param updatedToDo the updated to-do
+	 * @return the to-do
 	 */
-	public ToDo updateTodo(String todoId, ToDo updatedToDo) {
-		logger.info(String.format("Updating todo id: %s", todoId));
-		ToDo toUpdate = todoRepository.findById(todoId)
-				.orElseThrow(() -> new NoSuchElementException("Invalid todoId"));
+	public ToDo updateToDo(String toDoId, ToDo updatedToDo) {
+		logger.info(String.format("Updating todo id: %s", toDoId));
+		ToDo toUpdate = toDoRepository.findById(toDoId)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						String.format("Could not find todo id: %s", toDoId)
+				));
 
 		toUpdate.update(updatedToDo);
 
-		todoRepository.save(toUpdate);
+		toDoRepository.save(toUpdate);
 
-		return todoRepository.findById(todoId)
-				.orElseThrow(() -> new NoSuchElementException(String.format("Todo %s is no longer in the database", todoId)));
+		return toDoRepository.findById(toDoId)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						String.format("Could not find todo after save id: %s", toDoId)
+				));
 	}
 
-	public String deleteAllTodos() {
+	public String deleteAllToDos() {
 		logger.warning("DELETING ALL TODOS");
-		todoRepository.findAll().forEach(toDo -> todoRepository.delete(toDo));
+		toDoRepository.findAll().forEach(toDo -> toDoRepository.delete(toDo));
 
-		return todoDeletedResponse("all", todoRepository.findAll().size() == 0);
+		return toDoDeletedResponse("all", toDoRepository.findAll().size() == 0);
 	}
 
-	private static String todoDeletedResponse(String todoId, boolean deleted) {
-		Map<String, String> map = new HashMap<>();
-
-		map.put("todoId", todoId);
-		map.put("deleted", Boolean.toString(deleted));
-
-		return new Gson().toJson(map);
-	}
-
-	public List<ToDo> getAllTodos() {
-		return todoRepository.findAll();
+	public List<ToDo> getAllToDos() {
+		return toDoRepository.findAll();
 	}
 
 	public ToDo getTodo(String toDoId) {
-		return todoRepository.findById(toDoId).get();
+		return toDoRepository.findById(toDoId)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						String.format("Could not find todo id: %s", toDoId)
+				));
 	}
 }

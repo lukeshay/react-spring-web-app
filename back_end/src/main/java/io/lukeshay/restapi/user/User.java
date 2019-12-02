@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.domain.Persistable;
 
 /**
  * The type User.
@@ -16,10 +16,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
-public class User {
+public class User implements Persistable<String> {
 	@Id
 	private String userId;
+
+	@CreatedDate
+	private String createdDate;
+
+	@LastModifiedDate
+	private String modifiedDate;
+
 	private String firstName;
 	private String lastName;
 	private String userName;
@@ -27,10 +33,25 @@ public class User {
 	private String phoneNumber;
 	private String state;
 	private String country;
+	private boolean persistable;
 
-	@CreatedDate
-	private String createdDate;
+	/**
+	 * Returns the id of the entity.
+	 *
+	 * @return the id. Can be {@literal null}.
+	 */
+	@Override
+	public String getId() {
+		return userId;
+	}
 
-	@LastModifiedDate
-	private String modifiedDate;
+	/**
+	 * Returns if the {@code Persistable} is new or was persisted already.
+	 *
+	 * @return if {@literal true} the object is new.
+	 */
+	@Override
+	public boolean isNew() {
+		return !persistable;
+	}
 }
