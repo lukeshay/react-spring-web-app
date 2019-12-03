@@ -1,32 +1,26 @@
 import React, { useState, Suspense } from "react";
+import { lazy } from "@loadable/component";
 
-const SignUpForm = React.lazy(() => import("./signupform/SignUpForm.jsx"));
-const LogInForm = React.lazy(() => import("./loginform/LogInForm.jsx"));
+const SignUpForm = lazy(() => import("./signupform/SignUpForm.jsx"));
+const LogInForm = lazy(() => import("./loginform/LogInForm.jsx"));
 
-function ProfilePage() {
+const ProfilePage = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [createAccount, setCreateAccount] = useState(true);
 
-    function handleLoginClick() {
+    const handleLoginClick = async () => {
         setCreateAccount(false);
-    }
+    };
 
-    function handleSignUpClick() {
+    const handleSignUpClick = async () => {
         setCreateAccount(true);
-    }
+    };
 
     if (!loggedIn && createAccount)
-        return (
-            <Suspense fallback={<div>Loading...</div>}>
-                <SignUpForm handleLogInClick={handleLoginClick} />
-            </Suspense>
-        );
+        return <SignUpForm handleLogInClick={handleLoginClick} />;
     else if (!loggedIn && !createAccount)
-        return (
-            <Suspense fallback={<div>Loading...</div>}>
-                <LogInForm handleLogInClick={handleLoginClick} />
-            </Suspense>
-        );
-}
+        return <LogInForm handleSignUpClick={handleSignUpClick} />;
+    else if (loggedIn) return <h1>Coming soon!</h1>;
+};
 
 export default ProfilePage;

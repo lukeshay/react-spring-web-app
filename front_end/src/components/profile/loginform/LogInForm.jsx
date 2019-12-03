@@ -5,13 +5,13 @@ import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function LogInForm(props) {
+const LogInForm = props => {
     const [email, setEmail] = useState("");
     const [emailMessage, setEmailMessage] = useState("");
     const [password, setPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
 
-    const handleChange = event => {
+    const handleChange = async event => {
         const { id, value } = event.target;
 
         if (id === "firstName") {
@@ -39,7 +39,7 @@ function LogInForm(props) {
         }
     }, [email]);
 
-    async function handleSubmit() {}
+    const handleSubmit = async () => {};
 
     return (
         <div className="row justify-content-center">
@@ -80,6 +80,6 @@ function LogInForm(props) {
             </div>
         </div>
     );
-}
+};
 
 export default LogInForm;

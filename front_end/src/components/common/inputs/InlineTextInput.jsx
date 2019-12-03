@@ -16,7 +16,7 @@ function InlineTextInput(props) {
                     value={props.value}
                     onChange={props.handleChange}
                 />
-                <small id={props.id + "Help"} class="form-text text-danger">
+                <small id={props.id + "Help"} className="form-text text-danger">
                     {props.helpText}
                 </small>
             </div>

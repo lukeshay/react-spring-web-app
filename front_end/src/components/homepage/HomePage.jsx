@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { version } from "../../../package.json";
 
 const HomePage = () => {
     return (
@@ -11,6 +12,7 @@ const HomePage = () => {
                 <li>Note taking</li>
                 <li>Google Calendar integration</li>
                 <li>Gmail integration</li>
+                <li>Version: {version}</li>
             </ul>
         </div>
     );

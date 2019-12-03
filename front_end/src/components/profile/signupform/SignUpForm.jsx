@@ -6,7 +6,7 @@ import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function SignUpForm(props) {
+const SignUpForm = props => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ function SignUpForm(props) {
     const [password, setPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
 
-    const handleChange = event => {
+    const handleChange = async event => {
         const { id, value } = event.target;
 
         if (id === "firstName") {
@@ -63,7 +63,7 @@ function SignUpForm(props) {
         }
     }, [email]);
 
-    async function handleSubmit() {}
+    const handleSubmit = async () => {};
 
     return (
         <div className="row justify-content-center">
@@ -116,6 +116,6 @@ function SignUpForm(props) {
             </div>
         </div>
     );
-}
+};
 
 export default SignUpForm;
