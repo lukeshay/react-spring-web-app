@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import SignUpForm from "./signupform/SignUpForm.jsx";
-import LogInForm from "./loginform/LogInForm.jsx";
+import React, { useState, Suspense } from "react";
+
+const SignUpForm = React.lazy(() => import("./signupform/SignUpForm.jsx"));
+const LogInForm = React.lazy(() => import("./loginform/LogInForm.jsx"));
 
 function ProfilePage() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -15,9 +16,17 @@ function ProfilePage() {
     }
 
     if (!loggedIn && createAccount)
-        return <SignUpForm handleLogInClick={handleLoginClick} />;
+        return (
+            <Suspense fallback={<div>Loading...</div>}>
+                <SignUpForm handleLogInClick={handleLoginClick} />
+            </Suspense>
+        );
     else if (!loggedIn && !createAccount)
-        return <LogInForm handleSignUpClick={handleSignUpClick} />;
+        return (
+            <Suspense fallback={<div>Loading...</div>}>
+                <LogInForm handleLogInClick={handleLoginClick} />
+            </Suspense>
+        );
 }
 
 export default ProfilePage;

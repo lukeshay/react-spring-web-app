@@ -1,5 +1,5 @@
 import { handleResponse, handleError } from "./apiUtils";
-const baseUrl = "http://restapi.lukeshay.com/";
+const baseUrl = "http://restapi.lukeshay.com/todo/";
 
 export function getToDos() {
     return fetch(baseUrl + "all")
