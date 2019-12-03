@@ -14,7 +14,7 @@
     "scripts": {
         "prestart": "yarn",
         "start": "webpack-dev-server --open --config webpack.config.js --env.env=dev",
-        "prebuild": "rm -rf dist && yarn",
+        "prebuild": "yarn",
         "build": "webpack --config webpack.config.js --env.env=prod",
         "build:analyze": "npm run build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
         "deploy": "pm2 serve dist --name web-app -- 3000"
