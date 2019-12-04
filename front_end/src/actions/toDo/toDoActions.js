@@ -1,9 +1,18 @@
-import dispatcher from "../appDispatcher";
-import * as toDoApi from "../rest-api/toDoRestApi";
+import dispatcher from "../../appDispatcher";
+import * as toDoApi from "../../rest-api/toDoRestApi";
 import actionTypes from "./actionTypes";
 
 export async function loadToDos() {
     const toDos = await toDoApi.getToDos();
+
+    dispatcher.dispatch({
+        actionType: actionTypes.LOAD_TODOS,
+        toDos: toDos
+    });
+}
+
+export async function loadUsersToDos(uid) {
+    const toDos = await toDoApi.getUsersToDos(uid);
 
     dispatcher.dispatch({
         actionType: actionTypes.LOAD_TODOS,

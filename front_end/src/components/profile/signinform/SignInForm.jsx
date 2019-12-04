@@ -4,6 +4,7 @@ import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
 import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { auth } from "../../../firebase";
 
 const LogInForm = props => {
     const [email, setEmail] = useState("");
@@ -39,7 +40,9 @@ const LogInForm = props => {
         }
     }, [email]);
 
-    const handleSubmit = async () => {};
+    const handleSubmit = async () => {
+        auth.signInWithEmailAndPassword(email, password);
+    };
 
     return (
         <div className="row justify-content-center">
@@ -51,10 +54,10 @@ const LogInForm = props => {
                             bootstrap="float-right mt-1"
                             handleClick={props.handleSignUpClick}
                         />
-                        <h4 className="card-title mt-2">Log in</h4>
+                        <h4 className="card-title mt-2">Sign in</h4>
                     </header>
                     <article className="card-body">
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <InlineTextInput
                                 label="Email"
                                 id="email"
@@ -72,8 +75,8 @@ const LogInForm = props => {
                         </form>
                         <BlueButton
                             bootstrap="btn-block"
-                            text="Log in"
-                            handleClick={() => {}}
+                            text="Sign in"
+                            handleClick={handleSubmit}
                         />
                     </article>
                 </div>

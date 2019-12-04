@@ -1,12 +1,23 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { lazy } from "@loadable/component";
+import userStore from "../../stores/userStore";
 
 const SignUpForm = lazy(() => import("./signupform/SignUpForm.jsx"));
-const LogInForm = lazy(() => import("./loginform/LogInForm.jsx"));
+const SignInForm = lazy(() => import("./signinform/SignInForm.jsx"));
 
 const ProfilePage = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
     const [createAccount, setCreateAccount] = useState(true);
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        userStore.addChangeListener(onChange);
+        setCurrentUser(userStore.getUser());
+        return () => userStore.removeChangeListener(onChange);
+    }, []);
+
+    const onChange = () => {
+        setCurrentUser(userStore.getUser());
+    };
 
     const handleLoginClick = async () => {
         setCreateAccount(false);
@@ -16,11 +27,11 @@ const ProfilePage = () => {
         setCreateAccount(true);
     };
 
-    if (!loggedIn && createAccount)
+    if (!currentUser.email && createAccount)
         return <SignUpForm handleLogInClick={handleLoginClick} />;
-    else if (!loggedIn && !createAccount)
-        return <LogInForm handleSignUpClick={handleSignUpClick} />;
-    else if (loggedIn) return <h1>Coming soon!</h1>;
+    else if (!currentUser.email && !createAccount)
+        return <SignInForm handleSignUpClick={handleSignUpClick} />;
+    else if (currentUser) return <h1>Coming soon! {currentUser.email}</h1>;
 };
 
 export default ProfilePage;

@@ -5,6 +5,7 @@ import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
 import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { auth } from "../../../firebase";
 
 const SignUpForm = props => {
     const [firstName, setFirstName] = useState("");
@@ -13,6 +14,10 @@ const SignUpForm = props => {
     const [emailMessage, setEmailMessage] = useState("");
     const [password, setPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
+    const [errorCode, setErrorCode] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleChange = async event => {
         const { id, value } = event.target;
@@ -25,6 +30,8 @@ const SignUpForm = props => {
             setEmail(value);
         } else if (id === "password") {
             setPassword(value);
+        } else if (id === "phoneNumber") {
+            setPhoneNumber(value);
         }
     };
 
@@ -63,7 +70,34 @@ const SignUpForm = props => {
         }
     }, [email]);
 
-    const handleSubmit = async () => {};
+    useEffect(() => {
+        const tenDigits = /[0-9]{10}/;
+
+        if (phoneNumber.length === 0) {
+            setPhoneNumberMessage("");
+        } else if (!phoneNumber.match(tenDigits) || phoneNumber.length > 10) {
+            setPhoneNumberMessage("Invalid phone number.");
+        } else {
+            setPhoneNumberMessage("");
+        }
+    }, [phoneNumber]);
+
+    const handleSubmit = async () => {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(user => {
+                if (user) {
+                    user.updateProfile({
+                        firstName,
+                        lastName,
+                        phoneNumber
+                    });
+                }
+            })
+            .catch(error => {
+                setErrorCode(error.code);
+                setErrorMessage(error.message);
+            });
+    };
 
     return (
         <div className="row justify-content-center">
@@ -71,14 +105,14 @@ const SignUpForm = props => {
                 <div className="card">
                     <header className="card-header">
                         <BlueOutlineButton
-                            text="Log in"
+                            text="Sign in"
                             bootstrap="float-right mt-1"
                             handleClick={props.handleLogInClick}
                         />
                         <h4 className="card-title mt-2">Sign up</h4>
                     </header>
                     <article className="card-body">
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <InlineTextInput
                                 label="First Name"
                                 id="firstName"
@@ -98,6 +132,13 @@ const SignUpForm = props => {
                                 handleChange={handleChange}
                                 helpText={emailMessage}
                             />
+                            <InlineTextInput
+                                label="Phone Number"
+                                id="phoneNumber"
+                                value={phoneNumber}
+                                handleChange={handleChange}
+                                helpText={phoneNumberMessage}
+                            />
                             <InlineHiddenInput
                                 label="Password"
                                 id="password"
@@ -109,7 +150,7 @@ const SignUpForm = props => {
                         <BlueButton
                             bootstrap="btn-block"
                             text="Create Account"
-                            handleClick={() => {}}
+                            handleClick={handleSubmit}
                         />
                     </article>
                 </div>

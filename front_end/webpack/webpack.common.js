@@ -36,11 +36,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             filename: "./index.html"
-        }),
-        new DefinePlugin({
-            "process.env": {
-                REST_API_URL: "http://restapi.lukeshay.com/"
-            }
         })
     ]
 };

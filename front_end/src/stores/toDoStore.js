@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import Dispatcher from "../appDispatcher";
-import actionTypes from "../actions/actionTypes";
+import actionTypes from "../actions/toDo/actionTypes";
 
 const CHANGE_EVENT = "change";
 let _toDos = [];

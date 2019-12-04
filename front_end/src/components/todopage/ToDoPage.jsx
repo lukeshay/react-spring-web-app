@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import ToDoList from "./ToDoList.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import toDoStore from "../../stores/toDoStore";
-import { loadToDos, saveToDo, deleteToDo } from "../../actions/toDoActions";
+import userStore from "../../stores/userStore";
+import {
+    loadUsersToDos,
+    saveToDo,
+    deleteToDo
+} from "../../actions/toDo/toDoActions";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function ToDoPage() {
     const [loading, setLoading] = useState(true);
@@ -14,20 +20,24 @@ function ToDoPage() {
         completed: false
     });
     const [key, setKey] = useState(Math.random() * 10000);
+    const [currentUser, setCurrentUser] = useState(userStore.getUser());
 
     useEffect(() => {
-        toDoStore.addChangeListener(onChange);
-        if (toDoStore.getToDos().length === 0) {
-            loadToDos();
-            setLoading(false);
+        toDoStore.addChangeListener(onToDoChange);
+        userStore.addChangeListener(onUserChange);
+
+        if (currentUser.email && toDoStore.getToDos().length === 0) {
+            loadUsersToDos(currentUser.uid);
+        } else if (currentUser.email) {
+            onToDoChange();
         }
 
-        if (toDoStore.getToDos().length !== 0) {
-            onChange();
-            setLoading(false);
-        }
+        setLoading(false);
 
-        return () => toDoStore.removeChangeListener(onChange);
+        return () => {
+            toDoStore.removeChangeListener(onToDoChange);
+            userStore.removeChangeListener(onUserChange);
+        };
     }, []);
 
     useEffect(() => {
@@ -36,14 +46,26 @@ function ToDoPage() {
             toast.success("ToDo saved.");
 
             setNewToDo({
+                userId: currentUser.uid,
                 text: "",
                 completed: false
             });
         }
     }, [adding, newToDo]);
 
-    async function onChange() {
+    async function onToDoChange() {
         setToDos(toDoStore.getToDos());
+        setKey(Math.random() * 10000);
+    }
+
+    async function onUserChange() {
+        setCurrentUser(userStore.getUser());
+
+        if (currentUser.email && toDoStore.getToDos().length === 0) {
+            loadUsersToDos(currentUser.uid);
+            setLoading(false);
+        }
+
         setKey(Math.random() * 10000);
     }
 
@@ -74,6 +96,12 @@ function ToDoPage() {
 
     if (loading) {
         return <h1>Loading...</h1>;
+    } else if (!currentUser || !currentUser.uid) {
+        return (
+            <h1>
+                Please <Link to="profile">Sign In</Link>
+            </h1>
+        );
     } else {
         return (
             <div className="col-lg-12">
