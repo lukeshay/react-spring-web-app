@@ -33,7 +33,7 @@ public class ToDoController {
 	 * @return the all to-dos
 	 */
 	@GetMapping("/{userId}")
-	public List<ToDo> getAllTodos(@PathVariable  String userId) {
+	public List<ToDo> getAllToDos(@PathVariable  String userId) {
 		return toDoService.getAllToDosFromUser(userId);
 	}
 
@@ -44,7 +44,7 @@ public class ToDoController {
 	 * @return the to-do
 	 */
   @PostMapping("")
-	public ToDo addTodo(@RequestBody ToDo newToDo) {
+	public ToDo addToDo(@RequestBody ToDo newToDo) {
 		return toDoService.saveToDo(newToDo);
 	}
 
@@ -55,7 +55,7 @@ public class ToDoController {
 	 * @return the string
 	 */
 	@PostMapping("/{toDoId}")
-	public ToDo getTodo(@PathVariable String toDoId) {
+	public ToDo getToDo(@PathVariable String toDoId) {
 		return toDoService.getTodo(toDoId);
 	}
 
@@ -66,7 +66,7 @@ public class ToDoController {
 	 * @return the string
 	 */
 	@DeleteMapping("/{toDoId}")
-	public ToDo deleteTodo(@PathVariable String toDoId) {
+	public ToDo deleteToDo(@PathVariable String toDoId) {
 		return toDoService.deleteToDo(toDoId);
 	}
 
@@ -76,7 +76,7 @@ public class ToDoController {
 	 * @return the string
 	 */
 	@DeleteMapping("/all")
-	public String deleteAllTodos() {
+	public String deleteAllToDos() {
 		return toDoService.deleteAllToDos();
 	}
 
@@ -86,7 +86,7 @@ public class ToDoController {
 	 * @return the string
 	 */
 	@GetMapping("/all")
-	public List<ToDo> getAllTodos() {
+	public List<ToDo> getAllToDos() {
 		return toDoService.getAllToDos();
 	}
 
@@ -98,7 +98,7 @@ public class ToDoController {
 	 * @return the to-do
 	 */
 	@PutMapping("/{toDoId}")
-	public ToDo updateTodo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
+	public ToDo updateToDo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
 		return toDoService.updateToDo(toDoId, updatedToDo);
 	}
 

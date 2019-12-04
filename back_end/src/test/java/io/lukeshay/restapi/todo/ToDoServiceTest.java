@@ -45,10 +45,10 @@ class ToDoServiceTest {
 			listOfToDos.add(addedToDo);
 		}
 
-		List<ToDo> getTodos = toDoService.getAllToDos();
+		List<ToDo> getToDos = toDoService.getAllToDos();
 
 		listOfToDos.forEach(toDo -> {
-			Assertions.assertTrue(getTodos.stream().anyMatch(e -> e.equals(toDo)), toDo.getId() + " was not found in the database.");
+			Assertions.assertTrue(getToDos.stream().anyMatch(e -> e.equals(toDo)), toDo.getId() + " was not found in the database.");
 		});
 	}
 
