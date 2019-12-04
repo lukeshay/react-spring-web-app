@@ -71,26 +71,6 @@ public class ToDoController {
 	}
 
 	/**
-	 * Delete all to-dos.
-	 *
-	 * @return the string
-	 */
-	@DeleteMapping("/all")
-	public String deleteAllToDos() {
-		return toDoService.deleteAllToDos();
-	}
-
-	/**
-	 * Delete all to-dos.
-	 *
-	 * @return the string
-	 */
-	@GetMapping("/all")
-	public List<ToDo> getAllToDos() {
-		return toDoService.getAllToDos();
-	}
-
-	/**
 	 * Update to-do to-do.
 	 *
 	 * @param toDoId      the to-do id
@@ -102,6 +82,11 @@ public class ToDoController {
 		return toDoService.updateToDo(toDoId, updatedToDo);
 	}
 
+	/**
+	 * Defaults exceptions to internal server error.
+	 * @param ex the exception
+	 * @return internal server error
+	 */
 	@ExceptionHandler(RuntimeException.class)
 	public final ResponseEntity<Exception> handleAllExceptions(RuntimeException ex) {
 		return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
