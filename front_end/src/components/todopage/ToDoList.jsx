@@ -23,7 +23,7 @@ function ToDoList(props) {
                         <td>
                             <input
                                 type="checkbox"
-                                name={toDo.id}
+                                id={toDo.id}
                                 checked={toDo.completed}
                                 onChange={props.onCheckboxChange}
                             />
@@ -35,6 +35,7 @@ function ToDoList(props) {
                         <td>
                             <RedButton
                                 text="Delete"
+                                id={toDo.id}
                                 handleClick={props.onDeleteButtonClick}
                             />
                         </td>

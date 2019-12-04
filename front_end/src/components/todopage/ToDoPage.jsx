@@ -54,7 +54,7 @@ function ToDoPage() {
     }
 
     async function onDeleteButtonClick({ target }) {
-        deleteToDo(target.name);
+        deleteToDo(target.id);
     }
 
     async function onAddClick() {
