@@ -24,14 +24,13 @@ dependencies {
     // Spring boot dependencies
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-//    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'com.google.code.gson:gson'
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
     // Test dependencies
-    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'junit', module: 'junit'
     }
@@ -42,15 +41,6 @@ dependencies {
     // Lombok dependencies
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
-
-//    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-//    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-//        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-//    }
-//    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
