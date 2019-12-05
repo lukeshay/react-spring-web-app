@@ -1,6 +1,6 @@
 name: Back End CI
 
-on: [push]
+on: []
 
 jobs:
   build:
