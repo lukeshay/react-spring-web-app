@@ -1,8 +1,6 @@
 package io.lukeshay.restapi.todo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +31,13 @@ public class ToDoController {
 	 * @return the all to-dos
 	 */
 	@GetMapping("/{userId}")
-	public List<ToDo> getAllToDos(@PathVariable  String userId) {
+	public List<ToDo> getAllToDos(@PathVariable String userId) {
 		return toDoService.getAllToDosFromUser(userId);
+	}
+
+	@GetMapping("/all")
+	public List<ToDo> getEverybodiesToDos() {
+		return toDoService.getAllToDos();
 	}
 
 	/**
@@ -43,7 +46,7 @@ public class ToDoController {
 	 * @param newToDo the new to-do
 	 * @return the to-do
 	 */
-  @PostMapping("")
+	@PostMapping("")
 	public ToDo addToDo(@RequestBody ToDo newToDo) {
 		return toDoService.saveToDo(newToDo);
 	}
@@ -81,15 +84,4 @@ public class ToDoController {
 	public ToDo updateToDo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
 		return toDoService.updateToDo(toDoId, updatedToDo);
 	}
-
-	/**
-	 * Defaults exceptions to internal server error.
-	 * @param ex the exception
-	 * @return internal server error
-	 */
-	@ExceptionHandler(RuntimeException.class)
-	public final ResponseEntity<Exception> handleAllExceptions(RuntimeException ex) {
-		return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 }

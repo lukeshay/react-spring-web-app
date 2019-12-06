@@ -45,7 +45,7 @@ public class ToDoService {
 	 * @return the all todos from user
 	 */
 	public List<ToDo> getAllToDosFromUser(String userId) {
-		logger.info(String.format("Getting user %s todos.", userId));
+		logger.info(String.format("Getting user %s to-dos.", userId));
 		return toDoRepository.findAllByUserId(userId);
 	}
 
@@ -56,7 +56,7 @@ public class ToDoService {
 	 * @return the to-do
 	 */
 	public ToDo saveToDo(ToDo newToDo) {
-		logger.info(String.format("Saving todo text: %s", newToDo.getText()));
+		logger.info(String.format("Saving to-do text: %s", newToDo.getText()));
 		if (newToDo.getId() != null) {
 			throw new IllegalArgumentException("Todo should not have an id.");
 		}
@@ -76,7 +76,7 @@ public class ToDoService {
 	 * @return the string
 	 */
 	public ToDo deleteToDo(String toDoId) {
-		logger.info(String.format("Deleting todo id: %s", toDoId));
+		logger.info(String.format("Deleting to-do id: %s", toDoId));
 		ToDo deletedToDo = toDoRepository.findById(toDoId)
 				.orElseThrow(() -> new ResponseStatusException(
 						HttpStatus.NOT_FOUND,
@@ -95,7 +95,7 @@ public class ToDoService {
 	 * @return the to-do
 	 */
 	public ToDo updateToDo(String toDoId, ToDo updatedToDo) {
-		logger.info(String.format("Updating todo id: %s", toDoId));
+		logger.info(String.format("Updating to-do id: %s", toDoId));
 		ToDo toUpdate = toDoRepository.findById(toDoId)
 				.orElseThrow(() -> new ResponseStatusException(
 						HttpStatus.NOT_FOUND,
@@ -113,14 +113,8 @@ public class ToDoService {
 				));
 	}
 
-	public String deleteAllToDos() {
-		logger.warning("DELETING ALL TODOS");
-		toDoRepository.findAll().forEach(toDo -> toDoRepository.delete(toDo));
-
-		return toDoDeletedResponse("all", toDoRepository.findAll().size() == 0);
-	}
-
 	public List<ToDo> getAllToDos() {
+		logger.info("Getting all to-dos.");
 		return toDoRepository.findAll();
 	}
 

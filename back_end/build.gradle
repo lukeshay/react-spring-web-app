@@ -41,6 +41,10 @@ dependencies {
     // Lombok dependencies
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    // Security dependencies
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.1.RELEASE'
+
 }
 
 test {
