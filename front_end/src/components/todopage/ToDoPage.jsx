@@ -8,7 +8,6 @@ import {
     saveToDo,
     deleteToDo
 } from "../../actions/toDo/toDoActions";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 function ToDoPage() {
@@ -43,7 +42,6 @@ function ToDoPage() {
     useEffect(() => {
         if (!adding && newToDo.text !== "") {
             saveToDo(newToDo);
-            toast.success("ToDo saved.");
 
             setNewToDo({
                 userId: currentUser.uid,
@@ -70,7 +68,7 @@ function ToDoPage() {
     }
 
     async function onCheckboxChange({ target }) {
-        var toDoToUpdate = toDos.find(toDo => toDo.id === target.name);
+        var toDoToUpdate = toDos.find(toDo => toDo.id === target.id);
         toDoToUpdate.completed = !toDoToUpdate.completed;
         saveToDo(toDoToUpdate);
     }

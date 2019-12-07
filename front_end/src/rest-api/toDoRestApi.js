@@ -1,15 +1,16 @@
-import { handleResponse, handleError } from "./apiUtils";
+import { handleError } from "./apiUtils";
+import { toast } from "react-toastify";
 const baseUrl = "http://restapi.lukeshay.com/todo/";
-
-export function getToDos() {
-    return fetch(baseUrl + "all")
-        .then(handleResponse)
-        .catch(handleError);
-}
 
 export function getUsersToDos(userId) {
     return fetch(baseUrl + userId)
-        .then(handleResponse)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                toast.error("There was an error getting your todos.");
+            }
+        })
         .catch(handleError);
 }
 
@@ -19,12 +20,24 @@ export function saveToDo(toDo) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(toDo)
     })
-        .then(handleResponse)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                toast.error("There was an error saving your to-do.");
+            }
+        })
         .catch(handleError);
 }
 
 export function deleteToDo(toDoId) {
     return fetch(baseUrl + toDoId, { method: "DELETE" })
-        .then(handleResponse)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                toast.error("There was an error deleting your todo.");
+            }
+        })
         .catch(handleError);
 }
