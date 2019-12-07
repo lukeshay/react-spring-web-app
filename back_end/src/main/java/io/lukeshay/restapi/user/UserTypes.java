@@ -10,4 +10,8 @@ public enum UserAuthorities {
   public boolean equals(String role) {
     return this.role().equals(role);
   }
+
+  public String authority() {
+    return this.toString();
+  }
 }
