@@ -59,7 +59,7 @@ function ToDoPage() {
     async function onUserChange() {
         setCurrentUser(userStore.getUser());
 
-        if (currentUser.email && toDoStore.getToDos().length === 0) {
+        if (currentUser.email) {
             loadUsersToDos(currentUser.uid);
             setLoading(false);
         }
