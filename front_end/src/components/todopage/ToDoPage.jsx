@@ -11,7 +11,7 @@ import {
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-function ToDoPage() {
+const ToDoPage = () => {
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
     const [toDos, setToDos] = useState([]);
@@ -40,19 +40,6 @@ function ToDoPage() {
         };
     }, []);
 
-    useEffect(() => {
-        if (!adding && newToDo.text !== "") {
-            saveToDo(newToDo);
-            toast.success("ToDo saved.");
-
-            setNewToDo({
-                userId: currentUser.uid,
-                text: "",
-                completed: false
-            });
-        }
-    }, [adding, newToDo]);
-
     async function onToDoChange() {
         setToDos(toDoStore.getToDos());
         setKey(Math.random() * 10000);
@@ -80,7 +67,20 @@ function ToDoPage() {
     }
 
     async function onAddClick() {
-        setAdding(!adding);
+        if (adding && newToDo.text !== "") {
+            saveToDo(newToDo);
+
+            setNewToDo({
+                userId: currentUser.uid,
+                text: "",
+                completed: false
+            });
+            setAdding(false);
+        } else if (adding && newToDo.text === "") {
+            setAdding(false);
+        } else {
+            setAdding(true);
+        }
     }
 
     async function onInputChange({ target }) {
@@ -140,6 +140,6 @@ function ToDoPage() {
             </div>
         );
     }
-}
+};
 
 export default ToDoPage;

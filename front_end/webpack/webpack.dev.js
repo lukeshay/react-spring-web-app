@@ -6,7 +6,8 @@ module.exports = {
         new DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("development"),
-                LOAD_PASSWORD: JSON.stringify("choochie")
+                LOAD_PASSWORD: JSON.stringify("choochie"),
+                REST_API_URL: JSON.stringify("http://localhost:5000/")
             }
         })
     ],
