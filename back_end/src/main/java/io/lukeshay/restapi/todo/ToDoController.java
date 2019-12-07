@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type To-do controller.
  */
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/todos")
 public class ToDoController {
 
   private ToDoService toDoService;
