@@ -23,7 +23,6 @@ function App() {
     }
 
     useEffect(() => {
-        auth.signOut();
         auth.onAuthStateChanged(user => {
             if (user) {
                 console.log("Logging in");

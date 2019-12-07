@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The type Todo controller.
+ * The type To-do controller.
  */
 @RestController
 @CrossOrigin(origins = "http://lukeshay.com")
@@ -15,7 +15,7 @@ public class ToDoController {
 	private ToDoService toDoService;
 
 	/**
-	 * Instantiates a new Todo controller.
+	 * Instantiates a new To-do controller.
 	 *
 	 * @param toDoService the to-do service
 	 */
@@ -59,7 +59,7 @@ public class ToDoController {
 	 */
 	@PostMapping("/{toDoId}")
 	public ToDo getToDo(@PathVariable String toDoId) {
-		return toDoService.getTodo(toDoId);
+		return toDoService.getToDo(toDoId);
 	}
 
 	/**

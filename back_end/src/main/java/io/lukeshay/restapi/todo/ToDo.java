@@ -48,6 +48,20 @@ public class ToDo implements Persistable<String> {
 	}
 
 	/**
+	 * Instantiates a new To-do.
+	 *
+	 * @param userId    the user id
+	 * @param text      the text
+	 * @param completed the completed
+	 */
+	public ToDo(String userId, String text, boolean completed, String dueDate) {
+		this.userId = userId;
+		this.text = text;
+		this.completed = completed;
+		this.dueDate = "";
+	}
+
+	/**
 	 * Update.
 	 *
 	 * @param updatedToDo the updated to-do

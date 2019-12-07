@@ -21,10 +21,6 @@ class ToDoStore extends EventEmitter {
     getToDos() {
         return _toDos;
     }
-
-    getToDoBySlug(slug) {
-        return _toDos.find(toDo => toDo.slug === slug);
-    }
 }
 
 const store = new ToDoStore();
