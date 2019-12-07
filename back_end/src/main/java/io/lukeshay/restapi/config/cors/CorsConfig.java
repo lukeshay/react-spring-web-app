@@ -1,4 +1,4 @@
-package io.lukeshay.restapi.config;
+package io.lukeshay.restapi.config.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

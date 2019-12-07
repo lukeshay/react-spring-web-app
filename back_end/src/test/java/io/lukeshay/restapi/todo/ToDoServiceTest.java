@@ -18,9 +18,6 @@ class ToDoServiceTest {
 	@Autowired
 	ToDoService toDoService;
 
-	@Autowired
-	ToDoRepository toDoRepository;
-
 	@AfterEach
 	void tearDown() {
 		toDoService.deleteAllToDos();
@@ -30,7 +27,7 @@ class ToDoServiceTest {
 	void addToDoTest() {
 		ToDo addedToDo = new ToDo("id", "text", false);
 		toDoService.saveToDo(addedToDo);
-		ToDo getToDo = toDoService.getTodo(addedToDo.getId());
+		ToDo getToDo = toDoService.getToDo(addedToDo.getId());
 
 		Assertions.assertEquals(addedToDo, getToDo);
 	}
@@ -56,14 +53,14 @@ class ToDoServiceTest {
 	void deleteToDoTest() {
 		ToDo addedToDo = new ToDo("id", "text", false);
 		toDoService.saveToDo(addedToDo);
-		ToDo getToDo = toDoService.getTodo(addedToDo.getId());
+		ToDo getToDo = toDoService.getToDo(addedToDo.getId());
 
 		Assertions.assertEquals(addedToDo, getToDo);
 
 		toDoService.deleteToDo(addedToDo.getId());
 
 		try {
-			getToDo = toDoService.getTodo(addedToDo.getId());
+			getToDo = toDoService.getToDo(addedToDo.getId());
 			Assertions.assertNull(getToDo, getToDo.getId() + " was found in database but should not have been.");
 		} catch (ResponseStatusException e) {
 			Assertions.assertEquals(
@@ -96,7 +93,7 @@ class ToDoServiceTest {
 	void updateToDoTest() {
 		ToDo addedToDo = new ToDo("id", "text", false);
 		toDoService.saveToDo(addedToDo);
-		ToDo getToDo = toDoService.getTodo(addedToDo.getId());
+		ToDo getToDo = toDoService.getToDo(addedToDo.getId());
 
 		Assertions.assertEquals(addedToDo, getToDo, "ToDos do not match.");
 
@@ -104,7 +101,7 @@ class ToDoServiceTest {
 
 		toDoService.updateToDo(addedToDo.getId(), addedToDo);
 
-		getToDo = toDoService.getTodo(addedToDo.getId());
+		getToDo = toDoService.getToDo(addedToDo.getId());
 		Assertions.assertEquals(addedToDo, getToDo, "ToDo was not updated.");
 	}
 

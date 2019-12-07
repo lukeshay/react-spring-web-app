@@ -124,7 +124,7 @@ public class ToDoService {
 		return toDoRepository.findAll();
 	}
 
-	public ToDo getTodo(String toDoId) {
+	public ToDo getToDo(String toDoId) {
 		return toDoRepository.findById(toDoId)
 				.orElseThrow(() -> new ResponseStatusException(
 						HttpStatus.NOT_FOUND,
