@@ -1,28 +1,33 @@
 package io.lukeshay.restapi.user;
 
+import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserDetailsService {
-	private UserRepository userRepository;
+public class UserService {
 
-	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+  private UserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
 
-	User saveUser(User user) {
-		userRepository.save(user);
+  @Autowired
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
-		return userRepository.findByUsername(user.getUsername());
-	}
+  User saveUser(User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setAuthorities(Collections.singletonList(UserAuthorities.BASIC.role()));
+    userRepository.save(user);
+    return userRepository.findByUsername(user.getUsername());
+  }
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByUsername(username);
-	}
+  void deleteAllUsers() {
+    List<User> users = userRepository.findAll();
+
+    users.forEach(user -> userRepository.delete(user));
+  }
 }

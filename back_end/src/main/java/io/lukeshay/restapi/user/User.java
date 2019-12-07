@@ -1,5 +1,8 @@
 package io.lukeshay.restapi.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * The type User.
@@ -24,121 +22,66 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class User implements Persistable<String>, UserDetails {
-	@Id
-	private String userId;
+public class User implements Persistable<String> {
 
-	@CreatedDate
-	private String createdDate;
+  @Id
+  private String userId;
 
-	@LastModifiedDate
-	private String modifiedDate;
+  @CreatedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String createdDate;
 
-	private String firstName;
-	private String lastName;
-	private String username;
-	private String email;
-	private String phoneNumber;
-	private String state;
-	private String country;
-	private String password;
-	private boolean persistable;
-	private String authority = "ROLE_USER";
-	private boolean validAccount = true;
+  @LastModifiedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String modifiedDate;
 
-	/**
-	 * Returns the id of the entity.
-	 *
-	 * @return the id. Can be {@literal null}.
-	 */
-	@Override
-	public String getId() {
-		return userId;
-	}
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String password;
 
-	/**
-	 * Returns if the {@code Persistable} is new or was persisted already.
-	 *
-	 * @return if {@literal true} the object is new.
-	 */
-	@Override
-	public boolean isNew() {
-		return !persistable;
-	}
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private boolean persistable;
 
-	/**
-	 * Returns the authorities granted to the user. Cannot return <code>null</code>.
-	 *
-	 * @return the authorities, sorted by natural key (never <code>null</code>)
-	 */
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-	}
+  @Indexed(unique = true)
+  private String username;
 
-	/**
-	 * Returns the password used to authenticate the user.
-	 *
-	 * @return the password
-	 */
-	@Override
-	public String getPassword() {
-		return password;
-	}
+  @Indexed(unique = true)
+  private String email;
 
-	/**
-	 * Returns the username used to authenticate the user. Cannot return <code>null</code>.
-	 *
-	 * @return the username (never <code>null</code>)
-	 */
-	@Override
-	public String getUsername() {
-		return username;
-	}
+  private String firstName;
+  private String lastName;
+  private String phoneNumber;
+  private String state;
+  private String country;
+  private List<String> authorities;
 
-	/**
-	 * Indicates whether the user's account has expired. An expired account cannot be
-	 * authenticated.
-	 *
-	 * @return <code>true</code> if the user's account is valid (ie non-expired),
-	 * <code>false</code> if no longer valid (ie expired)
-	 */
-	@Override
-	public boolean isAccountNonExpired() {
-		return validAccount;
-	}
+  User(String username, String firstName, String lastName, String email, String phoneNumber,
+      String state, String country, String password) {
+    this.username = username;
+    this.firstName = firstName;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.state = state;
+    this.country = country;
+    this.password = password;
+  }
 
-	/**
-	 * Indicates whether the user is locked or unlocked. A locked user cannot be
-	 * authenticated.
-	 *
-	 * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isAccountNonLocked() {
-		return validAccount;
-	}
+  /**
+   * Returns the id of the entity.
+   *
+   * @return the id. Can be {@literal null}.
+   */
+  @Override
+  public String getId() {
+    return userId;
+  }
 
-	/**
-	 * Indicates whether the user's credentials (password) has expired. Expired
-	 * credentials prevent authentication.
-	 *
-	 * @return <code>true</code> if the user's credentials are valid (ie non-expired),
-	 * <code>false</code> if no longer valid (ie expired)
-	 */
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return validAccount;
-	}
-
-	/**
-	 * Indicates whether the user is enabled or disabled. A disabled user cannot be
-	 * authenticated.
-	 *
-	 * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isEnabled() {
-		return validAccount;
-	}
+  /**
+   * Returns if the {@code Persistable} is new or was persisted already.
+   *
+   * @return if {@literal true} the object is new.
+   */
+  @Override
+  public boolean isNew() {
+    return !persistable;
+  }
 }

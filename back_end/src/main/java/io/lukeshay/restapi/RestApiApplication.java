@@ -11,12 +11,12 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 @EnableMongoAuditing
 public class RestApiApplication {
 
-	/**
-	 * The entry point of application.
-	 *
-	 * @param args the input arguments
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(RestApiApplication.class, args);
-	}
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   */
+  public static void main(String[] args) {
+    SpringApplication.run(RestApiApplication.class, args);
+  }
 }
