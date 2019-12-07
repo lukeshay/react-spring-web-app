@@ -1,6 +1,6 @@
-package rc.bootsecurity.model;
+package io.lukeshay.restapi.config.security;
 
-public class LoginViewModel {
+public class Credentials {
     private String username;
     private String password;
 

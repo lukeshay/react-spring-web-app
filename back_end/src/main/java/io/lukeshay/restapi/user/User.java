@@ -53,6 +53,7 @@ public class User implements Persistable<String> {
   private String state;
   private String country;
   private List<String> authorities;
+  private List<String> roles;
 
   User(String username, String firstName, String lastName, String email, String phoneNumber,
       String state, String country, String password) {

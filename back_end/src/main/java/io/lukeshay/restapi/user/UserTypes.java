@@ -1,6 +1,6 @@
 package io.lukeshay.restapi.user;
 
-public enum UserAuthorities {
+public enum UserTypes {
   BASIC, ADMIN;
 
   public String role() {

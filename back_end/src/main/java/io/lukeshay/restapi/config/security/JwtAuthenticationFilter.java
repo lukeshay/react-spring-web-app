@@ -16,12 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import rc.bootsecurity.model.LoginViewModel;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
@@ -33,29 +32,28 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         // Grab credentials and map them to login viewmodel
-        LoginViewModel credentials = null;
+        Credentials credentials = null;
         try {
-            credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
+            credentials = new ObjectMapper().readValue(request.getInputStream(), Credentials.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Create login token
+        assert credentials != null;
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 credentials.getUsername(),
                 credentials.getPassword(),
                 new ArrayList<>());
 
         // Authenticate user
-        Authentication auth = authenticationManager.authenticate(authenticationToken);
-
-        return auth;
+        return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // Grab principal
-        UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
+        MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
         // Create JWT Token
         String token = JWT.create()
