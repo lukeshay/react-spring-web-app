@@ -1,12 +1,11 @@
 package io.lukeshay.restapi.config.security;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import io.lukeshay.restapi.user.UserRepository;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
-        .cors(withDefaults())
+        .cors().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -62,8 +61,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("*", "http://lukeshay.com", "http://localhost:8081"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+    configuration
+        .setAllowedOrigins(Arrays.asList("*", "http://lukeshay.com", "http://localhost:8081"));
+    configuration.setAllowedMethods(Arrays.asList(
+        HttpMethod.GET.name(),
+        HttpMethod.HEAD.name(),
+        HttpMethod.POST.name(),
+        HttpMethod.PUT.name(),
+        HttpMethod.DELETE.name(),
+        HttpMethod.OPTIONS.name()));
+    configuration.addAllowedHeader("*");
+    configuration.addExposedHeader("Access-Control-Allow-Origin");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

@@ -18,56 +18,48 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
 
-    JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+  private AuthenticationManager authenticationManager;
+
+  JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    this.authenticationManager = authenticationManager;
+  }
+
+  @Override
+  public Authentication attemptAuthentication(
+      HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+    Credentials credentials = null;
+    try {
+      credentials = new ObjectMapper().readValue(request.getInputStream(), Credentials.class);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    /* Trigger when we issue POST request to /login
-    We also need to pass in {"username":"dan", "password":"dan123"} in the request body
-     */
-    @Override
-    public Authentication attemptAuthentication(
-        HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    assert credentials != null;
+    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        credentials.getUsername(),
+        credentials.getPassword(),
+        new ArrayList<>());
 
-        // Grab credentials and map them to login viewmodel
-        Credentials credentials = null;
-        try {
-            credentials = new ObjectMapper().readValue(request.getInputStream(), Credentials.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    return authenticationManager.authenticate(authenticationToken);
+  }
 
-        // Create login token
-        assert credentials != null;
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                credentials.getUsername(),
-                credentials.getPassword(),
-                new ArrayList<>());
+  @Override
+  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+      FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
-        // Authenticate user
-        return authenticationManager.authenticate(authenticationToken);
-    }
+    String token = JWT.create()
+        .withSubject(principal.getUsername())
+        .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+        .sign(HMAC512(JwtProperties.SECRET.getBytes()));
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        // Grab principal
-        MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
-
-        // Create JWT Token
-        String token = JWT.create()
-                .withSubject(principal.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
-                .sign(HMAC512(JwtProperties.SECRET.getBytes()));
-
-        // Add token in response
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX +  token);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(
-            "{\"" + JwtProperties.HEADER_STRING + "\":\"" + JwtProperties.TOKEN_PREFIX + token + "\"}"
-        );
-    }
+    response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    response.getWriter().write(
+        "{\"" + JwtProperties.HEADER_STRING + "\":\"" + JwtProperties.TOKEN_PREFIX + token + "\"}"
+    );
+  }
 }

@@ -18,44 +18,46 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-    private UserRepository userRepository;
 
-    JwtAuthorizationFilter(AuthenticationManager authenticationManager,
-        UserRepository userRepository) {
-        super(authenticationManager);
-        this.userRepository = userRepository;
+  private UserRepository userRepository;
+
+  JwtAuthorizationFilter(AuthenticationManager authenticationManager,
+      UserRepository userRepository) {
+    super(authenticationManager);
+    this.userRepository = userRepository;
+  }
+
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+      FilterChain chain) throws IOException, ServletException {
+    String header = request.getHeader(JwtProperties.HEADER_STRING);
+
+    if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+      chain.doFilter(request, response);
+      return;
     }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader(JwtProperties.HEADER_STRING);
+    Authentication authentication = getUsernamePasswordAuthentication(request);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
-            chain.doFilter(request, response);
-            return;
-        }
+    chain.doFilter(request, response);
+  }
 
-        Authentication authentication = getUsernamePasswordAuthentication(request);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+  private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
+    String token = request.getHeader(JwtProperties.HEADER_STRING)
+        .replace(JwtProperties.TOKEN_PREFIX, "");
 
-        chain.doFilter(request, response);
+    String username = JWT.require(HMAC512(JwtProperties.SECRET.getBytes()))
+        .build()
+        .verify(token)
+        .getSubject();
+
+    if (username != null) {
+      User user = userRepository.findByUsername(username).orElseThrow(() -> Exceptions
+          .notFound(String.format("%s not found.", username)));
+      MyUserDetails principal = new MyUserDetails(user);
+      return new UsernamePasswordAuthenticationToken(username, null, principal.getAuthorities());
     }
-
-    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX,"");
-
-        String username = JWT.require(HMAC512(JwtProperties.SECRET.getBytes()))
-                .build()
-                .verify(token)
-                .getSubject();
-
-        if (username != null) {
-            User user = userRepository.findByUsername(username).orElseThrow(() -> Exceptions
-                .notFound(String.format("%s not found.", username)));
-            MyUserDetails principal = new MyUserDetails(user);
-            return new UsernamePasswordAuthenticationToken(username, null, principal.getAuthorities());
-        }
-        return null;
-    }
+    return null;
+  }
 }

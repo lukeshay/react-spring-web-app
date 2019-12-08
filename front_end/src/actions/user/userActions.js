@@ -10,12 +10,7 @@ export async function signOut() {
 
 export async function signIn(username, password) {
   const token = await userApi.signIn(username, password);
-
-  console.log(token);
-
-  const _user = await userApi.getUser(username, token);
-
-  console.log(_user);
+  const _user = await userApi.getUser(username, token.Authorization);
 
   dispatcher.dispatch({
     actionType: actionTypes.SIGN_IN,

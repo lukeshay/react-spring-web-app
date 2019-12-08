@@ -23,13 +23,13 @@ public class PrivateUserController {
     userService.deleteAllUsers();
   }
 
-  @GetMapping(value="", params = "username")
-  public User getUserByUsername(@PathParam(value="username") String username) {
+  @GetMapping(value = "", params = "username")
+  public User getUserByUsername(@PathParam(value = "username") String username) {
     return userService.getUserByUsername(username);
   }
 
-  @GetMapping(value="", params = "email")
-  public User getUserByEmail(@PathParam(value="email") String email) {
+  @GetMapping(value = "", params = "email")
+  public User getUserByEmail(@PathParam(value = "email") String email) {
     return userService.getUserByEmail(email);
   }
 }
