@@ -2,8 +2,8 @@ import dispatcher from "../../appDispatcher";
 import * as toDoApi from "../../rest-api/toDoRestApi";
 import actionTypes from "./actionTypes";
 
-export async function loadUsersToDos(uid) {
-  const toDos = await toDoApi.getUsersToDos(uid);
+export async function loadUsersToDos(user) {
+  const toDos = await toDoApi.getUsersToDos(user.userId, user.jwtToken);
 
   dispatcher.dispatch({
     actionType: actionTypes.LOAD_TODOS,
@@ -11,8 +11,8 @@ export async function loadUsersToDos(uid) {
   });
 }
 
-export async function saveToDo(toDo) {
-  const savedToDo = await toDoApi.saveToDo(toDo);
+export async function saveToDo(toDo, user) {
+  const savedToDo = await toDoApi.saveToDo(toDo, user.jwtToken);
 
   dispatcher.dispatch({
     actionType: toDo.id ? actionTypes.UPDATE_TODO : actionTypes.CREATE_TODO,
@@ -20,8 +20,8 @@ export async function saveToDo(toDo) {
   });
 }
 
-export async function deleteToDo(id) {
-  await toDoApi.deleteToDo(id);
+export async function deleteToDo(id, user) {
+  await toDoApi.deleteToDo(id, user.jwtToken);
 
   dispatcher.dispatch({
     actionType: actionTypes.DELETE_TODO,

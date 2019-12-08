@@ -29,5 +29,13 @@ export async function getUser(username, token) {
   return fetch(userUrl + "?username=" + username, {
     method: "GET",
     headers: { Authorization: token, credentials: "same-origin" }
-  });
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        toast.error("There was an error signing in.");
+      }
+    })
+    .catch(handleError);
 }

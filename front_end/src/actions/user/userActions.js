@@ -10,10 +10,11 @@ export async function signOut() {
 
 export async function signIn(username, password) {
   const token = await userApi.signIn(username, password);
-  const _user = await userApi.getUser(username, token.Authorization);
+  const jwtToken = token.Authorization;
+  const _user = await userApi.getUser(username, jwtToken);
 
   dispatcher.dispatch({
     actionType: actionTypes.SIGN_IN,
-    user: { ..._user, token }
+    user: { ..._user, jwtToken }
   });
 }

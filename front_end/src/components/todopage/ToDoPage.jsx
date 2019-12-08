@@ -26,7 +26,7 @@ function ToDoPage() {
     userStore.addChangeListener(onUserChange);
 
     if (currentUser.email && toDoStore.getToDos().length === 0) {
-      loadUsersToDos(currentUser.uid);
+      loadUsersToDos(currentUser);
     } else if (currentUser.email) {
       onToDoChange();
     }
@@ -41,10 +41,10 @@ function ToDoPage() {
 
   useEffect(() => {
     if (!adding && newToDo.text !== "") {
-      saveToDo(newToDo);
+      saveToDo(newToDo, currentUser);
 
       setNewToDo({
-        userId: currentUser.uid,
+        userId: currentUser.userId,
         text: "",
         completed: false
       });
@@ -60,7 +60,7 @@ function ToDoPage() {
     setCurrentUser(userStore.getUser());
 
     if (currentUser.email) {
-      loadUsersToDos(currentUser.uid);
+      loadUsersToDos(currentUser);
       setLoading(false);
     }
 
@@ -74,7 +74,7 @@ function ToDoPage() {
   }
 
   async function onDeleteButtonClick({ target }) {
-    deleteToDo(target.id);
+    deleteToDo(target.id, currentUser);
   }
 
   async function onAddClick() {
@@ -94,7 +94,7 @@ function ToDoPage() {
 
   if (loading) {
     return <h1>Loading...</h1>;
-  } else if (!currentUser || !currentUser.uid) {
+  } else if (!currentUser || !currentUser.userId) {
     return (
       <h1>
         Please <Link to="profile">Sign In</Link>
