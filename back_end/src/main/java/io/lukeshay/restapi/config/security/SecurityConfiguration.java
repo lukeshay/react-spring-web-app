@@ -2,6 +2,7 @@ package io.lukeshay.restapi.config.security;
 
 import io.lukeshay.restapi.user.UserRepository;
 import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration
-        .setAllowedOrigins(Arrays.asList("*", "http://lukeshay.com", "http://localhost:8081"));
+        .setAllowedOrigins(Collections.singletonList("http://lukeshay.com"));
     configuration.setAllowedMethods(Arrays.asList(
         HttpMethod.GET.name(),
         HttpMethod.HEAD.name(),
