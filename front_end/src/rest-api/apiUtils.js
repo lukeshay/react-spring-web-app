@@ -1,6 +1,5 @@
 export async function handleResponse(response) {
     if (response.ok) {
-        toast.success("Success");
         return response.json();
     }
     if (response.status === 400) {

@@ -5,8 +5,6 @@ import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy } from "@loadable/component";
-import { auth } from "./firebase";
-import { signIn, signOut } from "./actions/user/userActions";
 
 const HomePage = lazy(() => import("./components/homepage/HomePage.jsx"));
 const NotFoundPage = lazy(() => import("./components/NotFoundPage.jsx"));
@@ -21,18 +19,6 @@ function App() {
 
         setLoad(enteredName === process.env.LOAD_PASSWORD);
     }
-
-    useEffect(() => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                console.log("Logging in");
-                signIn(user);
-            } else {
-                console.log("Logging out");
-                signOut();
-            }
-        });
-    }, []);
 
     if (load === true) {
         return (

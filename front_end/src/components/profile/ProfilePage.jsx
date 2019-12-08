@@ -5,7 +5,7 @@ import userStore from "../../stores/userStore";
 const SignUpForm = lazy(() => import("./signupform/SignUpForm.jsx"));
 const SignInForm = lazy(() => import("./signinform/SignInForm.jsx"));
 
-const ProfilePage = () => {
+function ProfilePage() {
     const [createAccount, setCreateAccount] = useState(true);
     const [currentUser, setCurrentUser] = useState({});
 
@@ -32,6 +32,6 @@ const ProfilePage = () => {
     else if (!currentUser.email && !createAccount)
         return <SignInForm handleSignUpClick={handleSignUpClick} />;
     else if (currentUser) return <h1>Coming soon! {currentUser.email}</h1>;
-};
+}
 
 export default ProfilePage;

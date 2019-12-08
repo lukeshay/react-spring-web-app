@@ -5,7 +5,6 @@ import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
 import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { auth } from "../../../firebase";
 
 const SignUpForm = props => {
     const [firstName, setFirstName] = useState("");
@@ -82,22 +81,7 @@ const SignUpForm = props => {
         }
     }, [phoneNumber]);
 
-    const handleSubmit = async () => {
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(user => {
-                if (user) {
-                    user.updateProfile({
-                        firstName,
-                        lastName,
-                        phoneNumber
-                    });
-                }
-            })
-            .catch(error => {
-                setErrorCode(error.code);
-                setErrorMessage(error.message);
-            });
-    };
+    const handleSubmit = async () => {};
 
     return (
         <div className="row justify-content-center">

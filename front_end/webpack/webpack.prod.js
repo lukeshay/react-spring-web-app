@@ -41,7 +41,8 @@ module.exports = {
         new DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production"),
-                LOAD_PASSWORD: JSON.stringify("choochie")
+                LOAD_PASSWORD: JSON.stringify("choochie",
+                BASE_URL: JSON.stringify("http://restapi.lukeshay.com/")
             }
         })
     ]
