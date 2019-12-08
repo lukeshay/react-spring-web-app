@@ -22,16 +22,13 @@
     "deploy": "pm2 serve dist --name web-app -- 3000",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
-    "precommit": "NODE_ENV=production lint-staged"
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "pretty-quick --staged",
-      "prettier --write",
-      "eslint src/ --fix",
-      "git add"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format && yarn lint:fix",
+      "pre-push": "yarn format && yarn lint"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
