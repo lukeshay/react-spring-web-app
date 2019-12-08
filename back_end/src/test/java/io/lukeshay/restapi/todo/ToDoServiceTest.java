@@ -1,6 +1,5 @@
 package io.lukeshay.restapi.todo;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,6 @@ class ToDoServiceTest {
 
 	@Autowired
 	ToDoService toDoService;
-
-	@AfterEach
-	void tearDown() {
-		toDoService.deleteAllToDos();
-	}
 
 	@Test
 	void addToDoTest() {
@@ -66,27 +60,6 @@ class ToDoServiceTest {
 			Assertions.assertEquals(
 					String.format("404 NOT_FOUND \"Could not find todo id: %s\"", addedToDo.getId()), e.getMessage(), "Incorrect error message.");
 		}
-	}
-
-	@Test
-	void deleteAllToDosTest() {
-		List<ToDo> listOfToDos = new ArrayList<>();
-
-		for (int i = 0; i < 10; i++) {
-			ToDo addedToDo = new ToDo(Integer.toString(i), "text" + i, i % 2 == 0);
-			toDoService.saveToDo(addedToDo);
-			listOfToDos.add(addedToDo);
-		}
-
-		List<ToDo> getToDos = toDoService.getAllToDos();
-
-		listOfToDos.forEach(toDo ->
-				Assertions.assertTrue(getToDos.stream().anyMatch(e -> e.equals(toDo)), toDo.getId() + " was not found in the database.")
-		);
-
-		toDoService.deleteAllToDos();
-
-		Assertions.assertEquals(0, toDoService.getAllToDos().size(), "Not all to-dos were deleted");
 	}
 
 	@Test
