@@ -6,32 +6,32 @@ const SignUpForm = lazy(() => import("./signupform/SignUpForm.jsx"));
 const SignInForm = lazy(() => import("./signinform/SignInForm.jsx"));
 
 function ProfilePage() {
-    const [createAccount, setCreateAccount] = useState(true);
-    const [currentUser, setCurrentUser] = useState({});
+  const [createAccount, setCreateAccount] = useState(true);
+  const [currentUser, setCurrentUser] = useState({});
 
-    useEffect(() => {
-        userStore.addChangeListener(onChange);
-        setCurrentUser(userStore.getUser());
-        return () => userStore.removeChangeListener(onChange);
-    }, []);
+  useEffect(() => {
+    userStore.addChangeListener(onChange);
+    setCurrentUser(userStore.getUser());
+    return () => userStore.removeChangeListener(onChange);
+  }, []);
 
-    const onChange = () => {
-        setCurrentUser(userStore.getUser());
-    };
+  const onChange = () => {
+    setCurrentUser(userStore.getUser());
+  };
 
-    const handleLoginClick = async () => {
-        setCreateAccount(false);
-    };
+  const handleLoginClick = async () => {
+    setCreateAccount(false);
+  };
 
-    const handleSignUpClick = async () => {
-        setCreateAccount(true);
-    };
+  const handleSignUpClick = async () => {
+    setCreateAccount(true);
+  };
 
-    if (!currentUser.email && createAccount)
-        return <SignUpForm handleLogInClick={handleLoginClick} />;
-    else if (!currentUser.email && !createAccount)
-        return <SignInForm handleSignUpClick={handleSignUpClick} />;
-    else if (currentUser) return <h1>Coming soon! {currentUser.email}</h1>;
+  if (!currentUser.email && createAccount)
+    return <SignUpForm handleLogInClick={handleLoginClick} />;
+  else if (!currentUser.email && !createAccount)
+    return <SignInForm handleSignUpClick={handleSignUpClick} />;
+  else if (currentUser) return <h1>Coming soon! {currentUser.email}</h1>;
 }
 
 export default ProfilePage;
