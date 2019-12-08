@@ -1,12 +1,13 @@
 import { handleError } from "./apiUtils";
 import { toast } from "react-toastify";
+import { getJwtToken } from "../utils/cookiesUtils";
 
 const baseUrl = process.env.BASE_URL + "todos/";
 
-export function getUsersToDos(userId, jwtToken) {
+export function getUsersToDos(userId) {
   return fetch(baseUrl + userId, {
     headers: {
-      Authorization: jwtToken
+      Authorization: getJwtToken()
     }
   })
     .then(response => {
@@ -19,12 +20,12 @@ export function getUsersToDos(userId, jwtToken) {
     .catch(handleError);
 }
 
-export function saveToDo(toDo, jwtToken) {
+export function saveToDo(toDo) {
   return fetch(baseUrl + (toDo.id || ""), {
     method: toDo.id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
     headers: {
       "Content-Type": "application/json",
-      Authorization: jwtToken,
+      Authorization: getJwtToken(),
       Origin: ""
     },
     body: JSON.stringify(toDo)
@@ -39,10 +40,10 @@ export function saveToDo(toDo, jwtToken) {
     .catch(handleError);
 }
 
-export function deleteToDo(toDoId, jwtToken) {
+export function deleteToDo(toDoId) {
   return fetch(baseUrl + toDoId, {
     method: "DELETE",
-    headers: { Authorization: jwtToken }
+    headers: { Authorization: getJwtToken() }
   })
     .then(response => {
       if (response.ok) {

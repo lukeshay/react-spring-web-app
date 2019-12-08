@@ -1,5 +1,6 @@
 import { handleError } from "./apiUtils";
 import { toast } from "react-toastify";
+import { getJwtToken } from "../utils/cookiesUtils";
 
 const baseUrl = process.env.BASE_URL;
 const signInUrl = baseUrl + "login";
@@ -25,7 +26,9 @@ export async function signIn(username, password) {
     .catch(handleError);
 }
 
-export async function getUser(username, token) {
+export async function getUser(username) {
+  const token = getJwtToken();
+
   return fetch(userUrl + "?username=" + username, {
     method: "GET",
     headers: { Authorization: token, credentials: "same-origin" }

@@ -1,6 +1,6 @@
 {
   "name": "front_end",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "homepage": "http://lukeshay.com",
   "dependencies": {
@@ -72,6 +72,7 @@
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "style-loader": "^1.0.0",
+    "universal-cookie": "^4.0.2",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",

@@ -1,6 +1,7 @@
 import dispatcher from "../../appDispatcher";
 import actionTypes from "./userActionTypes";
 import * as userApi from "../../rest-api/userRestApi";
+import { setJwtToken } from "../../utils/cookiesUtils";
 
 export async function signOut() {
   dispatcher.dispatch({
@@ -11,7 +12,10 @@ export async function signOut() {
 export async function signIn(username, password) {
   const token = await userApi.signIn(username, password);
   const jwtToken = token.Authorization;
-  const _user = await userApi.getUser(username, jwtToken);
+
+  setJwtToken(token.Authorization);
+
+  const _user = await userApi.getUser(username);
 
   dispatcher.dispatch({
     actionType: actionTypes.SIGN_IN,

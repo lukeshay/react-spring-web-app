@@ -26,7 +26,7 @@ function ToDoPage() {
     userStore.addChangeListener(onUserChange);
 
     if (currentUser.email && toDoStore.getToDos().length === 0) {
-      loadUsersToDos(currentUser);
+      loadUsersToDos(currentUser.userId);
     } else if (currentUser.email) {
       onToDoChange();
     }
@@ -41,7 +41,7 @@ function ToDoPage() {
 
   useEffect(() => {
     if (!adding && newToDo.text !== "") {
-      saveToDo(newToDo, currentUser);
+      saveToDo(newToDo);
 
       setNewToDo({
         userId: currentUser.userId,
@@ -60,7 +60,7 @@ function ToDoPage() {
     setCurrentUser(userStore.getUser());
 
     if (currentUser.email) {
-      loadUsersToDos(currentUser);
+      loadUsersToDos(currentUser.userId);
       setLoading(false);
     }
 
@@ -74,7 +74,7 @@ function ToDoPage() {
   }
 
   async function onDeleteButtonClick({ target }) {
-    deleteToDo(target.id, currentUser);
+    deleteToDo(target.id);
   }
 
   async function onAddClick() {
