@@ -1,7 +1,7 @@
 version: "3.1"
 
 services:
-  rest-api:
+  restapi:
     build: .
     restart: always
     container_name: rest-api
