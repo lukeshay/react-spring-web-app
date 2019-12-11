@@ -14,10 +14,7 @@ function ToDoPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [toDos, setToDos] = useState([]);
-  const [newToDo, setNewToDo] = useState({
-    text: "",
-    completed: false
-  });
+  const [newToDo, setNewToDo] = useState({});
   const [key, setKey] = useState(Math.random() * 10000);
   const [currentUser, setCurrentUser] = useState(userStore.getUser());
 
@@ -27,6 +24,11 @@ function ToDoPage() {
 
     if (currentUser.email && toDoStore.getToDos().length === 0) {
       loadUsersToDos(currentUser.userId);
+      setNewToDo({
+        userId: currentUser.userId,
+        text: "",
+        completed: false
+      });
     } else if (currentUser.email) {
       onToDoChange();
     }
@@ -38,18 +40,6 @@ function ToDoPage() {
       userStore.removeChangeListener(onUserChange);
     };
   }, []);
-
-  useEffect(() => {
-    if (!adding && newToDo.text !== "") {
-      saveToDo(newToDo);
-
-      setNewToDo({
-        userId: currentUser.userId,
-        text: "",
-        completed: false
-      });
-    }
-  }, [adding, newToDo]);
 
   async function onToDoChange() {
     setToDos(toDoStore.getToDos());
@@ -78,6 +68,15 @@ function ToDoPage() {
   }
 
   async function onAddClick() {
+    if (adding && newToDo.text !== "") {
+      saveToDo(newToDo);
+
+      setNewToDo({
+        userId: currentUser.userId,
+        text: "",
+        completed: false
+      });
+    }
     setAdding(!adding);
   }
 

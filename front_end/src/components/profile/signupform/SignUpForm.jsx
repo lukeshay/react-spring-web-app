@@ -4,9 +4,10 @@ import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
 import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
 import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
+import * as userActions from "../../../actions/user/userActions";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const SignUpForm = props => {
+function SignUpForm(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -81,7 +82,18 @@ const SignUpForm = props => {
     }
   }, [phoneNumber]);
 
-  const handleSubmit = async () => {};
+  async function handleSubmit() {
+    userActions.createUser({
+      firstName,
+      lastName,
+      password,
+      email,
+      phoneNumber,
+      username: email,
+      country: "",
+      state: ""
+    });
+  }
 
   return (
     <div className="row justify-content-center">
@@ -96,7 +108,7 @@ const SignUpForm = props => {
             <h4 className="card-title mt-2">Sign up</h4>
           </header>
           <article className="card-body">
-            <form>
+            <form onSubmit={handleSubmit}>
               <InlineTextInput
                 label="First Name"
                 id="firstName"
@@ -130,17 +142,13 @@ const SignUpForm = props => {
                 handleChange={handleChange}
                 helpText={passwordMessage}
               />
+              <BlueButton bootstrap="btn-block" text="Create Account" />
             </form>
-            <BlueButton
-              bootstrap="btn-block"
-              text="Create Account"
-              handleClick={handleSubmit}
-            />
           </article>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default SignUpForm;

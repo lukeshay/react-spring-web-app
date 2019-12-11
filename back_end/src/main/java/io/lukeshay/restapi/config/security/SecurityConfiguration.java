@@ -2,7 +2,6 @@ package io.lukeshay.restapi.config.security;
 
 import io.lukeshay.restapi.user.UserRepository;
 import java.util.Arrays;
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -45,25 +44,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
-        .cors().and()
+        .cors()
+        .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-        .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
+        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
         .authorizeRequests()
         .antMatchers("/todo").authenticated()
         .antMatchers("/users").authenticated()
         .antMatchers("/login").permitAll()
         .antMatchers("/public/users").permitAll()
+        .antMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll()
         .anyRequest().authenticated();
   }
-
 
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration
-        .setAllowedOrigins(Collections.singletonList("http://lukeshay.com"));
+        .setAllowedOrigins(Arrays.asList("http://lukeshay.com", "http://localhost:8080"));
     configuration.setAllowedMethods(Arrays.asList(
         HttpMethod.GET.name(),
         HttpMethod.HEAD.name(),
@@ -73,6 +73,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         HttpMethod.OPTIONS.name()));
     configuration.addAllowedHeader("*");
     configuration.addExposedHeader("Access-Control-Allow-Origin");
+    configuration.addExposedHeader("Access-Control-Allow-Methods");
+    configuration.addExposedHeader("Access-Control-Allow-Headers");
+    configuration.addExposedHeader("Access-Control-Max-Age");
+    configuration.addExposedHeader("Access-Control-Request-Headers");
+    configuration.addExposedHeader("Access-Control-Request-Method");
+    configuration.addExposedHeader("Authentication");
+    configuration.addExposedHeader("accept");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
