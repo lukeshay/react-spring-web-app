@@ -7,23 +7,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { signIn } from "../../../actions/user/userActions";
 
 function LogInForm(props) {
-  const [username, setUsername] = useState("");
-  const [usernameMessage, setUsernameMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
   const [password, setPassword] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
 
   async function handleChange(event) {
     const { id, value } = event.target;
 
-    if (id === "username") {
-      setUsername(value);
+    if (id === "email") {
+      setEmail(value);
     } else if (id === "password") {
       setPassword(value);
     }
   }
 
   async function handleSubmit() {
-    signIn(username, password);
+    signIn(email, password);
   }
 
   return (
@@ -41,11 +41,11 @@ function LogInForm(props) {
           <article className="card-body">
             <form onSubmit={handleSubmit}>
               <InlineTextInput
-                label="Username"
-                id="username"
-                value={username}
+                label="Email"
+                id="email"
+                value={email}
                 handleChange={handleChange}
-                helpText={usernameMessage}
+                helpText={emailMessage}
               />
               <InlineHiddenInput
                 label="Password"

@@ -31,7 +31,7 @@ export async function getUser(username) {
 
   return fetch(userUrl + "?username=" + username, {
     method: "GET",
-    headers: { Authorization: token, credentials: "same-origin" }
+    headers: { Authorization: token }
   })
     .then(response => {
       if (response.ok) {
