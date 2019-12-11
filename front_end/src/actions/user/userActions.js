@@ -26,5 +26,5 @@ export async function signIn(username, password) {
 
 export async function createUser(newUser) {
   await UserApi.createUser(newUser);
-  await UserApi.signIn(newUser.username, newUser.password);
+  await signIn(newUser.username, newUser.password);
 }

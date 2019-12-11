@@ -108,7 +108,7 @@ function SignUpForm(props) {
             <h4 className="card-title mt-2">Sign up</h4>
           </header>
           <article className="card-body">
-            <form>
+            <form onSubmit={handleSubmit}>
               <InlineTextInput
                 label="First Name"
                 id="firstName"
@@ -142,12 +142,8 @@ function SignUpForm(props) {
                 handleChange={handleChange}
                 helpText={passwordMessage}
               />
+              <BlueButton bootstrap="btn-block" text="Create Account" />
             </form>
-            <BlueButton
-              bootstrap="btn-block"
-              text="Create Account"
-              handleClick={handleSubmit}
-            />
           </article>
         </div>
       </div>

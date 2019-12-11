@@ -1,3 +1,5 @@
 export function getOneDay() {
-  return new Date().setTime(new Date().getTime() + 24 * 60 * 60 * 1000);
+  let d = new Date();
+  d.setTime(new Date().getTime() + 24 * 60 * 60 * 1000);
+  return d;
 }
