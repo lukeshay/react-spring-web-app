@@ -42,7 +42,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify("production"),
         LOAD_PASSWORD: JSON.stringify("choochie"),
-        BASE_URL: JSON.stringify("http://restapi.lukeshay.com/")
+        BASE_URL: JSON.stringify("https://restapi.lukeshay.com/")
       }
     })
   ]
