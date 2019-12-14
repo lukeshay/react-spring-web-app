@@ -12,9 +12,11 @@ export async function signOut() {
 export async function signIn(username, password) {
   const token = await UserApi.signIn(username, password);
   const jwtToken = token.Authorization;
-  const _user = await UserApi.getUser(username);
 
   Cookies.setJwtToken(token.Authorization);
+
+  const _user = await UserApi.getUser(username);
+
   Cookies.setUsername(_user.username);
   Cookies.setUserId(_user.userId);
 

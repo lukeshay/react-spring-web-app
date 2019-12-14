@@ -5,6 +5,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +35,10 @@ public class PrivateUserController {
   public User getUserByEmail(@PathParam(value = "email") String email) {
     logger.info(String.format("Getting user: %s", email));
     return userService.getUserByEmail(email);
+  }
+
+  @PutMapping(value = "", params = "userId")
+  public User updateUserById(@PathParam(value = "userId") String userId) {
+    return null;
   }
 }
