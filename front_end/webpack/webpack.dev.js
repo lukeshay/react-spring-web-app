@@ -8,7 +8,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify("development"),
         LOAD_PASSWORD: JSON.stringify("choochie"),
-        BASE_URL: JSON.stringify("http://localhost:8080/")
+        BASE_URL: JSON.stringify("http://localhost:5000/")
       }
     })
   ],
