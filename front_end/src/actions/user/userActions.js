@@ -10,23 +10,32 @@ export async function signOut() {
 }
 
 export async function signIn(username, password) {
-  const token = await UserApi.signIn(username, password);
-  const jwtToken = token.Authorization;
+  const signInResponse = await UserApi.signIn(username, password);
 
-  Cookies.setJwtToken(token.Authorization);
+  if (!signInResponse.ok) return signInResponse;
 
-  const _user = await UserApi.getUser(username);
+  const jwtToken = signInResponse.json().Authorization;
+  Cookies.setJwtToken(jwtToken);
 
-  Cookies.setUsername(_user.username);
-  Cookies.setUserId(_user.userId);
+  const getUserResponse = await UserApi.getUser(username);
 
-  dispatcher.dispatch({
-    actionType: actionTypes.SIGN_IN,
-    user: { ..._user, jwtToken }
-  });
+  if (getUserResponse.ok) {
+    Cookies.setUsername(getUserResponse.json().username);
+    Cookies.setUserId(getUserResponse.json().userId);
+
+    dispatcher.dispatch({
+      actionType: actionTypes.SIGN_IN,
+      user: { ...getUserResponse.json(), jwtToken }
+    });
+  }
+
+  return getUserResponse;
 }
 
 export async function createUser(newUser) {
-  await UserApi.createUser(newUser);
-  await signIn(newUser.username, newUser.password);
+  const createUserResponse = await UserApi.createUser(newUser);
+
+  return createUserResponse.ok
+    ? await signIn(newUser.username, newUser.password)
+    : createUserResponse;
 }
