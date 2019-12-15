@@ -74,13 +74,14 @@ public class ToDo implements Persistable<String> {
     if (updatedToDo.text != null) {
       this.text = updatedToDo.text;
     }
+
     this.completed = updatedToDo.completed;
     this.persistable = true;
   }
 
   @Override
-  public String toString() {
-    return new Gson().toJson(this);
+  public boolean isNew() {
+    return !persistable;
   }
 
   @Override
@@ -99,13 +100,8 @@ public class ToDo implements Persistable<String> {
     }
   }
 
-  /**
-   * Returns if the {@code Persistable} is new or was persisted already.
-   *
-   * @return if {@literal true} the object is new.
-   */
   @Override
-  public boolean isNew() {
-    return !persistable;
+  public String toString() {
+    return new Gson().toJson(this);
   }
 }

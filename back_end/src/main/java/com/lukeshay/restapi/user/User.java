@@ -2,6 +2,7 @@ package com.lukeshay.restapi.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.google.gson.Gson;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,23 +67,55 @@ public class User implements Persistable<String> {
     this.password = password;
   }
 
-  /**
-   * Returns the id of the entity.
-   *
-   * @return the id. Can be {@literal null}.
-   */
   @Override
   public String getId() {
     return userId;
   }
 
-  /**
-   * Returns if the {@code Persistable} is new or was persisted already.
-   *
-   * @return if {@literal true} the object is new.
-   */
   @Override
   public boolean isNew() {
     return !persistable;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof User && toString().equals(obj.toString());
+  }
+
+  @Override
+  public String toString() {
+    return new Gson().toJson(this);
+  }
+
+  void update(User updatedUser) {
+    if (!userId.equals(updatedUser.userId)) {
+      return;
+    }
+
+    if (updatedUser.firstName != null) {
+      firstName = updatedUser.firstName;
+    }
+
+    if (updatedUser.lastName != null) {
+      lastName = updatedUser.lastName;
+    }
+    if (updatedUser.email != null) {
+      email = updatedUser.email;
+    }
+
+    if (updatedUser.username != null) {
+      username = updatedUser.username;
+    }
+    if (updatedUser.state != null) {
+      state = updatedUser.state;
+    }
+    if (updatedUser.country != null) {
+      country = updatedUser.country;
+    }
+    if (updatedUser.phoneNumber != null) {
+      phoneNumber = updatedUser.phoneNumber;
+    }
+
+    persistable = true;
   }
 }

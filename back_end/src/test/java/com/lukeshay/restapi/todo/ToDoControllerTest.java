@@ -1,5 +1,7 @@
 package com.lukeshay.restapi.todo;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +9,11 @@ import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureDataMongo
 class ToDoControllerTest {
 	@Autowired
-	ToDoController toDoController;
+	private ToDoController toDoController;
 
 	@Test
 	void addToDoTest() {
@@ -48,16 +47,15 @@ class ToDoControllerTest {
 	@Test
 	void updateToDoTest() {
 		ToDo addedToDo = new ToDo("id2", "text", false);
-		toDoController.addToDo(addedToDo);
+		addedToDo = toDoController.addToDo(addedToDo);
+		addedToDo.setPersistable(true);
 		ToDo getToDo = toDoController.getToDo(addedToDo.getId());
 
 		Assertions.assertEquals(addedToDo, getToDo, "ToDos do not match.");
 
 		addedToDo.setCompleted(true);
+		getToDo = toDoController.updateToDo(addedToDo.getId(), addedToDo);
 
-		toDoController.updateToDo(addedToDo.getId(), addedToDo);
-
-		getToDo = toDoController.getToDo(addedToDo.getId());
 		Assertions.assertEquals(addedToDo, getToDo, "ToDo was not updated.");
 	}
 

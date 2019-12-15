@@ -19,6 +19,22 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  void deleteAllUsers() {
+    List<User> users = userRepository.findAll();
+
+    users.forEach(user -> userRepository.delete(user));
+  }
+
+  User getUserByEmail(String email) {
+    return userRepository.findByEmail(email)
+        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", email)));
+  }
+
+  User getUserByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
+  }
+
   User saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
@@ -28,27 +44,11 @@ public class UserService {
         .internalServerError(String.format("%s was not saved.", user.getUsername())));
   }
 
-  void deleteAllUsers() {
-    List<User> users = userRepository.findAll();
-
-    users.forEach(user -> userRepository.delete(user));
-  }
-
-  User getUserByUsername(String username) {
-    return userRepository.findByUsername(username)
-        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
-  }
-
-  User getUserByEmail(String email) {
-    return userRepository.findByEmail(email)
-        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", email)));
-  }
-
   User updateUserById(String userId, User updatedUser) {
     User oldUser = userRepository.findById(userId)
         .orElseThrow(() -> Exceptions.notFound(String.format("%s not found", userId)));
 
-    updatedUser.setUserId(oldUser.getUserId());
+    oldUser.update(updatedUser);
 
     return userRepository.save(updatedUser);
   }

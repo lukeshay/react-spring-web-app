@@ -15,7 +15,7 @@ import java.util.List;
 class ToDoServiceTest {
 
 	@Autowired
-	ToDoService toDoService;
+	private ToDoService toDoService;
 
 	@Test
 	void addToDoTest() {
@@ -65,16 +65,15 @@ class ToDoServiceTest {
 	@Test
 	void updateToDoTest() {
 		ToDo addedToDo = new ToDo("id", "text", false);
-		toDoService.saveToDo(addedToDo);
+		addedToDo = toDoService.saveToDo(addedToDo);
+		addedToDo.setPersistable(true);
 		ToDo getToDo = toDoService.getToDo(addedToDo.getId());
 
 		Assertions.assertEquals(addedToDo, getToDo, "ToDos do not match.");
 
 		addedToDo.setCompleted(true);
+		getToDo = toDoService.updateToDo(addedToDo.getId(), addedToDo);
 
-		toDoService.updateToDo(addedToDo.getId(), addedToDo);
-
-		getToDo = toDoService.getToDo(addedToDo.getId());
 		Assertions.assertEquals(addedToDo, getToDo, "ToDo was not updated.");
 	}
 
