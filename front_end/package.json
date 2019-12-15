@@ -1,6 +1,6 @@
 {
   "name": "front_end",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "homepage": "http://lukeshay.com",
   "dependencies": {
@@ -26,8 +26,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format && yarn lint:fix",
-      "pre-push": "yarn format && yarn lint"
+      "pre-commit": "yarn format && yarn lint:fix"
     }
   },
   "eslintConfig": {
