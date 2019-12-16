@@ -17,8 +17,8 @@ public class Exceptions {
     return responseStatusException(HttpStatus.BAD_REQUEST, message);
   }
 
-  private static ResponseStatusException responseStatusException(HttpStatus httpStatus,
-      String message) {
+  private static ResponseStatusException responseStatusException(
+      HttpStatus httpStatus, String message) {
     return new ResponseStatusException(httpStatus, message);
   }
 }

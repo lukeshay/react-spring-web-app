@@ -37,29 +37,39 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     assert credentials != null;
-    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        credentials.getUsername(),
-        credentials.getPassword(),
-        new ArrayList<>());
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(
+            credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
 
     return authenticationManager.authenticate(authenticationToken);
   }
 
   @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-      FilterChain chain, Authentication authResult) throws IOException, ServletException {
+  protected void successfulAuthentication(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      Authentication authResult)
+      throws IOException, ServletException {
     MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
-    String token = JWT.create()
-        .withSubject(principal.getUsername())
-        .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
-        .sign(HMAC512(JwtProperties.SECRET.getBytes()));
+    String token =
+        JWT.create()
+            .withSubject(principal.getUsername())
+            .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+            .sign(HMAC512(JwtProperties.SECRET.getBytes()));
 
     response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
-    response.getWriter().write(
-        "{\"" + JwtProperties.HEADER_STRING + "\":\"" + JwtProperties.TOKEN_PREFIX + token + "\"}"
-    );
+    response
+        .getWriter()
+        .write(
+            "{\""
+                + JwtProperties.HEADER_STRING
+                + "\":\""
+                + JwtProperties.TOKEN_PREFIX
+                + token
+                + "\"}");
   }
 }

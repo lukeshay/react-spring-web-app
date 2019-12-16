@@ -27,11 +27,13 @@ public class MyUserDetailsService implements UserDetailsService {
    * @param username the username identifying the user whose data is required.
    * @return a fully populated user record (never <code>null</code>)
    * @throws UsernameNotFoundException if the user could not be found or the user has no
-   *                                   GrantedAuthority
+   *     GrantedAuthority
    */
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return new MyUserDetails(userRepository.findByUsername(username)
-        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username))));
+    return new MyUserDetails(
+        userRepository
+            .findByUsername(username)
+            .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username))));
   }
 }

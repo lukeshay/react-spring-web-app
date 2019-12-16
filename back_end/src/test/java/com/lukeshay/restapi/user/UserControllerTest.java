@@ -12,22 +12,27 @@ import org.springframework.web.server.ResponseStatusException;
 @AutoConfigureDataMongo
 class UserControllerTest {
 
-  @Autowired
-  private PublicUserController publicUserController;
+  @Autowired private PublicUserController publicUserController;
 
-  @Autowired
-  private PrivateUserController privateUserController;
+  @Autowired private PrivateUserController privateUserController;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   private User testUser;
 
   @BeforeEach
   void setUp() {
     userRepository.deleteAll();
-    testUser = new User("TestUser", "Test", "User", "test.user@email.com", "1111111111", "Iowa",
-        "USA", "password");
+    testUser =
+        new User(
+            "TestUser",
+            "Test",
+            "User",
+            "test.user@email.com",
+            "1111111111",
+            "Iowa",
+            "USA",
+            "password");
     testUser = userRepository.save(testUser);
   }
 
@@ -45,9 +50,16 @@ class UserControllerTest {
 
   @Test
   void createUserTest() {
-    User testUserTwo = new User("TestUserTwo", "Test", "User", "test.user.two@email.com",
-        "1111111111", "Iowa",
-        "USA", "password");
+    User testUserTwo =
+        new User(
+            "TestUserTwo",
+            "Test",
+            "User",
+            "test.user.two@email.com",
+            "1111111111",
+            "Iowa",
+            "USA",
+            "password");
     testUserTwo.setLastName("User");
 
     User getUser = publicUserController.createUser(testUserTwo);
@@ -58,13 +70,17 @@ class UserControllerTest {
 
   @Test
   void createUserDuplicateTest() {
-    Assertions.assertThrows(ResponseStatusException.class,
-        () -> publicUserController.createUser(testUser), "Did not throw email taken error.");
+    Assertions.assertThrows(
+        ResponseStatusException.class,
+        () -> publicUserController.createUser(testUser),
+        "Did not throw email taken error.");
 
     testUser.setEmail("testtest@email.com");
 
-    Assertions.assertThrows(ResponseStatusException.class,
-        () -> publicUserController.createUser(testUser), "Did not throw username taken error.");
+    Assertions.assertThrows(
+        ResponseStatusException.class,
+        () -> publicUserController.createUser(testUser),
+        "Did not throw username taken error.");
   }
 
   @Test
@@ -79,5 +95,4 @@ class UserControllerTest {
 
     Assertions.assertEquals(testUser, updatedUser, "The user was not updated correctly.");
   }
-
 }

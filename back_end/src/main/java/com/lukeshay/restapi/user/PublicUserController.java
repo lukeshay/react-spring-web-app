@@ -28,9 +28,14 @@ public class PublicUserController {
 
   @PostMapping("")
   public User createUser(@RequestBody User user) {
-    if (user.getUsername() != null && user.getFirstName() != null && user.getLastName() != null
-        && user.getEmail() != null && user.getPhoneNumber() != null && user.getState() != null
-        && user.getCountry() != null && user.getPassword() != null) {
+    if (user.getUsername() != null
+        && user.getFirstName() != null
+        && user.getLastName() != null
+        && user.getEmail() != null
+        && user.getPhoneNumber() != null
+        && user.getState() != null
+        && user.getCountry() != null
+        && user.getPassword() != null) {
 
       LOG.debug("Creating new user: {}", user.getUsername());
 
@@ -45,14 +50,17 @@ public class PublicUserController {
       user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));
       userRepository.save(user);
 
-      return userRepository.findByUsername(user.getUsername()).orElseThrow(() -> Exceptions
-          .internalServerError(String.format("%s was not saved.", user.getUsername())));
+      return userRepository
+          .findByUsername(user.getUsername())
+          .orElseThrow(
+              () ->
+                  Exceptions.internalServerError(
+                      String.format("%s was not saved.", user.getUsername())));
 
     } else {
       LOG.warn("Error creating new user: {}", user.toString());
 
       throw Exceptions.badRequest("Missing a field.");
     }
-
   }
 }

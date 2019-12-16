@@ -37,7 +37,8 @@ public class PrivateUserController {
   public User getUserByUsername(@PathParam(value = "username") String username) {
     LOG.debug("Getting user: {}", username);
 
-    return userRepository.findByUsername(username)
+    return userRepository
+        .findByUsername(username)
         .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
   }
 
@@ -45,16 +46,20 @@ public class PrivateUserController {
   public User getUserByEmail(@PathParam(value = "email") String email) {
     LOG.debug("Getting user: {}", email);
 
-    return userRepository.findByEmail(email)
+    return userRepository
+        .findByEmail(email)
         .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", email)));
   }
 
   @PutMapping(value = "", params = "userId")
-  public User updateUserById(@PathParam(value = "userId") String userId, @RequestBody User updatedUser) {
+  public User updateUserById(
+      @PathParam(value = "userId") String userId, @RequestBody User updatedUser) {
     LOG.debug("Updating user {} to: {}", userId, updatedUser.toString());
 
-    User oldUser = userRepository.findById(userId)
-        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found", userId)));
+    User oldUser =
+        userRepository
+            .findById(userId)
+            .orElseThrow(() -> Exceptions.notFound(String.format("%s not found", userId)));
 
     oldUser.update(updatedUser);
 

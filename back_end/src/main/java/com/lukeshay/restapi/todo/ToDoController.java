@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * The type To-do controller.
- */
+/** The type To-do controller. */
 @RestController
 @RequestMapping("/todos")
 public class ToDoController {
@@ -69,9 +67,12 @@ public class ToDoController {
     }
 
     toDoRepository.save(newToDo);
-    return toDoRepository.findById(newToDo.getId())
-        .orElseThrow(() -> Exceptions
-            .notFound(String.format("Could not find todo after save id: %s", newToDo.getId())));
+    return toDoRepository
+        .findById(newToDo.getId())
+        .orElseThrow(
+            () ->
+                Exceptions.notFound(
+                    String.format("Could not find todo after save id: %s", newToDo.getId())));
   }
 
   /**
@@ -84,7 +85,8 @@ public class ToDoController {
   public ToDo getToDo(@PathVariable String toDoId) {
     LOG.debug("Getting to-do: {}", toDoId);
 
-    return toDoRepository.findById(toDoId)
+    return toDoRepository
+        .findById(toDoId)
         .orElseThrow(
             () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
   }
@@ -99,9 +101,11 @@ public class ToDoController {
   public ToDo deleteToDo(@PathVariable String toDoId) {
     LOG.debug("Deleting to-do: {}", toDoId);
 
-    ToDo deletedToDo = toDoRepository.findById(toDoId)
-        .orElseThrow(
-            () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
+    ToDo deletedToDo =
+        toDoRepository
+            .findById(toDoId)
+            .orElseThrow(
+                () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
 
     toDoRepository.deleteById(toDoId);
     return deletedToDo;
@@ -110,7 +114,7 @@ public class ToDoController {
   /**
    * Update to-do to-do.
    *
-   * @param toDoId      the to-do id
+   * @param toDoId the to-do id
    * @param updatedToDo the updated to-do
    * @return the to-do
    */
@@ -118,16 +122,21 @@ public class ToDoController {
   public ToDo updateToDo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
     LOG.debug("Updating to-do {} to: {}", toDoId, updatedToDo.toString());
 
-    ToDo toUpdate = toDoRepository.findById(toDoId)
-        .orElseThrow(
-            () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
+    ToDo toUpdate =
+        toDoRepository
+            .findById(toDoId)
+            .orElseThrow(
+                () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
 
     toUpdate.update(updatedToDo);
 
     toDoRepository.save(toUpdate);
 
-    return toDoRepository.findById(toDoId)
-        .orElseThrow(() -> Exceptions
-            .notFound(String.format("Could not find todo after save id: %s", toDoId)));
+    return toDoRepository
+        .findById(toDoId)
+        .orElseThrow(
+            () ->
+                Exceptions.notFound(
+                    String.format("Could not find todo after save id: %s", toDoId)));
   }
 }
