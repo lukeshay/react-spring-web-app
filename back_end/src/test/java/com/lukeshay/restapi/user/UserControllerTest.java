@@ -9,10 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @AutoConfigureDataMongo
-class UserServiceTest {
+class UserControllerTest {
 
   @Autowired
-  private UserService userService;
+  private PublicUserController publicUserController;
+
+  @Autowired
+  private PrivateUserController privateUserController;
 
   @Autowired
   private UserRepository userRepository;
@@ -29,26 +32,23 @@ class UserServiceTest {
 
   @Test
   void getUserByEmailTest() {
-    User getUser = userService.getUserByEmail(testUser.getEmail());
-
-    System.out.println(getUser.toString());
-    System.out.println(testUser.toString());
-
+    User getUser = privateUserController.getUserByEmail(testUser.getEmail());
     Assertions.assertEquals(testUser, getUser, "Users are not the same.");
   }
 
   @Test
   void getUserByUsernameTest() {
-    User getUser = userService.getUserByUsername(testUser.getUsername());
+    User getUser = privateUserController.getUserByUsername(testUser.getUsername());
     Assertions.assertEquals(testUser, getUser, "Users are not the same.");
   }
 
   @Test
-  void saveUserTest() {
+  void createUserTest() {
     User testUserTwo = new User("TestUserTwo", "Test", "User", "test.user.two@email.com", "1111111111", "Iowa",
         "USA", "password");
+    testUserTwo.setLastName("User");
 
-    User getUser = userService.saveUser(testUserTwo);
+    User getUser = publicUserController.createUser(testUserTwo);
     testUserTwo = userRepository.findByUsername(testUserTwo.getUsername()).get();
 
     Assertions.assertEquals(testUserTwo, getUser, "User was not saved correctly.");
@@ -62,7 +62,7 @@ class UserServiceTest {
     testUser.setPassword("changed");
     testUser.setPersistable(true);
 
-    User updatedUser = userService.updateUserById(testUser.getUserId(), testUser);
+    User updatedUser = privateUserController.updateUserById(testUser.getUserId(), testUser);
 
     Assertions.assertEquals(testUser, updatedUser, "The user was not updated correctly.");
   }
