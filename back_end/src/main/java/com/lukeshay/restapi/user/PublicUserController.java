@@ -34,6 +34,12 @@ public class PublicUserController {
 
       LOG.debug("Creating new user: {}", user.getUsername());
 
+      if (userRepository.findByEmail(user.getEmail()).orElse(null) != null) {
+        throw Exceptions.badRequest("Email is taken.");
+      } else if (userRepository.findByUsername(user.getUsername()).orElse(null) != null) {
+        throw Exceptions.badRequest("Username is taken.");
+      }
+
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
       user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -44,7 +45,8 @@ class UserControllerTest {
 
   @Test
   void createUserTest() {
-    User testUserTwo = new User("TestUserTwo", "Test", "User", "test.user.two@email.com", "1111111111", "Iowa",
+    User testUserTwo = new User("TestUserTwo", "Test", "User", "test.user.two@email.com",
+        "1111111111", "Iowa",
         "USA", "password");
     testUserTwo.setLastName("User");
 
@@ -52,6 +54,17 @@ class UserControllerTest {
     testUserTwo = userRepository.findByUsername(testUserTwo.getUsername()).get();
 
     Assertions.assertEquals(testUserTwo, getUser, "User was not saved correctly.");
+  }
+
+  @Test
+  void createUserDuplicateTest() {
+    Assertions.assertThrows(ResponseStatusException.class,
+        () -> publicUserController.createUser(testUser), "Did not throw email taken error.");
+
+    testUser.setEmail("testtest@email.com");
+
+    Assertions.assertThrows(ResponseStatusException.class,
+        () -> publicUserController.createUser(testUser), "Did not throw username taken error.");
   }
 
   @Test
