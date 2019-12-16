@@ -9,6 +9,7 @@ import {
   deleteToDo
 } from "../../actions/toDo/toDoActions";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function ToDoPage() {
   const [loading, setLoading] = useState(true);
@@ -69,15 +70,21 @@ function ToDoPage() {
 
   async function onAddClick() {
     if (adding && newToDo.text !== "") {
-      saveToDo(newToDo);
+      const response = await saveToDo(newToDo);
 
-      setNewToDo({
-        userId: currentUser.userId,
-        text: "",
-        completed: false
-      });
+      if (response.status === 200) {
+        setNewToDo({
+          userId: currentUser.userId,
+          text: "",
+          completed: false
+        });
+        setAdding(false);
+      } else {
+        toast.error("There was an error saving your to-do.");
+      }
+    } else {
+      setAdding(!adding);
     }
-    setAdding(!adding);
   }
 
   async function onInputChange({ target }) {

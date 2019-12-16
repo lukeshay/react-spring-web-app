@@ -5,6 +5,7 @@ import BlueButton from "../../common/buttons/BlueButton.jsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { signIn } from "../../../actions/user/userActions";
+import { toast } from "react-toastify";
 
 function LogInForm(props) {
   const [email, setEmail] = useState("");
@@ -23,7 +24,17 @@ function LogInForm(props) {
   }
 
   async function handleSubmit() {
-    signIn(email, password);
+    const response = await signIn(email, password);
+
+    if (response.status === 401) {
+      setPasswordMessage(
+        "User not found or incorrect password. Try a different username or password."
+      );
+    } else if (response.status === 200) {
+      setPasswordMessage("");
+    } else {
+      setPasswordMessage("There was an error. Please try again.");
+    }
   }
 
   return (

@@ -83,7 +83,7 @@ function SignUpForm(props) {
   }, [phoneNumber]);
 
   async function handleSubmit() {
-    userActions.createUser({
+    const response = await userActions.createUser({
       firstName,
       lastName,
       password,
@@ -93,6 +93,13 @@ function SignUpForm(props) {
       country: "",
       state: ""
     });
+
+    console.log(response.url.split("/"[3]));
+
+    if (response.url.split("/")[3])
+      if (response.status !== 200) {
+        toast.error("There was an error.");
+      }
   }
 
   return (

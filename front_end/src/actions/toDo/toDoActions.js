@@ -3,28 +3,44 @@ import * as toDoApi from "../../rest-api/toDoRestApi";
 import actionTypes from "./actionTypes";
 
 export async function loadUsersToDos(userId) {
-  const toDos = await toDoApi.getUsersToDos(userId);
+  const response = await toDoApi.getUsersToDos(userId);
 
-  dispatcher.dispatch({
-    actionType: actionTypes.LOAD_TODOS,
-    toDos: toDos
-  });
+  if (response.ok) {
+    const body = await response.json();
+
+    dispatcher.dispatch({
+      actionType: actionTypes.LOAD_TODOS,
+      toDos: body
+    });
+  }
+
+  return response;
 }
 
 export async function saveToDo(toDo) {
-  const savedToDo = await toDoApi.saveToDo(toDo);
+  const response = await toDoApi.saveToDo(toDo);
 
-  dispatcher.dispatch({
-    actionType: toDo.id ? actionTypes.UPDATE_TODO : actionTypes.CREATE_TODO,
-    toDo: savedToDo
-  });
+  if (response.ok) {
+    const body = await response.json();
+
+    dispatcher.dispatch({
+      actionType: toDo.id ? actionTypes.UPDATE_TODO : actionTypes.CREATE_TODO,
+      toDo: body
+    });
+  }
+
+  return response;
 }
 
 export async function deleteToDo(id) {
-  await toDoApi.deleteToDo(id);
+  const response = await toDoApi.deleteToDo(id);
 
-  dispatcher.dispatch({
-    actionType: actionTypes.DELETE_TODO,
-    id: id
-  });
+  if (response.ok) {
+    dispatcher.dispatch({
+      actionType: actionTypes.DELETE_TODO,
+      id: id
+    });
+  }
+
+  return response;
 }

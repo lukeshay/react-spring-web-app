@@ -10,23 +10,36 @@ export async function signOut() {
 }
 
 export async function signIn(username, password) {
-  const token = await UserApi.signIn(username, password);
-  const jwtToken = token.Authorization;
+  const signInResponse = await UserApi.signIn(username, password);
 
-  Cookies.setJwtToken(token.Authorization);
+  if (!signInResponse.ok) return signInResponse;
 
-  const _user = await UserApi.getUser(username);
+  const signInBody = await signInResponse.json();
+  const jwtToken = signInBody.Authorization;
 
-  Cookies.setUsername(_user.username);
-  Cookies.setUserId(_user.userId);
+  Cookies.setJwtToken(jwtToken);
 
-  dispatcher.dispatch({
-    actionType: actionTypes.SIGN_IN,
-    user: { ..._user, jwtToken }
-  });
+  const getUserResponse = await UserApi.getUser(username);
+
+  if (getUserResponse.ok) {
+    const getUserBody = await getUserResponse.json();
+
+    Cookies.setUsername(getUserBody.username);
+    Cookies.setUserId(getUserBody.userId);
+
+    dispatcher.dispatch({
+      actionType: actionTypes.SIGN_IN,
+      user: { ...getUserBody, jwtToken }
+    });
+  }
+
+  return getUserResponse;
 }
 
 export async function createUser(newUser) {
-  await UserApi.createUser(newUser);
-  await signIn(newUser.username, newUser.password);
+  const createUserResponse = await UserApi.createUser(newUser);
+
+  return createUserResponse.ok
+    ? await signIn(newUser.username, newUser.password)
+    : createUserResponse;
 }
