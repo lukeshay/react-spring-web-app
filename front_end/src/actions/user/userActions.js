@@ -14,18 +14,22 @@ export async function signIn(username, password) {
 
   if (!signInResponse.ok) return signInResponse;
 
-  const jwtToken = signInResponse.json().Authorization;
+  const signInBody = await signInResponse.json();
+  const jwtToken = signInBody.Authorization;
+
   Cookies.setJwtToken(jwtToken);
 
   const getUserResponse = await UserApi.getUser(username);
 
   if (getUserResponse.ok) {
-    Cookies.setUsername(getUserResponse.json().username);
-    Cookies.setUserId(getUserResponse.json().userId);
+    const getUserBody = await getUserResponse.json();
+
+    Cookies.setUsername(getUserBody.username);
+    Cookies.setUserId(getUserBody.userId);
 
     dispatcher.dispatch({
       actionType: actionTypes.SIGN_IN,
-      user: { ...getUserResponse.json(), jwtToken }
+      user: { ...getUserBody, jwtToken }
     });
   }
 
