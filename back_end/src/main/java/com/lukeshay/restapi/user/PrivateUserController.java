@@ -1,5 +1,7 @@
 package com.lukeshay.restapi.user;
 
+import com.lukeshay.restapi.utils.Exceptions;
+import java.util.List;
 import javax.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,34 +17,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class PrivateUserController {
   private static Logger LOG = LoggerFactory.getLogger(PrivateUserController.class.getName());
-  private UserService userService;
+
+  private UserRepository userRepository;
 
   @Autowired
-  public PrivateUserController(UserService userService) {
-    this.userService = userService;
+  public PrivateUserController(UserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 
   @DeleteMapping("")
   public void deleteAllUsers() {
     LOG.debug("Deleting all users");
-    userService.deleteAllUsers();
+
+    List<User> users = userRepository.findAll();
+    users.forEach(user -> userRepository.delete(user));
   }
 
   @GetMapping(value = "", params = "username")
   public User getUserByUsername(@PathParam(value = "username") String username) {
     LOG.debug("Getting user: {}", username);
-    return userService.getUserByUsername(username);
+
+    return userRepository
+        .findByUsername(username)
+        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
   }
 
   @GetMapping(value = "", params = "email")
   public User getUserByEmail(@PathParam(value = "email") String email) {
     LOG.debug("Getting user: {}", email);
-    return userService.getUserByEmail(email);
+
+    return userRepository
+        .findByEmail(email)
+        .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", email)));
   }
 
   @PutMapping(value = "", params = "userId")
-  public User updateUserById(@PathParam(value = "userId") String userId, @RequestBody User updatedUser) {
+  public User updateUserById(
+      @PathParam(value = "userId") String userId, @RequestBody User updatedUser) {
     LOG.debug("Updating user {} to: {}", userId, updatedUser.toString());
-    return userService.updateUserById(userId, updatedUser);
+
+    User oldUser =
+        userRepository
+            .findById(userId)
+            .orElseThrow(() -> Exceptions.notFound(String.format("%s not found", userId)));
+
+    oldUser.update(updatedUser);
+
+    return userRepository.save(updatedUser);
   }
 }

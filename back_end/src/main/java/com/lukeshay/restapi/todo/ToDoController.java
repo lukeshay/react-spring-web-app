@@ -1,5 +1,6 @@
 package com.lukeshay.restapi.todo;
 
+import com.lukeshay.restapi.utils.Exceptions;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,24 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * The type To-do controller.
- */
+/** The type To-do controller. */
 @RestController
 @RequestMapping("/todos")
 public class ToDoController {
   private static Logger LOG = LoggerFactory.getLogger(ToDoController.class.getName());
 
-  private ToDoService toDoService;
+  private ToDoRepository toDoRepository;
 
   /**
    * Instantiates a new To-do controller.
    *
-   * @param toDoService the to-do service
+   * @param toDoRepository the to-do repository
    */
   @Autowired
-  public ToDoController(ToDoService toDoService) {
-    this.toDoService = toDoService;
+  public ToDoController(ToDoRepository toDoRepository) {
+    this.toDoRepository = toDoRepository;
   }
 
   /**
@@ -42,13 +41,15 @@ public class ToDoController {
   @GetMapping("/{userId}")
   public List<ToDo> getAllToDos(@PathVariable String userId) {
     LOG.debug("Getting user {} to-do's.", userId);
-    return toDoService.getAllToDosFromUser(userId);
+
+    return toDoRepository.findAllByUserId(userId);
   }
 
   @GetMapping("/all")
   public List<ToDo> getEveryonesToDos() {
     LOG.debug("Getting all to-dos");
-    return toDoService.getAllToDos();
+
+    return toDoRepository.findAll();
   }
 
   /**
@@ -60,7 +61,18 @@ public class ToDoController {
   @PostMapping("")
   public ToDo addToDo(@RequestBody ToDo newToDo) {
     LOG.debug("Adding to-do: {}", newToDo.toString());
-    return toDoService.saveToDo(newToDo);
+
+    if (newToDo.getId() != null) {
+      throw Exceptions.badRequest("Todo should not have an id.");
+    }
+
+    toDoRepository.save(newToDo);
+    return toDoRepository
+        .findById(newToDo.getId())
+        .orElseThrow(
+            () ->
+                Exceptions.notFound(
+                    String.format("Could not find todo after save id: %s", newToDo.getId())));
   }
 
   /**
@@ -72,7 +84,11 @@ public class ToDoController {
   @PostMapping("/{toDoId}")
   public ToDo getToDo(@PathVariable String toDoId) {
     LOG.debug("Getting to-do: {}", toDoId);
-    return toDoService.getToDo(toDoId);
+
+    return toDoRepository
+        .findById(toDoId)
+        .orElseThrow(
+            () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
   }
 
   /**
@@ -84,19 +100,43 @@ public class ToDoController {
   @DeleteMapping("/{toDoId}")
   public ToDo deleteToDo(@PathVariable String toDoId) {
     LOG.debug("Deleting to-do: {}", toDoId);
-    return toDoService.deleteToDo(toDoId);
+
+    ToDo deletedToDo =
+        toDoRepository
+            .findById(toDoId)
+            .orElseThrow(
+                () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
+
+    toDoRepository.deleteById(toDoId);
+    return deletedToDo;
   }
 
   /**
    * Update to-do to-do.
    *
-   * @param toDoId      the to-do id
+   * @param toDoId the to-do id
    * @param updatedToDo the updated to-do
    * @return the to-do
    */
   @PutMapping("/{toDoId}")
   public ToDo updateToDo(@PathVariable String toDoId, @RequestBody ToDo updatedToDo) {
     LOG.debug("Updating to-do {} to: {}", toDoId, updatedToDo.toString());
-    return toDoService.updateToDo(toDoId, updatedToDo);
+
+    ToDo toUpdate =
+        toDoRepository
+            .findById(toDoId)
+            .orElseThrow(
+                () -> Exceptions.notFound(String.format("Could not find todo id: %s", toDoId)));
+
+    toUpdate.update(updatedToDo);
+
+    toDoRepository.save(toUpdate);
+
+    return toDoRepository
+        .findById(toDoId)
+        .orElseThrow(
+            () ->
+                Exceptions.notFound(
+                    String.format("Could not find todo after save id: %s", toDoId)));
   }
 }

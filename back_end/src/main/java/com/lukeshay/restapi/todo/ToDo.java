@@ -10,23 +10,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * The type Todo.
- */
+/** The type Todo. */
 @Getter
 @Setter
 @NoArgsConstructor
 @Document
 public class ToDo implements Persistable<String> {
 
-  @Id
-  private String id;
+  @Id private String id;
 
-  @CreatedDate
-  private String createdDate;
+  @CreatedDate private String createdDate;
 
-  @LastModifiedDate
-  private String modifiedDate;
+  @LastModifiedDate private String modifiedDate;
 
   private String userId;
   private String text;
@@ -37,8 +32,8 @@ public class ToDo implements Persistable<String> {
   /**
    * Instantiates a new To-do.
    *
-   * @param userId    the user id
-   * @param text      the text
+   * @param userId the user id
+   * @param text the text
    * @param completed the completed
    */
   public ToDo(String userId, String text, boolean completed) {
@@ -51,8 +46,8 @@ public class ToDo implements Persistable<String> {
   /**
    * Instantiates a new To-do.
    *
-   * @param userId    the user id
-   * @param text      the text
+   * @param userId the user id
+   * @param text the text
    * @param completed the completed
    */
   public ToDo(String userId, String text, boolean completed, String dueDate) {
