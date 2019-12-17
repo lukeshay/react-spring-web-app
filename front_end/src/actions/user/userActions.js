@@ -29,7 +29,7 @@ export async function signIn(username, password) {
 
     dispatcher.dispatch({
       actionType: actionTypes.SIGN_IN,
-      user: { ...getUserBody, jwtToken }
+      user: getUserBody
     });
   }
 
@@ -42,4 +42,17 @@ export async function createUser(newUser) {
   return createUserResponse.ok
     ? await signIn(newUser.username, newUser.password)
     : createUserResponse;
+}
+
+export async function updateUser(updatedUser) {
+  const updateUserResponse = await UserApi.updateUser(updatedUser);
+
+  if (updateUserResponse.ok) {
+    const updatedUserBody = await updateUserResponse.json();
+
+    dispatcher.dispatch({
+      actionType: actionTypes.UPDATE_USER,
+      user: updatedUserBody
+    });
+  }
 }

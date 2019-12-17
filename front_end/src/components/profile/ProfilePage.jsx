@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { lazy } from "@loadable/component";
 import userStore from "../../stores/userStore";
 
-const SignUpForm = lazy(() => import("./signupform/SignUpForm.jsx"));
-const SignInForm = lazy(() => import("./signinform/SignInForm.jsx"));
+const SignUpForm = lazy(() => import("./forms/SignUpForm.jsx"));
+const SignInForm = lazy(() => import("./forms/SignInForm.jsx"));
+const ProfileForm = lazy(() => import("./forms/ProfileForm.jsx"));
 
 function ProfilePage() {
   const [createAccount, setCreateAccount] = useState(true);
@@ -19,11 +20,13 @@ function ProfilePage() {
     setCurrentUser(userStore.getUser());
   };
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = async event => {
+    event.preventDefault();
     setCreateAccount(false);
   };
 
-  const handleSignUpClick = async () => {
+  const handleSignUpClick = async event => {
+    event.preventDefault();
     setCreateAccount(true);
   };
 
@@ -31,7 +34,7 @@ function ProfilePage() {
     return <SignUpForm handleLogInClick={handleLoginClick} />;
   else if (!currentUser.email && !createAccount)
     return <SignInForm handleSignUpClick={handleSignUpClick} />;
-  else if (currentUser) return <h1>Coming soon! {currentUser.email}</h1>;
+  else if (currentUser) return <ProfileForm />;
 }
 
 export default ProfilePage;

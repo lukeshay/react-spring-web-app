@@ -45,3 +45,17 @@ export async function createUser(user) {
     })
     .catch(handleError);
 }
+
+export async function updateUser(user) {
+  const token = Cookies.getJwtToken();
+
+  return fetch(userUrl + "?userId=" + user.userId, {
+    method: "PUT",
+    body: JSON.stringify(user),
+    headers: { Authorization: token }
+  })
+    .then(response => {
+      return response;
+    })
+    .catch(handleError);
+}
