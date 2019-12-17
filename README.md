@@ -1,3 +1,5 @@
+# Table of Contents
+
 - [React Spring Web App](#react-spring-web-app)
 - [Directions](#directions)
   - [Pre-requisites](#pre-requisites)
@@ -16,6 +18,7 @@ As I learn ReactJS, I am going to be working on this web app. My plans are to ma
 -   Node
 -   npm
 -   java 8
+  -  Open source is alpha
 -   docker
 -   docker-compose
 -   linux machine
@@ -24,11 +27,9 @@ As I learn ReactJS, I am going to be working on this web app. My plans are to ma
 ## Front End
 
 1. After cloning the repository, cd into the front end folder
-2. Run 'npm i'
-3. Run 'npm start'
-4. This will run the development version
-
-\*note: Currently rest calls are not working
+2. Run `yarn start` to run the development server
+3. Run `yarn build` to generate the production build
+4. run `./pm2StartScript` to build and serve using pm2
 
 ## Back End
 
@@ -40,3 +41,7 @@ As I learn ReactJS, I am going to be working on this web app. My plans are to ma
 # Digital Ocean Referral
 
 [Digital Ocean](https://m.do.co/c/17eeaaa0e7fb)
+
+# Contributions
+
+If you would like to contribute please send me an email at shay.luke17@gmail.com. If you do not personally want to commit, but have a suggestion, please leave an [issue](https://github.com/LukeShay/react_spring_web_app/issues) using the correct template.
