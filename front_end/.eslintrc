@@ -1,6 +1,6 @@
 {
   "extends": ["eslint:recommended", "prettier", "prettier/react"],
-  "plugins": ["prettier", "import"],
+  "plugins": ["prettier", "import", "react-hooks"],
   "env": {
     "browser": true,
     "jest": true,
@@ -18,7 +18,9 @@
     "import/first": "error",
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
-    "import/newline-after-import": "error"
+    "import/newline-after-import": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "parser": "babel-eslint"
 }
