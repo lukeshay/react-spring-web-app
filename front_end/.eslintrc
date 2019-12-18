@@ -1,6 +1,7 @@
 {
   "extends": ["eslint:recommended", "prettier", "prettier/react"],
   "plugins": ["prettier", "import"],
+  "ignorePatterns": ["dist", "node_modules"],
   "env": {
     "browser": true,
     "jest": true,
