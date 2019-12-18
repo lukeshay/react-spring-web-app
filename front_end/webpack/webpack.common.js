@@ -1,11 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { ProvidePlugin } = require("webpack");
+const { ProvidePlugin, HotModuleReplacementPlugin } = require("webpack");
 
 module.exports = {
   entry: {
-    index: "./src/index.jsx"
+    index: "./src/index.tsx"
   },
   output: {
     path: path.resolve(__dirname, "../", "dist"),
@@ -33,6 +33,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       filename: "./index.html"

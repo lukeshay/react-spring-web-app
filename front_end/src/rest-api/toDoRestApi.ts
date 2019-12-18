@@ -4,19 +4,21 @@ import { ToDo } from "../models";
 
 const baseUrl = process.env.BASE_URL + "todos/";
 
-export function getUsersToDos(userId: string) {
+export async function getUsersToDos(userId: string): Promise<void | Response> {
   return fetch(baseUrl + userId, {
     headers: {
       Authorization: Cookies.getJwtToken()
     }
   })
-    .then(response => {
-      return response;
-    })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
     .catch(handleError);
 }
 
-export function saveToDo(toDo: ToDo) {
+export async function saveToDo(toDo: ToDo): Promise<void | Response> {
   return fetch(baseUrl + (toDo.id || ""), {
     method: toDo.id ? "PUT" : "POST",
     headers: {
@@ -25,19 +27,23 @@ export function saveToDo(toDo: ToDo) {
     },
     body: JSON.stringify(toDo)
   })
-    .then(response => {
-      return response;
-    })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
     .catch(handleError);
 }
 
-export function deleteToDo(toDoId: string) {
+export async function deleteToDo(toDoId: string): Promise<void | Response> {
   return fetch(baseUrl + toDoId, {
     method: "DELETE",
     headers: { Authorization: Cookies.getJwtToken() }
   })
-    .then(response => {
-      return response;
-    })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
     .catch(handleError);
 }

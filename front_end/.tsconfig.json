@@ -8,7 +8,8 @@
     "target": "es5",
     "allowJs": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "plugins": [{ "name": "typescript-tslint-plugin" }]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
