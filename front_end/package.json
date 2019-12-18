@@ -16,8 +16,8 @@
     "jslint:fix": "eslint --fix .",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
     "tslint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
-    "lint": "yarn jslint || yarn tslint",
-    "lint:fix": "yarn jslint:fix || yarn tslint:fix",
+    "lint": "yarn jslint ; yarn tslint",
+    "lint:fix": "yarn jslint:fix ; yarn tslint:fix",
     "format": "prettier --write \"**/*.+(ts|tsx|js|jsx|json|css|md)\""
   },
   "dependencies": {
