@@ -3,6 +3,23 @@
   "version": "0.4.3",
   "private": true,
   "homepage": "http://lukeshay.com",
+  "main": "src/index.js",
+  "author": "Luke Shay",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --open --hot --config webpack.config.js --env.env=dev",
+    "prebuild": "yarn",
+    "build": "webpack --config webpack.config.js --env.env=prod",
+    "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
+    "deploy": "pm2 serve dist --name web-app -- 3000",
+    "jslint": "eslint .",
+    "jslint:fix": "eslint --fix .",
+    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
+    "tslint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
+    "lint": "yarn jslint || yarn tslint",
+    "lint:fix": "yarn jslint:fix || yarn tslint:fix",
+    "format": "prettier --write \"**/*.+(ts|tsx|js|jsx|json|css|md)\""
+  },
   "dependencies": {
     "@types/node": "^12.12.20",
     "@types/react": "^16.9.16",
@@ -16,18 +33,6 @@
     "react-toastify": "^5.4.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.3"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --open --hot --config webpack.config.js --env.env=dev",
-    "prebuild": "yarn",
-    "build": "webpack --config webpack.config.js --env.env=prod",
-    "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
-    "deploy": "pm2 serve dist --name web-app -- 3000",
-    "jslint": "eslint .",
-    "jslint:fix": "eslint --fix .",
-    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "tslint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
-    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -79,8 +84,5 @@
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2",
     "webpack-visualizer-plugin": "^0.1.11"
-  },
-  "main": "src/index.js",
-  "author": "Luke Shay",
-  "license": "MIT"
+  }
 }
