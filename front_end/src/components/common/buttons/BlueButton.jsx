@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import PropType from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 

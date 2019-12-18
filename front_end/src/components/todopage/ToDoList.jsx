@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import * as React from "react";
 import RedButton from "../common/buttons/RedButton.jsx";
 
 function ToDoList(props) {

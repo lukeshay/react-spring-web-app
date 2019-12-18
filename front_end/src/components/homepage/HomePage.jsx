@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { version } from "../../../package.json";
 

@@ -1,4 +1,5 @@
-import React, { useState, Suspense, useEffect } from "react";
+import { useState, Suspense, useEffect } from "react";
+import * as React from "react";
 import NavigationBar from "./components/navigation/NavigationBar.jsx";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";

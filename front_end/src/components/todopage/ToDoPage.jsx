@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import * as React from "react";
 import ToDoList from "./ToDoList.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import toDoStore from "../../stores/toDoStore";

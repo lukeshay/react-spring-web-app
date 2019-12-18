@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import * as React from "react";
 import { toast } from "react-toastify";
 import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
 import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";

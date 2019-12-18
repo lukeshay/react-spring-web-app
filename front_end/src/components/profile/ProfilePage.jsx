@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import * as React from "react";
 import { lazy } from "@loadable/component";
 import userStore from "../../stores/userStore";
 

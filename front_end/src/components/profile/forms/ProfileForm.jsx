@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import * as React from "react";
 import userStore from "../../../stores/userStore";
 import * as UserActions from "../../../actions/user/userActions";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
