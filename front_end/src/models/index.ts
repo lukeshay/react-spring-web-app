@@ -6,7 +6,7 @@ export interface User {
   email: string;
   country: string;
   state: string;
-  password?: string;
+  password: string;
 }
 
 export interface ToDo {

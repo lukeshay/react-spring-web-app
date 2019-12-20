@@ -1,31 +1,37 @@
 import { EventEmitter } from "events";
 import Dispatcher from "../appDispatcher";
-import actionTypes from "../actions/user/userActionTypes";
+import * as actionTypes from "../actions/user/userActionTypes";
+import { User } from "../models";
+
+export interface ActionInterface {
+  actionType: string;
+  user: User;
+}
 
 const CHANGE_EVENT = "change";
-let _user = {};
+let _user: User = {} as User;
 
 class UserStore extends EventEmitter {
-  addChangeListener(callback) {
+  addChangeListener(callback: any): void {
     this.on(CHANGE_EVENT, callback);
   }
 
-  removeChangeListener(callback) {
+  removeChangeListener(callback: any): void {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-  emitChange() {
+  emitChange(): void {
     this.emit(CHANGE_EVENT);
   }
 
-  getUser() {
+  getUser(): User {
     return _user;
   }
 }
 
 const store = new UserStore();
 
-Dispatcher.register(action => {
+Dispatcher.register((action: ActionInterface) => {
   switch (action.actionType) {
     case actionTypes.SIGN_IN:
       _user = action.user;
@@ -33,12 +39,11 @@ Dispatcher.register(action => {
       break;
 
     case actionTypes.SIGN_OUT:
-      _user = {};
+      _user = {} as User;
       store.emitChange();
       break;
 
     default:
-    // nothing to do here
   }
 });
 

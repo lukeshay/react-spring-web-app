@@ -22,13 +22,6 @@ function ProfileForm() {
 
     setUser(userStore.getUser());
 
-    if (user && user.email) {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setEmail(user.email);
-      setPhoneNumber(user.phoneNumber);
-    }
-
     return () => userStore.removeChangeListener(handleUserChange);
   });
 

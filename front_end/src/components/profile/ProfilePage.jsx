@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import * as React from "react";
-import { lazy } from "@loadable/component";
 import userStore from "../../stores/userStore";
-
-const SignUpForm = lazy(() => import("./forms/SignUpForm.jsx"));
-const SignInForm = lazy(() => import("./forms/SignInForm.jsx"));
-const ProfileForm = lazy(() => import("./forms/ProfileForm.jsx"));
+import SignUpForm from "./forms/SignUpForm.jsx";
+import SignInForm from "./forms/SignInForm.jsx";
+import ProfileForm from "./forms/ProfileForm.jsx";
 
 function ProfilePage() {
   const [createAccount, setCreateAccount] = useState(true);
