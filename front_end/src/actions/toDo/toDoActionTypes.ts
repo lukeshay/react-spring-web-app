@@ -1,4 +1,6 @@
-export const DELETE_TODO = "DELETE_TODO";
-export const CREATE_TODO = "CREATE_TODO";
-export const UPDATE_TODO = "UPDATE_TODO";
-export const LOAD_TODOS = "LOAD_TODOS";
+module.exports = {
+  CREATE_TODO: "CREATE_TODO",
+  DELETE_TODO: "DELETE_TODO",
+  LOAD_TODOS: "LOAD_TODOS",
+  UPDATE_TODO: "UPDATE_TODO"
+};

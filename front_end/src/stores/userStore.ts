@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import * as actionTypes from "../actions/user/userActionTypes";
 import Dispatcher from "../appDispatcher";
-import { User } from "../models";
+import { User } from "../models/index";
 
 export interface ActionInterface {
   actionType: string;

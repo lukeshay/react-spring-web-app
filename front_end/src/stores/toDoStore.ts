@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import * as actionTypes from "../actions/toDo/toDoActionTypes";
 import Dispatcher from "../appDispatcher";
-import { ToDo } from "../models";
+import { ToDo } from "../models/index";
 
 export interface ActionInterface {
   actionType: string;
