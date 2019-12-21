@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import * as React from "react";
-import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
-import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.jsx";
+import InlineTextInput from "../../common/inputs/InlineTextInput.tsx";
+import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.tsx";
 import BlueButton from "../../common/buttons/BlueButton.tsx";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";

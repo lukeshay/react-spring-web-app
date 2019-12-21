@@ -4,7 +4,7 @@ import userStore from "../../../stores/userStore";
 import * as UserActions from "../../../actions/user/userActions";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.tsx";
 import BlueButton from "../../common/buttons/BlueButton.tsx";
-import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
+import InlineTextInput from "../../common/inputs/InlineTextInput.tsx";
 
 function ProfileForm() {
   const [user, setUser] = useState({});
