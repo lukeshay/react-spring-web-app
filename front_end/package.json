@@ -3,9 +3,9 @@
   "version": "0.4.3",
   "private": true,
   "homepage": "http://lukeshay.com",
-  "main": "src/index.js",
+  "main": "src/index.tsx",
   "author": "Luke Shay",
-  "license": "MIT",
+  "license": "LGPL",
   "scripts": {
     "start": "webpack-dev-server --open --hot --config webpack.config.js --env.env=dev",
     "prebuild": "yarn",
@@ -31,6 +31,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
     "react-toastify": "^5.4.1",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-config-standard": "^9.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.3"
   },
@@ -76,6 +78,7 @@
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
     "tslint-react": "^4.1.0",
     "typescript": "^3.7.3",
     "typescript-tslint-plugin": "^0.5.5",

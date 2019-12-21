@@ -1,8 +1,8 @@
 import dispatcher from "../../appDispatcher";
-import * as Types from "./userActionTypes";
+import { User } from "../../models";
 import * as UserApi from "../../rest-api/userRestApi";
 import * as Cookies from "../../utils/cookiesUtils";
-import { User } from "../../models";
+import * as Types from "./userActionTypes";
 
 export async function signOut(): Promise<void> {
   dispatcher.dispatch({

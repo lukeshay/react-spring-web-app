@@ -20,7 +20,7 @@ function SignUpForm(props) {
   const [errorCode, setErrorCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChange = async event => {
+  const handleChange = async (event) => {
     event.preventDefault();
     const { id, value } = event.target;
 

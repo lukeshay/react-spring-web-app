@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import Dispatcher from "../appDispatcher";
 import * as actionTypes from "../actions/toDo/toDoActionTypes";
+import Dispatcher from "../appDispatcher";
 import { ToDo } from "../models";
 
 export interface ActionInterface {
@@ -11,23 +11,23 @@ export interface ActionInterface {
 }
 
 const CHANGE_EVENT = "change";
-let _toDos: ToDo[] = [];
+let toDos: ToDo[] = [];
 
 class ToDoStore extends EventEmitter {
-  addChangeListener(callback: any): void {
+  public addChangeListener(callback: any): void {
     this.on(CHANGE_EVENT, callback);
   }
 
-  removeChangeListener(callback: any): void {
+  public removeChangeListener(callback: any): void {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-  emitChange(): void {
+  public emitChange(): void {
     this.emit(CHANGE_EVENT);
   }
 
-  getToDos(): ToDo[] {
-    return _toDos;
+  public getToDos(): ToDo[] {
+    return toDos;
   }
 }
 
@@ -36,24 +36,24 @@ const store = new ToDoStore();
 Dispatcher.register((action: ActionInterface) => {
   switch (action.actionType) {
     case actionTypes.DELETE_TODO:
-      _toDos = _toDos.filter((toDo: ToDo) => toDo.id !== action.id);
+      toDos = toDos.filter((toDo: ToDo) => toDo.id !== action.id);
       store.emitChange();
       break;
 
     case actionTypes.CREATE_TODO:
-      _toDos.push(action.toDo);
+      toDos.push(action.toDo);
       store.emitChange();
       break;
 
     case actionTypes.UPDATE_TODO:
-      _toDos = _toDos.map((toDo: ToDo) =>
+      toDos = toDos.map((toDo: ToDo) =>
         toDo.id === action.toDo.id ? action.toDo : toDo
       );
       store.emitChange();
       break;
 
     case actionTypes.LOAD_TODOS:
-      _toDos = action.toDos;
+      toDos = action.toDos;
       store.emitChange();
       break;
 

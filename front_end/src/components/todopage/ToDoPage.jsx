@@ -60,7 +60,7 @@ function ToDoPage() {
   }
 
   async function onCheckboxChange({ target }) {
-    var toDoToUpdate = toDos.find(toDo => toDo.id === target.id);
+    var toDoToUpdate = toDos.find((toDo) => toDo.id === target.id);
     toDoToUpdate.completed = !toDoToUpdate.completed;
     saveToDo(toDoToUpdate);
   }

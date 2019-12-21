@@ -1,6 +1,6 @@
-import { handleError } from "./apiUtils";
-import * as Cookies from "../utils/cookiesUtils";
 import { ToDo } from "../models";
+import * as Cookies from "../utils/cookiesUtils";
+import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "todos/";
 
@@ -20,12 +20,12 @@ export async function getUsersToDos(userId: string): Promise<void | Response> {
 
 export async function saveToDo(toDo: ToDo): Promise<void | Response> {
   return fetch(baseUrl + (toDo.id || ""), {
-    method: toDo.id ? "PUT" : "POST",
+    body: JSON.stringify(toDo),
     headers: {
-      "Content-Type": "application/json",
-      Authorization: Cookies.getJwtToken()
+      Authorization: Cookies.getJwtToken(),
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(toDo)
+    method: toDo.id ? "PUT" : "POST"
   })
     .then(
       (response: Response): Response => {
@@ -37,8 +37,8 @@ export async function saveToDo(toDo: ToDo): Promise<void | Response> {
 
 export async function deleteToDo(toDoId: string): Promise<void | Response> {
   return fetch(baseUrl + toDoId, {
-    method: "DELETE",
-    headers: { Authorization: Cookies.getJwtToken() }
+    headers: { Authorization: Cookies.getJwtToken() },
+    method: "DELETE"
   })
     .then(
       (response: Response): Response => {

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const TextInput = props => {
+const TextInput = (props) => {
   return (
     <div className="form-group">
       <label htmlFor={props.id}>{props.label}</label>

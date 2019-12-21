@@ -18,7 +18,7 @@ function ToDoList(props) {
         </tr>
       </thead>
       <tbody>
-        {props.toDos.map(toDo => (
+        {props.toDos.map((toDo) => (
           <tr key={toDo.id}>
             <td>
               <input

@@ -19,12 +19,12 @@ function ProfilePage() {
     setCurrentUser(userStore.getUser());
   };
 
-  const handleLoginClick = async event => {
+  const handleLoginClick = async (event) => {
     event.preventDefault();
     setCreateAccount(false);
   };
 
-  const handleSignUpClick = async event => {
+  const handleSignUpClick = async (event) => {
     event.preventDefault();
     setCreateAccount(true);
   };

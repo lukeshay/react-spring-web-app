@@ -1,7 +1,7 @@
 import dispatcher from "../../appDispatcher";
+import { ToDo } from "../../models";
 import * as toDoApi from "../../rest-api/toDoRestApi";
 import * as Types from "./toDoActionTypes";
-import { ToDo } from "../../models";
 
 export async function loadUsersToDos(userId: string): Promise<void | Response> {
   const response = await toDoApi.getUsersToDos(userId);
