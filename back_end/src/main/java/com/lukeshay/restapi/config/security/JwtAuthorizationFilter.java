@@ -21,15 +21,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
   private UserRepository userRepository;
 
-  JwtAuthorizationFilter(AuthenticationManager authenticationManager,
-      UserRepository userRepository) {
+  JwtAuthorizationFilter(
+      AuthenticationManager authenticationManager, UserRepository userRepository) {
     super(authenticationManager);
     this.userRepository = userRepository;
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain chain) throws IOException, ServletException {
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+      throws IOException, ServletException {
     String header = request.getHeader(JwtProperties.HEADER_STRING);
 
     if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
@@ -44,17 +45,17 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   }
 
   private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
-    String token = request.getHeader(JwtProperties.HEADER_STRING)
-        .replace(JwtProperties.TOKEN_PREFIX, "");
+    String token =
+        request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
-    String username = JWT.require(HMAC512(JwtProperties.SECRET.getBytes()))
-        .build()
-        .verify(token)
-        .getSubject();
+    String username =
+        JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
 
     if (username != null) {
-      User user = userRepository.findByUsername(username).orElseThrow(() -> Exceptions
-          .notFound(String.format("%s not found.", username)));
+      User user =
+          userRepository
+              .findByUsername(username)
+              .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
       MyUserDetails principal = new MyUserDetails(user);
       return new UsernamePasswordAuthenticationToken(username, null, principal.getAuthorities());
     }
