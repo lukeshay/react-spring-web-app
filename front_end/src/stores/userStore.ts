@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import * as actionTypes from "../actions/user/userActionTypes";
+import Types from "../actions/user/userActionTypes";
 import Dispatcher from "../appDispatcher";
 import { User } from "../models/index";
 
@@ -33,12 +33,12 @@ const store = new UserStore();
 
 Dispatcher.register((action: ActionInterface) => {
   switch (action.actionType) {
-    case actionTypes.SIGN_IN:
+    case Types.SIGN_IN:
       user = action.user;
       store.emitChange();
       break;
 
-    case actionTypes.SIGN_OUT:
+    case Types.SIGN_OUT:
       user = {} as User;
       store.emitChange();
       break;

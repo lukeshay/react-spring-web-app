@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import * as actionTypes from "../actions/toDo/toDoActionTypes";
+import Types from "../actions/toDo/toDoActionTypes";
 import Dispatcher from "../appDispatcher";
 import { ToDo } from "../models/index";
 
@@ -35,24 +35,24 @@ const store = new ToDoStore();
 
 Dispatcher.register((action: ActionInterface) => {
   switch (action.actionType) {
-    case actionTypes.DELETE_TODO:
+    case Types.DELETE_TODO:
       toDos = toDos.filter((toDo: ToDo) => toDo.id !== action.id);
       store.emitChange();
       break;
 
-    case actionTypes.CREATE_TODO:
+    case Types.CREATE_TODO:
       toDos.push(action.toDo);
       store.emitChange();
       break;
 
-    case actionTypes.UPDATE_TODO:
+    case Types.UPDATE_TODO:
       toDos = toDos.map((toDo: ToDo) =>
         toDo.id === action.toDo.id ? action.toDo : toDo
       );
       store.emitChange();
       break;
 
-    case actionTypes.LOAD_TODOS:
+    case Types.LOAD_TODOS:
       toDos = action.toDos;
       store.emitChange();
       break;

@@ -2,7 +2,7 @@ import dispatcher from "../../appDispatcher";
 import { User } from "../../models";
 import * as UserApi from "../../rest-api/userRestApi";
 import * as Cookies from "../../utils/cookiesUtils";
-import * as Types from "./userActionTypes";
+import Types from "./userActionTypes";
 
 export async function signOut(): Promise<void> {
   dispatcher.dispatch({
