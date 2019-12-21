@@ -6,37 +6,37 @@ const USER_ID = "userId";
 const USERNAME = "username";
 const JWT_TOKEN = "jwtToken";
 
-export function setCookie(key, value, options) {
+export function setCookie(key: string, value: string, options: any): void {
   cookies.set(key, value, options);
 }
 
-export function getCookie(key) {
+export function getCookie(key: string): string {
   return cookies.get(key);
 }
 
-export function setJwtToken(token) {
+export function setJwtToken(token: string) {
   const d = Time.getOneDay();
   cookies.set(JWT_TOKEN, token, { path: "/", expires: d });
 }
 
-export function getJwtToken() {
+export function getJwtToken(): string {
   return cookies.get(JWT_TOKEN);
 }
 
-export function setUsername(username) {
+export function setUsername(username: string) {
   const d = Time.getOneDay();
   cookies.set(USERNAME, username, { path: "/", expires: d });
 }
 
-export function getUsername() {
+export function getUsername(): string {
   return cookies.get(USERNAME);
 }
 
-export function setUserId(userId) {
+export function setUserId(userId: string) {
   const d = Time.getOneDay();
   cookies.set(USER_ID, userId, { path: "/", expires: d });
 }
 
-export function getUserId() {
+export function getUserId(): string {
   return cookies.get(USER_ID);
 }

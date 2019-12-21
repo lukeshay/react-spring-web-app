@@ -1,5 +1,5 @@
 import dispatcher from "../../appDispatcher";
-import { ToDo } from "../../models";
+import { ToDo } from "../../models/index";
 import * as toDoApi from "../../rest-api/toDoRestApi";
 import Types from "./toDoActionTypes";
 

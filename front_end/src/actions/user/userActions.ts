@@ -1,5 +1,5 @@
 import dispatcher from "../../appDispatcher";
-import { User } from "../../models";
+import { User } from "../../models/index";
 import * as UserApi from "../../rest-api/userRestApi";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
