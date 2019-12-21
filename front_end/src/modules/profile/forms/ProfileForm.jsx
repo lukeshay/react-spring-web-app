@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import * as React from "react";
 import userStore from "../../../stores/userStore";
 import * as UserActions from "../../../actions/user/userActions";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.jsx";
-import BlueButton from "../../common/buttons/BlueButton.jsx";
+import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.tsx";
+import BlueButton from "../../common/buttons/BlueButton.tsx";
 import InlineTextInput from "../../common/inputs/InlineTextInput.jsx";
 
 function ProfileForm() {

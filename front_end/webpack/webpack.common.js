@@ -22,7 +22,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: "ts-loader",
         options: {
-          configFile: "../.tsconfig.json"
+          configFile: "../tsconfig.json"
         }
       },
       {

@@ -1,16 +1,16 @@
 import { useState, Suspense, useEffect } from "react";
 import * as React from "react";
-import NavigationBar from "./components/navigation/NavigationBar.jsx";
+import NavigationBar from "./modules/navigation/NavigationBar.jsx";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy } from "@loadable/component";
 
-const HomePage = lazy(() => import("./components/homepage/HomePage.jsx"));
-const NotFoundPage = lazy(() => import("./components/NotFoundPage.jsx"));
-const ToDoPage = lazy(() => import("./components/todopage/ToDoPage.jsx"));
-const ProfilePage = lazy(() => import("./components/profile/ProfilePage.jsx"));
+const HomePage = lazy(() => import("./modules/homepage/HomePage.jsx"));
+const NotFoundPage = lazy(() => import("./modules/NotFoundPage.jsx"));
+const ToDoPage = lazy(() => import("./modules/todopage/ToDoPage.jsx"));
+const ProfilePage = lazy(() => import("./modules/profile/ProfilePage.jsx"));
 
 function App() {
   const [load, setLoad] = useState(process.env.NODE_ENV === "development");

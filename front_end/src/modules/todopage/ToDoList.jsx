@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as React from "react";
-import RedButton from "../common/buttons/RedButton.jsx";
+import RedButton from "../common/buttons/RedButton.tsx";
 
 function ToDoList(props) {
   const completedStyle = {
