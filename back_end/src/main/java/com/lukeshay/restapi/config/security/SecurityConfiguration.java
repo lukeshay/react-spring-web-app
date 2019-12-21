@@ -26,9 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private UserDetailsService userDetailsService;
   private UserRepository userRepository;
 
-  /**
-   * Creates an instance with the default configuration enabled.
-   */
+  /** Creates an instance with the default configuration enabled. */
   @Autowired
   public SecurityConfiguration(
       @Qualifier("myUserDetailsService") UserDetailsService userDetailsService,
@@ -44,33 +42,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http.csrf()
+        .disable()
         .cors()
         .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
         .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
         .authorizeRequests()
-        .antMatchers("/todo").authenticated()
-        .antMatchers("/users").authenticated()
-        .antMatchers("/login").permitAll()
-        .antMatchers("/public/users").permitAll()
-        .antMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll()
-        .anyRequest().authenticated();
+        .antMatchers("/todo")
+        .authenticated()
+        .antMatchers("/users")
+        .authenticated()
+        .antMatchers("/login")
+        .permitAll()
+        .antMatchers("/public/users")
+        .permitAll()
+        .antMatchers(HttpMethod.OPTIONS.name(), "/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated();
   }
 
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Collections.singletonList("*"));
-    configuration.setAllowedMethods(Arrays.asList(
-        HttpMethod.GET.name(),
-        HttpMethod.HEAD.name(),
-        HttpMethod.POST.name(),
-        HttpMethod.PUT.name(),
-        HttpMethod.DELETE.name(),
-        HttpMethod.OPTIONS.name()));
+    configuration.setAllowedMethods(
+        Arrays.asList(
+            HttpMethod.GET.name(),
+            HttpMethod.HEAD.name(),
+            HttpMethod.POST.name(),
+            HttpMethod.PUT.name(),
+            HttpMethod.DELETE.name(),
+            HttpMethod.OPTIONS.name()));
     configuration.addAllowedHeader("*");
     configuration.addExposedHeader("Access-Control-Allow-Origin");
     configuration.addExposedHeader("Access-Control-Allow-Methods");

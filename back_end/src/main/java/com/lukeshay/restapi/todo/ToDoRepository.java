@@ -4,9 +4,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * The interface Todo repository.
- */
+/** The interface Todo repository. */
 @Repository
 public interface ToDoRepository extends MongoRepository<ToDo, String> {
 

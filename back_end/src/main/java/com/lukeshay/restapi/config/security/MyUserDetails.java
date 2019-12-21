@@ -52,8 +52,8 @@ public class MyUserDetails implements UserDetails {
   /**
    * Indicates whether the user's account has expired. An expired account cannot be authenticated.
    *
-   * @return <code>true</code> if the user's account is valid (ie non-expired),
-   * <code>false</code> if no longer valid (ie expired)
+   * @return <code>true</code> if the user's account is valid (ie non-expired), <code>false</code>
+   *     if no longer valid (ie expired)
    */
   @Override
   public boolean isAccountNonExpired() {
@@ -74,8 +74,8 @@ public class MyUserDetails implements UserDetails {
    * Indicates whether the user's credentials (password) has expired. Expired credentials prevent
    * authentication.
    *
-   * @return <code>true</code> if the user's credentials are valid (ie non-expired),
-   * <code>false</code> if no longer valid (ie expired)
+   * @return <code>true</code> if the user's credentials are valid (ie non-expired), <code>false
+   *     </code> if no longer valid (ie expired)
    */
   @Override
   public boolean isCredentialsNonExpired() {

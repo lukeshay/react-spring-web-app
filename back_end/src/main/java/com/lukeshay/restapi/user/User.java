@@ -15,9 +15,7 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * The type User.
- */
+/** The type User. */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,8 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User implements Persistable<String> {
 
-  @Id
-  private String userId;
+  @Id private String userId;
 
   @CreatedDate
   @JsonProperty(access = Access.WRITE_ONLY)
@@ -56,8 +53,15 @@ public class User implements Persistable<String> {
   private List<String> authorities;
   private List<String> roles;
 
-  User(String username, String firstName, String lastName, String email, String phoneNumber,
-      String state, String country, String password) {
+  User(
+      String username,
+      String firstName,
+      String lastName,
+      String email,
+      String phoneNumber,
+      String state,
+      String country,
+      String password) {
     this.username = username;
     this.firstName = firstName;
     this.email = email;
