@@ -1,49 +1,32 @@
-import React, { useState, Suspense, useEffect } from "react";
-import NavigationBar from "./components/navigation/NavigationBar.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { lazy, Suspense } from "react";
+import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import { lazy } from "@loadable/component";
+import NavigationBar from "./modules/navigation/NavigationBar";
 
-const HomePage = lazy(() => import("./components/homepage/HomePage.jsx"));
-const NotFoundPage = lazy(() => import("./components/NotFoundPage.jsx"));
-const ToDoPage = lazy(() => import("./components/todopage/ToDoPage.jsx"));
-const ProfilePage = lazy(() => import("./components/profile/ProfilePage.jsx"));
+const HomePage = lazy(() => import("./modules/homepage/HomePage"));
+const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
+const ToDoPage = lazy(() => import("./modules/todopage/ToDoPage"));
+const ProfilePage = lazy(() => import("./modules/profile/ProfilePage"));
 
-function App() {
-  const [load, setLoad] = useState(process.env.NODE_ENV === "development");
-
-  function handleClick() {
-    const enteredName = prompt("Please enter the super secret password");
-
-    setLoad(enteredName === process.env.LOAD_PASSWORD);
-  }
-
-  if (load === true) {
-    return (
-      <div className="container-fluid">
-        <ToastContainer autoClose={3000} hideProgressBar />
-        <NavigationBar />
-        <Suspense fallback={<div></div>}>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/index" component={HomePage} />
-            <Route path="/todo" component={ToDoPage} />
-            <Route path="/profile" component={ProfilePage} />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </Suspense>
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <h1>Hello summoners</h1>
-        <input type="button" value="load web app" onClick={handleClick} />
-      </>
-    );
-  }
-}
+const App = () => {
+  return (
+    <div className="container-fluid">
+      <ToastContainer autoClose={3000} hideProgressBar={true} />
+      <NavigationBar />
+      <Suspense fallback={<div />}>
+        <Switch>
+          <Route exact={true} path="/" component={HomePage} />
+          <Route exact={true} path="/index" component={HomePage} />
+          <Route path="/todo" component={ToDoPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Suspense>
+    </div>
+  );
+};
 
 export default App;
