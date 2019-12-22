@@ -7,6 +7,7 @@ export interface User {
   country: string;
   state: string;
   password: string;
+  phoneNumber: string;
 }
 
 export interface ToDo {

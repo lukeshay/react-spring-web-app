@@ -1,8 +1,17 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as React from "react";
-import RedButton from "../common/buttons/RedButton.tsx";
+import { ToDo } from "../../models/index";
+import RedButton from "../common/buttons/RedButton";
 
-function ToDoList(props) {
+export interface IPropsToDoList {
+  toDos: ToDo[];
+  handleCheckboxChange(event: any): void;
+  handleDeleteButtonClick(event: any): void;
+}
+
+const ToDoList: React.FC<IPropsToDoList> = (props: IPropsToDoList) => {
+  const { toDos, handleCheckboxChange, handleDeleteButtonClick } = props;
+
   const completedStyle = {
     textDecoration: "line-through"
   };
@@ -18,14 +27,14 @@ function ToDoList(props) {
         </tr>
       </thead>
       <tbody>
-        {props.toDos.map((toDo) => (
+        {toDos.map((toDo) => (
           <tr key={toDo.id}>
             <td>
               <input
                 type="checkbox"
                 id={toDo.id}
                 checked={toDo.completed}
-                onChange={props.onCheckboxChange}
+                onChange={handleCheckboxChange}
               />
             </td>
             <td style={toDo.completed ? completedStyle : {}}>{toDo.text}</td>
@@ -34,7 +43,7 @@ function ToDoList(props) {
               <RedButton
                 text="Delete"
                 id={toDo.id}
-                handleClick={props.onDeleteButtonClick}
+                handleClick={handleDeleteButtonClick}
               />
             </td>
           </tr>
@@ -42,6 +51,6 @@ function ToDoList(props) {
       </tbody>
     </table>
   );
-}
+};
 
 export default ToDoList;

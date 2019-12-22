@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
-import * as React from "react";
-import ToDoList from "./ToDoList.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
+import * as React from "react";
+import { Link } from "react-router-dom";
+// import { toast } from "react-toastify";
+import {
+  deleteToDo,
+  loadUsersToDos,
+  saveToDo
+} from "../../actions/toDo/toDoActions";
+import { ToDo, User } from "../../models/index";
 import toDoStore from "../../stores/toDoStore";
 import userStore from "../../stores/userStore";
-import {
-  loadUsersToDos,
-  saveToDo,
-  deleteToDo
-} from "../../actions/toDo/toDoActions";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import ToDoList from "./ToDoList";
 
-function ToDoPage() {
-  const [loading, setLoading] = useState(true);
-  const [adding, setAdding] = useState(false);
-  const [toDos, setToDos] = useState([]);
-  const [newToDo, setNewToDo] = useState({});
-  const [key, setKey] = useState(Math.random() * 10000);
-  const [currentUser, setCurrentUser] = useState(userStore.getUser());
+const ToDoPage: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [adding, setAdding] = useState<boolean>(false);
+  const [toDos, setToDos] = useState<ToDo[]>([]);
+  const [newToDo, setNewToDo] = useState({} as ToDo);
+  const [key, setKey] = useState<number>(Math.random() * 10000);
+  const [currentUser, setCurrentUser] = useState<User>(userStore.getUser());
 
   useEffect(() => {
     toDoStore.addChangeListener(onToDoChange);
@@ -27,10 +28,10 @@ function ToDoPage() {
     if (currentUser.email && toDoStore.getToDos().length === 0) {
       loadUsersToDos(currentUser.userId);
       setNewToDo({
-        userId: currentUser.userId,
+        completed: false,
         text: "",
-        completed: false
-      });
+        userId: currentUser.userId
+      } as ToDo);
     } else if (currentUser.email) {
       onToDoChange();
     }
@@ -59,13 +60,15 @@ function ToDoPage() {
     setKey(Math.random() * 10000);
   }
 
-  async function onCheckboxChange({ target }) {
-    var toDoToUpdate = toDos.find((toDo) => toDo.id === target.id);
-    toDoToUpdate.completed = !toDoToUpdate.completed;
-    saveToDo(toDoToUpdate);
+  async function handleCheckboxChange({ target }) {
+    const toDoToUpdate = toDos.find((toDo) => toDo.id === target.id);
+
+    if (toDoToUpdate) {
+      saveToDo({ ...toDoToUpdate, completed: toDoToUpdate.completed } as ToDo);
+    }
   }
 
-  async function onDeleteButtonClick({ target }) {
+  async function handleDeleteButtonClick({ target }) {
     deleteToDo(target.id);
   }
 
@@ -73,30 +76,31 @@ function ToDoPage() {
     if (adding && newToDo.text !== "") {
       const response = await saveToDo(newToDo);
 
-      if (response.status === 200) {
+      if (response instanceof Response && response.status === 200) {
         setNewToDo({
-          userId: currentUser.userId,
+          completed: false,
           text: "",
-          completed: false
-        });
+          userId: currentUser.userId
+        } as ToDo);
+
         setAdding(false);
-      } else {
-        toast.error("There was an error saving your to-do.");
       }
+      // else {
+      // }
     } else {
       setAdding(!adding);
     }
   }
 
-  async function onInputChange({ target }) {
+  async function onInputChange({ target }: any): Promise<void> {
     const { value } = target;
     setNewToDo({ ...newToDo, text: value });
   }
 
-  async function handleKeyPress({ target, key }) {
-    if (key === "Enter" && target.name === "newToDo") {
-      setAdding(false);
-    }
+  async function handleKeyPress({ currentTarget }: any): Promise<void> {
+    // if (false && currentTarget.name === "newToDo") {
+    //   setAdding(false);
+    // }
   }
 
   if (loading) {
@@ -116,12 +120,12 @@ function ToDoPage() {
             <ToDoList
               key={key}
               toDos={toDos}
-              onCheckboxChange={onCheckboxChange}
-              onDeleteButtonClick={onDeleteButtonClick}
+              handleCheckboxChange={handleCheckboxChange}
+              handleDeleteButtonClick={handleDeleteButtonClick}
             />
             {adding && (
               <input
-                autoFocus
+                autoFocus={true}
                 type="text"
                 className="form-control"
                 name="newToDo"
@@ -145,6 +149,6 @@ function ToDoPage() {
       </div>
     );
   }
-}
+};
 
 export default ToDoPage;

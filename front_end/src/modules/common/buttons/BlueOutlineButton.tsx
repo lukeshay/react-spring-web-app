@@ -6,10 +6,10 @@ export interface IPropsBlueOutlineButton {
   id?: string;
   bootstrap?: string;
   text: string;
-  handleClick?(event: React.MouseEvent<HTMLElement>): void;
+  handleClick?(event: any): void;
 }
 
-const BlueOutlineButton: React.SFC<IPropsBlueOutlineButton> = (
+const BlueOutlineButton: React.FC<IPropsBlueOutlineButton> = (
   props: IPropsBlueOutlineButton
 ) => {
   return (

@@ -2,16 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import Input from "./Input";
 
-export interface IPropsInlineTextInput {
+export interface IPropsInlineHiddenInput {
   label: string;
   id: string;
   helpText?: string;
   value: string;
-  handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
+  handleChange(event: any): void;
 }
 
-const InlineTextInput: React.FC<IPropsInlineTextInput> = (
-  props: IPropsInlineTextInput
+const InlineHiddenInput: React.FC<IPropsInlineHiddenInput> = (
+  props: IPropsInlineHiddenInput
 ) => {
   return (
     <div className="form-group row">
@@ -19,7 +19,7 @@ const InlineTextInput: React.FC<IPropsInlineTextInput> = (
         {props.label}
       </label>
       <Input
-        type="text"
+        type="password"
         id={props.id}
         value={props.value}
         handleChange={props.handleChange}
@@ -29,8 +29,8 @@ const InlineTextInput: React.FC<IPropsInlineTextInput> = (
   );
 };
 
-InlineTextInput.defaultProps = {
+InlineHiddenInput.defaultProps = {
   helpText: ""
 };
 
-export default InlineTextInput;
+export default InlineHiddenInput;

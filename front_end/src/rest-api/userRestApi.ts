@@ -61,7 +61,10 @@ export async function updateUser(user: User): Promise<void | Response> {
 
   return fetch(userUrl + "?userId=" + user.userId, {
     body: JSON.stringify(user),
-    headers: { Authorization: token },
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json"
+    },
     method: "PUT"
   })
     .then(

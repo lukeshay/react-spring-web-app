@@ -7,7 +7,7 @@ export interface IPropsTextInput {
   id: string;
   helpText?: string;
   value: string;
-  handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
+  handleChange(event: any): void;
 }
 
 const TextInput: React.FC<IPropsTextInput> = (props: IPropsTextInput) => {

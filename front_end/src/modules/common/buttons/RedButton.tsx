@@ -6,10 +6,10 @@ export interface IPropsRedButton {
   id?: string;
   bootstrap?: string;
   text: string;
-  handleClick?(event: React.MouseEvent<HTMLElement>): void;
+  handleClick?(event: any): void;
 }
 
-const RedButton: React.SFC<IPropsRedButton> = (props: IPropsRedButton) => {
+const RedButton: React.FC<IPropsRedButton> = (props: IPropsRedButton) => {
   return (
     <Button
       id={props.id}

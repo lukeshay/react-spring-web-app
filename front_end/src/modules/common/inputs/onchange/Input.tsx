@@ -6,10 +6,10 @@ interface IPropsInput {
   name?: string;
   type: string;
   value: string;
-  handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
+  handleChange(event: any): void;
 }
 
-const Input: React.SFC<IPropsInput> = (props: IPropsInput) => {
+const Input: React.FC<IPropsInput> = (props: IPropsInput) => {
   const { helpText, id, name, type, value, handleChange } = props;
 
   return (

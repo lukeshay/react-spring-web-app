@@ -1,8 +1,7 @@
-import * as React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { version } from "../../../package.json";
+import * as React from "react";
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <div className="jumbotron-fluid">
       <h1>Luke Shay's Productivity App</h1>
@@ -12,7 +11,6 @@ const HomePage = () => {
         <li>Note taking</li>
         <li>Google Calendar integration</li>
         <li>Gmail integration</li>
-        <li>Version: {version}</li>
       </ul>
     </div>
   );

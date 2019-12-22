@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
-import * as React from "react";
-import InlineTextInput from "../../common/inputs/InlineTextInput.tsx";
-import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.tsx";
-import BlueButton from "../../common/buttons/BlueButton.tsx";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+import * as React from "react";
 import { signIn } from "../../../actions/user/userActions";
-import { toast } from "react-toastify";
+import BlueButton from "../../common/buttons/BlueButton";
+import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
+import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
+import InlineTextInput from "../../common/inputs/onchange/InlineTextInput";
 
-function LogInForm(props) {
-  const [email, setEmail] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+export interface IPropsLogInForm {
+  handleSignUpClick?(event: any): void;
+}
 
-  async function handleChange(event) {
+const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
+  const [email, setEmail] = useState<string>("");
+  const [emailMessage, setEmailMessage] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordMessage, setPasswordMessage] = useState<string>("");
+
+  async function handleChange(event: any): Promise<void> {
     const { id, value } = event.target;
 
     if (id === "email") {
@@ -24,14 +27,16 @@ function LogInForm(props) {
     }
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event: any): Promise<void> {
+    event.preventDefault();
+
     const response = await signIn(email, password);
 
-    if (response.status === 401) {
+    if (response instanceof Response && response.status === 401) {
       setPasswordMessage(
         "User not found or incorrect password. Try a different username or password."
       );
-    } else if (response.status === 200) {
+    } else if (response instanceof Response && response.status === 200) {
       setPasswordMessage("");
     } else {
       setPasswordMessage("There was an error. Please try again.");
@@ -73,6 +78,6 @@ function LogInForm(props) {
       </div>
     </div>
   );
-}
+};
 
 export default LogInForm;

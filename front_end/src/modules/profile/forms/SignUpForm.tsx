@@ -1,41 +1,29 @@
-import { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
 import * as React from "react";
 import { toast } from "react-toastify";
-import InlineTextInput from "../../common/inputs/InlineTextInput.tsx";
-import InlineHiddenInput from "../../common/inputs/InlineHiddenInput.tsx";
-import BlueButton from "../../common/buttons/BlueButton.tsx";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton.tsx";
 import * as userActions from "../../../actions/user/userActions";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { User } from "../../../models/index";
+import BlueButton from "../../common/buttons/BlueButton";
+import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
+import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
+import InlineTextInput from "../../common/inputs/onchange/InlineTextInput";
 
-function SignUpForm(props) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
-  const [errorCode, setErrorCode] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+export interface IPropsSignUpForm {
+  handleSignInClick?(event: any): void;
+}
 
-  const handleChange = async (event) => {
-    event.preventDefault();
-    const { id, value } = event.target;
-
-    if (id === "firstName") {
-      setFirstName(value);
-    } else if (id === "lastName") {
-      setLastName(value);
-    } else if (id === "email") {
-      setEmail(value);
-    } else if (id === "password") {
-      setPassword(value);
-    } else if (id === "phoneNumber") {
-      setPhoneNumber(value);
-    }
-  };
+const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [emailMessage, setEmailMessage] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordMessage, setPasswordMessage] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [phoneNumberMessage, setPhoneNumberMessage] = useState<string>("");
+  const [errorCode, setErrorCode] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     const lowerCaseLetters = /[a-z]/g;
@@ -43,7 +31,7 @@ function SignUpForm(props) {
     const numbers = /[0-9]/g;
     const specialCharacters = /[!@#\$%\^\&*\)\(+=._-]/g;
 
-    if (password.length == 0) {
+    if (password.length === 0) {
       setPasswordMessage("");
     } else if (password.length < 8) {
       setPasswordMessage("Password must be at least 8 characters long.");
@@ -84,24 +72,41 @@ function SignUpForm(props) {
     }
   }, [phoneNumber]);
 
-  async function handleSubmit() {
+  const handleChange = async (event: any): Promise<void> => {
+    event.preventDefault();
+    const { id, value } = event.target;
+
+    if (id === "firstName") {
+      setFirstName(value);
+    } else if (id === "lastName") {
+      setLastName(value);
+    } else if (id === "email") {
+      setEmail(value);
+    } else if (id === "password") {
+      setPassword(value);
+    } else if (id === "phoneNumber") {
+      setPhoneNumber(value);
+    }
+  };
+
+  async function handleSubmit(event: any): Promise<void> {
+    event.preventDefault();
+
     const response = await userActions.createUser({
+      country: "",
+      email,
       firstName,
       lastName,
       password,
-      email,
       phoneNumber,
-      username: email,
-      country: "",
-      state: ""
-    });
+      state: "",
+      username: email
+    } as User);
 
-    console.log(response.url.split("/"[3]));
-
-    if (response.url.split("/")[3])
-      if (response.status !== 200) {
-        toast.error("There was an error.");
-      }
+    // if (response instanceof Response && response.url.split("/")[3]) {
+    //   if (response.status !== 200) {
+    //   }
+    // }
   }
 
   return (
@@ -112,7 +117,7 @@ function SignUpForm(props) {
             <BlueOutlineButton
               text="Sign in"
               bootstrap="float-right mt-1"
-              handleClick={props.handleLogInClick}
+              handleClick={props.handleSignInClick}
             />
             <h4 className="card-title mt-2">Sign up</h4>
           </header>
@@ -158,6 +163,6 @@ function SignUpForm(props) {
       </div>
     </div>
   );
-}
+};
 
 export default SignUpForm;
