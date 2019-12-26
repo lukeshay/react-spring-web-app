@@ -1,6 +1,7 @@
 package com.lukeshay.restapi.config.security;
 
 import com.lukeshay.restapi.user.UserRepository;
+import com.lukeshay.restapi.user.UserTypes;
 import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +57,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .authenticated()
         .antMatchers("/users")
         .authenticated()
+        .antMatchers("/gyms")
+        .authenticated()
+        .antMatchers(HttpMethod.POST.name(), "/gyms")
+        .hasAuthority(UserTypes.ADMIN.authority())
         .antMatchers("/login")
         .permitAll()
         .antMatchers("/public/users")
+        .permitAll()
+        .antMatchers("/public/gyms")
         .permitAll()
         .antMatchers(HttpMethod.OPTIONS.name(), "/**")
         .permitAll()

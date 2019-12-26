@@ -8,7 +8,7 @@ import SignUpForm from "./forms/SignUpForm";
 
 const ProfilePage: React.FC = () => {
   const [createAccount, setCreateAccount] = useState<boolean>(true);
-  const [currentUser, setCurrentUser] = useState<User>({} as User);
+  const [user, setCurrentUser] = useState<User>({} as User);
 
   useEffect(() => {
     userStore.addChangeListener(onChange);
@@ -30,12 +30,12 @@ const ProfilePage: React.FC = () => {
     setCreateAccount(true);
   };
 
-  if (!currentUser.email && createAccount) {
+  if (!user.email && createAccount) {
     return <SignUpForm handleSignInClick={handleSignInClick} />;
-  } else if (!currentUser.email && !createAccount) {
+  } else if (!user.email && !createAccount) {
     return <SignInForm handleSignUpClick={handleSignUpClick} />;
-  } else if (currentUser) {
-    return <ProfileForm />;
+  } else if (user) {
+    return <ProfileForm user={user} />;
   } else {
     return <div>Error</div>;
   }

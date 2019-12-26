@@ -1,12 +1,19 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-  "rulesDirectory": ["tslint-plugin-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-plugin-prettier",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
   "jsRules": {},
   "rules": {
     "prettier": true,
     "interface-name": false,
-    "ordered-imports": true
+    "ordered-imports": true,
+    "jsx-no-lambda": false,
+    "jsx-boolean-value": ["never"],
+    "jsx-equals-spacing": [true, "never"]
   },
   "linterOptions": {
     "exclude": ["./config/**/*.js", "./node_modules/**/*.ts"],

@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    "lib": ["ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "DOM"],
     "outDir": "./dist/",
     "sourceMap": true,
-    "strictNullChecks": true,
-    "module": "es6",
+    "module": "esnext",
     "jsx": "react",
     "target": "es5",
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "plugins": [{ "name": "typescript-tslint-plugin" }]
+    "plugins": [{ "name": "typescript-tslint-plugin" }],
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": ["node_modules"],
-  "jsx": "preserve"
+  "jsx": "preserve",
+  "compileOnSave": true
 }
