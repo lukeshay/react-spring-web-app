@@ -35,7 +35,7 @@ public class PublicUserController {
     }
 
     if (userService.isUsernameTaken(user.getUsername())) {
-      LOG.debug("Not creating user because email is taken.");
+      LOG.debug("Not creating user because username is taken.");
 
       return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
     }

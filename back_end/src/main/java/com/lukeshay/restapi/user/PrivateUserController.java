@@ -55,6 +55,17 @@ public class PrivateUserController {
     }
   }
 
+  /**
+   * @param userId the user being updated
+   * @param username the new username
+   * @param email the new email
+   * @param firstName the new first name
+   * @param lastName the new last name
+   * @param city the new city
+   * @param state the new state
+   * @param country the new country
+   * @return the updated user
+   */
   @PutMapping(value = "", params = "userId")
   public ResponseEntity<?> updateUserById(
       @PathParam(value = "userId") String userId,
