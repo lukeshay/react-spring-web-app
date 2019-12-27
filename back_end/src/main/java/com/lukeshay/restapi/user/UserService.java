@@ -36,6 +36,27 @@ class UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
+      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
+
+      return userRepository.save(user);
+
+    } else {
+      return null;
+    }
+  }
+
+  User createAdminUser(User user) {
+    if (user.getUsername() != null
+        && user.getFirstName() != null
+        && user.getLastName() != null
+        && user.getEmail() != null
+        && user.getPhoneNumber() != null
+        && user.getState() != null
+        && user.getCountry() != null
+        && user.getPassword() != null) {
+
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
       user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));
 

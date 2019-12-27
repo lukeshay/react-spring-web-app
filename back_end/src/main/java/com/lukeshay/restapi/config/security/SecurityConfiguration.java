@@ -1,7 +1,6 @@
 package com.lukeshay.restapi.config.security;
 
 import com.lukeshay.restapi.user.UserRepository;
-import com.lukeshay.restapi.user.UserTypes;
 import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private UserDetailsService userDetailsService;
@@ -51,26 +52,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
-        .authorizeRequests()
-        .antMatchers("/todo")
-        .authenticated()
-        .antMatchers("/users")
-        .authenticated()
-        .antMatchers("/gyms")
-        .authenticated()
-        .antMatchers(HttpMethod.POST.name(), "/gyms")
-        .hasAuthority(UserTypes.ADMIN.authority())
-        .antMatchers("/login")
-        .permitAll()
-        .antMatchers("/public/users")
-        .permitAll()
-        .antMatchers("/public/gyms")
-        .permitAll()
-        .antMatchers(HttpMethod.OPTIONS.name(), "/**")
-        .permitAll()
-        .anyRequest()
-        .authenticated();
+        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
+    //        .authorizeRequests()
+    //        .antMatchers("/todo")
+    //        .authenticated()
+    //        .antMatchers("/users")
+    //        .authenticated()
+    //        .antMatchers("/gyms")
+    //        .authenticated()
+    //        .antMatchers(HttpMethod.POST.name(), "/gyms")
+    //        .hasAuthority(UserTypes.ADMIN.authority())
+    //        .antMatchers("/login")
+    //        .permitAll()
+    //        .antMatchers("/public/users")
+    //        .permitAll()
+    //        .antMatchers("/public/gyms")
+    //        .permitAll()
+    //        .antMatchers(HttpMethod.OPTIONS.name(), "/**")
+    //        .permitAll()
+    //        .anyRequest()
+    //        .authenticated();
   }
 
   @Bean

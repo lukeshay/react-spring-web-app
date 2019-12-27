@@ -43,8 +43,15 @@ class Gym implements Persistable<String> {
   private String phoneNumber;
   private List<String> authorizedEditors;
 
-  public Gym(String name, String address, String city, String state, String website,
-      String email, String phoneNumber, List<String> authorizedEditors) {
+  public Gym(
+      String name,
+      String address,
+      String city,
+      String state,
+      String website,
+      String email,
+      String phoneNumber,
+      List<String> authorizedEditors) {
     this.name = name;
     this.address = address;
     this.city = city;
