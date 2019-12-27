@@ -56,6 +56,8 @@ class ToDoService {
       toUpdate.setDueDate(dueDate);
     }
 
+    toUpdate.setPersistable(true);
+
     return toDoRepository.save(toUpdate);
   }
 }
