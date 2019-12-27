@@ -53,25 +53,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
         .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
-    //        .authorizeRequests()
-    //        .antMatchers("/todo")
-    //        .authenticated()
-    //        .antMatchers("/users")
-    //        .authenticated()
-    //        .antMatchers("/gyms")
-    //        .authenticated()
-    //        .antMatchers(HttpMethod.POST.name(), "/gyms")
-    //        .hasAuthority(UserTypes.ADMIN.authority())
-    //        .antMatchers("/login")
-    //        .permitAll()
-    //        .antMatchers("/public/users")
-    //        .permitAll()
-    //        .antMatchers("/public/gyms")
-    //        .permitAll()
-    //        .antMatchers(HttpMethod.OPTIONS.name(), "/**")
-    //        .permitAll()
-    //        .anyRequest()
-    //        .authenticated();
   }
 
   @Bean
