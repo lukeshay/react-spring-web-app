@@ -43,9 +43,26 @@ class Gym implements Persistable<String> {
   private String phoneNumber;
   private List<String> authorizedEditors;
 
+  public Gym(String name, String address, String city, String state, String website,
+      String email, String phoneNumber, List<String> authorizedEditors) {
+    this.name = name;
+    this.address = address;
+    this.city = city;
+    this.state = state;
+    this.website = website;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.authorizedEditors = authorizedEditors;
+  }
+
   @Override
   public boolean isNew() {
     return false;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof Gym && toString().equals(obj.toString());
   }
 
   @Override

@@ -69,4 +69,8 @@ public class GymService {
 
     return gymRepository.save(gym);
   }
+
+  Gym createGym(Gym gym) {
+    return gymRepository.save(gym);
+  }
 }
