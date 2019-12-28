@@ -33,4 +33,4 @@ InlineHiddenInput.defaultProps = {
   helpText: ""
 };
 
-export default InlineHiddenInput;
+export default React.memo(InlineHiddenInput);

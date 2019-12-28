@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 interface IPropsNavItem {
@@ -38,4 +38,4 @@ const NavigationBar: React.FC = () => (
   </div>
 );
 
-export default NavigationBar;
+export default React.memo(NavigationBar);

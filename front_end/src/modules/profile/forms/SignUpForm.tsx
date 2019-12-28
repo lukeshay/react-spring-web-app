@@ -1,9 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import * as userActions from "../../../actions/user/userActions";
-import { User } from "../../../models/index";
+import { User } from "../../../types";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
@@ -103,10 +103,11 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
       username: email
     } as User);
 
-    // if (response instanceof Response && response.url.split("/")[3]) {
-    //   if (response.status !== 200) {
-    //   }
-    // }
+    if (response instanceof Response && response.url.split("/")[3]) {
+      if (response.status !== 200) {
+        toast.error("Error creating user");
+      }
+    }
   }
 
   return (
@@ -165,4 +166,4 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   );
 };
 
-export default SignUpForm;
+export default React.memo(SignUpForm);

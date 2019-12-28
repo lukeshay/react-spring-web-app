@@ -1,3 +1,5 @@
+import { Key } from "react";
+
 export interface User {
   userId: string;
   firstName: string;
@@ -16,4 +18,12 @@ export interface ToDo {
   text: string;
   completed: boolean;
   dueDate?: string;
+}
+
+export interface ButtonEvent {
+  target: HTMLButtonElement;
+}
+
+export interface InputEvent {
+  target: HTMLInputElement;
 }

@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState } from "react";
-import * as React from "react";
+import React from "react";
 import * as UserActions from "../../../actions/user/userActions";
-import { User } from "../../../models/index";
+import { User } from "../../../types";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import InlineTextInput from "../../common/inputs/ref/InlineInput";
@@ -90,4 +90,4 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
   );
 };
 
-export default ProfileForm;
+export default React.memo(ProfileForm);

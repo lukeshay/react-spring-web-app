@@ -1,11 +1,11 @@
-import { ToDo } from "../models";
+import { ToDo } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "todos/";
 
 export async function getUsersToDos(userId: string): Promise<void | Response> {
-  return fetch(baseUrl + userId, {
+  return fetch(baseUrl + userId + "/all", {
     headers: {
       Authorization: Cookies.getJwtToken()
     }

@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
+import React from "react";
 
 const HomePage: React.FC = () => {
   return (
@@ -16,4 +16,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default React.memo(HomePage);

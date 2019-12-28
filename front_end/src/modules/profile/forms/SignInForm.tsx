@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
-import * as React from "react";
+import React from "react";
 import { signIn } from "../../../actions/user/userActions";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
@@ -80,4 +80,4 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   );
 };
 
-export default LogInForm;
+export default React.memo(LogInForm);

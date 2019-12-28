@@ -36,4 +36,4 @@ InlineInput.defaultProps = {
   helpText: ""
 };
 
-export default InlineInput;
+export default React.memo(InlineInput);

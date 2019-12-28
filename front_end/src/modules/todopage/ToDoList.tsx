@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
-import { ToDo } from "../../models/index";
+import React from "react";
+import { ToDo } from "../../types";
 import RedButton from "../common/buttons/RedButton";
 
 export interface IPropsToDoList {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 interface IPropsInput {
   helpText?: string;
@@ -34,4 +34,4 @@ Input.defaultProps = {
   helpText: ""
 };
 
-export default Input;
+export default React.memo(Input);

@@ -31,7 +31,7 @@ public class ToDoController {
     this.toDoService = toDoService;
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/{userId}/all")
   public ResponseEntity<?> getAllToDos(@PathVariable String userId) {
     LOG.debug("Getting user {} to-do's.", userId);
 

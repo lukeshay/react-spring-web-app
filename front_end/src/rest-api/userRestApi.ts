@@ -1,4 +1,4 @@
-import { User } from "../models/index";
+import { User } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
