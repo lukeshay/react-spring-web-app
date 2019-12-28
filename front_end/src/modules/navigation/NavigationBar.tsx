@@ -26,7 +26,7 @@ const NavigationBar: React.FC = () => (
     <nav className="navbar navbar-expand-lg navbar-light bg-light  sticky-top shadow rounded fixed-top">
       <ul className="navbar-nav mr-auto">
         <NavItem link="/" text="Home" />
-        <NavItem link="/items" text="Items" />
+        <NavItem link="/gyms" text="Gyms" />
         <NavItem link="/todo" text="ToDo" />
         <NavItem link="/calendar" text="Calendar" />
         <NavItem link="/email" text="Email" />
