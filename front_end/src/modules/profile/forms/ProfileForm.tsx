@@ -2,13 +2,17 @@ import { createRef, useEffect, useState } from "react";
 import * as React from "react";
 import * as UserActions from "../../../actions/user/userActions";
 import { User } from "../../../models/index";
-import userStore from "../../../stores/userStore";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import InlineTextInput from "../../common/inputs/ref/InlineInput";
 
-const ProfileForm: React.FC = () => {
-  const [user, setUser] = useState<User>({} as User);
+export interface IPropsProfileForm {
+  user: User;
+}
+
+const ProfileForm: React.FC<IPropsProfileForm> = ({
+  user
+}: IPropsProfileForm) => {
   const firstName = createRef<HTMLInputElement>();
   const lastName = createRef<HTMLInputElement>();
   const email = createRef<HTMLInputElement>();
@@ -17,18 +21,6 @@ const ProfileForm: React.FC = () => {
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const phoneNumber = createRef<HTMLInputElement>();
   const [phoneNumberMessage, setPhoneNumberMessage] = useState<string>("");
-
-  useEffect(() => {
-    userStore.addChangeListener(handleUserChange);
-
-    setUser(userStore.getUser());
-
-    return () => userStore.removeChangeListener(handleUserChange);
-  });
-
-  function handleUserChange(): void {
-    setUser(userStore.getUser());
-  }
 
   function handleSignOut(): void {
     UserActions.signOut();

@@ -3,9 +3,10 @@ package com.lukeshay.restapi.config.security;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserRepository;
-import com.lukeshay.restapi.utils.Exceptions;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -48,14 +49,22 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     String token =
         request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
-    String username =
-        JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
+    String username;
+
+    try {
+      username =
+          JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
+    } catch (SignatureVerificationException | TokenExpiredException ignored) {
+      username = null;
+    }
 
     if (username != null) {
-      User user =
-          userRepository
-              .findByUsername(username)
-              .orElseThrow(() -> Exceptions.notFound(String.format("%s not found.", username)));
+      User user = userRepository.findByUsername(username).orElse(null);
+
+      if (user == null) {
+        return null;
+      }
+
       MyUserDetails principal = new MyUserDetails(user);
       return new UsernamePasswordAuthenticationToken(username, null, principal.getAuthorities());
     }

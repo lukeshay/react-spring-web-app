@@ -1,11 +1,11 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.utils.Exceptions;
-import java.util.Collections;
+import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Responses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,50 +17,37 @@ public class PublicUserController {
 
   private static Logger LOG = LoggerFactory.getLogger(PublicUserController.class.getName());
 
-  private UserRepository userRepository;
-  private PasswordEncoder passwordEncoder;
+  private UserService userService;
 
   @Autowired
-  public PublicUserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
+  public PublicUserController(UserService userService) {
+    this.userService = userService;
   }
 
   @PostMapping("")
-  public User createUser(@RequestBody User user) {
-    if (user.getUsername() != null
-        && user.getFirstName() != null
-        && user.getLastName() != null
-        && user.getEmail() != null
-        && user.getPhoneNumber() != null
-        && user.getState() != null
-        && user.getCountry() != null
-        && user.getPassword() != null) {
+  public ResponseEntity<?> createUser(@RequestBody User user) {
+    LOG.debug("Creating user {}", user.toString());
 
-      LOG.debug("Creating new user: {}", user.getUsername());
+    if (userService.isEmailTaken(user.getEmail())) {
+      LOG.debug("Not creating user because email is taken.");
 
-      if (userRepository.findByEmail(user.getEmail()).orElse(null) != null) {
-        throw Exceptions.badRequest("Email is taken.");
-      } else if (userRepository.findByUsername(user.getUsername()).orElse(null) != null) {
-        throw Exceptions.badRequest("Username is taken.");
-      }
+      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
+    }
 
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));
-      userRepository.save(user);
+    if (userService.isUsernameTaken(user.getUsername())) {
+      LOG.debug("Not creating user because username is taken.");
 
-      return userRepository
-          .findByUsername(user.getUsername())
-          .orElseThrow(
-              () ->
-                  Exceptions.internalServerError(
-                      String.format("%s was not saved.", user.getUsername())));
+      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+    }
 
+    User newUser = userService.createUser(user);
+
+    if (newUser == null) {
+      LOG.warn("Could not create user.");
+
+      return Responses.badRequestJsonResponse(Bodys.error("Field missing for user."));
     } else {
-      LOG.warn("Error creating new user: {}", user.toString());
-
-      throw Exceptions.badRequest("Missing a field.");
+      return Responses.okJsonResponse(user);
     }
   }
 }

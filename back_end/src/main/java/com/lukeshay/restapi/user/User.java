@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.Gson;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,7 @@ public class User implements Persistable<String> {
   private String firstName;
   private String lastName;
   private String phoneNumber;
+  private String city;
   private String state;
   private String country;
   private List<String> authorities;
@@ -91,35 +93,28 @@ public class User implements Persistable<String> {
     return new Gson().toJson(this);
   }
 
-  void update(User updatedUser) {
-    if (!userId.equals(updatedUser.userId)) {
-      return;
-    }
-
-    if (updatedUser.firstName != null) {
-      firstName = updatedUser.firstName;
-    }
-
-    if (updatedUser.lastName != null) {
-      lastName = updatedUser.lastName;
-    }
-    if (updatedUser.email != null) {
-      email = updatedUser.email;
-    }
-
-    if (updatedUser.username != null) {
-      username = updatedUser.username;
-    }
-    if (updatedUser.state != null) {
-      state = updatedUser.state;
-    }
-    if (updatedUser.country != null) {
-      country = updatedUser.country;
-    }
-    if (updatedUser.phoneNumber != null) {
-      phoneNumber = updatedUser.phoneNumber;
-    }
+  void update(@NotNull User updatedUser) {
 
     persistable = true;
+
+    if (updatedUser.getFirstName() != null) {
+      firstName = updatedUser.getFirstName();
+    }
+    if (updatedUser.getLastName() != null) {
+      lastName = updatedUser.getLastName();
+    }
+    if (updatedUser.getEmail() != null) {
+      email = updatedUser.getEmail();
+      username = updatedUser.getEmail();
+    }
+    if (updatedUser.getState() != null) {
+      state = updatedUser.getState();
+    }
+    if (updatedUser.getCountry() != null) {
+      country = updatedUser.getCountry();
+    }
+    if (updatedUser.getPhoneNumber() != null) {
+      phoneNumber = updatedUser.getPhoneNumber();
+    }
   }
 }

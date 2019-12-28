@@ -54,6 +54,7 @@ dependencies {
     // Security dependencies
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.springBootVersion
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.4.1'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test'
 
     // Swagger dependencies
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
