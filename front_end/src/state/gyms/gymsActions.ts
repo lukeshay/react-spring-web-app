@@ -1,6 +1,6 @@
 import * as GymsApi from "../../api/gymsApi";
 import dispatcher from "../../appDispatcher";
-import { ActionInterface } from "../../stores/gymsStore";
+import { ActionInterface } from "../gymsStore";
 import Types from "./gymsActionTypes";
 
 export const loadGyms = async () => {
