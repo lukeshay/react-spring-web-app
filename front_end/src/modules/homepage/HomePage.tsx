@@ -4,14 +4,11 @@ import React from "react";
 const HomePage: React.FC = () => {
   return (
     <div className="jumbotron-fluid">
-      <h1>Luke Shay's Productivity App</h1>
-      <h2>Planned Features (not limited to)</h2>
-      <ul>
-        <li>ToDo list</li>
-        <li>Note taking</li>
-        <li>Google Calendar integration</li>
-        <li>Gmail integration</li>
-      </ul>
+      <h1>Climbing Routes Rating</h1>
+      <h2>
+        Web application for gyms to post their routes and customers to rate
+        them.
+      </h2>
     </div>
   );
 };
