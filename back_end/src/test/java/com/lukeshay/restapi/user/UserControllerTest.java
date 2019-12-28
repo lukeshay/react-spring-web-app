@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -39,6 +40,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void getUserByEmailTest() {
     ResponseEntity<?> getUser = privateUserController.getUserByEmail(testUser.getEmail());
 
@@ -46,6 +48,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void getUserByUsernameTest() {
     ResponseEntity<?> getUser = privateUserController.getUserByUsername(testUser.getUsername());
 
@@ -90,6 +93,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void updateUserByIdTest() {
     testUser.setUsername("TestUserChange");
     testUser.setFirstName("First");
@@ -113,6 +117,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void updateUserByIdDuplicateTest() {
     testUser.setUsername("test.user2@email.com");
     testUser.setEmail("test.user2@email.com");

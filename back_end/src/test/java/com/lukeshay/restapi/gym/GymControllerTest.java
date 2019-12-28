@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -47,6 +48,7 @@ class GymControllerTest {
   }
 
   @Test
+  @WithMockUser
   void updateGymByIdTest() {
     ResponseEntity<?> response =
         privateGymController.updateGym(

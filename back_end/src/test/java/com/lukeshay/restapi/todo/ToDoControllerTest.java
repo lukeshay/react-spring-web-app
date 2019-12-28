@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -18,6 +19,7 @@ class ToDoControllerTest {
   @Autowired private ToDoRepository toDoRepository;
 
   @Test
+  @WithMockUser
   void addToDoTest() {
     ToDo addedToDo = new ToDo("id", "text", false, "Due date");
     toDoController.addToDo(addedToDo);
@@ -29,6 +31,7 @@ class ToDoControllerTest {
   }
 
   @Test
+  @WithMockUser
   void updateToDoTest() {
     ToDo addedToDo = new ToDo("id2", "text", false);
     addedToDo = toDoRepository.save(addedToDo);
@@ -50,6 +53,7 @@ class ToDoControllerTest {
   }
 
   @Test
+  @WithMockUser
   void deleteToDoTest() {
     ToDo addedToDo = new ToDo("id", "text", false);
     toDoController.addToDo(addedToDo);
