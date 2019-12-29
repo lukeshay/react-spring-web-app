@@ -14,9 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 @AutoConfigureDataMongo
 class GymControllerTest {
 
-  @Autowired PrivateGymController privateGymController;
-
-  @Autowired PublicGymController publicGymController;
+  @Autowired GymController gymController;
 
   @Autowired GymRepository gymRepository;
 
@@ -40,7 +38,7 @@ class GymControllerTest {
 
   @Test
   void getGymByIdTest() {
-    ResponseEntity<?> response = publicGymController.getGymById(testGym.getId());
+    ResponseEntity<?> response = gymController.getGymById(testGym.getId());
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(testGym, response.getBody()),
@@ -51,7 +49,7 @@ class GymControllerTest {
   @WithMockUser
   void updateGymByIdTest() {
     ResponseEntity<?> response =
-        privateGymController.updateGym(
+        gymController.updateGym(
             testGym.getId(), "Jimmy", null, null, null, null, null, null);
 
     testGym = gymRepository.findById(testGym.getId()).get();
