@@ -15,9 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 @AutoConfigureDataMongo
 class UserControllerTest {
 
-  @Autowired private PublicUserController publicUserController;
-
-  @Autowired private PrivateUserController privateUserController;
+  @Autowired private UserController userController;
 
   @Autowired private UserRepository userRepository;
 
@@ -42,7 +40,7 @@ class UserControllerTest {
   @Test
   @WithMockUser
   void getUserByEmailTest() {
-    ResponseEntity<?> getUser = privateUserController.getUserByEmail(testUser.getEmail());
+    ResponseEntity<?> getUser = userController.getUserByEmail(testUser.getEmail());
 
     Assertions.assertEquals(testUser, getUser.getBody());
   }
@@ -50,7 +48,7 @@ class UserControllerTest {
   @Test
   @WithMockUser
   void getUserByUsernameTest() {
-    ResponseEntity<?> getUser = privateUserController.getUserByUsername(testUser.getUsername());
+    ResponseEntity<?> getUser = userController.getUserByUsername(testUser.getUsername());
 
     Assertions.assertEquals(testUser, getUser.getBody());
   }
@@ -69,7 +67,7 @@ class UserControllerTest {
             "password");
     testUserTwo.setLastName("User");
 
-    ResponseEntity<?> getUser = publicUserController.createUser(testUserTwo);
+    ResponseEntity<?> getUser = userController.createUser(testUserTwo);
     testUserTwo = userRepository.findByUsername(testUserTwo.getUsername()).get();
 
     Assertions.assertEquals(testUserTwo, getUser.getBody());
@@ -77,7 +75,7 @@ class UserControllerTest {
 
   @Test
   void createUserDuplicateTest() {
-    ResponseEntity<?> responseEmail = publicUserController.createUser(testUser);
+    ResponseEntity<?> responseEmail = userController.createUser(testUser);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Bodys.error("Email taken."), responseEmail.getBody()),
@@ -85,7 +83,7 @@ class UserControllerTest {
 
     testUser.setEmail("testtest@email.com");
 
-    ResponseEntity<?> responseUsername = publicUserController.createUser(testUser);
+    ResponseEntity<?> responseUsername = userController.createUser(testUser);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Bodys.error("Username taken."), responseUsername.getBody()),
@@ -101,7 +99,7 @@ class UserControllerTest {
     testUser.setPersistable(true);
 
     ResponseEntity<?> updatedUser =
-        privateUserController.updateUserById(
+        userController.updateUserById(
             testUser.getUserId(),
             testUser.getUsername(),
             null,
@@ -126,7 +124,7 @@ class UserControllerTest {
     testUser = userRepository.save(testUser);
 
     ResponseEntity<?> response =
-        privateUserController.updateUserById(
+        userController.updateUserById(
             testUser.getUserId(), "test.user@email.com", null, null, null, null, null, null);
 
     Assertions.assertAll(

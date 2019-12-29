@@ -57,8 +57,8 @@ class UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));
+      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
+      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.role()));
 
       return userRepository.save(user);
 
@@ -122,5 +122,16 @@ class UserService {
     toUpdate.setPersistable(true);
 
     return userRepository.save(toUpdate);
+  }
+
+  User deleteUserByUserId(String userId) {
+    User deletedUser = userRepository.findById(userId).orElse(null);
+
+    if (deletedUser == null) {
+      return null;
+    } else {
+      userRepository.deleteById(userId);
+      return deletedUser;
+    }
   }
 }

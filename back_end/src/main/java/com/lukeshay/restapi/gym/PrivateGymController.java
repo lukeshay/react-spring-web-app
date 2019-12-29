@@ -50,8 +50,8 @@ public class PrivateGymController {
     }
   }
 
-  @PostMapping("")
-  @PreAuthorize("hasAuthority(\"ADMIN\")")
+  @PostMapping("/admin")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<?> createGym(@RequestBody Gym body) {
     Gym gym = gymService.createGym(body);
 

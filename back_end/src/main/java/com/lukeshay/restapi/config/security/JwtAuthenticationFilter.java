@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
     Credentials credentials = null;
+
     try {
       credentials = new ObjectMapper().readValue(request.getInputStream(), Credentials.class);
     } catch (IOException e) {
@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     assert credentials != null;
+
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
             credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
@@ -50,7 +51,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletResponse response,
       FilterChain chain,
       Authentication authResult)
-      throws IOException, ServletException {
+      throws IOException {
+    
     MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
     String token =
@@ -70,6 +72,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 + "\":\""
                 + JwtProperties.TOKEN_PREFIX
                 + token
-                + "\"}");
+                + "\", "
+                + "\"user\": "
+                + principal.getUser().toString()
+                + "}");
   }
 }
