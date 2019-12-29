@@ -3,6 +3,8 @@ package com.lukeshay.restapi.gym;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/gyms")
 @PreAuthorize("isAuthenticated()")
+@Api(value = "Gym api endpoints.")
 public class GymController {
 
   private static Logger LOG = LoggerFactory.getLogger(GymController.class.getName());
@@ -33,6 +36,7 @@ public class GymController {
 
   @PutMapping("/{gymId}")
   @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Update a gym.", response = Gym.class)
   public ResponseEntity<?> updateGym(
       @PathVariable String gymId,
       @JsonProperty("state") String state,
@@ -53,8 +57,9 @@ public class GymController {
     }
   }
 
-  @PostMapping("/admin")
+  @PostMapping("")
   @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiOperation(value = "Create a gym.", response = Gym.class)
   public ResponseEntity<?> createGym(@RequestBody Gym body) {
     Gym gym = gymService.createGym(body);
 
@@ -63,6 +68,7 @@ public class GymController {
 
   @GetMapping("")
   @PreAuthorize("permitAll()")
+  @ApiOperation(value = "Gets all gyms.", response = Gym.class)
   public ResponseEntity<?> getAllGyms() {
     LOG.debug("Getting all gyms");
 
@@ -73,6 +79,7 @@ public class GymController {
 
   @GetMapping("/{gymId}")
   @PreAuthorize("permitAll()")
+  @ApiOperation(value = "Gets a gym.", response = Gym.class)
   public ResponseEntity<?> getGymById(@PathVariable String gymId) {
     LOG.debug("Getting gym {}", gymId);
 

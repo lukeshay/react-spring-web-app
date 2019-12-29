@@ -3,6 +3,8 @@ package com.lukeshay.restapi.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import javax.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 @PreAuthorize("isAuthenticated()")
+@Api(value = "User api endpoints.")
 public class UserController {
   private static Logger LOG = LoggerFactory.getLogger(UserController.class.getName());
 
@@ -33,6 +36,7 @@ public class UserController {
 
   @GetMapping(value = "", params = "username")
   @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Get a user by username.", response = User.class)
   public ResponseEntity<?> getUserByUsername(@PathParam(value = "username") String username) {
     LOG.debug("Getting user: {}", username);
 
@@ -48,6 +52,7 @@ public class UserController {
 
   @GetMapping(value = "", params = "email")
   @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Get a user by email.", response = User.class)
   public ResponseEntity<?> getUserByEmail(@PathParam(value = "email") String email) {
     LOG.debug("Getting user: {}", email);
 
@@ -74,6 +79,7 @@ public class UserController {
    */
   @PutMapping(value = "", params = "userId")
   @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Update a user.", response = User.class)
   public ResponseEntity<?> updateUserById(
       @PathParam(value = "userId") String userId,
       @JsonProperty("username") String username,
@@ -113,6 +119,7 @@ public class UserController {
 
   @PostMapping("/admin")
   @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiOperation(value = "Create an admin user.", response = User.class)
   public ResponseEntity<?> createAdminUser(@RequestBody User user) {
     LOG.debug("Creating admin user {}", user.toString());
 
@@ -141,6 +148,7 @@ public class UserController {
 
   @DeleteMapping("/{userId}")
   @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiOperation(value = "Delete a user.", response = User.class)
   public ResponseEntity<?> deleteUserByUserId(@PathVariable String userId) {
     User deletedUser = userService.deleteUserByUserId(userId);
 
@@ -153,6 +161,7 @@ public class UserController {
 
   @PostMapping("/new")
   @PreAuthorize("permitAll()")
+  @ApiOperation(value = "Create a user.", response = User.class)
   public ResponseEntity<?> createUser(@RequestBody User user) {
     LOG.debug("Creating user {}", user.toString());
 
