@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain,
       Authentication authResult)
       throws IOException {
-    
+
     MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
     String token =

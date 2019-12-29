@@ -53,7 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
         .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
         .authorizeRequests()
-        .anyRequest().permitAll();
+        .anyRequest()
+        .permitAll();
   }
 
   @Bean

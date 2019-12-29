@@ -30,12 +30,12 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
     event.preventDefault();
 
     UserActions.updateUser({
+      ...user,
       email: email.current && email.current.value,
       firstName: firstName.current && firstName.current.value,
       lastName: lastName.current && lastName.current.value,
-      phoneNumber: phoneNumber.current && phoneNumber.current.value,
-      ...user
-    });
+      phoneNumber: phoneNumber.current && phoneNumber.current.value
+    } as User);
   }
 
   return (

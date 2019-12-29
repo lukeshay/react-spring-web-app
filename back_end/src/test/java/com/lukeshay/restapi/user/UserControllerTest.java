@@ -54,6 +54,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void createUserTest() {
     User testUserTwo =
         new User(
@@ -74,6 +75,7 @@ class UserControllerTest {
   }
 
   @Test
+  @WithMockUser
   void createUserDuplicateTest() {
     ResponseEntity<?> responseEmail = userController.createUser(testUser);
 

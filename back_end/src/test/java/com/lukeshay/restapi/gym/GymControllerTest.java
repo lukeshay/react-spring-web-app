@@ -37,6 +37,7 @@ class GymControllerTest {
   }
 
   @Test
+  @WithMockUser
   void getGymByIdTest() {
     ResponseEntity<?> response = gymController.getGymById(testGym.getId());
 
@@ -49,8 +50,7 @@ class GymControllerTest {
   @WithMockUser
   void updateGymByIdTest() {
     ResponseEntity<?> response =
-        gymController.updateGym(
-            testGym.getId(), "Jimmy", null, null, null, null, null, null);
+        gymController.updateGym(testGym.getId(), "Jimmy", null, null, null, null, null, null);
 
     testGym = gymRepository.findById(testGym.getId()).get();
 

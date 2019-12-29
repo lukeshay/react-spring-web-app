@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("isAuthenticated()")
 @Api(value = "User api endpoints.")
 public class UserController {
+
   private static Logger LOG = LoggerFactory.getLogger(UserController.class.getName());
 
   private UserService userService;
@@ -152,7 +153,7 @@ public class UserController {
   public ResponseEntity<?> deleteUserByUserId(@PathVariable String userId) {
     User deletedUser = userService.deleteUserByUserId(userId);
 
-    if (deletedUser== null) {
+    if (deletedUser == null) {
       return Responses.badRequestJsonResponse(Bodys.error("User not found."));
     } else {
       return Responses.okJsonResponse(deletedUser);

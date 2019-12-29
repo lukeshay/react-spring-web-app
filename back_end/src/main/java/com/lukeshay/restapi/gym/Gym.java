@@ -2,7 +2,8 @@ package com.lukeshay.restapi.gym;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Document
 class Gym implements Persistable<String> {
-  @Id private String id;
+  @Id @Expose private String id;
 
   @CreatedDate
   @JsonProperty(access = Access.WRITE_ONLY)
@@ -34,14 +35,14 @@ class Gym implements Persistable<String> {
   @JsonProperty(access = Access.WRITE_ONLY)
   private boolean persistable;
 
-  private String name;
-  private String address;
-  private String city;
-  private String state;
-  private String website;
-  private String email;
-  private String phoneNumber;
-  private List<String> authorizedEditors;
+  @Expose private String name;
+  @Expose private String address;
+  @Expose private String city;
+  @Expose private String state;
+  @Expose private String website;
+  @Expose private String email;
+  @Expose private String phoneNumber;
+  @Expose private List<String> authorizedEditors;
 
   public Gym(
       String name,
@@ -74,6 +75,6 @@ class Gym implements Persistable<String> {
 
   @Override
   public String toString() {
-    return new Gson().toJson(this);
+    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
   }
 }

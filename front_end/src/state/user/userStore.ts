@@ -43,6 +43,10 @@ Dispatcher.register((action: IAction) => {
       store.emitChange();
       break;
 
+    case Types.UPDATE_USER:
+      user = action.user;
+      break;
+
     default:
   }
 });
