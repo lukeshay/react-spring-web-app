@@ -1,10 +1,10 @@
 import * as GymsApi from "../../api/gymsApi";
 import dispatcher from "../../appDispatcher";
-import { ActionInterface } from "../gymsStore";
 import Types from "./gymsActionTypes";
+import { IAction } from "./gymsStore";
 
 export const loadGyms = async () => {
-  const response = GymsApi.getGyms();
+  const response = await GymsApi.getGyms();
 
   if (response instanceof Response && response.ok) {
     const body = await response.json();
@@ -12,7 +12,7 @@ export const loadGyms = async () => {
     dispatcher.dispatch({
       actionType: Types.LOAD_GYMS,
       gyms: body
-    } as ActionInterface);
+    } as IAction);
   }
 
   return response;

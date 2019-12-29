@@ -1,6 +1,6 @@
 import { createRef, useEffect, useState } from "react";
 import React from "react";
-import * as UserActions from "../../../actions/user/userActions";
+import * as UserActions from "../../../state/user/userActions";
 import { User } from "../../../types";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";

@@ -1,5 +1,5 @@
+import * as toDoApi from "../../api/toDoApi";
 import dispatcher from "../../appDispatcher";
-import * as toDoApi from "../../rest-api/toDoRestApi";
 import { ToDo } from "../../types";
 import Types from "./toDoActionTypes";
 

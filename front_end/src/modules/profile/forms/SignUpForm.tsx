@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import React from "react";
 import { toast } from "react-toastify";
-import * as userActions from "../../../actions/user/userActions";
+import * as userActions from "../../../state/user/userActions";
 import { User } from "../../../types";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";

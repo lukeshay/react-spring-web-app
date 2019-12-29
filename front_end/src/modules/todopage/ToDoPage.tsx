@@ -6,9 +6,9 @@ import {
   deleteToDo,
   loadUsersToDos,
   saveToDo
-} from "../../actions/toDo/toDoActions";
-import toDoStore from "../../stores/toDoStore";
-import userStore from "../../stores/userStore";
+} from "../../state/toDo/toDoActions";
+import toDoStore from "../../state/toDo/toDoStore";
+import userStore from "../../state/user/userStore";
 import { ButtonEvent, InputEvent, ToDo, User } from "../../types";
 import ToDoList from "./ToDoList";
 

@@ -1,12 +1,11 @@
 import { EventEmitter } from "events";
-import Types from "../actions/gyms/gymsActionTypes";
-import Dispatcher from "../appDispatcher";
-import { Gym } from "../types";
+import Dispatcher from "../../appDispatcher";
+import { Gym } from "../../types/gym";
+import Types from "./gymsActionTypes";
 
-export interface ActionInterface {
+export interface IAction {
   actionType: string;
   gyms: Gym[];
-  id: string;
 }
 
 const CHANGE_EVENT = "change";
@@ -25,18 +24,19 @@ class GymsStore extends EventEmitter {
     this.emit(CHANGE_EVENT);
   }
 
-  public getToDos(): Gym[] {
+  public getGyms(): Gym[] {
     return gyms;
   }
 }
 
 const store = new GymsStore();
 
-Dispatcher.register((action: ActionInterface) => {
+Dispatcher.register((action: IAction) => {
   switch (action.actionType) {
     case Types.LOAD_GYMS:
       gyms = action.gyms;
       store.emitChange();
+      break;
 
     default:
   }

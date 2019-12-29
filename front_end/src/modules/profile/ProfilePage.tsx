@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import userStore from "../../stores/userStore";
+import userStore from "../../state/user/userStore";
 import { User } from "../../types";
 import ProfileForm from "./forms/ProfileForm";
 import SignInForm from "./forms/SignInForm";

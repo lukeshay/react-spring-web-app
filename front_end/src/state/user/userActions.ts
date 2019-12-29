@@ -1,4 +1,4 @@
-import * as UserApi from "../../api/userRestApi";
+import * as UserApi from "../../api/userApi";
 import dispatcher from "../../appDispatcher";
 import { User } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";

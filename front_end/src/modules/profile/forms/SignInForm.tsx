@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import React from "react";
-import { signIn } from "../../../actions/user/userActions";
+import { signIn } from "../../../state/user/userActions";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
