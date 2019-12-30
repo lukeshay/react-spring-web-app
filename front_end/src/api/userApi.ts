@@ -59,7 +59,7 @@ export async function createUser(user: User): Promise<void | Response> {
 export async function updateUser(user: User): Promise<void | Response> {
   const token = Cookies.getJwtToken();
 
-  return fetch(userUrl + "?userId=" + user.userId, {
+  return fetch(userUrl, {
     body: JSON.stringify(user),
     headers: {
       Authorization: token,

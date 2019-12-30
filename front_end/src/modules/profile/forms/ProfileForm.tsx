@@ -16,11 +16,8 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
   const firstName = createRef<HTMLInputElement>();
   const lastName = createRef<HTMLInputElement>();
   const email = createRef<HTMLInputElement>();
-  const emailMessage = createRef<HTMLInputElement>();
   const password = createRef<HTMLInputElement>();
-  const [passwordMessage, setPasswordMessage] = useState<string>("");
   const phoneNumber = createRef<HTMLInputElement>();
-  const [phoneNumberMessage, setPhoneNumberMessage] = useState<string>("");
 
   function handleSignOut(): void {
     UserActions.signOut();
