@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 
 public class Bodys {
   static class ErrorBody {
-    final String error;
-    String message;
+    String error;
 
-    ErrorBody() {
-      error = "error";
+    ErrorBody(String error) {
+      this.error = error;
     }
 
     @Override
@@ -18,8 +17,7 @@ public class Bodys {
   }
 
   public static String error(String message) {
-    ErrorBody errorBody = new ErrorBody();
-    errorBody.message = message;
+    ErrorBody errorBody = new ErrorBody(message);
     return errorBody.toString();
   }
 }

@@ -1,6 +1,6 @@
+import * as UserApi from "../../api/userApi";
 import dispatcher from "../../appDispatcher";
-import { User } from "../../models/index";
-import * as UserApi from "../../rest-api/userRestApi";
+import { User } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
 
@@ -19,30 +19,20 @@ export async function signIn(
 ): Promise<void | Response> {
   const signInResponse = await UserApi.signIn(username, password);
 
-  if (!(signInResponse instanceof Response) || !signInResponse.ok) {
-    return signInResponse;
-  }
+  if (signInResponse instanceof Response && signInResponse.ok) {
+    const signInBody = await signInResponse.json();
+    const jwtToken = signInBody.Authorization;
+    const user = signInBody.user;
 
-  const signInBody = await signInResponse.json();
-  const jwtToken = signInBody.Authorization;
-
-  Cookies.setJwtToken(jwtToken);
-
-  const getUserResponse = await UserApi.getUser(username);
-
-  if (getUserResponse instanceof Response && getUserResponse.ok) {
-    const getUserBody = await getUserResponse.json();
-
-    Cookies.setUsername(getUserBody.username);
-    Cookies.setUserId(getUserBody.userId);
+    Cookies.setJwtToken(jwtToken);
 
     dispatcher.dispatch({
       actionType: Types.SIGN_IN,
-      user: getUserBody
+      user
     });
   }
 
-  return getUserResponse;
+  return signInResponse;
 }
 
 export async function createUser(newUser: User): Promise<void | Response> {

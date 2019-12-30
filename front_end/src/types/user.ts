@@ -9,11 +9,3 @@ export interface User {
   password: string;
   phoneNumber: string;
 }
-
-export interface ToDo {
-  id: string;
-  userId: string;
-  text: string;
-  completed: boolean;
-  dueDate?: string;
-}

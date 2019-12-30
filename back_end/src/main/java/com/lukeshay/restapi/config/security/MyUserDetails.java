@@ -16,6 +16,10 @@ public class MyUserDetails implements UserDetails {
     this.user = user;
   }
 
+  User getUser() {
+    return user;
+  }
+
   /**
    * Returns the authorities granted to the user. Cannot return <code>null</code>.
    *

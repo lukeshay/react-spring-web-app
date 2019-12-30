@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
+import React from "react";
 
 export interface IPropsButton {
   id?: string;
@@ -25,4 +25,4 @@ Button.defaultProps = {
   id: ""
 };
 
-export default Button;
+export default React.memo(Button);

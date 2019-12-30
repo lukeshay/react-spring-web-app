@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 interface IPropsNavItem {
@@ -26,7 +26,7 @@ const NavigationBar: React.FC = () => (
     <nav className="navbar navbar-expand-lg navbar-light bg-light  sticky-top shadow rounded fixed-top">
       <ul className="navbar-nav mr-auto">
         <NavItem link="/" text="Home" />
-        <NavItem link="/items" text="Items" />
+        <NavItem link="/gyms" text="Gyms" />
         <NavItem link="/todo" text="ToDo" />
         <NavItem link="/calendar" text="Calendar" />
         <NavItem link="/email" text="Email" />
@@ -38,4 +38,4 @@ const NavigationBar: React.FC = () => (
   </div>
 );
 
-export default NavigationBar;
+export default React.memo(NavigationBar);

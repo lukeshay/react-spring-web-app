@@ -45,7 +45,7 @@ class ToDoControllerTest {
     String id = addedToDo.getId();
     addedToDo.setId(null);
 
-    response = toDoController.updateToDo(id, null, true, null);
+    response = toDoController.updateToDo(id, new ToDo(null, null, true));
 
     addedToDo.setId(id);
 

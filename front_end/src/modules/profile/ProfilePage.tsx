@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import * as React from "react";
-import { User } from "../../models/index";
-import userStore from "../../stores/userStore";
+import React from "react";
+import userStore from "../../state/user/userStore";
+import { User } from "../../types";
 import ProfileForm from "./forms/ProfileForm";
 import SignInForm from "./forms/SignInForm";
 import SignUpForm from "./forms/SignUpForm";
@@ -41,4 +41,4 @@ const ProfilePage: React.FC = () => {
   }
 };
 
-export default ProfilePage;
+export default React.memo(ProfilePage);

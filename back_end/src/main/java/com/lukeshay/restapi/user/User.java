@@ -2,9 +2,9 @@ package com.lukeshay.restapi.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User implements Persistable<String> {
 
-  @Id private String userId;
+  @Id @Expose private String userId;
 
   @CreatedDate
   @JsonProperty(access = Access.WRITE_ONLY)
@@ -41,21 +41,23 @@ public class User implements Persistable<String> {
   private boolean persistable;
 
   @Indexed(unique = true)
+  @Expose
   private String username;
 
   @Indexed(unique = true)
+  @Expose
   private String email;
 
-  private String firstName;
-  private String lastName;
-  private String phoneNumber;
-  private String city;
-  private String state;
-  private String country;
-  private List<String> authorities;
-  private List<String> roles;
+  @Expose private String firstName;
+  @Expose private String lastName;
+  @Expose private String phoneNumber;
+  @Expose private String city;
+  @Expose private String state;
+  @Expose private String country;
+  @Expose private List<String> authorities;
+  @Expose private List<String> roles;
 
-  User(
+  public User(
       String username,
       String firstName,
       String lastName,
@@ -90,31 +92,6 @@ public class User implements Persistable<String> {
 
   @Override
   public String toString() {
-    return new Gson().toJson(this);
-  }
-
-  void update(@NotNull User updatedUser) {
-
-    persistable = true;
-
-    if (updatedUser.getFirstName() != null) {
-      firstName = updatedUser.getFirstName();
-    }
-    if (updatedUser.getLastName() != null) {
-      lastName = updatedUser.getLastName();
-    }
-    if (updatedUser.getEmail() != null) {
-      email = updatedUser.getEmail();
-      username = updatedUser.getEmail();
-    }
-    if (updatedUser.getState() != null) {
-      state = updatedUser.getState();
-    }
-    if (updatedUser.getCountry() != null) {
-      country = updatedUser.getCountry();
-    }
-    if (updatedUser.getPhoneNumber() != null) {
-      phoneNumber = updatedUser.getPhoneNumber();
-    }
+    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
   }
 }

@@ -1,9 +1,9 @@
 import { EventEmitter } from "events";
-import Types from "../actions/toDo/toDoActionTypes";
-import Dispatcher from "../appDispatcher";
-import { ToDo } from "../models/index";
+import Dispatcher from "../../appDispatcher";
+import { ToDo } from "../../types";
+import Types from "./toDoActionTypes";
 
-export interface ActionInterface {
+export interface IAction {
   actionType: string;
   toDo: ToDo;
   toDos: ToDo[];
@@ -33,7 +33,7 @@ class ToDoStore extends EventEmitter {
 
 const store = new ToDoStore();
 
-Dispatcher.register((action: ActionInterface) => {
+Dispatcher.register((action: IAction) => {
   switch (action.actionType) {
     case Types.DELETE_TODO:
       toDos = toDos.filter((toDo: ToDo) => toDo.id !== action.id);

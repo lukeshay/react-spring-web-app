@@ -1,4 +1,4 @@
-import { User } from "../models/index";
+import { User } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
@@ -41,7 +41,7 @@ export async function getUser(username: string): Promise<void | Response> {
 }
 
 export async function createUser(user: User): Promise<void | Response> {
-  return fetch(baseUrl + "public/users", {
+  return fetch(baseUrl + "users/new", {
     body: JSON.stringify(user),
     headers: {
       "Content-Type": "application/json"
@@ -59,7 +59,7 @@ export async function createUser(user: User): Promise<void | Response> {
 export async function updateUser(user: User): Promise<void | Response> {
   const token = Cookies.getJwtToken();
 
-  return fetch(userUrl + "?userId=" + user.userId, {
+  return fetch(userUrl, {
     body: JSON.stringify(user),
     headers: {
       Authorization: token,

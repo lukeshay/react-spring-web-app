@@ -1,8 +1,9 @@
 package com.lukeshay.restapi.todo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/todos")
 @PreAuthorize("isAuthenticated()")
+@Api(value = "To-do api endpoints.")
 public class ToDoController {
   private static Logger LOG = LoggerFactory.getLogger(ToDoController.class.getName());
 
@@ -31,7 +33,9 @@ public class ToDoController {
     this.toDoService = toDoService;
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/{userId}/all")
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Gets all to-dos.", response = List.class)
   public ResponseEntity<?> getAllToDos(@PathVariable String userId) {
     LOG.debug("Getting user {} to-do's.", userId);
 
@@ -41,6 +45,8 @@ public class ToDoController {
   }
 
   @PostMapping("")
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Adds a to-do.", response = ToDo.class)
   public ResponseEntity<?> addToDo(@RequestBody ToDo newToDo) {
     LOG.debug("Adding to-do: {}", newToDo.toString());
 
@@ -50,6 +56,8 @@ public class ToDoController {
   }
 
   @GetMapping("/{toDoId}")
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Gets a to-do.", response = ToDo.class)
   public ResponseEntity<?> getToDo(@PathVariable String toDoId) {
     LOG.debug("Getting to-do: {}", toDoId);
 
@@ -63,6 +71,8 @@ public class ToDoController {
   }
 
   @DeleteMapping("/{toDoId}")
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Deletes a to-do.", response = ToDo.class)
   public ResponseEntity<?> deleteToDo(@PathVariable String toDoId) {
     LOG.debug("Deleting to-do: {}", toDoId);
 
@@ -76,14 +86,13 @@ public class ToDoController {
   }
 
   @PutMapping("/{toDoId}")
-  public ResponseEntity<?> updateToDo(
-      @PathVariable String toDoId,
-      @JsonProperty("text") String text,
-      @JsonProperty("completed") Boolean completed,
-      @JsonProperty("dueDate") String dueDate) {
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Updates a to-do.", response = ToDo.class)
+  public ResponseEntity<?> updateToDo(@PathVariable String toDoId, @RequestBody ToDo toDo) {
     LOG.debug("Updating to-do {}", toDoId);
 
-    ToDo updatedToDo = toDoService.updateToDo(toDoId, text, completed, dueDate);
+    ToDo updatedToDo =
+        toDoService.updateToDo(toDoId, toDo.getText(), toDo.isCompleted(), toDo.getDueDate());
 
     if (updatedToDo == null) {
       return Responses.notFoundJsonResponse(Bodys.error("To-do not found."));

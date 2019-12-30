@@ -1,23 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
 import {
   deleteToDo,
   loadUsersToDos,
   saveToDo
-} from "../../actions/toDo/toDoActions";
-import { ToDo, User } from "../../models/index";
-import toDoStore from "../../stores/toDoStore";
-import userStore from "../../stores/userStore";
+} from "../../state/toDo/toDoActions";
+import toDoStore from "../../state/toDo/toDoStore";
+import userStore from "../../state/user/userStore";
+import { ButtonEvent, InputEvent, ToDo, User } from "../../types";
 import ToDoList from "./ToDoList";
 
 const ToDoPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [adding, setAdding] = useState<boolean>(false);
   const [toDos, setToDos] = useState<ToDo[]>([]);
-  const [newToDo, setNewToDo] = useState({} as ToDo);
+  const [newToDo, setNewToDo] = useState<ToDo>({} as ToDo);
   const [key, setKey] = useState<number>(Math.random() * 10000);
   const [currentUser, setCurrentUser] = useState<User>(userStore.getUser());
 
@@ -44,12 +43,12 @@ const ToDoPage: React.FC = () => {
     };
   }, []);
 
-  async function onToDoChange() {
+  async function onToDoChange(): Promise<void> {
     setToDos(toDoStore.getToDos());
     setKey(Math.random() * 10000);
   }
 
-  async function onUserChange() {
+  async function onUserChange(): Promise<void> {
     setCurrentUser(userStore.getUser());
 
     if (currentUser.email) {
@@ -60,7 +59,7 @@ const ToDoPage: React.FC = () => {
     setKey(Math.random() * 10000);
   }
 
-  async function handleCheckboxChange({ target }) {
+  async function handleCheckboxChange({ target }: InputEvent): Promise<void> {
     const toDoToUpdate = toDos.find((toDo) => toDo.id === target.id);
 
     if (toDoToUpdate) {
@@ -68,11 +67,13 @@ const ToDoPage: React.FC = () => {
     }
   }
 
-  async function handleDeleteButtonClick({ target }) {
+  async function handleDeleteButtonClick({
+    target
+  }: ButtonEvent): Promise<void> {
     deleteToDo(target.id);
   }
 
-  async function onAddClick() {
+  async function handleAddClick() {
     if (adding && newToDo.text !== "") {
       const response = await saveToDo(newToDo);
 
@@ -85,22 +86,14 @@ const ToDoPage: React.FC = () => {
 
         setAdding(false);
       }
-      // else {
-      // }
     } else {
       setAdding(!adding);
     }
   }
 
-  async function onInputChange({ target }: any): Promise<void> {
+  async function handleInputChange({ target }: InputEvent): Promise<void> {
     const { value } = target;
     setNewToDo({ ...newToDo, text: value });
-  }
-
-  async function handleKeyPress({ currentTarget }: any): Promise<void> {
-    // if (false && currentTarget.name === "newToDo") {
-    //   setAdding(false);
-    // }
   }
 
   if (loading) {
@@ -131,15 +124,14 @@ const ToDoPage: React.FC = () => {
                 name="newToDo"
                 style={{ marginBottom: "5px" }}
                 value={newToDo.text}
-                onChange={onInputChange}
-                onKeyPress={handleKeyPress}
+                onChange={handleInputChange}
               />
             )}
             <div className="col text-center">
               <button
                 className="btn btn-secondary"
                 name="add"
-                onClick={onAddClick}
+                onClick={handleAddClick}
               >
                 Add ToDo
               </button>

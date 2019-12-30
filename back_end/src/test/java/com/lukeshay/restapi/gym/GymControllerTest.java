@@ -1,8 +1,16 @@
 package com.lukeshay.restapi.gym;
 
+import com.lukeshay.restapi.services.Requests;
+import com.lukeshay.restapi.user.User;
+import com.lukeshay.restapi.user.UserTypes;
+import java.util.Collections;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,16 +22,20 @@ import org.springframework.security.test.context.support.WithMockUser;
 @AutoConfigureDataMongo
 class GymControllerTest {
 
-  @Autowired PrivateGymController privateGymController;
+  private GymController gymController;
 
-  @Autowired PublicGymController publicGymController;
+  @Autowired private GymRepository gymRepository;
 
-  @Autowired GymRepository gymRepository;
+  @Mock private HttpServletRequest request;
+
+  @Mock private Requests requests;
 
   private Gym testGym;
 
   @BeforeEach
   void setUp() {
+    MockitoAnnotations.initMocks(this);
+
     testGym =
         new Gym(
             "Jim",
@@ -33,14 +45,35 @@ class GymControllerTest {
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
-            null);
+            Collections.singletonList("1111111111"));
 
     testGym = gymRepository.save(testGym);
+
+    requests = Mockito.mock(Requests.class);
+
+    User user =
+        new User(
+            "test.user@email.com",
+            "Test",
+            "User",
+            "test.user@email.com",
+            "1111111111",
+            "Iowa",
+            "USA",
+            "password");
+
+    user.setUserId("1111111111");
+    user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
+
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(user);
+
+    gymController = new GymController(new GymService(gymRepository, requests));
   }
 
   @Test
+  @WithMockUser
   void getGymByIdTest() {
-    ResponseEntity<?> response = publicGymController.getGymById(testGym.getId());
+    ResponseEntity<?> response = gymController.getGymById(testGym.getId());
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(testGym, response.getBody()),
@@ -51,8 +84,8 @@ class GymControllerTest {
   @WithMockUser
   void updateGymByIdTest() {
     ResponseEntity<?> response =
-        privateGymController.updateGym(
-            testGym.getId(), "Jimmy", null, null, null, null, null, null);
+        gymController.updateGym(
+            request, testGym.getId(), new Gym("Jimmy", null, null, null, null, null, null, null));
 
     testGym = gymRepository.findById(testGym.getId()).get();
 

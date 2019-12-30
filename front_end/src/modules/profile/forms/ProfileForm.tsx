@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState } from "react";
-import * as React from "react";
-import * as UserActions from "../../../actions/user/userActions";
-import { User } from "../../../models/index";
+import React from "react";
+import * as UserActions from "../../../state/user/userActions";
+import { User } from "../../../types";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import InlineTextInput from "../../common/inputs/ref/InlineInput";
@@ -16,11 +16,8 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
   const firstName = createRef<HTMLInputElement>();
   const lastName = createRef<HTMLInputElement>();
   const email = createRef<HTMLInputElement>();
-  const emailMessage = createRef<HTMLInputElement>();
   const password = createRef<HTMLInputElement>();
-  const [passwordMessage, setPasswordMessage] = useState<string>("");
   const phoneNumber = createRef<HTMLInputElement>();
-  const [phoneNumberMessage, setPhoneNumberMessage] = useState<string>("");
 
   function handleSignOut(): void {
     UserActions.signOut();
@@ -30,12 +27,12 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
     event.preventDefault();
 
     UserActions.updateUser({
+      ...user,
       email: email.current && email.current.value,
       firstName: firstName.current && firstName.current.value,
       lastName: lastName.current && lastName.current.value,
-      phoneNumber: phoneNumber.current && phoneNumber.current.value,
-      ...user
-    });
+      phoneNumber: phoneNumber.current && phoneNumber.current.value
+    } as User);
   }
 
   return (
@@ -90,4 +87,4 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({
   );
 };
 
-export default ProfileForm;
+export default React.memo(ProfileForm);

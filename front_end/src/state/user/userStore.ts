@@ -1,9 +1,9 @@
 import { EventEmitter } from "events";
-import Types from "../actions/user/userActionTypes";
-import Dispatcher from "../appDispatcher";
-import { User } from "../models/index";
+import Dispatcher from "../../appDispatcher";
+import { User } from "../../types";
+import Types from "./userActionTypes";
 
-export interface ActionInterface {
+export interface IAction {
   actionType: string;
   user: User;
 }
@@ -31,7 +31,7 @@ class UserStore extends EventEmitter {
 
 const store = new UserStore();
 
-Dispatcher.register((action: ActionInterface) => {
+Dispatcher.register((action: IAction) => {
   switch (action.actionType) {
     case Types.SIGN_IN:
       user = action.user;
@@ -41,6 +41,10 @@ Dispatcher.register((action: ActionInterface) => {
     case Types.SIGN_OUT:
       user = {} as User;
       store.emitChange();
+      break;
+
+    case Types.UPDATE_USER:
+      user = action.user;
       break;
 
     default:

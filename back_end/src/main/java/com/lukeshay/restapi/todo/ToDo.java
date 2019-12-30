@@ -1,6 +1,9 @@
 package com.lukeshay.restapi.todo;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,17 +20,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class ToDo implements Persistable<String> {
 
-  @Id private String id;
+  @Id @Expose private String id;
 
-  @CreatedDate private String createdDate;
+  @CreatedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String createdDate;
 
-  @LastModifiedDate private String modifiedDate;
+  @LastModifiedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String modifiedDate;
 
-  private String userId;
-  private String text;
-  private boolean completed;
-  private String dueDate;
+  @JsonProperty(access = Access.WRITE_ONLY)
   private boolean persistable;
+
+  @Expose private String userId;
+  @Expose private String text;
+  @Expose private boolean completed;
+  @Expose private String dueDate;
 
   /**
    * Instantiates a new To-do.
@@ -97,6 +106,6 @@ public class ToDo implements Persistable<String> {
 
   @Override
   public String toString() {
-    return new Gson().toJson(this);
+    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
   }
 }

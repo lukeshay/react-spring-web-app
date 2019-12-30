@@ -28,7 +28,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private UserDetailsService userDetailsService;
   private UserRepository userRepository;
 
-  /** Creates an instance with the default configuration enabled. */
   @Autowired
   public SecurityConfiguration(
       @Qualifier("myUserDetailsService") UserDetailsService userDetailsService,
@@ -52,7 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
+        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+        .authorizeRequests()
+        .anyRequest()
+        .permitAll();
   }
 
   @Bean

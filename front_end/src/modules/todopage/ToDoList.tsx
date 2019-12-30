@@ -1,15 +1,18 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as React from "react";
-import { ToDo } from "../../models/index";
+import React from "react";
+import { ToDo } from "../../types";
 import RedButton from "../common/buttons/RedButton";
+import Table from "../common/table/Table";
+import TableBody from "../common/table/TableBody";
+import TableHead from "../common/table/TableHead";
 
-export interface IPropsToDoList {
+export interface IToDoListProps {
   toDos: ToDo[];
   handleCheckboxChange(event: any): void;
   handleDeleteButtonClick(event: any): void;
 }
 
-const ToDoList: React.FC<IPropsToDoList> = (props: IPropsToDoList) => {
+const ToDoList: React.FC<IToDoListProps> = (props: IToDoListProps) => {
   const { toDos, handleCheckboxChange, handleDeleteButtonClick } = props;
 
   const completedStyle = {
@@ -17,16 +20,14 @@ const ToDoList: React.FC<IPropsToDoList> = (props: IPropsToDoList) => {
   };
 
   return (
-    <table className="table">
-      <thead>
-        <tr className="table-secondary">
-          <th>Completed</th>
-          <th>Text</th>
-          <th>Due</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHead>
+        <th>Completed</th>
+        <th>Text</th>
+        <th>Due</th>
+        <th>Delete</th>
+      </TableHead>
+      <TableBody>
         {toDos.map((toDo) => (
           <tr key={toDo.id}>
             <td>
@@ -48,8 +49,8 @@ const ToDoList: React.FC<IPropsToDoList> = (props: IPropsToDoList) => {
             </td>
           </tr>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 };
 

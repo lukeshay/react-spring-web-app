@@ -1,6 +1,6 @@
+import * as toDoApi from "../../api/toDoApi";
 import dispatcher from "../../appDispatcher";
-import { ToDo } from "../../models/index";
-import * as toDoApi from "../../rest-api/toDoRestApi";
+import { ToDo } from "../../types";
 import Types from "./toDoActionTypes";
 
 export async function loadUsersToDos(userId: string): Promise<void | Response> {

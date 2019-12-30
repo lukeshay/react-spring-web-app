@@ -1,6 +1,8 @@
 package com.lukeshay.restapi.user;
 
+import com.lukeshay.restapi.services.Requests;
 import java.util.Collections;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,19 +12,27 @@ class UserService {
 
   private UserRepository userRepository;
   private PasswordEncoder passwordEncoder;
+  private Requests requests;
 
   @Autowired
-  UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, Requests requests) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.requests = requests;
   }
 
-  boolean isEmailTaken(String email) {
-    return userRepository.findByEmail(email).orElse(null) != null;
+  boolean isEmailTaken(HttpServletRequest request, String email) {
+    User user = requests.getUserFromRequest(request);
+
+    return (user == null || !user.getEmail().equals(email))
+        && userRepository.findByEmail(email).orElse(null) != null;
   }
 
-  boolean isUsernameTaken(String username) {
-    return userRepository.findByUsername(username).orElse(null) != null;
+  boolean isUsernameTaken(HttpServletRequest request, String username) {
+    User user = requests.getUserFromRequest(request);
+
+    return (user == null || !user.getUsername().equals(username))
+        && userRepository.findByUsername(username).orElse(null) != null;
   }
 
   User createUser(User user) {
@@ -57,8 +67,8 @@ class UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
-      user.setAuthorities(Collections.singletonList(UserTypes.BASIC.role()));
+      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
+      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.role()));
 
       return userRepository.save(user);
 
@@ -67,16 +77,12 @@ class UserService {
     }
   }
 
-  User getUserByUsername(String username) {
-    return userRepository.findByUsername(username).orElse(null);
+  User getUser(HttpServletRequest request) {
+    return requests.getUserFromRequest(request);
   }
 
-  User getUserByEmail(String email) {
-    return userRepository.findByEmail(email).orElse(null);
-  }
-
-  User updateUserById(
-      String userId,
+  User updateUser(
+      HttpServletRequest request,
       String username,
       String email,
       String firstName,
@@ -85,7 +91,10 @@ class UserService {
       String state,
       String country) {
 
-    User toUpdate = userRepository.findById(userId).orElse(null);
+    User user = requests.getUserFromRequest(request);
+
+    assert user != null;
+    User toUpdate = userRepository.findById(user.getUserId()).orElse(null);
 
     if (toUpdate == null) {
       return null;
@@ -122,5 +131,16 @@ class UserService {
     toUpdate.setPersistable(true);
 
     return userRepository.save(toUpdate);
+  }
+
+  User deleteUserByUserId(String userId) {
+    User deletedUser = userRepository.findById(userId).orElse(null);
+
+    if (deletedUser == null) {
+      return null;
+    } else {
+      userRepository.deleteById(userId);
+      return deletedUser;
+    }
   }
 }

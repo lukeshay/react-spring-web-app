@@ -29,4 +29,4 @@ TextInput.defaultProps = {
   helpText: ""
 };
 
-export default TextInput;
+export default React.memo(TextInput);
