@@ -1,34 +1,19 @@
 import React, { useEffect, useState } from "react";
-import * as GymsActions from "../../state/gyms/gymsActions";
-import gymsStore from "../../state/gyms/gymsStore";
-import { Gym } from "../../types/gym";
+import { RouteComponentProps } from "react-router";
+import { withRouter } from "react-router-dom";
+import GymsTable from "./views/GymsTable";
 
-const GymsPage: React.FC = () => {
-  const [gyms, setGyms] = useState<Gym[]>([]);
+const GymsPage: React.FC<RouteComponentProps> = (props) => {
+  const last = props.location.pathname
+    .split("/")
+    .slice(-1)
+    .pop();
 
-  useEffect(() => {
-    gymsStore.addChangeListener(handleGymsChange);
-
-    if (gymsStore.getGyms().length === 0) {
-      GymsActions.loadGyms();
-    }
-
-    return () => gymsStore.removeChangeListener(handleGymsChange);
-  }, []);
-
-  async function handleGymsChange(): Promise<void> {
-    setGyms(gymsStore.getGyms());
+  if (!last || last.trim() === "gyms" || last.trim().length === 0) {
+    return <GymsTable />;
+  } else {
+    return <div>This is a gym</div>;
   }
-
-  return (
-    <div>
-      {gyms.map((gym) => (
-        <div key={gym.id}>
-          <h3>{gym.name}</h3>
-        </div>
-      ))}
-    </div>
-  );
 };
 
-export default React.memo(GymsPage);
+export default React.memo(withRouter(GymsPage));
