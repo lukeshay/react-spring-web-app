@@ -1,89 +1,110 @@
-import { createRef, useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import * as UserActions from "../../../state/user/userActions";
 import { User } from "../../../types";
-import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
-import InlineTextInput from "../../common/inputs/ref/InlineInput";
+import Form from "../../common/forms/Form";
+import Input from "../../common/inputs/Input";
 
 export interface IPropsProfileForm {
   user: User;
 }
 
-const ProfileForm: React.FC<IPropsProfileForm> = ({
-  user
-}: IPropsProfileForm) => {
-  const firstName = createRef<HTMLInputElement>();
-  const lastName = createRef<HTMLInputElement>();
-  const email = createRef<HTMLInputElement>();
-  const password = createRef<HTMLInputElement>();
-  const phoneNumber = createRef<HTMLInputElement>();
+const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
+  const [firstName, setFirstName] = useState<string>(user.firstName);
+  const [lastName, setLastName] = useState<string>(user.lastName);
+  const [email, setEmail] = useState<string>(user.email);
+  const [password, setPassword] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>(user.phoneNumber);
 
-  function handleSignOut(): void {
+  async function handleSignOutClick(): Promise<void> {
     UserActions.signOut();
   }
 
-  function handleSubmit(event: any): void {
+  async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
     UserActions.updateUser({
       ...user,
-      email: email.current && email.current.value,
-      firstName: firstName.current && firstName.current.value,
-      lastName: lastName.current && lastName.current.value,
-      phoneNumber: phoneNumber.current && phoneNumber.current.value
+      email,
+      firstName,
+      lastName,
+      phoneNumber
     } as User);
   }
 
-  return (
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card">
-          <header className="card-header">
-            <BlueOutlineButton
-              text="Sign out"
-              bootstrap="float-right mt-1"
-              handleClick={handleSignOut}
-            />
-            <h4 className="card-title mt-2">Your profile</h4>
-          </header>
-          <article className="card-body">
-            <form onSubmit={handleSubmit}>
-              <InlineTextInput
-                defaultValue={user && user.firstName}
-                id="firstName"
-                label="First Name"
-                ref={firstName}
-                type="text"
-              />
-              <InlineTextInput
-                defaultValue={user && user.lastName}
-                id="lastName"
-                label="Last Name"
-                ref={lastName}
-                type="text"
-              />
-              <InlineTextInput
-                defaultValue={user && user.email}
-                id="email"
-                label="Email"
-                ref={email}
-                type="text"
-              />
-              <InlineTextInput
-                defaultValue={user && user.phoneNumber}
-                id="phoneNumber"
-                label="Phone Number"
-                ref={phoneNumber}
-                type="text"
-              />
+  const handleChange = async (event: any): Promise<void> => {
+    event.preventDefault();
+    const { id, value } = event.target;
 
-              <BlueButton bootstrap="btn-block" text="Update Account" />
-            </form>
-          </article>
-        </div>
+    if (id === "firstName") {
+      setFirstName(value);
+    } else if (id === "lastName") {
+      setLastName(value);
+    } else if (id === "email") {
+      setEmail(value);
+    } else if (id === "password") {
+      setPassword(value);
+    } else if (id === "phoneNumber") {
+      setPhoneNumber(value);
+    }
+  };
+
+  const formInputs: JSX.Element = (
+    <React.Fragment>
+      <Input
+        value={firstName}
+        id="firstName"
+        placeholder="First Name"
+        type="text"
+        handleChange={handleChange}
+      />
+      <Input
+        value={lastName}
+        id="lastName"
+        placeholder="Last Name"
+        type="text"
+        handleChange={handleChange}
+      />
+      <Input
+        value={email}
+        id="email"
+        placeholder="Email"
+        type="text"
+        handleChange={handleChange}
+      />
+      <Input
+        value={phoneNumber}
+        id="phoneNumber"
+        placeholder="Phone Number"
+        type="text"
+        handleChange={handleChange}
+      />
+    </React.Fragment>
+  );
+
+  const title: JSX.Element = (
+    <div style={{ display: "inline" }}>
+      <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
+        Your profile
+      </div>
+      <div style={{ float: "right", marginLeft: "25px" }}>
+        <BlueOutlineButton
+          text="Sign out"
+          bootstrap="float-right mt-1"
+          handleClick={handleSignOutClick}
+        />
       </div>
     </div>
+  );
+
+  return (
+    <Form
+      title={title}
+      buttonText="Update Account"
+      formInputs={formInputs}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 

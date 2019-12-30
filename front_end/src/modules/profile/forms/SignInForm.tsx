@@ -2,10 +2,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import React from "react";
 import { signIn } from "../../../state/user/userActions";
-import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
-import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
-import InlineTextInput from "../../common/inputs/onchange/InlineTextInput";
+import Form from "../../common/forms/Form";
+import Input from "../../common/inputs/Input";
 
 export interface IPropsLogInForm {
   handleSignUpClick?(event: any): void;
@@ -43,40 +42,49 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
     }
   }
 
-  return (
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card">
-          <header className="card-header">
-            <BlueOutlineButton
-              text="Sign up"
-              bootstrap="float-right mt-1"
-              handleClick={props.handleSignUpClick}
-            />
-            <h4 className="card-title mt-2">Sign in</h4>
-          </header>
-          <article className="card-body">
-            <form onSubmit={handleSubmit}>
-              <InlineTextInput
-                label="Email"
-                id="email"
-                value={email}
-                handleChange={handleChange}
-                helpText={emailMessage}
-              />
-              <InlineHiddenInput
-                label="Password"
-                id="password"
-                value={password}
-                handleChange={handleChange}
-                helpText={passwordMessage}
-              />
-              <BlueButton bootstrap="btn-block" text="Sign in" />
-            </form>
-          </article>
-        </div>
+  const formInputs: JSX.Element = (
+    <React.Fragment>
+      <Input
+        placeholder="Email"
+        id="email"
+        value={email}
+        handleChange={handleChange}
+        helpText={emailMessage}
+        type="text"
+      />
+      <Input
+        placeholder="Password"
+        id="password"
+        value={password}
+        handleChange={handleChange}
+        helpText={passwordMessage}
+        type="password"
+      />
+    </React.Fragment>
+  );
+
+  const title: JSX.Element = (
+    <div style={{ display: "inline" }}>
+      <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
+        Sign in
+      </div>
+      <div style={{ float: "right", marginLeft: "25px" }}>
+        <BlueOutlineButton
+          text="Sign up"
+          bootstrap="float-right mt-1"
+          handleClick={props.handleSignUpClick}
+        />
       </div>
     </div>
+  );
+
+  return (
+    <Form
+      title={title}
+      buttonText="Sign in"
+      formInputs={formInputs}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 

@@ -8,11 +8,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 
 export interface IFormProps {
-    buttonText: string;
-    formInputs: React.ReactNode;
-    title: React.ReactNode;
-    helpElements?: React.ReactNode[];
-    handleSubmit(event: any): Promise<void>;
+  buttonText: string;
+  formInputs: React.ReactNode;
+  title: React.ReactNode;
+  helpElements?: React.ReactNode[];
+  handleSubmit(event: any): Promise<void>;
 }
 
 const useStyles = makeStyles((theme) => ({

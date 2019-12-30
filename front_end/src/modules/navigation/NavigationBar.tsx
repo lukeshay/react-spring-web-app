@@ -1,41 +1,56 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import AppBar from "@material-ui/core/AppBar";
+import MenuItem from "@material-ui/core/MenuItem";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-interface IPropsNavItem {
-  link: string;
-  text: string;
-}
-
-const NavItem: React.FC<IPropsNavItem> = (props: IPropsNavItem) => {
-  const { link, text } = props;
-  return (
-    <li
-      className="nav-item"
-      style={{ marginRight: "15px", marginLeft: "15px" }}
-    >
-      <NavLink to={link} className="nav-link">
-        {text}
-      </NavLink>
-    </li>
-  );
-};
-
-const NavigationBar: React.FC = () => (
-  <div style={{ paddingBottom: "15px" }}>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light  sticky-top shadow rounded fixed-top">
-      <ul className="navbar-nav mr-auto">
-        <NavItem link="/" text="Home" />
-        <NavItem link="/gyms" text="Gyms" />
-        <NavItem link="/todo" text="ToDo" />
-        <NavItem link="/calendar" text="Calendar" />
-        <NavItem link="/email" text="Email" />
-      </ul>
-      <ul className="navbar-nav">
-        <NavItem link="/profile" text="Profile" />
-      </ul>
-    </nav>
-  </div>
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    menuButton: {
+      color: "#ffffff",
+      marginRight: theme.spacing(2),
+      textDecoration: "none"
+    },
+    root: {
+      flexGrow: 1
+    },
+    title: {
+      flexGrow: 1
+    }
+  })
 );
 
-export default React.memo(NavigationBar);
+export default function MenuAppBar() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Link to="/">
+            <MenuItem className={classes.menuButton}>Home</MenuItem>
+          </Link>
+          <Link to="/gyms">
+            <MenuItem className={classes.menuButton}>Gyms</MenuItem>
+          </Link>
+          <Link to="/todo">
+            <MenuItem className={classes.menuButton}>To-do</MenuItem>
+          </Link>
+          <MenuItem
+            className={classes.menuButton}
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <Link to="/profile">
+              <AccountCircle />
+            </Link>
+          </MenuItem>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}

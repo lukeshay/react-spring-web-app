@@ -5,10 +5,9 @@ import { toast } from "react-toastify";
 import * as userActions from "../../../state/user/userActions";
 import { User } from "../../../types";
 import * as ResponseUtils from "../.././../utils/responseUtils";
-import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
 import Form from "../../common/forms/Form";
-import Input from "../../common/inputs/onchange/Input";
+import Input from "../../common/inputs/Input";
 
 export interface IPropsSignUpForm {
   handleSignInClick?(event: any): void;
