@@ -4,10 +4,11 @@ import React from "react";
 import { toast } from "react-toastify";
 import * as userActions from "../../../state/user/userActions";
 import { User } from "../../../types";
+import * as ResponseUtils from "../.././../utils/responseUtils";
 import BlueButton from "../../common/buttons/BlueButton";
 import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
-import InlineHiddenInput from "../../common/inputs/onchange/InlineHiddenInput";
-import InlineTextInput from "../../common/inputs/onchange/InlineTextInput";
+import Form from "../../common/forms/Form";
+import Input from "../../common/inputs/onchange/Input";
 
 export interface IPropsSignUpForm {
   handleSignInClick?(event: any): void;
@@ -26,6 +27,18 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
+    validatePassword();
+  }, [password]);
+
+  useEffect(() => {
+    validateEmail();
+  }, [email]);
+
+  useEffect(() => {
+    validatePhoneNumber();
+  }, [phoneNumber]);
+
+  const validatePassword = (): boolean => {
     const lowerCaseLetters = /[a-z]/g;
     const upperCaseLetters = /[A-Z]/g;
     const numbers = /[0-9]/g;
@@ -33,44 +46,57 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
 
     if (password.length === 0) {
       setPasswordMessage("");
+      return false;
     } else if (password.length < 8) {
       setPasswordMessage("Password must be at least 8 characters long.");
+      return false;
     } else if (!password.match(lowerCaseLetters)) {
       setPasswordMessage("Password must contain a lower case letter.");
+      return false;
     } else if (!password.match(upperCaseLetters)) {
       setPasswordMessage("Password must contain an upper case letter.");
+      return false;
     } else if (!password.match(numbers)) {
       setPasswordMessage("Password must contain a number.");
+      return false;
     } else if (!password.match(specialCharacters)) {
       setPasswordMessage("Password must contain a special character.");
+      return false;
     } else {
       setPasswordMessage("");
+      return true;
     }
-  }, [password]);
+  };
 
-  useEffect(() => {
+  const validateEmail = (): boolean => {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (email.length === 0) {
       setEmailMessage("");
+      return false;
     } else if (!email.match(emailRegex)) {
       setEmailMessage("Invalid email.");
+      return false;
     } else {
       setEmailMessage("");
+      return true;
     }
-  }, [email]);
+  };
 
-  useEffect(() => {
+  const validatePhoneNumber = (): boolean => {
     const tenDigits = /[0-9]{10}/;
 
     if (phoneNumber.length === 0) {
       setPhoneNumberMessage("");
+      return false;
     } else if (!phoneNumber.match(tenDigits) || phoneNumber.length > 10) {
-      setPhoneNumberMessage("Invalid phone number.");
+      setPhoneNumberMessage("Invalid phone number. Format: ##########");
+      return false;
     } else {
       setPhoneNumberMessage("");
+      return true;
     }
-  }, [phoneNumber]);
+  };
 
   const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
@@ -92,77 +118,93 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
-    const response = await userActions.createUser({
-      country: "",
-      email,
-      firstName,
-      lastName,
-      password,
-      phoneNumber,
-      state: "",
-      username: email
-    } as User);
+    if (validatePhoneNumber() && validateEmail()) {
+      const response = await userActions.createUser({
+        country: "",
+        email,
+        firstName,
+        lastName,
+        password,
+        phoneNumber,
+        state: "",
+        username: email
+      } as User);
 
-    if (response instanceof Response && response.url.split("/")[3]) {
-      if (response.status !== 200) {
-        toast.error("Error creating user");
+      if (response instanceof Response && response.url.split("/")[3]) {
+        if (response.status !== 200) {
+          ResponseUtils.createUserResponse(response).then((message) =>
+            toast.error("Error: " + message)
+          );
+        }
       }
     }
   }
 
-  return (
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card">
-          <header className="card-header">
-            <BlueOutlineButton
-              text="Sign in"
-              bootstrap="float-right mt-1"
-              handleClick={props.handleSignInClick}
-            />
-            <h4 className="card-title mt-2">Sign up</h4>
-          </header>
-          <article className="card-body">
-            <form onSubmit={handleSubmit}>
-              <InlineTextInput
-                label="First Name"
-                id="firstName"
-                value={firstName}
-                handleChange={handleChange}
-              />
-              <InlineTextInput
-                label="Last Name"
-                id="lastName"
-                value={lastName}
-                handleChange={handleChange}
-              />
-              <InlineTextInput
-                label="Email"
-                id="email"
-                value={email}
-                handleChange={handleChange}
-                helpText={emailMessage}
-              />
-              <InlineTextInput
-                label="Phone Number"
-                id="phoneNumber"
-                value={phoneNumber}
-                handleChange={handleChange}
-                helpText={phoneNumberMessage}
-              />
-              <InlineHiddenInput
-                label="Password"
-                id="password"
-                value={password}
-                handleChange={handleChange}
-                helpText={passwordMessage}
-              />
-              <BlueButton bootstrap="btn-block" text="Create Account" />
-            </form>
-          </article>
-        </div>
+  const formInputs: JSX.Element = (
+    <React.Fragment>
+      <Input
+        placeholder="First Name"
+        id="firstName"
+        value={firstName}
+        handleChange={handleChange}
+        type="text"
+      />
+      <Input
+        placeholder="Last Name"
+        id="lastName"
+        value={lastName}
+        handleChange={handleChange}
+        type="text"
+      />
+      <Input
+        placeholder="Email"
+        id="email"
+        value={email}
+        handleChange={handleChange}
+        helpText={emailMessage}
+        type="text"
+      />
+      <Input
+        placeholder="Phone Number"
+        id="phoneNumber"
+        value={phoneNumber}
+        handleChange={handleChange}
+        helpText={phoneNumberMessage}
+        type="text"
+      />
+      <Input
+        placeholder="Password"
+        id="password"
+        value={password}
+        handleChange={handleChange}
+        helpText={passwordMessage}
+        type="password"
+      />
+    </React.Fragment>
+  );
+
+  const title: JSX.Element = (
+    <div style={{ display: "inline" }}>
+      <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
+        Sign up
+      </div>
+      <div style={{ float: "right", marginLeft: "25px" }}>
+        <BlueOutlineButton
+          text="Sign in"
+          bootstrap="float-right mt-1"
+          handleClick={props.handleSignInClick}
+        />
       </div>
     </div>
+  );
+
+  return (
+    <Form
+      title={title}
+      buttonText="Create Account"
+      formInputs={formInputs}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 
