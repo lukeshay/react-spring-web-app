@@ -88,12 +88,11 @@ public class ToDoController {
   @PutMapping("/{toDoId}")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Updates a to-do.", response = ToDo.class)
-  public ResponseEntity<?> updateToDo(
-      @PathVariable String toDoId,
-      @RequestBody ToDo toDo) {
+  public ResponseEntity<?> updateToDo(@PathVariable String toDoId, @RequestBody ToDo toDo) {
     LOG.debug("Updating to-do {}", toDoId);
 
-    ToDo updatedToDo = toDoService.updateToDo(toDoId, toDo.getText(), toDo.isCompleted(), toDo.getDueDate());
+    ToDo updatedToDo =
+        toDoService.updateToDo(toDoId, toDo.getText(), toDo.isCompleted(), toDo.getDueDate());
 
     if (updatedToDo == null) {
       return Responses.notFoundJsonResponse(Bodys.error("To-do not found."));

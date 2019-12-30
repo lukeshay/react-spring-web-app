@@ -24,8 +24,13 @@ public class Requests {
 
   public User getUserFromRequest(HttpServletRequest request) {
 
-    String token =
-        request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
+    String authHeader = request.getHeader(JwtProperties.HEADER_STRING);
+
+    if (authHeader == null || authHeader.equals("")) {
+      return null;
+    }
+
+    String token = authHeader.replace(JwtProperties.TOKEN_PREFIX, "");
 
     String id;
 

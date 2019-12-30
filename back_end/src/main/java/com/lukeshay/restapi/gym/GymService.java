@@ -41,7 +41,7 @@ public class GymService {
 
     Gym gym = gymRepository.findById(gymId).orElse(null);
     User user = requests.getUserFromRequest(request);
-    
+
     if (gym == null
         || user == null
         || (!gym.getAuthorizedEditors().contains(user.getId())
