@@ -1,23 +1,34 @@
 package com.lukeshay.restapi.user;
 
+import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.utils.Bodys;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureDataMongo
 class UserControllerTest {
 
-  @Autowired private UserController userController;
+  private UserController userController;
 
   @Autowired private UserRepository userRepository;
+
+  @Autowired private PasswordEncoder passwordEncoder;
+
+  @Mock private HttpServletRequest request;
+
+  @Mock private Requests requests;
 
   private User testUser;
 
@@ -35,22 +46,10 @@ class UserControllerTest {
             "USA",
             "password");
     testUser = userRepository.save(testUser);
-  }
 
-  @Test
-  @WithMockUser
-  void getUserByEmailTest() {
-    ResponseEntity<?> getUser = userController.getUserByEmail(testUser.getEmail());
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(testUser);
 
-    Assertions.assertEquals(testUser, getUser.getBody());
-  }
-
-  @Test
-  @WithMockUser
-  void getUserByUsernameTest() {
-    ResponseEntity<?> getUser = userController.getUserByUsername(testUser.getUsername());
-
-    Assertions.assertEquals(testUser, getUser.getBody());
+    userController = new UserController(new UserService(userRepository, passwordEncoder, requests));
   }
 
   @Test
@@ -68,7 +67,7 @@ class UserControllerTest {
             "password");
     testUserTwo.setLastName("User");
 
-    ResponseEntity<?> getUser = userController.createUser(testUserTwo);
+    ResponseEntity<?> getUser = userController.createUser(request, testUserTwo);
     testUserTwo = userRepository.findByUsername(testUserTwo.getUsername()).get();
 
     Assertions.assertEquals(testUserTwo, getUser.getBody());
@@ -77,7 +76,9 @@ class UserControllerTest {
   @Test
   @WithMockUser
   void createUserDuplicateTest() {
-    ResponseEntity<?> responseEmail = userController.createUser(testUser);
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
+
+    ResponseEntity<?> responseEmail = userController.createUser(request, testUser);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Bodys.error("Email taken."), responseEmail.getBody()),
@@ -85,7 +86,7 @@ class UserControllerTest {
 
     testUser.setEmail("testtest@email.com");
 
-    ResponseEntity<?> responseUsername = userController.createUser(testUser);
+    ResponseEntity<?> responseUsername = userController.createUser(request, testUser);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Bodys.error("Username taken."), responseUsername.getBody()),
@@ -101,8 +102,8 @@ class UserControllerTest {
     testUser.setPersistable(true);
 
     ResponseEntity<?> updatedUser =
-        userController.updateUserById(
-            testUser.getUserId(),
+        userController.updateUser(
+            request,
             testUser.getUsername(),
             null,
             testUser.getFirstName(),
@@ -126,8 +127,8 @@ class UserControllerTest {
     testUser = userRepository.save(testUser);
 
     ResponseEntity<?> response =
-        userController.updateUserById(
-            testUser.getUserId(), "test.user@email.com", null, null, null, null, null, null);
+        userController.updateUser(
+            request, "test.user@email.com", null, null, null, null, null, null);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Bodys.error("Username taken."), response.getBody()),

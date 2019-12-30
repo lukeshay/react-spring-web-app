@@ -5,7 +5,7 @@ import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javax.websocket.server.PathParam;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,29 +35,13 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping(value = "", params = "username")
-  @PreAuthorize("isAuthenticated()")
-  @ApiOperation(value = "Get a user by username.", response = User.class)
-  public ResponseEntity<?> getUserByUsername(@PathParam(value = "username") String username) {
-    LOG.debug("Getting user: {}", username);
-
-    User user = userService.getUserByUsername(username);
-
-    if (user == null) {
-      LOG.debug("Could not find user");
-      return Responses.notFoundJsonResponse(Bodys.error("User not found."));
-    } else {
-      return Responses.okJsonResponse(user);
-    }
-  }
-
-  @GetMapping(value = "", params = "email")
+  @GetMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Get a user by email.", response = User.class)
-  public ResponseEntity<?> getUserByEmail(@PathParam(value = "email") String email) {
-    LOG.debug("Getting user: {}", email);
+  public ResponseEntity<?> getUser(HttpServletRequest request) {
+    LOG.debug("Getting user.");
 
-    User user = userService.getUserByEmail(email);
+    User user = userService.getUser(request);
 
     if (user == null) {
       LOG.debug("Could not find user");
@@ -67,22 +51,11 @@ public class UserController {
     }
   }
 
-  /**
-   * @param userId the user being updated
-   * @param username the new username
-   * @param email the new email
-   * @param firstName the new first name
-   * @param lastName the new last name
-   * @param city the new city
-   * @param state the new state
-   * @param country the new country
-   * @return the updated user
-   */
-  @PutMapping(value = "", params = "userId")
+  @PutMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update a user.", response = User.class)
-  public ResponseEntity<?> updateUserById(
-      @PathParam(value = "userId") String userId,
+  public ResponseEntity<?> updateUser(
+      HttpServletRequest request,
       @JsonProperty("username") String username,
       @JsonProperty("email") String email,
       @JsonProperty("firstName") String firstName,
@@ -91,23 +64,16 @@ public class UserController {
       @JsonProperty("state") String state,
       @JsonProperty("country") String country) {
 
-    LOG.debug("Updating user {}", userId);
+    LOG.debug("Updating user.");
 
-    if (userService.isEmailTaken(email)) {
-      LOG.debug("Not creating user because email is taken");
+    ResponseEntity<?> response = checkDuplicate(request, email, username);
 
-      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
-    }
-
-    if (userService.isUsernameTaken(username)) {
-      LOG.debug("Not creating user because email is taken");
-
-      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+    if (response != null) {
+      return response;
     }
 
     User user =
-        userService.updateUserById(
-            userId, username, email, firstName, lastName, city, state, country);
+        userService.updateUser(request, username, email, firstName, lastName, city, state, country);
 
     if (user == null) {
       LOG.debug("User was not found");
@@ -121,19 +87,13 @@ public class UserController {
   @PostMapping("/admin")
   @PreAuthorize("hasAuthority('ADMIN')")
   @ApiOperation(value = "Create an admin user.", response = User.class)
-  public ResponseEntity<?> createAdminUser(@RequestBody User user) {
+  public ResponseEntity<?> createAdminUser(HttpServletRequest request, @RequestBody User user) {
     LOG.debug("Creating admin user {}", user.toString());
 
-    if (userService.isEmailTaken(user.getEmail())) {
-      LOG.debug("Not creating user because email is taken.");
+    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
 
-      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
-    }
-
-    if (userService.isUsernameTaken(user.getUsername())) {
-      LOG.debug("Not creating user because username is taken.");
-
-      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+    if (response != null) {
+      return response;
     }
 
     User newUser = userService.createAdminUser(user);
@@ -163,19 +123,13 @@ public class UserController {
   @PostMapping("/new")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Create a user.", response = User.class)
-  public ResponseEntity<?> createUser(@RequestBody User user) {
+  public ResponseEntity<?> createUser(HttpServletRequest request, @RequestBody User user) {
     LOG.debug("Creating user {}", user.toString());
 
-    if (userService.isEmailTaken(user.getEmail())) {
-      LOG.debug("Not creating user because email is taken.");
+    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
 
-      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
-    }
-
-    if (userService.isUsernameTaken(user.getUsername())) {
-      LOG.debug("Not creating user because username is taken.");
-
-      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+    if (response != null) {
+      return response;
     }
 
     User newUser = userService.createUser(user);
@@ -187,5 +141,23 @@ public class UserController {
     } else {
       return Responses.okJsonResponse(user);
     }
+  }
+
+  private ResponseEntity<?> checkDuplicate(
+      HttpServletRequest request, String email, String username) {
+
+    if (userService.isEmailTaken(request, email)) {
+      LOG.debug("Not creating user because email is taken");
+
+      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
+    }
+
+    if (userService.isUsernameTaken(request, username)) {
+      LOG.debug("Not creating user because email is taken");
+
+      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+    }
+
+    return null;
   }
 }

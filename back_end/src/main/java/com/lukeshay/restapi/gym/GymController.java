@@ -1,11 +1,11 @@
 package com.lukeshay.restapi.gym;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +38,21 @@ public class GymController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update a gym.", response = Gym.class)
   public ResponseEntity<?> updateGym(
-      @PathVariable String gymId,
-      @JsonProperty("state") String state,
-      @JsonProperty("city") String city,
-      @JsonProperty("address") String address,
-      @JsonProperty("name") String name,
-      @JsonProperty("email") String email,
-      @JsonProperty("phoneNumber") String phoneNumber,
-      @JsonProperty("website") String website) {
+      HttpServletRequest request, @PathVariable String gymId, @RequestBody Gym gym) {
+
     LOG.debug("Updating {}", gymId);
 
-    Gym gym = gymService.updateGym(gymId, name, address, city, state, email, phoneNumber, website);
+    gym =
+        gymService.updateGym(
+            request,
+            gymId,
+            gym.getName(),
+            gym.getAddress(),
+            gym.getCity(),
+            gym.getState(),
+            gym.getEmail(),
+            gym.getPhoneNumber(),
+            gym.getWebsite());
 
     if (gym == null) {
       return Responses.notFoundJsonResponse(Bodys.error("Gym not found"));

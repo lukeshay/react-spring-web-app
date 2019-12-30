@@ -57,7 +57,7 @@ public class User implements Persistable<String> {
   @Expose private List<String> authorities;
   @Expose private List<String> roles;
 
-  User(
+  public User(
       String username,
       String firstName,
       String lastName,

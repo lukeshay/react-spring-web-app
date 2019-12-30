@@ -46,6 +46,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
 
     // Lombok dependencies
     compileOnly 'org.projectlombok:lombok:1.18.10'
@@ -59,7 +60,6 @@ dependencies {
     // Swagger dependencies
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-//    implementation group: 'io.springfox', name: 'springfox-data-rest', version: '2.9.2'
 }
 
 test {

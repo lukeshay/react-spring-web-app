@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.todo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
@@ -91,12 +90,10 @@ public class ToDoController {
   @ApiOperation(value = "Updates a to-do.", response = ToDo.class)
   public ResponseEntity<?> updateToDo(
       @PathVariable String toDoId,
-      @JsonProperty("text") String text,
-      @JsonProperty("completed") Boolean completed,
-      @JsonProperty("dueDate") String dueDate) {
+      @RequestBody ToDo toDo) {
     LOG.debug("Updating to-do {}", toDoId);
 
-    ToDo updatedToDo = toDoService.updateToDo(toDoId, text, completed, dueDate);
+    ToDo updatedToDo = toDoService.updateToDo(toDoId, toDo.getText(), toDo.isCompleted(), toDo.getDueDate());
 
     if (updatedToDo == null) {
       return Responses.notFoundJsonResponse(Bodys.error("To-do not found."));

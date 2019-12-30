@@ -46,28 +46,32 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   }
 
   private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
+
     String token =
         request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
-    String username;
+    String id;
 
     try {
-      username =
-          JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
+      id = JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
     } catch (SignatureVerificationException | TokenExpiredException ignored) {
-      username = null;
+      id = null;
     }
 
-    if (username != null) {
-      User user = userRepository.findByUsername(username).orElse(null);
+    User user;
 
-      if (user == null) {
-        return null;
-      }
-
-      MyUserDetails principal = new MyUserDetails(user);
-      return new UsernamePasswordAuthenticationToken(username, null, principal.getAuthorities());
+    if (id != null) {
+      user = userRepository.findById(id).orElse(null);
+    } else {
+      return null;
     }
-    return null;
+
+    if (user == null) {
+      return null;
+    }
+
+    MyUserDetails principal = new MyUserDetails(user);
+    return new UsernamePasswordAuthenticationToken(
+        principal.getUsername(), null, principal.getAuthorities());
   }
 }
