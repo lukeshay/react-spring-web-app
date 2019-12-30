@@ -8,7 +8,7 @@ module.exports = {
     index: "./src/index.tsx"
   },
   output: {
-    path: path.resolve(__dirname, "/", "dist"),
+    path: path.resolve(__dirname, "dist"),
     publicPath: "/",
     filename: "index.bundle.js"
   },
