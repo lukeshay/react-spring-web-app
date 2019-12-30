@@ -1,5 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -12,9 +11,37 @@ const ToDoPage = lazy(() => import("./modules/todopage/ToDoPage"));
 const ProfilePage = lazy(() => import("./modules/profile/ProfilePage"));
 const GymsPage = lazy(() => import("./modules/gyms/GymsPage"));
 
+interface Style {
+  marginLeft: string;
+  marginTop: string;
+}
+
 const App: React.FC = () => {
+  const [style, setStyle] = useState<Style>({
+    marginLeft: "0px",
+    marginTop: "0px"
+  });
+
+  useEffect(() => {
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  function handleResize() {
+    const width = window.innerWidth;
+
+    if (width < 600) {
+      setStyle({ marginLeft: "0px", marginTop: "0px" });
+    } else {
+      setStyle({ marginLeft: "200px", marginTop: "100px" });
+    }
+  }
+
   return (
-    <div className="container-fluid">
+    <div style={style}>
       <ToastContainer autoClose={3000} hideProgressBar={true} />
       <NavigationBar />
       <Suspense fallback={<div />}>
