@@ -1,15 +1,18 @@
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [React Spring Web App](#react-spring-web-app)
 - [Directions](#directions)
   - [Pre-requisites](#pre-requisites)
   - [Front End](#front-end)
   - [Back End](#back-end)
 - [Digital Ocean Referral](#digital-ocean-referral)
+- [Contributions](#contributions)
+- [For Me](#for-me)
 
 # React Spring Web App
 
-As I learn ReactJS, I am going to be working on this web app. My plans are to make it an all-in-one productivity app that integrates with your google account. I will be using spring for the server.
+As I learn ReactJS, I am going to be working on this web app. I am creating a website for rating climbing routes at climbing gyms. Climbing gyms will be able to make a 'page' and add their walls and their routes/boulders to the corresponding walls. Customers will then be able to log into this application and rate the route/boulder and say what they would grade it. The application will then average those ratings and display them.
 
 # Directions
 
@@ -44,4 +47,7 @@ As I learn ReactJS, I am going to be working on this web app. My plans are to ma
 
 # Contributions
 
-If you would like to contribute please send me an email at shay.luke17@gmail.com. If you do not personally want to commit, but have a suggestion, please leave an [issue](https://github.com/LukeShay/react_spring_web_app/issues) using the correct template.
+If you would like to contribute or do not have a github account please send me an email at shay.luke17@gmail.com. If you do not personally want to commit, but have a suggestion, please leave an [issue](https://github.com/LukeShay/react_spring_web_app/issues) using the correct template.
+
+# For Me
+https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
