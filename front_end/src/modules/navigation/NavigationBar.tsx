@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 170;
 const useStyles = makeStyles((theme) => ({
@@ -19,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1
   },
   closeMenuButton: {
-    marginRight: "auto",
-    marginLeft: 0
+    marginLeft: 0,
+    marginRight: "auto"
   },
   content: {
     flexGrow: 1,
@@ -32,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
       width: drawerWidth
     }
   },
+  drawerPaper: {
+    width: drawerWidth
+  },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
@@ -41,28 +45,29 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex"
   },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth
-  }
+  toolbar: theme.mixins.toolbar
 }));
 
 const NavigationBar: React.FC = () => {
-  const dummyCategories = ["Home", "Gyms", "To-do"];
+  const navItems: Array<{ text: string; link: string }> = [
+    { text: "Home", link: "/" },
+    { text: "Gyms", link: "/gyms" },
+    { text: "To-do", link: "/todo" },
+    { text: "Profile", link: "/profile" }
+  ];
 
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  function handleDrawerToggle() {
-    setMobileOpen(!mobileOpen);
-  }
+
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   const drawer = (
     <div>
       <List>
-        {dummyCategories.map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
+        {navItems.map((obj) => (
+          <ListItem button key={obj.text} component={Link} to={obj.link}>
+            <ListItemText primary={obj.text} />
           </ListItem>
         ))}
       </List>
@@ -90,7 +95,6 @@ const NavigationBar: React.FC = () => {
       </AppBar>
 
       <nav className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
             variant="temporary"

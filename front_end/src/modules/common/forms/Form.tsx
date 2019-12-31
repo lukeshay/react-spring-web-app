@@ -59,7 +59,7 @@ const Form: React.FC<IFormProps> = ({
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             {buttonText}

@@ -34,9 +34,9 @@ const App: React.FC = () => {
     const width = window.innerWidth;
 
     if (width < 600) {
-      setStyle({ marginLeft: "0px", marginTop: "0px" });
+      setStyle({ marginLeft: "10px", marginTop: "60px" });
     } else {
-      setStyle({ marginLeft: "200px", marginTop: "100px" });
+      setStyle({ marginLeft: "190px", marginTop: "80px" });
     }
   }
 
