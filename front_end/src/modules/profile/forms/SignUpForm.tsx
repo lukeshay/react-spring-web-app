@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 import * as userActions from "../../../state/user/userActions";
 import { User } from "../../../types";
 import * as ResponseUtils from "../.././../utils/responseUtils";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
+import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
 
 export interface IPropsSignUpForm {
-  handleSignInClick?(event: any): void;
+  handleSignInClick(event: any): void;
 }
 
 const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
@@ -188,10 +188,11 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         Sign up
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <BlueOutlineButton
+        <Button
           text="Sign in"
-          bootstrap="float-right mt-1"
-          handleClick={props.handleSignInClick}
+          onClick={props.handleSignInClick}
+          type="button"
+          variant="outlined"
         />
       </div>
     </div>

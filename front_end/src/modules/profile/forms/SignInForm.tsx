@@ -2,12 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import React from "react";
 import { signIn } from "../../../state/user/userActions";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
+import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
 
 export interface IPropsLogInForm {
-  handleSignUpClick?(event: any): void;
+  handleSignUpClick(event: any): void;
 }
 
 const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
@@ -69,10 +69,11 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
         Sign in
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <BlueOutlineButton
+        <Button
           text="Sign up"
-          bootstrap="float-right mt-1"
-          handleClick={props.handleSignUpClick}
+          onClick={props.handleSignUpClick}
+          type="button"
+          variant="outlined"
         />
       </div>
     </div>

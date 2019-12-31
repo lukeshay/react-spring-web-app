@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { ToDo } from "../../types";
-import RedButton from "../common/buttons/RedButton";
+import Button from "../common/buttons/ButtonPrimary";
 import Table from "../common/table/Table";
 import TableBody from "../common/table/TableBody";
 import TableHead from "../common/table/TableHead";
@@ -41,10 +41,11 @@ const ToDoList: React.FC<IToDoListProps> = (props: IToDoListProps) => {
             <td style={toDo.completed ? completedStyle : {}}>{toDo.text}</td>
             <td>{toDo.dueDate}</td>
             <td>
-              <RedButton
+              <Button
                 text="Delete"
                 id={toDo.id}
-                handleClick={handleDeleteButtonClick}
+                onClick={() => handleDeleteButtonClick(toDo.id)}
+                fullWidth={false}
               />
             </td>
           </tr>

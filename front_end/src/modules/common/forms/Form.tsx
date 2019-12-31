@@ -1,8 +1,8 @@
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
+import Button from "../buttons/ButtonSecondary";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
@@ -15,25 +15,27 @@ export interface IFormProps {
   handleSubmit(event: any): Promise<void>;
 }
 
-const useStyles = makeStyles((theme) => ({
-  avatar: {
-    backgroundColor: theme.palette.secondary.main,
-    margin: theme.spacing(1)
-  },
-  form: {
-    marginTop: theme.spacing(1),
-    width: "100%" // Fix IE 11 issue.
-  },
-  paper: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
-    marginTop: theme.spacing(8)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    avatar: {
+      backgroundColor: theme.palette.secondary.main,
+      margin: theme.spacing(1)
+    },
+    form: {
+      marginTop: theme.spacing(1),
+      width: "100%" // Fix IE 11 issue.
+    },
+    paper: {
+      alignItems: "center",
+      display: "flex",
+      flexDirection: "column",
+      marginTop: theme.spacing(8)
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2)
+    }
+  })
+);
 
 const Form: React.FC<IFormProps> = ({
   title,
@@ -57,13 +59,11 @@ const Form: React.FC<IFormProps> = ({
           {formInputs}
           <Button
             type="submit"
-            fullWidth
+            fullWidth={true}
             variant="contained"
-            color="secondary"
-            className={classes.submit}
-          >
-            {buttonText}
-          </Button>
+            text={buttonText}
+            onClick={() => {}}
+          />
           <Grid container>
             {helpElements &&
               helpElements.map((element) => (

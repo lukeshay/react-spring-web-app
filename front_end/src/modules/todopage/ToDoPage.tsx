@@ -67,10 +67,8 @@ const ToDoPage: React.FC = () => {
     }
   }
 
-  async function handleDeleteButtonClick({
-    target
-  }: ButtonEvent): Promise<void> {
-    deleteToDo(target.id);
+  async function handleDeleteButtonClick(id: string): Promise<void> {
+    deleteToDo(id);
   }
 
   async function handleAddClick() {

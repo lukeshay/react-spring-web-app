@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 import * as UserActions from "../../../state/user/userActions";
 import { User } from "../../../types";
-import BlueOutlineButton from "../../common/buttons/BlueOutlineButton";
+import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
 
@@ -89,10 +89,11 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         Your profile
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <BlueOutlineButton
+        <Button
           text="Sign out"
-          bootstrap="float-right mt-1"
-          handleClick={handleSignOutClick}
+          onClick={handleSignOutClick}
+          type="button"
+          variant="outlined"
         />
       </div>
     </div>
