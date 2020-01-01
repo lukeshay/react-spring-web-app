@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import GymInformation from "./views/GymInformation";
 import GymsTable from "./views/GymsTable";
 
-const GymsPage: React.FC<RouteComponentProps> = (props) => {
-  const last = props.location.pathname
+const GymsPage: React.FC = () => {
+  const history = useHistory();
+
+  const last = history.location.pathname
     .split("/")
     .slice(-1)
     .pop();
@@ -17,4 +19,4 @@ const GymsPage: React.FC<RouteComponentProps> = (props) => {
   }
 };
 
-export default React.memo(withRouter(GymsPage));
+export default React.memo(GymsPage);

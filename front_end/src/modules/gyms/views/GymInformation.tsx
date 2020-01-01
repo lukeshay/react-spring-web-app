@@ -1,9 +1,10 @@
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
 import React, { useEffect, useState } from "react";
 import * as GymsActions from "../../../state/gyms/gymsActions";
 import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
-import Table from "../../common/table/Table";
-import TableBody from "../../common/table/TableBody";
+import Table from "../../common/table/Table2";
 
 interface IGymInformationRowProps {
   label: string;
@@ -14,10 +15,10 @@ const GymInformationRow: React.FC<IGymInformationRowProps> = ({
   label,
   text
 }) => (
-  <tr>
-    <td>{label}</td>
-    <td>{text}</td>
-  </tr>
+  <TableRow>
+    <TableCell>{label}</TableCell>
+    <TableCell>{text}</TableCell>
+  </TableRow>
 );
 
 export interface IGymInformationProps {
@@ -62,18 +63,27 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   }
 
   return (
-    <Table>
-      <TableBody>
-        <GymInformationRow label="Gym Name" text={gym.name} />
-        <GymInformationRow label="Gym Website" text={gym.website} />
+    <Table
+      body={[
+        <GymInformationRow key="name" label="Gym Name" text={gym.name} />,
         <GymInformationRow
+          key="website"
+          label="Gym Website"
+          text={gym.website}
+        />,
+        <GymInformationRow
+          key="address"
           label="Gym Address"
           text={gym.address + " " + gym.city + ", " + gym.state}
+        />,
+        <GymInformationRow key="email" label="Gym Email" text={gym.email} />,
+        <GymInformationRow
+          key="phoneNumber"
+          label="Gym Phone Number"
+          text={gym.phoneNumber}
         />
-        <GymInformationRow label="Gym Email" text={gym.email} />
-        <GymInformationRow label="Gym Phone Number" text={gym.phoneNumber} />
-      </TableBody>
-    </Table>
+      ]}
+    />
   );
 };
 

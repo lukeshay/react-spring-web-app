@@ -13,12 +13,14 @@ const GymsPage = lazy(() => import("./modules/gyms/GymsPage"));
 
 interface Style {
   marginLeft: string;
+  marginRight: string;
   marginTop: string;
 }
 
 const App: React.FC = () => {
   const [style, setStyle] = useState<Style>({
     marginLeft: "0px",
+    marginRight: "0px",
     marginTop: "0px"
   });
 
@@ -34,9 +36,9 @@ const App: React.FC = () => {
     const width = window.innerWidth;
 
     if (width < 600) {
-      setStyle({ marginLeft: "10px", marginTop: "60px" });
+      setStyle({ marginLeft: "10px", marginTop: "60px", marginRight: "10px" });
     } else {
-      setStyle({ marginLeft: "190px", marginTop: "80px" });
+      setStyle({ marginLeft: "180px", marginTop: "80px", marginRight: "10px" });
     }
   }
 

@@ -1,27 +1,28 @@
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as GymsActions from "../../../state/gyms/gymsActions";
 import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
-import Table from "../../common/table/Table";
-import TableBody from "../../common/table/TableBody";
-import TableHead from "../../common/table/TableHead";
+import Table from "../../common/table/Table2";
+import { useHistory } from "react-router-dom";
 
 interface IGymRowProps {
   gym: Gym;
 }
 
-const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => (
-  <tr>
-    <td>
-      <NavLink to={"/gyms/" + gym.id} className="nav-link">
-        {gym.name}
-      </NavLink>
-    </td>
-    <td>{gym.address + " " + gym.city + ", " + gym.state}</td>
-    <td>{gym.website}</td>
-  </tr>
-));
+const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
+  const history = useHistory();
+
+  return (
+    <TableRow hover onClick={() => history.push("/gyms/" + gym.id)}>
+      <TableCell>{gym.name}</TableCell>
+      <TableCell>{gym.address + " " + gym.city + ", " + gym.state}</TableCell>
+      <TableCell>{gym.website}</TableCell>
+    </TableRow>
+  );
+});
 
 const GymsPage: React.FC = () => {
   const [gyms, setGyms] = useState<Gym[]>([]);
@@ -43,18 +44,18 @@ const GymsPage: React.FC = () => {
   }
 
   return (
-    <Table>
-      <TableHead>
-        <td>Gym</td>
-        <td>Location</td>
-        <td>Website</td>
-      </TableHead>
-      <TableBody>
-        {gyms.map((gym) => (
-          <GymRow key={gym.id} gym={gym} />
-        ))}
-      </TableBody>
-    </Table>
+    <Table
+      head={
+        <React.Fragment>
+          <TableCell>Gym</TableCell>
+          <TableCell>Location</TableCell>
+          <TableCell>Website</TableCell>
+        </React.Fragment>
+      }
+      body={gyms.map((gym) => (
+        <GymRow key={gym.id} gym={gym} />
+      ))}
+    />
   );
 };
 
