@@ -12,12 +12,12 @@ import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    buttonWrapper: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1)
-    },
     backIcon: {
       paddingRight: theme.spacing(1)
+    },
+    buttonWrapper: {
+      marginBottom: theme.spacing(1),
+      marginTop: theme.spacing(1)
     }
   })
 );
