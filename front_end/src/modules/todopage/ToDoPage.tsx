@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -67,10 +66,8 @@ const ToDoPage: React.FC = () => {
     }
   }
 
-  async function handleDeleteButtonClick({
-    target
-  }: ButtonEvent): Promise<void> {
-    deleteToDo(target.id);
+  async function handleDeleteButtonClick(id: string): Promise<void> {
+    deleteToDo(id);
   }
 
   async function handleAddClick() {

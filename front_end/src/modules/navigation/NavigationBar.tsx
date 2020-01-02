@@ -1,41 +1,156 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import AppBar from "@material-ui/core/AppBar";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  useTheme
+} from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { AuthRoutes, Routes } from "../../routes";
 
-interface IPropsNavItem {
-  link: string;
-  text: string;
-}
+const drawerWidth = 170;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1
+    },
+    closeMenuButton: {
+      marginLeft: 0,
+      marginRight: "auto"
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3)
+    },
+    drawer: {
+      [theme.breakpoints.up("sm")]: {
+        flexShrink: 0,
+        width: drawerWidth
+      }
+    },
+    drawerPaper: {
+      width: drawerWidth
+    },
+    listItem: {
+      paddingLeft: theme.spacing(3)
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up("sm")]: {
+        display: "none"
+      }
+    },
+    root: {
+      display: "flex"
+    },
+    toolbar: theme.mixins.toolbar
+  })
+);
 
-const NavItem: React.FC<IPropsNavItem> = (props: IPropsNavItem) => {
-  const { link, text } = props;
+const NavigationBar: React.FC = () => {
+  const navItems: Array<{ text: string; link: string }> = [
+    { text: "Home", link: Routes.HOME },
+    { text: "Gyms", link: Routes.GYMS },
+    { text: "To-do", link: AuthRoutes.TODO },
+    { text: "Profile", link: Routes.PROFILE }
+  ];
+
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  const drawer = (
+    <React.Fragment>
+      <List>
+        {navItems.map((obj) => (
+          <ListItem
+            button
+            key={obj.text}
+            component={Link}
+            to={obj.link}
+            className={classes.listItem}
+          >
+            <ListItemText primary={obj.text} />
+          </ListItem>
+        ))}
+      </List>
+    </React.Fragment>
+  );
+
   return (
-    <li
-      className="nav-item"
-      style={{ marginRight: "15px", marginLeft: "15px" }}
-    >
-      <NavLink to={link} className="nav-link">
-        {text}
-      </NavLink>
-    </li>
+    <div className={classes.root}>
+      {window.innerWidth < 600 && (
+        <AppBar position="fixed" className={classes.appBar} color="default">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              Responsive drawer
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      )}
+
+      <nav className={classes.drawer}>
+        {window.innerWidth < 600 && (
+          <Hidden smUp implementation="css">
+            <Drawer
+              variant="temporary"
+              anchor={theme.direction === "rtl" ? "right" : "left"}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
+            >
+              <IconButton
+                onClick={handleDrawerToggle}
+                className={classes.closeMenuButton}
+              >
+                <CloseIcon />
+              </IconButton>
+              {drawer}
+            </Drawer>
+          </Hidden>
+        )}
+        <Hidden xsDown implementation="css">
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            {/* <div className={classes.toolbar} /> */}
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+    </div>
   );
 };
 
-const NavigationBar: React.FC = () => (
-  <div style={{ paddingBottom: "15px" }}>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light  sticky-top shadow rounded fixed-top">
-      <ul className="navbar-nav mr-auto">
-        <NavItem link="/" text="Home" />
-        <NavItem link="/gyms" text="Gyms" />
-        <NavItem link="/todo" text="ToDo" />
-        <NavItem link="/calendar" text="Calendar" />
-        <NavItem link="/email" text="Email" />
-      </ul>
-      <ul className="navbar-nav">
-        <NavItem link="/profile" text="Profile" />
-      </ul>
-    </nav>
-  </div>
-);
-
-export default React.memo(NavigationBar);
+export default NavigationBar;
