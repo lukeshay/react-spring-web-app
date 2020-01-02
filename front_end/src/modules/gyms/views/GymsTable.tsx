@@ -2,11 +2,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as GymsActions from "../../../state/gyms/gymsActions";
 import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
-import Table from "../../common/table/Table2";
-import { useHistory } from "react-router-dom";
+import Table from "../../common/table/Table";
+import { Routes } from "../../../routes";
 
 interface IGymRowProps {
   gym: Gym;
@@ -16,7 +17,7 @@ const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
   const history = useHistory();
 
   return (
-    <TableRow hover onClick={() => history.push("/gyms/" + gym.id)}>
+    <TableRow hover onClick={() => history.push(Routes.GYMS + "/" + gym.id)}>
       <TableCell>{gym.name}</TableCell>
       <TableCell>{gym.address + " " + gym.city + ", " + gym.state}</TableCell>
       <TableCell>{gym.website}</TableCell>

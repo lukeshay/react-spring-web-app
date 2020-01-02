@@ -1,11 +1,11 @@
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
-import Button from "../buttons/ButtonSecondary";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
+import Button from "../buttons/ButtonSecondary";
 
 export interface IFormProps {
   buttonText: string;
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       marginTop: theme.spacing(1),
-      width: "100%" // Fix IE 11 issue.
+      width: "100%"
     },
     paper: {
       alignItems: "center",
@@ -62,7 +62,6 @@ const Form: React.FC<IFormProps> = ({
             fullWidth={true}
             variant="contained"
             text={buttonText}
-            onClick={() => {}}
           />
           <Grid container>
             {helpElements &&

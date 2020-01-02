@@ -1,22 +1,31 @@
-import { red } from "@material-ui/core/colors";
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
 
 // A custom theme for this app
-const theme = createMuiTheme({
+export const theme: ThemeOptions = {
   palette: {
+    common: { black: "rgba(0, 0, 0, 1)", white: "rgba(255, 255, 255, 1)" },
     background: {
-      default: "#ffffff"
-    },
-    error: {
-      main: red.A400
+      paper: "rgba(39, 39, 45, 1)",
+      default: "#222"
     },
     primary: {
-      main: "#9e9e9e"
+      main: "#BB86FC"
     },
     secondary: {
-      main: "#00bcd4"
-    }
+      main: "#03DAC5"
+    },
+    error: {
+      main: "#f10"
+    },
+    text: {
+      primary: "rgba(240, 240, 240, 1)",
+      secondary: "rgba(153, 153, 153, 1)",
+      disabled: "rgb(116, 116, 116)",
+      hint: "rgba(240, 240, 240, 1)"
+    },
+    type: "dark"
   }
-});
+};
 
-export default responsiveFontSizes(theme);
+export default responsiveFontSizes(createMuiTheme(theme));

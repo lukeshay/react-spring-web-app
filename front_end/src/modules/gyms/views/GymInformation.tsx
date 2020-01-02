@@ -1,10 +1,26 @@
+import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Routes } from "../../../routes";
 import * as GymsActions from "../../../state/gyms/gymsActions";
 import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
-import Table from "../../common/table/Table2";
+import Table from "../../common/table/Table";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    buttonWrapper: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
+    },
+    backIcon: {
+      paddingRight: theme.spacing(1)
+    }
+  })
+);
 
 interface IGymInformationRowProps {
   label: string;
@@ -27,6 +43,7 @@ export interface IGymInformationProps {
 
 const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   const [gym, setGym] = useState<Gym>({} as Gym);
+  const classes = useStyles();
 
   useEffect(() => {
     gymsStore.addChangeListener(handleGymsChange);
@@ -63,27 +80,41 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   }
 
   return (
-    <Table
-      body={[
-        <GymInformationRow key="name" label="Gym Name" text={gym.name} />,
-        <GymInformationRow
-          key="website"
-          label="Gym Website"
-          text={gym.website}
-        />,
-        <GymInformationRow
-          key="address"
-          label="Gym Address"
-          text={gym.address + " " + gym.city + ", " + gym.state}
-        />,
-        <GymInformationRow key="email" label="Gym Email" text={gym.email} />,
-        <GymInformationRow
-          key="phoneNumber"
-          label="Gym Phone Number"
-          text={gym.phoneNumber}
-        />
-      ]}
-    />
+    <React.Fragment>
+      <div className={classes.buttonWrapper}>
+        <Button
+          component={Link}
+          to={Routes.GYMS}
+          color="default"
+          size="medium"
+          variant="text"
+        >
+          <ArrowBackIcon className={classes.backIcon} />
+          Back
+        </Button>
+      </div>
+      <Table
+        body={[
+          <GymInformationRow key="name" label="Gym Name" text={gym.name} />,
+          <GymInformationRow
+            key="website"
+            label="Gym Website"
+            text={gym.website}
+          />,
+          <GymInformationRow
+            key="address"
+            label="Gym Address"
+            text={gym.address + " " + gym.city + ", " + gym.state}
+          />,
+          <GymInformationRow key="email" label="Gym Email" text={gym.email} />,
+          <GymInformationRow
+            key="phoneNumber"
+            label="Gym Phone Number"
+            text={gym.phoneNumber}
+          />
+        ]}
+      />
+    </React.Fragment>
   );
 };
 

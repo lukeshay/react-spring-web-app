@@ -1,10 +1,9 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { ToDo } from "../../types";
 import Button from "../common/buttons/ButtonPrimary";
-import Table from "../common/table/Table";
-import TableBody from "../common/table/TableBody";
-import TableHead from "../common/table/TableHead";
+import Table from "./Table";
+import TableBody from "./TableBody";
+import TableHead from "./TableHead";
 
 export interface IToDoListProps {
   toDos: ToDo[];

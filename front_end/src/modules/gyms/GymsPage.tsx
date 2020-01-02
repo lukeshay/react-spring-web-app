@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import GymInformation from "./views/GymInformation";
 import GymsTable from "./views/GymsTable";

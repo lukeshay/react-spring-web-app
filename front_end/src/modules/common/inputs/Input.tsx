@@ -1,7 +1,7 @@
 import TextField from "@material-ui/core/TextField";
 import React from "react";
 
-interface IPropsInput {
+export interface IPropsInput {
   helpText?: string;
   id?: string;
   name?: string;

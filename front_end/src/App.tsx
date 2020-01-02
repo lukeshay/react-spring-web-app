@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -38,7 +38,7 @@ const App: React.FC = () => {
     if (width < 600) {
       setStyle({ marginLeft: "10px", marginTop: "60px", marginRight: "10px" });
     } else {
-      setStyle({ marginLeft: "180px", marginTop: "80px", marginRight: "10px" });
+      setStyle({ marginLeft: "180px", marginTop: "0px", marginRight: "10px" });
     }
   }
 

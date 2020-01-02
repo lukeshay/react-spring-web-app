@@ -58,7 +58,6 @@
     "@types/universal-cookie": "^2.2.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
-    "bootstrap": "^4.4.1",
     "clean-webpack-plugin": "*",
     "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
