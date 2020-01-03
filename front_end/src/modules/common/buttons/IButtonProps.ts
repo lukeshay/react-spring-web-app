@@ -1,3 +1,5 @@
+export { ButtonProps } from "@material-ui/core/Button";
+
 export interface IButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   variant?: "text" | "outlined" | "contained" | undefined;

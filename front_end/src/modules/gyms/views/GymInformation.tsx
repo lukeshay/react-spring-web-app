@@ -1,4 +1,5 @@
-import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import Button from "../../common/buttons/ButtonDefault";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -85,9 +86,8 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
         <Button
           component={Link}
           to={Routes.GYMS}
-          color="default"
-          size="medium"
           variant="text"
+          fullWidth={false}
         >
           <ArrowBackIcon className={classes.backIcon} />
           Back

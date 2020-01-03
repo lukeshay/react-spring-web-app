@@ -11,7 +11,8 @@ const ButtonDefault: React.FC<IButtonProps> = ({
   size,
   text,
   children,
-  onClick
+  onClick,
+  ...rest
 }) => {
   return (
     <Button
@@ -23,6 +24,7 @@ const ButtonDefault: React.FC<IButtonProps> = ({
       fullWidth={fullWidth}
       size={size}
       onClick={onClick}
+      {...rest}
     >
       {text}
       {children}

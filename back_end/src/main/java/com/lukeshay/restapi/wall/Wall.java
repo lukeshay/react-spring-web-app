@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.wall;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Wall {
-  @Id private String id;
+  @Id
+  private String id;
 
   private String gymId;
   private String name;
-  private List<Route> routes;
 }
