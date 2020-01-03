@@ -1,15 +1,15 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import Typography from "@material-ui/core/Typography";
 import React from "react";
 
 const HomePage: React.FC = () => {
   return (
-    <div className="jumbotron-fluid">
-      <h1>Climbing Routes Rating</h1>
-      <h2>
+    <React.Fragment>
+      <Typography variant="h2">Climbing Routes Rating</Typography>
+      <Typography variant="h3">
         Web application for gyms to post their routes and customers to rate
         them.
-      </h2>
-    </div>
+      </Typography>
+    </React.Fragment>
   );
 };
 

@@ -1,12 +1,24 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
 import * as React from "react";
 
-export interface ITableProps {
-  children: React.ReactNode;
+export interface ISimpleTableProps {
+  head?: React.ReactNode;
+  body: React.ReactNode[];
 }
 
-const Table: React.FC<ITableProps> = ({ children }) => {
-  return <table className="table">{children}</table>;
+const SimpleTable: React.FC<ISimpleTableProps> = ({ head, body }) => {
+  return (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>{head}</TableHead>
+        <TableBody>{body}</TableBody>
+      </Table>
+    </TableContainer>
+  );
 };
 
-export default React.memo(Table);
+export default React.memo(SimpleTable);

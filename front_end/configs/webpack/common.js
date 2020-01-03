@@ -3,6 +3,7 @@ const {resolve} = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ProvidePlugin } = require("webpack");
 
 module.exports = {
     resolve: {
@@ -47,7 +48,10 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new CheckerPlugin(),
-        new HtmlWebpackPlugin({ template: "index.html.ejs" })
+        new HtmlWebpackPlugin({ template: "index.html.ejs" }),
+        new ProvidePlugin({
+            React: "react"
+        })
     ],
     externals: {
         react: "React",
