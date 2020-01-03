@@ -52,3 +52,6 @@ If you would like to contribute or do not have a github account please send me a
 # For Me
 https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
 https://github.com/vikpe/react-webpack-typescript-starter
+https://youtu.be/corZt4Sb-fQ
+https://codesandbox.io/s/react-codesandbox-je6cc
+https://stackoverflow.com/questions/51504506/too-many-react-context-providers
