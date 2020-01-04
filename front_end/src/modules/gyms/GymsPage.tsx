@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import GymInformation from "./views/GymInformation";
-import GymsTable from "./views/GymsTable";
+import GymsList from "./views/GymsList";
 
 const GymsPage: React.FC = () => {
   const history = useHistory();
@@ -12,7 +12,7 @@ const GymsPage: React.FC = () => {
     .pop();
 
   if (!last || last.trim() === "gyms" || last.trim().length === 0) {
-    return <GymsTable />;
+    return <GymsList />;
   } else {
     return <GymInformation gymId={last} />;
   }

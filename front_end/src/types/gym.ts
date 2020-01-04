@@ -1,3 +1,5 @@
+import { Wall } from "./wall";
+
 export interface Gym {
   id: string;
   name: string;
@@ -8,4 +10,5 @@ export interface Gym {
   email: string;
   phoneNumber: string;
   authorizedEditors: string[];
+  walls: Wall[];
 }

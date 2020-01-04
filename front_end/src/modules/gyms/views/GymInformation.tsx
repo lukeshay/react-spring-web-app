@@ -9,8 +9,10 @@ import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import { Gym } from "../../../types";
+import { Gym, Wall } from "../../../types";
 import Table from "../../common/table/Table";
+import WallList from "./WallList";
+import * as WallApi from "../../../api/wallsApi";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,12 +51,21 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    loadGyms();
+    if (state.gyms.length === 0) {
+      loadGyms();
+    }
 
     const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
 
     if (tempGym) {
-      setGym(tempGym);
+      WallApi.getWalls(tempGym.id)
+        .then((response: Response) => {
+          return response.json();
+        })
+        .then((data: Wall[]) => {
+          tempGym.walls = data;
+          setGym(tempGym);
+        });
     }
   }, []);
 
@@ -106,6 +117,7 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
           />
         ]}
       />
+      <WallList walls={gym.walls} />
     </React.Fragment>
   );
 };
