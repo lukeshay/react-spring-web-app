@@ -8,11 +8,6 @@ import org.springframework.stereotype.Service;
 class ToDoService {
   private ToDoRepository toDoRepository;
 
-  /**
-   * Instantiates a new To-do controller.
-   *
-   * @param toDoRepository the to-do repository
-   */
   @Autowired
   ToDoService(ToDoRepository toDoRepository) {
     this.toDoRepository = toDoRepository;

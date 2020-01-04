@@ -66,23 +66,6 @@ public class ToDo implements Persistable<String> {
     this.dueDate = "";
   }
 
-  /**
-   * Update.
-   *
-   * @param updatedToDo the updated to-do
-   */
-  void update(ToDo updatedToDo) {
-    if (!id.equals(updatedToDo.id)) {
-      return;
-    }
-    if (updatedToDo.text != null) {
-      this.text = updatedToDo.text;
-    }
-
-    this.completed = updatedToDo.completed;
-    this.persistable = true;
-  }
-
   @Override
   public boolean isNew() {
     return !persistable;
