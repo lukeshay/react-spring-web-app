@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { toast } from "react-toastify";
-import * as userActions from "../../../state/user/userActions";
+import * as UserActions from "../../../context/user/userActions";
+import { UserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
-import * as ResponseUtils from "../.././../utils/responseUtils";
+import * as ResponseUtils from "../../../utils/responseUtils";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
@@ -13,6 +14,7 @@ export interface IPropsSignUpForm {
 }
 
 const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
+  const { dispatch } = useContext(UserContext);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -117,7 +119,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
     event.preventDefault();
 
     if (validatePhoneNumber() && validateEmail()) {
-      const response = await userActions.createUser({
+      const response = await UserActions.createUser(dispatch, {
         country: "",
         email,
         firstName,

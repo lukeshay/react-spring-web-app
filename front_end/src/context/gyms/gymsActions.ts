@@ -1,18 +1,17 @@
 import * as GymsApi from "../../api/gymsApi";
-import dispatcher from "../../appDispatcher";
 import Types from "./gymsActionTypes";
-import { IAction } from "./gymsStore";
+import { IGymsContextAction } from "./gymsStore";
 
-export const loadGyms = async () => {
+export const loadGyms = async (dispatch: any) => {
   const response = await GymsApi.getGyms();
 
   if (response instanceof Response && response.ok) {
     const body = await response.json();
 
-    dispatcher.dispatch({
+    dispatch({
       actionType: Types.LOAD_GYMS,
       gyms: body
-    } as IAction);
+    } as IGymsContextAction);
   }
 
   return response;

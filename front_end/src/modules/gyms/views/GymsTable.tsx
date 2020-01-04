@@ -1,13 +1,13 @@
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import * as GymsActions from "../../../state/gyms/gymsActions";
-import gymsStore from "../../../state/gyms/gymsStore";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { GymsContext } from "../../../context/gyms/gymsStore";
+import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
-import { Routes } from "../../../routes";
 
 interface IGymRowProps {
   gym: Gym;
@@ -26,23 +26,19 @@ const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
 });
 
 const GymsPage: React.FC = () => {
-  const [gyms, setGyms] = useState<Gym[]>([]);
+  const { state, dispatch } = useContext(GymsContext);
 
   useEffect(() => {
-    gymsStore.addChangeListener(handleGymsChange);
-
-    if (gymsStore.getGyms().length === 0) {
-      GymsActions.loadGyms();
-    }
-
-    setGyms(gymsStore.getGyms());
-
-    return () => gymsStore.removeChangeListener(handleGymsChange);
+    loadGyms();
   }, []);
 
-  async function handleGymsChange(): Promise<void> {
-    setGyms(gymsStore.getGyms());
-  }
+  const loadGyms = async () => {
+    const response = await GymsActions.loadGyms(dispatch);
+
+    if (!response || !(response instanceof Response) || !response.ok) {
+      toast.error("Error getting gyms.");
+    }
+  };
 
   return (
     <Table
@@ -53,7 +49,7 @@ const GymsPage: React.FC = () => {
           <TableCell>Website</TableCell>
         </React.Fragment>
       }
-      body={gyms.map((gym) => (
+      body={state.gyms.map((gym) => (
         <GymRow key={gym.id} gym={gym} />
       ))}
     />

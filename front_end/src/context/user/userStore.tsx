@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  Dispatch,
-  Reducer,
-  useContext,
-  useReducer
-} from "react";
+import React, { createContext, Dispatch, Reducer, useReducer } from "react";
 import { User } from "../../types";
 import Types from "./userActionTypes";
 
@@ -22,7 +16,7 @@ export interface IContextProps {
   dispatch: Dispatch<IUserContextAction>;
 }
 
-export const StoreContext = createContext<IContextProps>({} as IContextProps);
+export const UserContext = createContext<IContextProps>({} as IContextProps);
 
 const reducer: Reducer<IUserContextState, IUserContextAction> = (
   state: IUserContextState,
@@ -51,10 +45,8 @@ export const UserStore: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <StoreContext.Provider value={{ state, dispatch }}>
+    <UserContext.Provider value={{ state, dispatch }}>
       {children}
-    </StoreContext.Provider>
+    </UserContext.Provider>
   );
 };
-
-export const useUserContext = () => useContext(StoreContext);

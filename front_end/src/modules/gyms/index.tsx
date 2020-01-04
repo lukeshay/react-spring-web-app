@@ -8,4 +8,4 @@ const GymsIndex: React.FC = () => (
   </GymsStore>
 );
 
-export default GymsIndex;
+export default React.memo(GymsIndex);
