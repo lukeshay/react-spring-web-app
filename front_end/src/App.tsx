@@ -10,6 +10,7 @@ const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
 const ToDoPage = lazy(() => import("./modules/todopage/ToDoPage"));
 const ProfilePage = lazy(() => import("./modules/profile/ProfilePage"));
 const GymsPage = lazy(() => import("./modules/gyms/GymsPage"));
+const GymsV2Page = lazy(() => import("./modules/gymsv2"));
 
 interface Style {
   marginLeft: string;
@@ -53,6 +54,7 @@ const App: React.FC = () => {
           <Route path="/todo" component={ToDoPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/gyms" component={GymsPage} />
+          <Route path="/vs" component={GymsV2Page} />
           <Route component={NotFoundPage} />
         </Switch>
       </Suspense>
