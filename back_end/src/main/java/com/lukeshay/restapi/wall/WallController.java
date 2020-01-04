@@ -4,6 +4,7 @@ import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,5 +77,16 @@ public class WallController {
     } else {
       return Responses.okJsonResponse(wall);
     }
+  }
+
+  @GetMapping("/{gymId}")
+  @PreAuthorize("permitAll()")
+  @ApiOperation(value = "Get a gyms walls.", response = Wall.class)
+  public ResponseEntity<?> getWalls(HttpServletRequest request, @PathVariable String gymId) {
+    LOG.debug("Getting gym {} walls", gymId);
+
+    List<Wall> walls = wallService.getWalls(gymId);
+
+    return Responses.okJsonResponse(walls);
   }
 }

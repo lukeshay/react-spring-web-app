@@ -4,6 +4,7 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,9 @@ public class WallService {
     wallRepository.deleteById(wallId);
 
     return wall;
+  }
+
+  public List<Wall> getWalls(String gymId) {
+    return wallRepository.findAllByGymId(gymId);
   }
 }
