@@ -1,4 +1,4 @@
-import { Wall } from "./wall";
+import { Wall } from ".";
 
 export interface Gym {
   id: string;
@@ -6,9 +6,10 @@ export interface Gym {
   address: string;
   city: string;
   state: string;
+  zipCode: string;
   website: string;
   email: string;
   phoneNumber: string;
   authorizedEditors: string[];
-  walls: Wall[];
+  walls: Wall[] | null;
 }

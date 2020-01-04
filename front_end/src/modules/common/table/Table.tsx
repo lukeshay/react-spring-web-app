@@ -7,7 +7,7 @@ import * as React from "react";
 
 export interface ISimpleTableProps {
   head?: React.ReactNode;
-  body: React.ReactNode[];
+  body: React.ReactNode[] | null;
 }
 
 const SimpleTable: React.FC<ISimpleTableProps> = ({ head, body }) => {

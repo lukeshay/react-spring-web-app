@@ -1,5 +1,6 @@
 export interface Wall {
   id: string;
   name: string;
-  routes: number;
+  routes: number | null;
+  type: string;
 }

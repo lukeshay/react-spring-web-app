@@ -19,7 +19,11 @@ const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
   return (
     <TableRow hover onClick={() => history.push(Routes.GYMS + "/" + gym.id)}>
       <TableCell>{gym.name}</TableCell>
-      <TableCell>{gym.address + " " + gym.city + ", " + gym.state}</TableCell>
+      <TableCell>
+        {gym.address}
+        <br />
+        {gym.city + ", " + gym.state + " " + gym.zipCode}
+      </TableCell>
       <TableCell>{gym.website}</TableCell>
     </TableRow>
   );
