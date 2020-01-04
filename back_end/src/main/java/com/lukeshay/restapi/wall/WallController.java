@@ -42,6 +42,8 @@ public class WallController {
   public ResponseEntity<?> createWall(HttpServletRequest request, @RequestBody Wall body) {
     LOG.debug("Adding wall {}", body);
 
+    body.setRoutes(0);
+
     Wall wall = wallService.createWall(request, body);
 
     if (wall == null) {
@@ -57,7 +59,9 @@ public class WallController {
   public ResponseEntity<?> updateWall(HttpServletRequest request, @RequestBody Wall body) {
     LOG.debug("Updating wall {}", body.toString());
 
-    Wall wall = wallService.updateWall(request, body.getId(), body.getGymId(), body.getName());
+    Wall wall =
+        wallService.updateWall(
+            request, body.getId(), body.getGymId(), body.getName(), body.getType());
 
     if (wall == null) {
       return Responses.badRequestJsonResponse(Bodys.error("Error updating wall."));

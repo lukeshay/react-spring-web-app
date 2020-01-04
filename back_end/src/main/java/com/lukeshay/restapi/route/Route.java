@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.route;
 
-import com.lukeshay.restapi.route.RouteProperties.RouteTypes;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.Setter;
 class Route {
   private String name;
   private String setter;
-  private List<RouteTypes> types;
+  private List<String> types;
   private List<Grade> userGrade;
   private Grade averageGrade;
   private List<Integer> userRating;

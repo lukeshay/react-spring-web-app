@@ -42,6 +42,7 @@ class GymControllerTest {
             "street",
             "city",
             "state",
+            "50014",
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
@@ -85,7 +86,9 @@ class GymControllerTest {
   void updateGymByIdTest() {
     ResponseEntity<?> response =
         gymController.updateGym(
-            request, testGym.getId(), new Gym("Jimmy", null, null, null, null, null, null, null));
+            request,
+            testGym.getId(),
+            new Gym("Jimmy", null, null, null, null, null, null, null, null));
 
     testGym = gymRepository.findById(testGym.getId()).get();
 

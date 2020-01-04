@@ -41,7 +41,11 @@ public class WallService {
   }
 
   public Wall updateWall(
-      HttpServletRequest request, String wallId, String gymId, String updatedName) {
+      HttpServletRequest request,
+      String wallId,
+      String gymId,
+      String updatedName,
+      String updatedType) {
     if (gymId == null || wallId == null) {
       return null;
     }
@@ -61,6 +65,10 @@ public class WallService {
 
     if (updatedName != null && !updatedName.equals("")) {
       wall.setName(updatedName);
+    }
+
+    if (updatedType != null && !updatedType.equals("")) {
+      wall.setType(updatedType);
     }
 
     wall.setPersistable(true);

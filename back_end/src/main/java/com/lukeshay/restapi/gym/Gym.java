@@ -39,6 +39,7 @@ public class Gym implements Persistable<String> {
   @Expose private String address;
   @Expose private String city;
   @Expose private String state;
+  @Expose private String zipCode;
   @Expose private String website;
   @Expose private String email;
   @Expose private String phoneNumber;
@@ -49,6 +50,7 @@ public class Gym implements Persistable<String> {
       String address,
       String city,
       String state,
+      String zipCode,
       String website,
       String email,
       String phoneNumber,
@@ -57,6 +59,7 @@ public class Gym implements Persistable<String> {
     this.address = address;
     this.city = city;
     this.state = state;
+    this.zipCode = zipCode;
     this.website = website;
     this.email = email;
     this.phoneNumber = phoneNumber;
