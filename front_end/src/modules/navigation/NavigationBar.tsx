@@ -105,7 +105,7 @@ const NavigationBar: React.FC = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Responsive drawer
+              Route Rating
             </Typography>
           </Toolbar>
         </AppBar>
