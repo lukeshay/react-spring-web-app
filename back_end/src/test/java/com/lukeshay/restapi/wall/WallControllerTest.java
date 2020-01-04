@@ -7,6 +7,7 @@ import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
 import com.lukeshay.restapi.utils.Bodys;
 import java.util.Collections;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +37,8 @@ public class WallControllerTest {
 
   @Mock private Requests requests;
 
+  private Gym testGym;
+
   private Wall testWall;
 
   private User testUser;
@@ -44,7 +47,7 @@ public class WallControllerTest {
   void setUp() {
     MockitoAnnotations.initMocks(this);
 
-    Gym testGym =
+    testGym =
         new Gym(
             "Jim",
             "street",
@@ -176,7 +179,7 @@ public class WallControllerTest {
 
   @Test
   @WithMockUser
-  void unauthorizedEditor() {
+  void unauthorizedEditorTest() {
     testUser.setUserId("00000000");
 
     ResponseEntity<?> responseCreate = wallController.createWall(request, testWall);
@@ -203,5 +206,14 @@ public class WallControllerTest {
         () ->
             Assertions.assertEquals(Bodys.error("Error deleting wall."), responseDelete.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseDelete.getStatusCode()));
+  }
+
+  @Test
+  void getWallsTest() {
+    testWall = wallRepository.save(testWall);
+
+    List<Wall> walls = wallController.getWalls(request, testGym.getId()).getBody();
+
+    Assertions.assertIterableEquals(walls, Collections.singletonList(testWall));
   }
 }

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -82,11 +84,12 @@ public class WallController {
   @GetMapping("/{gymId}")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Get a gyms walls.", response = Wall.class)
-  public ResponseEntity<?> getWalls(HttpServletRequest request, @PathVariable String gymId) {
+  public ResponseEntity<List<Wall>> getWalls(
+      HttpServletRequest request, @PathVariable String gymId) {
     LOG.debug("Getting gym {} walls", gymId);
 
     List<Wall> walls = wallService.getWalls(gymId);
 
-    return Responses.okJsonResponse(walls);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(walls);
   }
 }
