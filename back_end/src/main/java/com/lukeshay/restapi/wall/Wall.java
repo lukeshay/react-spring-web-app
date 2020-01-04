@@ -1,20 +1,50 @@
 package com.lukeshay.restapi.wall;
 
-import java.util.List;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wall {
-  @Id private String id;
+@Document
+public class Wall implements Persistable<String> {
+  @Id @Expose private String id;
 
-  private String gymId;
-  private String name;
-  private List<Route> routes;
+  @Expose private String gymId;
+  @Expose private String name;
+  private boolean persistable;
+
+  public Wall(String gymId, String name) {
+    this.gymId = gymId;
+    this.name = name;
+    persistable = false;
+  }
+
+  @Override
+  public boolean isNew() {
+    return !persistable;
+  }
+
+  @Override
+  public String toString() {
+    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!obj.getClass().equals(this.getClass())) {
+      return false;
+    } else {
+      Wall wall = (Wall) obj;
+      return toString().equals(wall.toString()) && persistable == wall.isPersistable();
+    }
+  }
 }

@@ -1,5 +1,5 @@
 #!/bin/bash
-yarn build
+yarn build || exit 1
 pm2 stop web-app
 pm2 delete web-app
 yarn deploy

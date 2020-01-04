@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-class Gym implements Persistable<String> {
+public class Gym implements Persistable<String> {
   @Id @Expose private String id;
 
   @CreatedDate

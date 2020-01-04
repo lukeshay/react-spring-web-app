@@ -1,5 +1,6 @@
-package com.lukeshay.restapi.wall;
+package com.lukeshay.restapi.route;
 
+import com.lukeshay.restapi.route.RouteProperties.RouteTypes;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

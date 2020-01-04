@@ -68,7 +68,7 @@ class UserService {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
-      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.role()));
+      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
 
       return userRepository.save(user);
 

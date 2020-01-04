@@ -68,6 +68,7 @@ public class User implements Persistable<String> {
       String password) {
     this.username = username;
     this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
     this.state = state;

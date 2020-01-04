@@ -8,4 +8,6 @@ export interface User {
   state: string;
   password: string;
   phoneNumber: string;
+  authorities: string[];
+  roles: string[];
 }

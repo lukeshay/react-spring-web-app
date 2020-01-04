@@ -11,7 +11,7 @@ export interface IAction {
 const CHANGE_EVENT = "change";
 let gyms: Gym[] = [];
 
-class GymsStore extends EventEmitter {
+export class GymsStore extends EventEmitter {
   public addChangeListener(callback: any): void {
     this.on(CHANGE_EVENT, callback);
   }
