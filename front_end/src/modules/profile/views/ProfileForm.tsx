@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import React from "react";
-import * as UserActions from "../../../state/user/userActions";
+import * as UserActions from "../../../context/user/userActions";
+import { UserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
@@ -11,6 +12,7 @@ export interface IPropsProfileForm {
 }
 
 const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
+  const { dispatch } = useContext(UserContext);
   const [firstName, setFirstName] = useState<string>(user.firstName);
   const [lastName, setLastName] = useState<string>(user.lastName);
   const [email, setEmail] = useState<string>(user.email);
@@ -18,13 +20,13 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>(user.phoneNumber);
 
   async function handleSignOutClick(): Promise<void> {
-    UserActions.signOut();
+    UserActions.signOut(dispatch);
   }
 
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
-    UserActions.updateUser({
+    UserActions.updateUser(dispatch, {
       ...user,
       email,
       firstName,

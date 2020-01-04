@@ -1,7 +1,7 @@
 import {
-  ThemeProvider,
   CssBaseline,
-  FormControlLabel
+  FormControlLabel,
+  ThemeProvider
 } from "@material-ui/core";
 import ToggleSwitch from "@material-ui/core/Switch";
 import { lazy, Suspense, useEffect, useState } from "react";
@@ -10,14 +10,13 @@ import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavigationBar from "./modules/navigation/NavigationBar";
-import { AuthRoutes, Routes } from "./routes";
-import { darkTheme, lightTheme, getTheme } from "./theme";
+import { Routes } from "./routes";
+import { darkTheme, getTheme, lightTheme } from "./theme";
 
 const HomePage = lazy(() => import("./modules/homepage/HomePage"));
 const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
-const ToDoPage = lazy(() => import("./modules/todopage/ToDoPage"));
-const ProfilePage = lazy(() => import("./modules/profile/ProfilePage"));
-const GymsV2Page = lazy(() => import("./modules/gymsv2"));
+const ProfilePage = lazy(() => import("./modules/profile"));
+const GymsV2Page = lazy(() => import("./modules/gyms"));
 
 interface Style {
   marginLeft: string;
@@ -70,7 +69,6 @@ const App: React.FC = () => {
           <Switch>
             <Route exact={true} path="/" component={HomePage} />
             <Route exact={true} path="/index" component={HomePage} />
-            <Route path={AuthRoutes.TODO} component={ToDoPage} />
             <Route path={Routes.PROFILE} component={ProfilePage} />
             <Route path={Routes.GYMS} component={GymsV2Page} />
             <Route component={NotFoundPage} />

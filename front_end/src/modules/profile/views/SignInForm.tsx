@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import React from "react";
-import { signIn } from "../../../state/user/userActions";
+import * as UserActions from "../../../context/user/userActions";
+import { UserContext } from "../../../context/user/userStore";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
@@ -10,6 +11,7 @@ export interface IPropsLogInForm {
 }
 
 const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
+  const { dispatch } = useContext(UserContext);
   const [email, setEmail] = useState<string>("");
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -28,7 +30,7 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
-    const response = await signIn(email, password);
+    const response = await UserActions.signIn(dispatch, email, password);
 
     if (response instanceof Response && response.status === 401) {
       setPasswordMessage(

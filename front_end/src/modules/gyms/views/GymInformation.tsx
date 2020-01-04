@@ -3,11 +3,12 @@ import Button from "@material-ui/core/Button";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { GymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import * as GymsActions from "../../../state/gyms/gymsActions";
-import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
 
@@ -43,38 +44,27 @@ export interface IGymInformationProps {
 }
 
 const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
+  const { state, dispatch } = useContext(GymsContext);
   const [gym, setGym] = useState<Gym>({} as Gym);
   const classes = useStyles();
 
   useEffect(() => {
-    gymsStore.addChangeListener(handleGymsChange);
+    loadGyms();
 
-    if (gymsStore.getGyms().length === 0) {
-      GymsActions.loadGyms();
-    }
-
-    const tempGym = gymsStore
-      .getGyms()
-      .filter((element) => element.id === gymId)
-      .pop();
+    const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
 
     if (tempGym) {
       setGym(tempGym);
     }
-
-    return () => gymsStore.removeChangeListener(handleGymsChange);
   }, []);
 
-  async function handleGymsChange(): Promise<void> {
-    const tempGym = gymsStore
-      .getGyms()
-      .filter((element) => element.id === gymId)
-      .pop();
+  const loadGyms = async () => {
+    const response = await GymsActions.loadGyms(dispatch);
 
-    if (tempGym) {
-      setGym(tempGym);
+    if (!response || !(response instanceof Response) || !response.ok) {
+      toast.error("Error getting gyms.");
     }
-  }
+  };
 
   if (!gym) {
     return <h3>Cannot find the gym you are looking for.</h3>;

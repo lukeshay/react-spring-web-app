@@ -4,16 +4,17 @@ import { User } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
 
-export async function signOut(): Promise<void> {
+export async function signOut(dispatch: any): Promise<void> {
   Cookies.setJwtToken("");
   Cookies.setUsername("");
 
-  dispatcher.dispatch({
+  dispatch({
     actionType: Types.SIGN_OUT
   });
 }
 
 export async function signIn(
+  dispatch: any,
   username: string,
   password: string
 ): Promise<void | Response> {
@@ -26,7 +27,7 @@ export async function signIn(
 
     Cookies.setJwtToken(jwtToken);
 
-    dispatcher.dispatch({
+    dispatch({
       actionType: Types.SIGN_IN,
       user
     });
@@ -35,21 +36,27 @@ export async function signIn(
   return signInResponse;
 }
 
-export async function createUser(newUser: User): Promise<void | Response> {
+export async function createUser(
+  dispatch: any,
+  newUser: User
+): Promise<void | Response> {
   const createUserResponse = await UserApi.createUser(newUser);
 
   return !(createUserResponse instanceof Response) || createUserResponse.ok
-    ? await signIn(newUser.username, newUser.password)
+    ? await signIn(dispatch, newUser.username, newUser.password)
     : createUserResponse;
 }
 
-export async function updateUser(updatedUser: User): Promise<void | Response> {
+export async function updateUser(
+  dispatch: any,
+  updatedUser: User
+): Promise<void | Response> {
   const updateUserResponse = await UserApi.updateUser(updatedUser);
 
   if (updateUserResponse instanceof Response && updateUserResponse.ok) {
     const updatedUserBody = await updateUserResponse.json();
 
-    dispatcher.dispatch({
+    dispatch({
       actionType: Types.UPDATE_USER,
       user: updatedUserBody
     });

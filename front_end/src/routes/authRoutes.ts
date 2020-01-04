@@ -1,3 +1,1 @@
-export const AuthRoutes = {
-  TODO: "/todo"
-};
+export const AuthRoutes = {};
