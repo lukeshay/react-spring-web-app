@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import Button from "../../common/buttons/ButtonDefault";
+import Button from "@material-ui/core/Button";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -83,15 +83,17 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   return (
     <React.Fragment>
       <div className={classes.buttonWrapper}>
-        {/* <Button
+        <Button
           component={Link}
           to={Routes.GYMS}
           variant="text"
           fullWidth={false}
+          size="medium"
+          type="button"
         >
           <ArrowBackIcon className={classes.backIcon} />
           Back
-        </Button> */}
+        </Button>
       </div>
       <Table
         body={[

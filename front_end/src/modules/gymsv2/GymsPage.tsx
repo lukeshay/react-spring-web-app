@@ -11,7 +11,7 @@ const GymsPage: React.FC = () => {
     .slice(-1)
     .pop();
 
-  if (!last || last.trim() === "vs" || last.trim().length === 0) {
+  if (!last || last.trim() === "gyms" || last.trim().length === 0) {
     return <GymsTable />;
   } else {
     return <GymInformation gymId={last} />;

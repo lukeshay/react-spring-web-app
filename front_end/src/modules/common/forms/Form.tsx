@@ -57,12 +57,9 @@ const Form: React.FC<IFormProps> = ({
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           {formInputs}
-          <Button
-            type="submit"
-            fullWidth={true}
-            variant="contained"
-            text={buttonText}
-          />
+          <Button type="submit" fullWidth={true} variant="contained">
+            {buttonText}
+          </Button>
           <Grid container>
             {helpElements &&
               helpElements.map((element) => (

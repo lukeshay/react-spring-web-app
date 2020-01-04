@@ -6,7 +6,6 @@ export interface IButtonProps {
   disabled?: boolean;
   fullWidth?: boolean;
   size?: "small" | "medium" | "large" | undefined;
-  text: string;
   id?: string;
   children?: React.ReactNode;
   onClick?(event: any): void | Promise<void>;

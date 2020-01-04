@@ -2,8 +2,8 @@ import React, {
   createContext,
   Dispatch,
   Reducer,
-  useReducer,
-  useContext
+  useContext,
+  useReducer
 } from "react";
 import { User } from "../../types";
 import Types from "./userActionTypes";

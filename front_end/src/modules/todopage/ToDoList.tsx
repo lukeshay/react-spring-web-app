@@ -41,11 +41,12 @@ const ToDoList: React.FC<IToDoListProps> = (props: IToDoListProps) => {
             <td>{toDo.dueDate}</td>
             <td>
               <Button
-                text="Delete"
                 id={toDo.id}
                 onClick={() => handleDeleteButtonClick(toDo.id)}
                 fullWidth={false}
-              />
+              >
+                Delete
+              </Button>
             </td>
           </tr>
         ))}

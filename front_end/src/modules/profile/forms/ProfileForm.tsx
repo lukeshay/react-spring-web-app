@@ -89,12 +89,9 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         Your profile
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <Button
-          text="Sign out"
-          onClick={handleSignOutClick}
-          type="button"
-          variant="outlined"
-        />
+        <Button onClick={handleSignOutClick} type="button" variant="outlined">
+          Sign out
+        </Button>
       </div>
     </div>
   );

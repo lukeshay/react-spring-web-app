@@ -1,23 +1,25 @@
-import AppBar from "@material-ui/core/AppBar";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  AppBar,
+  Drawer,
+  Hidden,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+  Typography
+} from "@material-ui/core";
 import {
   createStyles,
   makeStyles,
   Theme,
   useTheme
 } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import { AuthRoutes, Routes } from "../../routes";
+import { Routes } from "../../routes";
 
 const drawerWidth = 170;
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,11 +60,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const NavigationBar: React.FC = () => {
+export interface INavigationBarProps {
+  children: React.ReactNode;
+}
+
+const NavigationBar: React.FC<INavigationBarProps> = ({ children }) => {
   const navItems: Array<{ text: string; link: string }> = [
     { text: "Home", link: Routes.HOME },
     { text: "Gyms", link: Routes.GYMS },
-    { text: "To-do", link: AuthRoutes.TODO },
     { text: "Profile", link: Routes.PROFILE }
   ];
 
@@ -133,6 +138,7 @@ const NavigationBar: React.FC = () => {
                 <CloseIcon />
               </IconButton>
               {drawer}
+              {children}
             </Drawer>
           </Hidden>
         )}
@@ -144,8 +150,8 @@ const NavigationBar: React.FC = () => {
               paper: classes.drawerPaper
             }}
           >
-            {/* <div className={classes.toolbar} /> */}
             {drawer}
+            {children}
           </Drawer>
         </Hidden>
       </nav>

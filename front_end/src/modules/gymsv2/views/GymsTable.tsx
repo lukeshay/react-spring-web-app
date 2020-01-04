@@ -6,8 +6,6 @@ import { useHistory } from "react-router-dom";
 import * as GymsApi from "../../../api/gymsApi";
 import { StoreContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import * as GymsActions from "../../../state/gyms/gymsActions";
-import gymsStore from "../../../state/gyms/gymsStore";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
 
