@@ -44,15 +44,16 @@ public class WallControllerTest {
   void setUp() {
     MockitoAnnotations.initMocks(this);
 
-    Gym testGym = new Gym(
-        "Jim",
-        "street",
-        "city",
-        "state",
-        "lukeshay.com",
-        "climbing@gym.com",
-        "phoneNumber",
-        Collections.singletonList("1111111111"));
+    Gym testGym =
+        new Gym(
+            "Jim",
+            "street",
+            "city",
+            "state",
+            "lukeshay.com",
+            "climbing@gym.com",
+            "phoneNumber",
+            Collections.singletonList("1111111111"));
 
     testGym = gymRepository.save(testGym);
 
@@ -108,8 +109,11 @@ public class WallControllerTest {
     ResponseEntity<?> responseInvalidGymId = wallController.createWall(request, testWall);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Error adding wall."), responseInvalidGymId.getBody()),
-        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseInvalidGymId.getStatusCode()));
+        () ->
+            Assertions.assertEquals(
+                Bodys.error("Error adding wall."), responseInvalidGymId.getBody()),
+        () ->
+            Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseInvalidGymId.getStatusCode()));
   }
 
   @Test
@@ -139,7 +143,9 @@ public class WallControllerTest {
     ResponseEntity<?> responseNoWallId = wallController.updateWall(request, testWall);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Error updating wall."), responseNoWallId.getBody()),
+        () ->
+            Assertions.assertEquals(
+                Bodys.error("Error updating wall."), responseNoWallId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWallId.getStatusCode()));
 
     testWall.setId(wallId);
@@ -148,7 +154,8 @@ public class WallControllerTest {
     ResponseEntity<?> responseNoGymId = wallController.updateWall(request, testWall);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Error updating wall."), responseNoGymId.getBody()),
+        () ->
+            Assertions.assertEquals(Bodys.error("Error updating wall."), responseNoGymId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoGymId.getStatusCode()));
   }
 
@@ -186,13 +193,15 @@ public class WallControllerTest {
     testWall.setPersistable(true);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Error updating wall."), responseUpdate.getBody()),
+        () ->
+            Assertions.assertEquals(Bodys.error("Error updating wall."), responseUpdate.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUpdate.getStatusCode()));
 
     ResponseEntity<?> responseDelete = wallController.deleteWall(request, testWall.getId());
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Error deleting wall."), responseDelete.getBody()),
+        () ->
+            Assertions.assertEquals(Bodys.error("Error deleting wall."), responseDelete.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseDelete.getStatusCode()));
   }
 }

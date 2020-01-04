@@ -39,7 +39,8 @@ public class WallService {
     return wallRepository.save(body);
   }
 
-  public Wall updateWall(HttpServletRequest request, String wallId, String gymId, String updatedName) {
+  public Wall updateWall(
+      HttpServletRequest request, String wallId, String gymId, String updatedName) {
     if (gymId == null || wallId == null) {
       return null;
     }
