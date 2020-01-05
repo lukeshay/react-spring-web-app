@@ -1,13 +1,6 @@
 import * as React from "react";
-import { UserStore } from "../../context/user/userStore";
 import ProfilePage from "./ProfilePage";
 
-const ProfilePageIndex: React.FC = () => {
-  return (
-    <UserStore>
-      <ProfilePage />
-    </UserStore>
-  );
-};
+const ProfilePageIndex: React.FC = () => <ProfilePage />;
 
 export default React.memo(ProfilePageIndex);

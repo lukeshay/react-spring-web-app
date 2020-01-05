@@ -9,6 +9,7 @@ export interface IGymsContextState {
 export interface IGymsContextAction {
   actionType: string;
   gyms: Gym[];
+  gym?: Gym;
 }
 
 export interface IContextProps {
@@ -20,11 +21,20 @@ export const GymsContext = createContext<IContextProps>({} as IContextProps);
 
 const reducer: Reducer<IGymsContextState, IGymsContextAction> = (
   state: IGymsContextState,
-  action: IGymsContextAction
+  { actionType, gyms, gym }: IGymsContextAction
 ): IGymsContextState => {
-  switch (action.actionType) {
+  switch (actionType) {
     case Types.LOAD_GYMS:
-      return { gyms: action.gyms };
+      return { gyms };
+
+    case Types.UPDATE_GYM:
+      if (!gym) {
+        throw new Error("Action must have a gym.");
+      } else {
+        return {
+          gyms: state.gyms.map((_gym: Gym) => (gym.id === _gym.id ? gym : _gym))
+        };
+      }
 
     default:
       throw new Error("Action type must be defined");

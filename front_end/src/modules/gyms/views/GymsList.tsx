@@ -1,6 +1,5 @@
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import React, { useContext, useEffect, useState } from "react";
+import { TableCell, TableRow } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
@@ -19,7 +18,11 @@ const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
   return (
     <TableRow hover onClick={() => history.push(Routes.GYMS + "/" + gym.id)}>
       <TableCell>{gym.name}</TableCell>
-      <TableCell>{gym.address + " " + gym.city + ", " + gym.state}</TableCell>
+      <TableCell>
+        {gym.address}
+        <br />
+        {gym.city + ", " + gym.state + " " + gym.zipCode}
+      </TableCell>
       <TableCell>{gym.website}</TableCell>
     </TableRow>
   );

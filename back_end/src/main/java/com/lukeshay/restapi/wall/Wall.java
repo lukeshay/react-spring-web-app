@@ -20,11 +20,15 @@ public class Wall implements Persistable<String> {
 
   @Expose private String gymId;
   @Expose private String name;
+  @Expose private String type;
+  @Expose private int routes;
   private boolean persistable;
 
-  public Wall(String gymId, String name) {
+  public Wall(String gymId, String name, String type) {
     this.gymId = gymId;
     this.name = name;
+    this.type = type;
+    this.routes = 0;
     persistable = false;
   }
 

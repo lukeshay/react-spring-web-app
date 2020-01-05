@@ -4,13 +4,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import { Gym } from "../../../types";
+import { Gym, Wall } from "../../../types";
 import Table from "../../common/table/Table";
+import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonWrapper: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1)
+    },
+    wallList: {
+      marginTop: theme.spacing(2)
     }
   })
 );
@@ -47,11 +51,20 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   const { state, dispatch } = useContext(GymsContext);
   const [gym, setGym] = useState<Gym>({} as Gym);
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
-    loadGyms();
+    if (state.gyms.length === 0) {
+      loadGyms();
+    }
 
     const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
+
+    if (!tempGym) {
+      history.push(Routes.GYMS);
+    } else if (tempGym && !tempGym.walls) {
+      GymsActions.loadWalls(dispatch, tempGym);
+    }
 
     if (tempGym) {
       setGym(tempGym);
@@ -87,25 +100,41 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
       </div>
       <Table
         body={[
-          <GymInformationRow key="name" label="Gym Name" text={gym.name} />,
+          <GymInformationRow key="name" label="Name" text={gym.name} />,
           <GymInformationRow
             key="website"
-            label="Gym Website"
+            label="Website"
             text={gym.website}
           />,
           <GymInformationRow
             key="address"
-            label="Gym Address"
-            text={gym.address + " " + gym.city + ", " + gym.state}
+            label="Address"
+            text={
+              gym.address +
+              "\n" +
+              gym.city +
+              ", " +
+              gym.state +
+              " " +
+              gym.zipCode
+            }
           />,
-          <GymInformationRow key="email" label="Gym Email" text={gym.email} />,
+          <GymInformationRow key="email" label="Email" text={gym.email} />,
           <GymInformationRow
             key="phoneNumber"
-            label="Gym Phone Number"
+            label="Phone Number"
             text={gym.phoneNumber}
           />
         ]}
       />
+      <div
+        className={classes.wallList}
+        style={{
+          display: !gym.walls || gym.walls.length === 0 ? "none" : "block"
+        }}
+      >
+        <WallList walls={gym.walls} />
+      </div>
     </React.Fragment>
   );
 };

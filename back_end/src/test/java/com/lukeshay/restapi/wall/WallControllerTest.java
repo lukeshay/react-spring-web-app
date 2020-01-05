@@ -6,6 +6,7 @@ import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
 import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,7 @@ public class WallControllerTest {
             "street",
             "city",
             "state",
+            "50014",
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
@@ -80,7 +82,7 @@ public class WallControllerTest {
 
     wallController = new WallController(new WallService(wallRepository, gymRepository, requests));
 
-    testWall = new Wall(testGym.getId(), "Wall");
+    testWall = new Wall(testGym.getId(), "Wall", WallTypes.AUTO_BELAY.toString());
   }
 
   @AfterEach

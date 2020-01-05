@@ -4,19 +4,15 @@ import {
   ThemeProvider
 } from "@material-ui/core";
 import ToggleSwitch from "@material-ui/core/Switch";
-import { lazy, Suspense, useEffect, useState } from "react";
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GymsStore } from "./context/gyms/gymsStore";
+import { UserStore } from "./context/user/userStore";
 import NavigationBar from "./modules/navigation/NavigationBar";
-import { Routes } from "./routes";
+import Router from "./Router";
+import StoreCombiner from "./StoreCombiner";
 import { darkTheme, getTheme, lightTheme } from "./theme";
-
-const HomePage = lazy(() => import("./modules/homepage/HomePage"));
-const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
-const ProfilePage = lazy(() => import("./modules/profile"));
-const GymsV2Page = lazy(() => import("./modules/gyms"));
 
 interface Style {
   marginLeft: string;
@@ -52,30 +48,28 @@ const App: React.FC = () => {
   }
 
   return (
-    <div style={style}>
-      <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
-        <CssBaseline />
-        <ToastContainer autoClose={3000} hideProgressBar={true} />
-        <NavigationBar>
-          <FormControlLabel
-            control={
-              <ToggleSwitch checked={dark} onChange={() => setDark(!dark)} />
-            }
-            label="Dark Mode"
-            style={{ marginLeft: "10px", position: "absolute", bottom: "0" }}
-          />
-        </NavigationBar>
-        <Suspense fallback={<div />}>
-          <Switch>
-            <Route exact={true} path="/" component={HomePage} />
-            <Route exact={true} path="/index" component={HomePage} />
-            <Route path={Routes.PROFILE} component={ProfilePage} />
-            <Route path={Routes.GYMS} component={GymsV2Page} />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </Suspense>
-      </ThemeProvider>
-    </div>
+    <StoreCombiner stores={[UserStore, GymsStore]}>
+      <div style={style}>
+        <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
+          <CssBaseline />
+          <ToastContainer autoClose={3000} hideProgressBar={true} />
+          <NavigationBar>
+            <FormControlLabel
+              control={
+                <ToggleSwitch checked={dark} onChange={() => setDark(!dark)} />
+              }
+              label="Dark Mode"
+              style={{
+                bottom: "0",
+                marginLeft: "10px",
+                position: "absolute"
+              }}
+            />
+          </NavigationBar>
+          <Router />
+        </ThemeProvider>
+      </div>
+    </StoreCombiner>
   );
 };
 
