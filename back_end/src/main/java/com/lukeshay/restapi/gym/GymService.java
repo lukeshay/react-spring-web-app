@@ -37,14 +37,16 @@ public class GymService {
       String state,
       String email,
       String phoneNumber,
-      String website) {
+      String website,
+      List<String> authorizedEditors) {
 
     Gym gym = gymRepository.findById(gymId).orElse(null);
     User user = requests.getUserFromRequest(request);
 
     if (gym == null
         || user == null
-        || (!gym.getAuthorizedEditors().contains(user.getId())
+        || ((gym.getAuthorizedEditors() == null
+                || !gym.getAuthorizedEditors().contains(user.getId()))
             && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
       return null;
     }
@@ -75,6 +77,10 @@ public class GymService {
 
     if (email != null && !email.equals("")) {
       gym.setEmail(email);
+    }
+
+    if (authorizedEditors != null && authorizedEditors.size() > 0) {
+      gym.setAuthorizedEditors(authorizedEditors);
     }
 
     gym.setPersistable(true);

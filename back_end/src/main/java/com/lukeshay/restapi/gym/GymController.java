@@ -52,7 +52,8 @@ public class GymController {
             gym.getState(),
             gym.getEmail(),
             gym.getPhoneNumber(),
-            gym.getWebsite());
+            gym.getWebsite(),
+            gym.getAuthorizedEditors());
 
     if (gym == null) {
       return Responses.notFoundJsonResponse(Bodys.error("Gym not found"));
