@@ -45,7 +45,8 @@ public class GymService {
 
     if (gym == null
         || user == null
-        || ((gym.getAuthorizedEditors() == null || !gym.getAuthorizedEditors().contains(user.getId()))
+        || ((gym.getAuthorizedEditors() == null
+                || !gym.getAuthorizedEditors().contains(user.getId()))
             && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
       return null;
     }
