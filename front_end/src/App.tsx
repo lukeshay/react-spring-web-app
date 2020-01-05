@@ -4,22 +4,15 @@ import {
   ThemeProvider
 } from "@material-ui/core";
 import ToggleSwitch from "@material-ui/core/Switch";
-import { lazy, Suspense, useEffect, useState } from "react";
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NavigationBar from "./modules/navigation/NavigationBar";
-import { Routes } from "./routes";
-import { darkTheme, getTheme, lightTheme } from "./theme";
-import { UserStore } from "./context/user/userStore";
 import { GymsStore } from "./context/gyms/gymsStore";
+import { UserStore } from "./context/user/userStore";
+import NavigationBar from "./modules/navigation/NavigationBar";
+import Router from "./Router";
 import StoreCombiner from "./StoreCombiner";
-
-const HomePage = lazy(() => import("./modules/homepage/HomePage"));
-const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
-const ProfilePage = lazy(() => import("./modules/profile"));
-const GymsV2Page = lazy(() => import("./modules/gyms"));
+import { darkTheme, getTheme, lightTheme } from "./theme";
 
 interface Style {
   marginLeft: string;
@@ -73,15 +66,7 @@ const App: React.FC = () => {
               }}
             />
           </NavigationBar>
-          <Suspense fallback={<div />}>
-            <Switch>
-              <Route exact={true} path="/" component={HomePage} />
-              <Route exact={true} path="/index" component={HomePage} />
-              <Route path={Routes.PROFILE} component={ProfilePage} />
-              <Route path={Routes.GYMS} component={GymsV2Page} />
-              <Route component={NotFoundPage} />
-            </Switch>
-          </Suspense>
+          <Router />
         </ThemeProvider>
       </div>
     </StoreCombiner>

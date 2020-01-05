@@ -1,6 +1,5 @@
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import React, { useContext, useEffect, useState } from "react";
+import { TableCell, TableRow } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
