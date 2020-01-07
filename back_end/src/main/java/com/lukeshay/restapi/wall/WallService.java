@@ -4,6 +4,7 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
+import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class WallService {
       String wallId,
       String gymId,
       String updatedName,
-      String updatedType) {
+      WallTypes updatedType) {
     if (gymId == null || wallId == null) {
       return null;
     }
@@ -67,7 +68,7 @@ public class WallService {
       wall.setName(updatedName);
     }
 
-    if (updatedType != null && !updatedType.equals("")) {
+    if (updatedType != null) {
       wall.setType(updatedType);
     }
 
