@@ -82,7 +82,7 @@ public class WallControllerTest {
 
     wallController = new WallController(new WallService(wallRepository, gymRepository, requests));
 
-    testWall = new Wall(testGym.getId(), "Wall", WallTypes.AUTO_BELAY.toString());
+    testWall = new Wall(testGym.getId(), "Wall", WallTypes.AUTO_BELAY);
   }
 
   @AfterEach

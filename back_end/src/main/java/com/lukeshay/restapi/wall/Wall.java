@@ -2,6 +2,7 @@ package com.lukeshay.restapi.wall;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,11 @@ public class Wall implements Persistable<String> {
 
   @Expose private String gymId;
   @Expose private String name;
-  @Expose private String type;
+  @Expose private WallTypes type;
   @Expose private int routes;
   private boolean persistable;
 
-  public Wall(String gymId, String name, String type) {
+  public Wall(String gymId, String name, WallTypes type) {
     this.gymId = gymId;
     this.name = name;
     this.type = type;
