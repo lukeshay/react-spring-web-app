@@ -54,11 +54,20 @@ public class GymControllerV2Test {
 
     testRoute =
         new Route(
-            testWall.getId(), testGym.getId(), "Yooty", "Yeety", "Green", Collections.singletonList(WallTypes.BOULDER));
+            testWall.getId(),
+            testGym.getId(),
+            "Yooty",
+            "Yeety",
+            "Green",
+            Collections.singletonList(WallTypes.BOULDER));
 
     testRoute = routeRepository.save(testRoute);
 
-    testGymWithWalls = new GymWithWalls(testGym, Collections.singletonList(new WallWithRoutes(testWall, Collections.singletonList(testRoute))));
+    testGymWithWalls =
+        new GymWithWalls(
+            testGym,
+            Collections.singletonList(
+                new WallWithRoutes(testWall, Collections.singletonList(testRoute))));
   }
 
   @AfterEach
@@ -73,8 +82,8 @@ public class GymControllerV2Test {
   void getGymTest() {
     ResponseEntity<?> response = gymController.getGym(null, testGym.getId());
 
-    Assertions.assertAll(() -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
         () -> Assertions.assertEquals(testGymWithWalls, response.getBody()));
   }
-
 }
