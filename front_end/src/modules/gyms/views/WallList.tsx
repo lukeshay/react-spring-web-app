@@ -12,7 +12,7 @@ export interface IWallRowProps {
 const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick }) => (
   <TableRow hover id={wall.id} onClick={() => onRowClick(wall.id)}>
     <TableCell>{wall.name}</TableCell>
-    <TableCell>{wall.routes.length}</TableCell>
+    <TableCell>{wall.routes ? wall.routes.length : 0}</TableCell>
     <TableCell>{wall.type}</TableCell>
   </TableRow>
 );

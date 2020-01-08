@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import { Gym, Route } from "../../../types";
+import { Gym, Route, Wall } from "../../../types";
 import Table from "../../common/table/Table";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
@@ -87,13 +87,24 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   }
 
   const onWallRowClick = async (wallId: string) => {
-    const response = await GymsActions.loadRoutes(dispatch, gym, wallId);
+    const wall = gym.walls
+      ? gym.walls.find((element: Wall) => element.id === wallId)
+      : null;
 
-    if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting routes.");
-    } else {
+    if (wall && (wall.routes.length === 0 || !wall.routes[0])) {
+      const response = await GymsActions.loadRoutes(dispatch, gym, wallId);
+
+      if (!response || !(response instanceof Response) || !response.ok) {
+        toast.error("Error getting routes.");
+      } else {
+        setWalls(false);
+        setRoutes(wall.routes);
+      }
+    } else if (wall) {
       setWalls(false);
-      response.json().then((json) => setRoutes(json));
+      setRoutes(wall.routes);
+    } else {
+      toast.error("Could not find wall.");
     }
   };
 
@@ -150,7 +161,21 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
         {walls ? (
           <WallList walls={gym.walls} onRowClick={onWallRowClick} />
         ) : (
-          <RoutesList routes={routes} />
+          <div>
+            <div className={classes.buttonWrapper}>
+              <Button
+                variant="text"
+                fullWidth={false}
+                size="medium"
+                type="button"
+                onClick={() => setWalls(true)}
+              >
+                <ArrowBackIcon className={classes.backIcon} />
+                Back
+              </Button>
+            </div>
+            <RoutesList routes={routes} />{" "}
+          </div>
         )}
       </div>
     </React.Fragment>
