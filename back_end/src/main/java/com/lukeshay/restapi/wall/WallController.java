@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/wall")
@@ -95,5 +96,13 @@ public class WallController {
     List<Wall> walls = wallService.getWalls(gymId);
 
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(walls);
+  }
+
+  @DeleteMapping("")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiIgnore
+  public ResponseEntity<?> deleteAll() {
+    wallService.deleteAllWalls();
+    return Responses.okJsonResponse(null);
   }
 }

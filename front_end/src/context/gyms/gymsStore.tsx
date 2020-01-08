@@ -32,7 +32,9 @@ const reducer: Reducer<IGymsContextState, IGymsContextAction> = (
         throw new Error("Action must have a gym.");
       } else {
         return {
-          gyms: state.gyms.map((_gym: Gym) => (gym.id === _gym.id ? gym : _gym))
+          gyms: state.gyms.map((gymFromList: Gym) =>
+            gym.id === gymFromList.id ? gym : gymFromList
+          )
         };
       }
 

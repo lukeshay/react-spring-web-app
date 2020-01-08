@@ -36,10 +36,12 @@ const GymsPage: React.FC = () => {
   }, []);
 
   const loadGyms = async () => {
-    const response = await GymsActions.loadGyms(dispatch);
+    if (state.gyms.length === 0) {
+      const response = await GymsActions.loadGyms(dispatch);
 
-    if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting gyms.");
+      if (!response || !(response instanceof Response) || !response.ok) {
+        toast.error("Error getting gyms.");
+      }
     }
   };
 
