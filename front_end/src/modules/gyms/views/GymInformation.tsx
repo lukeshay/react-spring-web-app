@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IGymInformationRowProps {
-  label: string;
-  text: string;
+  label: React.ReactNode;
+  text: React.ReactNode;
 }
 
 const GymInformationRow: React.FC<IGymInformationRowProps> = ({
@@ -91,7 +91,7 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
       ? gym.walls.find((element: Wall) => element.id === wallId)
       : null;
 
-    if (wall && (wall.routes.length === 0 || !wall.routes[0])) {
+    if (wall && (!wall.routes || wall.routes.length === 0 || !wall.routes[0])) {
       const response = await GymsActions.loadRoutes(dispatch, gym, wallId);
 
       if (!response || !(response instanceof Response) || !response.ok) {

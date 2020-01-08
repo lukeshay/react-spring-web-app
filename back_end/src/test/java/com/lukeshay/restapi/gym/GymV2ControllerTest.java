@@ -20,7 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureDataMongo
-class GymControllerTest {
+class GymV2ControllerTest {
 
   private GymController gymController;
 

@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-class Route implements Persistable<String> {
+public class Route implements Persistable<String> {
   @Id @Expose String id;
 
   @Expose String wallId;
