@@ -1,6 +1,8 @@
+import { Route } from "./route";
+
 export interface Wall {
   id: string;
   name: string;
-  routes: number | null;
+  routes: Route[];
   type: string;
 }

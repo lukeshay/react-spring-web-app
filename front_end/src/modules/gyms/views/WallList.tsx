@@ -6,21 +6,23 @@ import Table from "../../common/table/Table";
 
 export interface IWallRowProps {
   wall: Wall;
+  onRowClick(wallId: string): Promise<void>;
 }
 
-const WallRow: React.FC<IWallRowProps> = ({ wall }) => (
-  <TableRow hover onClick={() => {}}>
+const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick }) => (
+  <TableRow hover id={wall.id} onClick={() => onRowClick(wall.id)}>
     <TableCell>{wall.name}</TableCell>
-    <TableCell>{wall.routes && wall.routes}</TableCell>
+    <TableCell>{wall.routes ? wall.routes.length : 0}</TableCell>
     <TableCell>{wall.type}</TableCell>
   </TableRow>
 );
 
 export interface IWallListProps {
   walls: Wall[] | null;
+  onRowClick(wallId: string): Promise<void>;
 }
 
-const WallList: React.FunctionComponent<IWallListProps> = ({ walls }) => {
+const WallList: React.FC<IWallListProps> = ({ walls, onRowClick }) => {
   return (
     <Table
       head={
@@ -32,7 +34,9 @@ const WallList: React.FunctionComponent<IWallListProps> = ({ walls }) => {
       }
       body={
         walls &&
-        walls.map((wall: Wall) => <WallRow key={wall.id} wall={wall} />)
+        walls.map((wall: Wall) => (
+          <WallRow key={wall.id} wall={wall} onRowClick={onRowClick} />
+        ))
       }
     />
   );

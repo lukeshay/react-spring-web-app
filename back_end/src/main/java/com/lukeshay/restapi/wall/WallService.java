@@ -104,4 +104,8 @@ public class WallService {
   public List<Wall> getWalls(String gymId) {
     return wallRepository.findAllByGymId(gymId);
   }
+
+  public void deleteAllWalls() {
+    wallRepository.deleteAll();
+  }
 }

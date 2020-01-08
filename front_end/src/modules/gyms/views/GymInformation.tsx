@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
-import { Gym, Wall } from "../../../types";
+import { Gym, Route, Wall } from "../../../types";
 import Table from "../../common/table/Table";
+import RoutesList from "./RoutesList";
 import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,6 +51,8 @@ export interface IGymInformationProps {
 const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   const { state, dispatch } = useContext(GymsContext);
   const [gym, setGym] = useState<Gym>({} as Gym);
+  const [walls, setWalls] = useState<boolean>(true);
+  const [routes, setRoutes] = useState<Route[]>([]);
   const classes = useStyles();
   const history = useHistory();
 
@@ -82,6 +85,28 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   if (!gym) {
     return <h3>Cannot find the gym you are looking for.</h3>;
   }
+
+  const onWallRowClick = async (wallId: string) => {
+    const wall = gym.walls
+      ? gym.walls.find((element: Wall) => element.id === wallId)
+      : null;
+
+    if (wall && (wall.routes.length === 0 || !wall.routes[0])) {
+      const response = await GymsActions.loadRoutes(dispatch, gym, wallId);
+
+      if (!response || !(response instanceof Response) || !response.ok) {
+        toast.error("Error getting routes.");
+      } else {
+        setWalls(false);
+        setRoutes(wall.routes);
+      }
+    } else if (wall) {
+      setWalls(false);
+      setRoutes(wall.routes);
+    } else {
+      toast.error("Could not find wall.");
+    }
+  };
 
   return (
     <React.Fragment>
@@ -133,7 +158,25 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
           display: !gym.walls || gym.walls.length === 0 ? "none" : "block"
         }}
       >
-        <WallList walls={gym.walls} />
+        {walls ? (
+          <WallList walls={gym.walls} onRowClick={onWallRowClick} />
+        ) : (
+          <div>
+            <div className={classes.buttonWrapper}>
+              <Button
+                variant="text"
+                fullWidth={false}
+                size="medium"
+                type="button"
+                onClick={() => setWalls(true)}
+              >
+                <ArrowBackIcon className={classes.backIcon} />
+                Back
+              </Button>
+            </div>
+            <RoutesList routes={routes} />{" "}
+          </div>
+        )}
       </div>
     </React.Fragment>
   );
