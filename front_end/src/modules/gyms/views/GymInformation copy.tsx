@@ -58,28 +58,23 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
 
   useEffect(() => {
     if (state.gyms.length === 0) {
-      loadGyms();
+      history.push(Routes.GYMS);
     }
 
     const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
 
     if (!tempGym) {
       history.push(Routes.GYMS);
-      GymsActions.loadGymV2(dispatch, gymId);
-    } else if (tempGym && !tempGym.walls) {
-      GymsActions.loadGymV2(dispatch, gymId);
-    }
-
-    if (tempGym) {
-      setGym(tempGym);
+    } else if (!tempGym.walls) {
+      loadFullGym().then(() => setGym(tempGym));
     }
   }, []);
 
-  const loadGyms = async () => {
-    const response = await GymsActions.loadGyms(dispatch);
+  const loadFullGym = async () => {
+    const response = await GymsActions.loadGymV2(dispatch, gymId);
 
     if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting gyms.");
+      toast.error("Error getting gym.");
     }
   };
 
@@ -168,7 +163,7 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
                 Back
               </Button>
             </div>
-            <RoutesList routes={routes} />{" "}
+            <RoutesList routes={routes} />
           </div>
         )}
       </div>
