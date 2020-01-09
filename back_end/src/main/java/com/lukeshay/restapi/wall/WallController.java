@@ -43,8 +43,6 @@ public class WallController {
   public ResponseEntity<?> createWall(HttpServletRequest request, @RequestBody Wall body) {
     LOG.debug("Adding wall {}", body);
 
-    body.setRoutes(0);
-
     Wall wall = wallService.createWall(request, body);
 
     if (wall == null) {
