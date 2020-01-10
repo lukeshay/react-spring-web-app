@@ -1,9 +1,10 @@
 import * as GymsApi from "../../api/gymsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, Route, Wall } from "../../types";
+import { Gym, Route, Wall, User } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
+import * as Cookies from "../../utils/cookiesUtils";
 
 export const loadGyms = async (dispatch: any) => {
   const response = await GymsApi.getGyms();
@@ -75,4 +76,21 @@ export const loadRoutes = async (dispatch: any, gym: Gym, wallId: string) => {
   }
 
   return response;
+};
+
+export const updateGym = async (
+  dispatch: any,
+  updatedGym: Gym,
+  oldGym: Gym
+) => {
+  const response = GymsApi.updateGym(updatedGym);
+
+  if (response instanceof Response && response.ok) {
+    const body: Gym = await response.json();
+
+    dispatch({
+      actionType: Types.UPDATE_GYM,
+      gym: { ...body, walls: oldGym.walls }
+    } as IGymsContextAction);
+  }
 };
