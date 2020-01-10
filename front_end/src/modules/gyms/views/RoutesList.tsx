@@ -1,4 +1,4 @@
-import { TableCell, TableRow, TableHead } from "@material-ui/core";
+import { TableCell, TableHead, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { Route } from "../../../types";
 import Table from "../../common/table/Table";
