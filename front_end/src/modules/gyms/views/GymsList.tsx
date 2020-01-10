@@ -48,11 +48,11 @@ const GymsPage: React.FC = () => {
   return (
     <Table
       head={
-        <React.Fragment>
-          <TableCell>Gym</TableCell>
-          <TableCell>Location</TableCell>
-          <TableCell>Website</TableCell>
-        </React.Fragment>
+        <TableRow>
+          <TableCell key="gym">Gym</TableCell>
+          <TableCell key="location">Location</TableCell>
+          <TableCell key="website">Website</TableCell>
+        </TableRow>
       }
       body={state.gyms.map((gym) => (
         <GymRow key={gym.id} gym={gym} />
@@ -61,4 +61,4 @@ const GymsPage: React.FC = () => {
   );
 };
 
-export default React.memo(GymsPage);
+export default GymsPage;
