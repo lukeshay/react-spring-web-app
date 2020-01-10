@@ -66,9 +66,18 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
     if (!tempGym) {
       history.push(Routes.GYMS);
     } else if (!tempGym.walls) {
-      loadFullGym().then(() => setGym(tempGym));
+      loadFullGym();
+    } else {
+      setGym(tempGym);
     }
   }, []);
+
+  useEffect(() => {
+    const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
+    if (tempGym && tempGym !== gym) {
+      setGym(tempGym);
+    }
+  }, [state]);
 
   const loadFullGym = async () => {
     const response = await GymsActions.loadGymV2(dispatch, gymId);
@@ -171,4 +180,4 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   );
 };
 
-export default React.memo(GymInformation);
+export default GymInformation;
