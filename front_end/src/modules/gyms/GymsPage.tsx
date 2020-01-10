@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import GymInformation from "./views/GymInformation copy";
+import GymInformation from "./views/GymInformation";
 import GymsList from "./views/GymsList";
 
 const GymsPage: React.FC = () => {
