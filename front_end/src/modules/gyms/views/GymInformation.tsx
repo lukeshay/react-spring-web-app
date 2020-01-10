@@ -58,27 +58,32 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
 
   useEffect(() => {
     if (state.gyms.length === 0) {
-      loadGyms();
+      history.push(Routes.GYMS);
     }
 
     const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
 
     if (!tempGym) {
       history.push(Routes.GYMS);
-    } else if (tempGym && !tempGym.walls) {
-      GymsActions.loadWalls(dispatch, tempGym);
-    }
-
-    if (tempGym) {
+    } else if (!tempGym.walls) {
+      loadFullGym();
+    } else {
       setGym(tempGym);
     }
   }, []);
 
-  const loadGyms = async () => {
-    const response = await GymsActions.loadGyms(dispatch);
+  useEffect(() => {
+    const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
+    if (tempGym && tempGym !== gym) {
+      setGym(tempGym);
+    }
+  }, [state]);
+
+  const loadFullGym = async () => {
+    const response = await GymsActions.loadGymV2(dispatch, gymId);
 
     if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting gyms.");
+      toast.error("Error getting gym.");
     }
   };
 
@@ -92,14 +97,7 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
       : null;
 
     if (wall && (!wall.routes || wall.routes.length === 0 || !wall.routes[0])) {
-      const response = await GymsActions.loadRoutes(dispatch, gym, wallId);
-
-      if (!response || !(response instanceof Response) || !response.ok) {
-        toast.error("Error getting routes.");
-      } else {
-        setWalls(false);
-        setRoutes(wall.routes);
-      }
+      GymsActions.loadGymV2(dispatch, gymId);
     } else if (wall) {
       setWalls(false);
       setRoutes(wall.routes);
@@ -174,7 +172,7 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
                 Back
               </Button>
             </div>
-            <RoutesList routes={routes} />{" "}
+            <RoutesList routes={routes} />
           </div>
         )}
       </div>
@@ -182,4 +180,4 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
   );
 };
 
-export default React.memo(GymInformation);
+export default GymInformation;

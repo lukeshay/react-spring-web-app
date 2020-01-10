@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@material-ui/core";
+import { TableCell, TableHead, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { Route } from "../../../types";
 import Table from "../../common/table/Table";
@@ -25,14 +25,14 @@ export interface IRoutesListProps {
 const RoutesList: React.FunctionComponent<IRoutesListProps> = ({ routes }) => (
   <Table
     head={
-      <React.Fragment>
-        <TableCell>Name</TableCell>
-        <TableCell>Types</TableCell>
-        <TableCell>Setter</TableCell>
-        <TableCell>Color</TableCell>
-        <TableCell>Grade</TableCell>
-        <TableCell>Rating</TableCell>
-      </React.Fragment>
+      <TableRow>
+        <TableCell key="name">Name</TableCell>
+        <TableCell key="types">Types</TableCell>
+        <TableCell key="setter">Setter</TableCell>
+        <TableCell key="color">Color</TableCell>
+        <TableCell key="grade">Grade</TableCell>
+        <TableCell key="rating">Rating</TableCell>
+      </TableRow>
     }
     body={
       routes &&

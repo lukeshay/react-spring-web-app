@@ -26,11 +26,11 @@ const WallList: React.FC<IWallListProps> = ({ walls, onRowClick }) => {
   return (
     <Table
       head={
-        <React.Fragment>
-          <TableCell>Wall</TableCell>
-          <TableCell>Routes</TableCell>
-          <TableCell>Type</TableCell>
-        </React.Fragment>
+        <TableRow>
+          <TableCell key="wall">Wall</TableCell>
+          <TableCell key="routes">Routes</TableCell>
+          <TableCell key="type">Type</TableCell>
+        </TableRow>
       }
       body={
         walls &&

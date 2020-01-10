@@ -20,6 +20,21 @@ export const loadGyms = async (dispatch: any) => {
   return response;
 };
 
+export const loadGymV2 = async (dispatch: any, gymId: string) => {
+  const response = await GymsApi.getGymV2(gymId);
+
+  if (response instanceof Response && response.ok) {
+    const body = await response.json();
+
+    dispatch({
+      actionType: Types.UPDATE_GYM,
+      gym: body
+    } as IGymsContextAction);
+  }
+
+  return response;
+};
+
 export const loadWalls = async (dispatch: any, gym: Gym) => {
   const response = await WallsApi.getWalls(gym.id);
 
