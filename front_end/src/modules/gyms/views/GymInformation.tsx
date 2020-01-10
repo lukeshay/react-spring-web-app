@@ -1,18 +1,29 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import {
+  Button,
+  createStyles,
+  makeStyles,
+  TableCell,
+  TableRow,
+  Theme
+} from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext } from "../../../context/gyms/gymsStore";
+import * as React from "react";
+import { Link } from "react-router-dom";
 import { Routes } from "../../../routes";
-import { Gym, Route, Wall } from "../../../types";
+import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
-import RoutesList from "./RoutesList";
-import WallList from "./WallList";
+
+interface IGymPageRowProps {
+  label: React.ReactNode;
+  text: React.ReactNode;
+}
+
+const GymPageRow: React.FC<IGymPageRowProps> = ({ label, text }) => (
+  <TableRow>
+    <TableCell>{label}</TableCell>
+    <TableCell>{text}</TableCell>
+  </TableRow>
+);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,89 +33,18 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonWrapper: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1)
-    },
-    wallList: {
-      marginTop: theme.spacing(2)
     }
   })
 );
 
-interface IGymInformationRowProps {
-  label: React.ReactNode;
-  text: React.ReactNode;
-}
-
-const GymInformationRow: React.FC<IGymInformationRowProps> = ({
-  label,
-  text
-}) => (
-  <TableRow>
-    <TableCell>{label}</TableCell>
-    <TableCell>{text}</TableCell>
-  </TableRow>
-);
-
 export interface IGymInformationProps {
-  gymId: string;
+  gym: Gym;
 }
 
-const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
-  const { state, dispatch } = useContext(GymsContext);
-  const [gym, setGym] = useState<Gym>({} as Gym);
-  const [walls, setWalls] = useState<boolean>(true);
-  const [routes, setRoutes] = useState<Route[]>([]);
+const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
+  gym
+}) => {
   const classes = useStyles();
-  const history = useHistory();
-
-  useEffect(() => {
-    if (state.gyms.length === 0) {
-      history.push(Routes.GYMS);
-    }
-
-    const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
-
-    if (!tempGym) {
-      history.push(Routes.GYMS);
-    } else if (!tempGym.walls) {
-      loadFullGym();
-    } else {
-      setGym(tempGym);
-    }
-  }, []);
-
-  useEffect(() => {
-    const tempGym = state.gyms.filter((element) => element.id === gymId).pop();
-    if (tempGym && tempGym !== gym) {
-      setGym(tempGym);
-    }
-  }, [state]);
-
-  const loadFullGym = async () => {
-    const response = await GymsActions.loadGymV2(dispatch, gymId);
-
-    if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting gym.");
-    }
-  };
-
-  if (!gym) {
-    return <h3>Cannot find the gym you are looking for.</h3>;
-  }
-
-  const onWallRowClick = async (wallId: string) => {
-    const wall = gym.walls
-      ? gym.walls.find((element: Wall) => element.id === wallId)
-      : null;
-
-    if (wall && (!wall.routes || wall.routes.length === 0 || !wall.routes[0])) {
-      GymsActions.loadGymV2(dispatch, gymId);
-    } else if (wall) {
-      setWalls(false);
-      setRoutes(wall.routes);
-    } else {
-      toast.error("Could not find wall.");
-    }
-  };
 
   return (
     <React.Fragment>
@@ -123,13 +63,9 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
       </div>
       <Table
         body={[
-          <GymInformationRow key="name" label="Name" text={gym.name} />,
-          <GymInformationRow
-            key="website"
-            label="Website"
-            text={gym.website}
-          />,
-          <GymInformationRow
+          <GymPageRow key="name" label="Name" text={gym.name} />,
+          <GymPageRow key="website" label="Website" text={gym.website} />,
+          <GymPageRow
             key="address"
             label="Address"
             text={
@@ -142,40 +78,14 @@ const GymInformation: React.FC<IGymInformationProps> = ({ gymId }) => {
               gym.zipCode
             }
           />,
-          <GymInformationRow key="email" label="Email" text={gym.email} />,
-          <GymInformationRow
+          <GymPageRow key="email" label="Email" text={gym.email} />,
+          <GymPageRow
             key="phoneNumber"
             label="Phone Number"
             text={gym.phoneNumber}
           />
         ]}
       />
-      <div
-        className={classes.wallList}
-        style={{
-          display: !gym.walls || gym.walls.length === 0 ? "none" : "block"
-        }}
-      >
-        {walls ? (
-          <WallList walls={gym.walls} onRowClick={onWallRowClick} />
-        ) : (
-          <div>
-            <div className={classes.buttonWrapper}>
-              <Button
-                variant="text"
-                fullWidth={false}
-                size="medium"
-                type="button"
-                onClick={() => setWalls(true)}
-              >
-                <ArrowBackIcon className={classes.backIcon} />
-                Back
-              </Button>
-            </div>
-            <RoutesList routes={routes} />
-          </div>
-        )}
-      </div>
     </React.Fragment>
   );
 };
