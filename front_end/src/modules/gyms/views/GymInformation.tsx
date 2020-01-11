@@ -7,9 +7,11 @@ import {
   Theme
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Routes } from "../../../routes";
+import { UserContext } from "../../../context/user/userStore";
+import { Routes, AuthRoutes } from "../../../routes";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
 
@@ -27,12 +29,16 @@ const GymPageRow: React.FC<IGymPageRowProps> = ({ label, text }) => (
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    backIcon: {
-      paddingRight: theme.spacing(1)
-    },
     buttonWrapper: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1)
+    },
+    editButton: {
+      position: "absolute",
+      right: "10px"
+    },
+    icons: {
+      paddingRight: theme.spacing(1)
     }
   })
 );
@@ -44,7 +50,23 @@ export interface IGymInformationProps {
 const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
   gym
 }) => {
+  const userContext = React.useContext(UserContext);
+  const userState = userContext.state;
   const classes = useStyles();
+  const [canEdit, setCanEdit] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const { user } = userState;
+    const { authorizedEditors } = gym;
+
+    if (
+      user &&
+      authorizedEditors &&
+      authorizedEditors.find((editorId: string) => editorId === user.userId)
+    ) {
+      setCanEdit(true);
+    }
+  }, [gym]);
 
   return (
     <React.Fragment>
@@ -57,9 +79,23 @@ const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
           size="medium"
           type="button"
         >
-          <ArrowBackIcon className={classes.backIcon} />
+          <ArrowBackIcon className={classes.icons} />
           Back
         </Button>
+        {canEdit && (
+          <Button
+            component={Link}
+            to={AuthRoutes.EDIT_GYM + "/" + gym.id}
+            className={classes.editButton}
+            variant="text"
+            fullWidth={false}
+            size="medium"
+            type="button"
+          >
+            <EditIcon className={classes.icons} />
+            Edit
+          </Button>
+        )}
       </div>
       <Table
         body={[

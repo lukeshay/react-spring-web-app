@@ -1,81 +1,93 @@
 import * as GymsApi from "../../api/gymsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, Route, Wall, User } from "../../types";
+import { Gym, Route, User, Wall } from "../../types";
+import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
-import * as Cookies from "../../utils/cookiesUtils";
 
-export const loadGyms = async (dispatch: any) => {
-  const response = await GymsApi.getGyms();
-
-  if (response instanceof Response && response.ok) {
-    const body = await response.json();
-
-    dispatch({
-      actionType: Types.LOAD_GYMS,
-      gyms: body
-    } as IGymsContextAction);
-  }
-
-  return response;
-};
-
-export const loadGymV2 = async (dispatch: any, gymId: string) => {
-  const response = await GymsApi.getGymV2(gymId);
-
-  if (response instanceof Response && response.ok) {
-    const body = await response.json();
-
-    dispatch({
-      actionType: Types.UPDATE_GYM,
-      gym: body
-    } as IGymsContextAction);
-  }
-
-  return response;
-};
-
-export const loadWalls = async (dispatch: any, gym: Gym) => {
-  const response = await WallsApi.getWalls(gym.id);
-
-  if (response instanceof Response && response.ok) {
-    const body: Wall[] = await response.json();
-
-    gym.walls = body;
-
-    dispatch({
-      actionType: Types.UPDATE_GYM,
-      gym
-    } as IGymsContextAction);
-  }
-
-  return response;
-};
-
-export const loadRoutes = async (dispatch: any, gym: Gym, wallId: string) => {
-  const response = await RoutesApi.getRoutesOfWall(wallId);
-
-  if (response instanceof Response && response.ok) {
-    const body: Route[] = await response.json();
-
-    if (gym.walls) {
-      gym.walls = gym.walls.map((wall: Wall) => {
-        if (wallId === wall.id) {
-          wall.routes = body;
-        }
-
-        return wall;
+export const loadGyms = (dispatch: any) => {
+  const responsePromise = GymsApi.getGyms().then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Gym[]) => {
+        dispatch({
+          actionType: Types.LOAD_GYMS,
+          gyms: body
+        } as IGymsContextAction);
       });
 
-      dispatch({
-        actionType: Types.UPDATE_GYM,
-        gym
-      } as IGymsContextAction);
+      return response;
     }
-  }
+  });
 
-  return response;
+  return responsePromise;
+};
+
+export const loadGymV2 = (dispatch: any, gymId: string) => {
+  const responsePromise = GymsApi.getGymV2(gymId).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Gym) => {
+        dispatch({
+          actionType: Types.UPDATE_GYM,
+          gym: body
+        } as IGymsContextAction);
+      });
+    }
+
+    return response;
+  });
+
+  return responsePromise;
+};
+
+export const loadWalls = (dispatch: any, gym: Gym) => {
+  const responsePromise = WallsApi.getWalls(gym.id).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        response.json().then((body: Wall[]) => {
+          gym.walls = body;
+
+          dispatch({
+            actionType: Types.UPDATE_GYM,
+            gym
+          } as IGymsContextAction);
+        });
+      }
+
+      return response;
+    }
+  );
+
+  return responsePromise;
+};
+
+export const loadRoutes = (dispatch: any, gym: Gym, wallId: string) => {
+  const responsePromise = RoutesApi.getRoutesOfWall(wallId).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        response.json().then((body: Route[]) => {
+          if (gym.walls) {
+            gym.walls = gym.walls.map((wall: Wall) => {
+              if (wallId === wall.id) {
+                wall.routes = body;
+              }
+
+              return wall;
+            });
+
+            dispatch({
+              actionType: Types.UPDATE_GYM,
+              gym
+            } as IGymsContextAction);
+          }
+        });
+      }
+
+      return response;
+    }
+  );
+
+  return responsePromise;
 };
 
 export const updateGym = async (
@@ -83,14 +95,20 @@ export const updateGym = async (
   updatedGym: Gym,
   oldGym: Gym
 ) => {
-  const response = GymsApi.updateGym(updatedGym);
+  const responsePromise = GymsApi.updateGym(updatedGym).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        response.json().then((body: Gym) => {
+          dispatch({
+            actionType: Types.UPDATE_GYM,
+            gym: { ...body, walls: oldGym.walls }
+          } as IGymsContextAction);
+        });
+      }
 
-  if (response instanceof Response && response.ok) {
-    const body: Gym = await response.json();
+      return response;
+    }
+  );
 
-    dispatch({
-      actionType: Types.UPDATE_GYM,
-      gym: { ...body, walls: oldGym.walls }
-    } as IGymsContextAction);
-  }
+  return responsePromise;
 };

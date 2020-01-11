@@ -44,7 +44,6 @@ module.exports = merge(commonConfig, {
     new DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production"),
-        LOAD_PASSWORD: JSON.stringify("choochie"),
         BASE_URL: JSON.stringify("https://restapi.lukeshay.com/")
       }
     })

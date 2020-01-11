@@ -1,18 +1,21 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import GymEditPage from "./views/GymEditPage";
 import GymPage from "./views/GymPage";
 import GymsList from "./views/GymsList";
 
 const GymsPage: React.FC = () => {
   const history = useHistory();
 
-  const last = history.location.pathname
-    .split("/")
-    .slice(-1)
-    .pop();
+  const urlSplit = history.location.pathname.split("/");
 
-  if (!last || last.trim() === "gyms" || last.trim().length === 0) {
+  const last = urlSplit.pop();
+  const view = urlSplit.pop();
+
+  if (!last || last === "gyms" || last.length === 0) {
     return <GymsList />;
+  } else if (view === "edit") {
+    return <GymEditPage gymId={last} />;
   } else {
     return <GymPage gymId={last} />;
   }

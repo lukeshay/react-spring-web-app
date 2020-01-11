@@ -6,6 +6,7 @@ import Types from "./userActionTypes";
 export async function signOut(dispatch: any): Promise<void> {
   Cookies.setJwtToken("");
   Cookies.setUsername("");
+  Cookies.setUser({} as User);
 
   dispatch({
     actionType: Types.SIGN_OUT

@@ -46,10 +46,6 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (gymsState.gyms.length === 0) {
-      history.push(Routes.GYMS);
-    }
-
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -58,8 +54,6 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
       history.push(Routes.GYMS);
     } else if (!tempGym.walls) {
       loadFullGym();
-    } else {
-      setGym(tempGym);
     }
   }, []);
 
@@ -72,12 +66,12 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
     }
   }, [gymsState]);
 
-  const loadFullGym = async () => {
-    const response = await GymsActions.loadGymV2(gymsDispatch, gymId);
-
-    if (!response || !(response instanceof Response) || !response.ok) {
-      toast.error("Error getting gym.");
-    }
+  const loadFullGym = () => {
+    GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
+      if (!response || !(response instanceof Response) || !response.ok) {
+        toast.error("Error getting gym.");
+      }
+    });
   };
 
   if (!gym) {

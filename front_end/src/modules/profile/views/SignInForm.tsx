@@ -52,6 +52,7 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
         handleChange={handleChange}
         helpText={emailMessage}
         type="text"
+        autoComplete="email"
       />
       <Input
         placeholder="Password"
@@ -60,6 +61,7 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
         handleChange={handleChange}
         helpText={passwordMessage}
         type="password"
+        autoComplete="current-password"
       />
     </React.Fragment>
   );

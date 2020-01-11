@@ -9,6 +9,8 @@ export interface IPropsInput {
   value: string;
   placeholder?: string;
   fullWidth?: boolean;
+  autoComplete?: string;
+  autoCapitalize?: "true" | undefined;
   handleChange(event: any): void;
 }
 
@@ -20,6 +22,8 @@ const Input: React.FC<IPropsInput> = ({
   value,
   placeholder,
   handleChange,
+  autoComplete,
+  autoCapitalize,
   fullWidth
 }) => (
   <React.Fragment>
@@ -33,6 +37,8 @@ const Input: React.FC<IPropsInput> = ({
       onChange={handleChange}
       value={value}
       fullWidth={fullWidth}
+      autoComplete={autoComplete}
+      autoCapitalize={autoCapitalize}
     />
     <small id={id + "Help"} className="form-text text-danger">
       {helpText}
