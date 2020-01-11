@@ -15,9 +15,9 @@ const GymsPage: React.FC = () => {
   if (!last || last === "gyms" || last.length === 0) {
     return <GymsList />;
   } else if (view === "edit") {
-    return <GymEditPage gymId={last} />;
+    return <GymEditPage />;
   } else {
-    return <GymPage gymId={last} />;
+    return <GymPage />;
   }
 };
 

@@ -28,11 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface IGymPageProps {
-  gymId: string;
-}
-
-const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
+const GymPage: React.FC = () => {
   const gymsContext = useContext(GymsContext);
   const gymsState = gymsContext.state;
   const gymsDispatch = gymsContext.dispatch;
@@ -44,6 +40,12 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
   const [routes, setRoutes] = useState<Route[]>([]);
   const classes = useStyles();
   const history = useHistory();
+  const [gymId] = useState<string | undefined>(
+    history.location.pathname
+      .split("/")
+      .splice(-1)
+      .pop()
+  );
 
   useEffect(() => {
     const tempGym = gymsState.gyms
@@ -67,11 +69,13 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
   }, [gymsState]);
 
   const loadFullGym = () => {
-    GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
-      if (!response || !(response instanceof Response) || !response.ok) {
-        toast.error("Error getting gym.");
-      }
-    });
+    if (gymId) {
+      GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
+        if (!response || !(response instanceof Response) || !response.ok) {
+          toast.error("Error getting gym.");
+        }
+      });
+    }
   };
 
   if (!gym) {
@@ -83,7 +87,11 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
       ? gym.walls.find((element: Wall) => element.id === wallId)
       : null;
 
-    if (wall && (!wall.routes || wall.routes.length === 0 || !wall.routes[0])) {
+    if (
+      wall &&
+      (!wall.routes || wall.routes.length === 0 || !wall.routes[0]) &&
+      gymId
+    ) {
       GymsActions.loadGymV2(gymsDispatch, gymId);
     } else if (wall) {
       setWalls(false);
@@ -95,31 +103,32 @@ const GymPage: React.FC<IGymPageProps> = ({ gymId }) => {
 
   return (
     <React.Fragment>
-      <GymInformation gym={gym} />
+      <GymInformation gym={gym} user={userState.user} />
       <div
         className={classes.wallList}
         style={{
           display: !gym.walls || gym.walls.length === 0 ? "none" : "block"
         }}
       >
+        <div
+          className={classes.buttonWrapper}
+          style={{ visibility: walls ? "hidden" : "visible" }}
+        >
+          <Button
+            variant="text"
+            fullWidth={false}
+            size="medium"
+            type="button"
+            onClick={() => setWalls(true)}
+          >
+            <ArrowBackIcon className={classes.backIcon} />
+            Back
+          </Button>
+        </div>
         {walls ? (
           <WallList walls={gym.walls} onRowClick={onWallRowClick} />
         ) : (
-          <div>
-            <div className={classes.buttonWrapper}>
-              <Button
-                variant="text"
-                fullWidth={false}
-                size="medium"
-                type="button"
-                onClick={() => setWalls(true)}
-              >
-                <ArrowBackIcon className={classes.backIcon} />
-                Back
-              </Button>
-            </div>
-            <RoutesList routes={routes} />
-          </div>
+          <RoutesList routes={routes} />
         )}
       </div>
     </React.Fragment>

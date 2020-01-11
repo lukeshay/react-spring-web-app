@@ -1,11 +1,16 @@
 import React from "react";
+import * as ReactRouter from "react-router";
 import { Gym } from "../../../types";
 
-export interface IGymEditPageProps {
-  gymId: string;
-}
+const GymEditPage: React.FunctionComponent = () => {
+  const history = ReactRouter.useHistory();
+  const [gymId] = React.useState<string | undefined>(
+    history.location.pathname
+      .split("/")
+      .splice(-1)
+      .pop()
+  );
 
-const GymEditPage: React.FunctionComponent<IGymEditPageProps> = ({ gymId }) => {
   return <div>Editing {gymId}</div>;
 };
 

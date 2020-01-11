@@ -1,6 +1,6 @@
 import React from "react";
-import GymsPage from "./GymsPage";
+import GymsRouter from "./GymsRouter";
 
-const GymsIndex: React.FC = () => <GymsPage />;
+const GymsIndex: React.FC = () => <GymsRouter />;
 
 export default GymsIndex;

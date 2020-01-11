@@ -10,9 +10,8 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../../context/user/userStore";
-import { Routes, AuthRoutes } from "../../../routes";
-import { Gym } from "../../../types";
+import { AuthRoutes, Routes } from "../../../routes";
+import { Gym, User } from "../../../types";
 import Table from "../../common/table/Table";
 
 interface IGymPageRowProps {
@@ -45,18 +44,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface IGymInformationProps {
   gym: Gym;
+  user: User | null;
 }
 
 const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
-  gym
+  gym,
+  user
 }) => {
-  const userContext = React.useContext(UserContext);
-  const userState = userContext.state;
   const classes = useStyles();
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const { user } = userState;
     const { authorizedEditors } = gym;
 
     if (
