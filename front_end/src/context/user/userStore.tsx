@@ -50,3 +50,5 @@ export const UserStore: React.FC = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export const useUserContext = () => React.useContext(UserContext);

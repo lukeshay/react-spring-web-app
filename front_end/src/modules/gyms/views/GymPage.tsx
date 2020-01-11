@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const GymPage: React.FC = () => {
-  const gymsContext = useContext(GymsContext);
-  const gymsState = gymsContext.state;
-  const gymsDispatch = gymsContext.dispatch;
-  const userContext = useContext(UserContext);
-  const userState = userContext.state;
-  const userDispatch = userContext.dispatch;
+  const { state: gymsState, dispatch: gymsDispatch } = React.useContext(
+    GymsContext
+  );
+  const { state: userState, dispatch: userDispatch } = React.useContext(
+    UserContext
+  );
+
   const [gym, setGym] = useState<Gym>({} as Gym);
   const [walls, setWalls] = useState<boolean>(true);
   const [routes, setRoutes] = useState<Route[]>([]);
