@@ -13,4 +13,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default React.memo(HomePage);
+export default HomePage;

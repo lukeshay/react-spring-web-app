@@ -30,4 +30,4 @@ const ProfilePage: React.FC = () => {
   }
 };
 
-export default React.memo(ProfilePage);
+export default ProfilePage;

@@ -63,8 +63,8 @@ const GymEditPage: React.FunctionComponent = () => {
   React.useEffect(() => {
     if (RegexUtils.containsSpecialCharacter(address)) {
       setAddressMessage("Addresses cannot contain special characters.");
-    } else if (RegexUtils.containsNumber(address)) {
-      setStateMessage("Cite cannot contain numbers.");
+    } else {
+      setAddressMessage("");
     }
   }, [address]);
 
@@ -72,7 +72,9 @@ const GymEditPage: React.FunctionComponent = () => {
     if (RegexUtils.containsSpecialCharacter(city)) {
       setCityMessage("Cities cannot contain special characters.");
     } else if (RegexUtils.containsNumber(city)) {
-      setStateMessage("Cite cannot contain numbers.");
+      setCityMessage("Cite cannot contain numbers.");
+    } else {
+      setCityMessage("");
     }
   }, [city]);
 
@@ -81,14 +83,36 @@ const GymEditPage: React.FunctionComponent = () => {
       setStateMessage("States cannot contain special characters.");
     } else if (RegexUtils.containsNumber(state)) {
       setStateMessage("States cannot contain numbers.");
+    } else {
+      setStateMessage("");
     }
   }, [state]);
 
   React.useEffect(() => {
     if (!RegexUtils.containsOnlyNumbers(zipCode)) {
       setZipCodeMessage("Zip codes can only have numbers.");
+    } else {
+      setZipCodeMessage("");
     }
   }, [zipCode]);
+
+  React.useEffect(() => {
+    if (!RegexUtils.validEmail(email)) {
+      setEmailMessage("Invalid email format.");
+    } else {
+      setEmailMessage("");
+    }
+  }, [email]);
+
+  React.useEffect(() => {
+    if (!RegexUtils.containsOnlyNumbers(phoneNumber)) {
+      setPhoneNumberMessage("Phone numbers can only contain numbers");
+    } else if (phoneNumber.length < 10 || phoneNumber.length > 10) {
+      setPhoneNumberMessage("Phone number must be 10 digits long.");
+    } else {
+      setPhoneNumberMessage("");
+    }
+  }, [phoneNumber]);
 
   const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
@@ -139,7 +163,9 @@ const GymEditPage: React.FunctionComponent = () => {
     console.log(phoneNumber);
   };
 
-  const handleCancel = async (event: any): Promise<void> => {};
+  const handleCancel = async (): Promise<void> => {
+    history.push(Routes.GYMS + "/" + gymId);
+  };
 
   const FormInputs: JSX.Element = (
     <React.Fragment>

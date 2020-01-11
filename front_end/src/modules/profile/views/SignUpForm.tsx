@@ -217,4 +217,4 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   );
 };
 
-export default React.memo(SignUpForm);
+export default SignUpForm;

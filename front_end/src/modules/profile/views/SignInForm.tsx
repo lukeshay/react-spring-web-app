@@ -93,4 +93,4 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   );
 };
 
-export default React.memo(LogInForm);
+export default LogInForm;

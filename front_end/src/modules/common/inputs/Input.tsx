@@ -1,6 +1,6 @@
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,4 +68,4 @@ Input.defaultProps = {
   placeholder: ""
 };
 
-export default React.memo(Input);
+export default Input;

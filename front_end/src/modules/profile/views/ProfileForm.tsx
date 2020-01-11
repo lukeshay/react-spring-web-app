@@ -114,4 +114,4 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
   );
 };
 
-export default React.memo(ProfileForm);
+export default ProfileForm;

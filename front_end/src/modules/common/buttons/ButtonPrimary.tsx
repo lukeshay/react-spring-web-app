@@ -38,4 +38,4 @@ ButtonPrimary.defaultProps = {
   variant: "contained"
 };
 
-export default React.memo(ButtonPrimary);
+export default ButtonPrimary;

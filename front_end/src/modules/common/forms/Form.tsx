@@ -73,4 +73,4 @@ const Form: React.FC<IFormProps> = ({
   );
 };
 
-export default React.memo(Form);
+export default Form;
