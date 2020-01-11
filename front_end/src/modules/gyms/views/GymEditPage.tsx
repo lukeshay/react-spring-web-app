@@ -4,9 +4,10 @@ import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
-import Input from "../../common/inputs/Input";
-import Form from "../../common/forms/Form";
+import * as RegexUtils from "../../../utils/regexUtils";
 import Button from "../../common/buttons/ButtonSecondary";
+import Form from "../../common/forms/Form";
+import Input from "../../common/inputs/Input";
 
 const GymEditPage: React.FunctionComponent = () => {
   const history = ReactRouter.useHistory();
@@ -19,12 +20,21 @@ const GymEditPage: React.FunctionComponent = () => {
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [name, setName] = React.useState<string>("");
   const [website, setWebsite] = React.useState<string>("");
+  const [websiteMessage, setWebsiteMessage] = React.useState<string>("");
   const [address, setAddress] = React.useState<string>("");
+  const [addressMessage, setAddressMessage] = React.useState<string>("");
   const [city, setCity] = React.useState<string>("");
+  const [cityMessage, setCityMessage] = React.useState<string>("");
   const [state, setState] = React.useState<string>("");
+  const [stateMessage, setStateMessage] = React.useState<string>("");
   const [zipCode, setZipCode] = React.useState<string>("");
+  const [zipCodeMessage, setZipCodeMessage] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
+  const [emailMessage, setEmailMessage] = React.useState<string>("");
   const [phoneNumber, setPhoneNumber] = React.useState<string>("");
+  const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
+    ""
+  );
 
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState, dispatch: userDispatch } = useUserContext();
@@ -50,9 +60,84 @@ const GymEditPage: React.FunctionComponent = () => {
     }
   });
 
-  const handleChange = async (event: any): Promise<void> => {};
+  React.useEffect(() => {
+    if (RegexUtils.containsSpecialCharacter(address)) {
+      setAddressMessage("Addresses cannot contain special characters.");
+    } else if (RegexUtils.containsNumber(address)) {
+      setStateMessage("Cite cannot contain numbers.");
+    }
+  }, [address]);
 
-  const handleSubmit = async (event: any): Promise<void> => {};
+  React.useEffect(() => {
+    if (RegexUtils.containsSpecialCharacter(city)) {
+      setCityMessage("Cities cannot contain special characters.");
+    } else if (RegexUtils.containsNumber(city)) {
+      setStateMessage("Cite cannot contain numbers.");
+    }
+  }, [city]);
+
+  React.useEffect(() => {
+    if (RegexUtils.containsSpecialCharacter(state)) {
+      setStateMessage("States cannot contain special characters.");
+    } else if (RegexUtils.containsNumber(state)) {
+      setStateMessage("States cannot contain numbers.");
+    }
+  }, [state]);
+
+  React.useEffect(() => {
+    if (!RegexUtils.containsOnlyNumbers(zipCode)) {
+      setZipCodeMessage("Zip codes can only have numbers.");
+    }
+  }, [zipCode]);
+
+  const handleChange = async (event: any): Promise<void> => {
+    event.preventDefault();
+    const { id, value } = event.target;
+
+    switch (id) {
+      case "name":
+        setName(value);
+        return;
+      case "website":
+        setWebsite(value);
+        return;
+      case "address":
+        setAddress(value);
+        return;
+      case "city":
+        setCity(value);
+        return;
+      case "state":
+        setState(value);
+        return;
+      case "zipCode":
+        setZipCode(value);
+        return;
+      case "email":
+        setEmail(value);
+        return;
+      case "phoneNumber":
+        setPhoneNumber(value);
+        return;
+
+      default:
+        return;
+    }
+  };
+
+  const handleSubmit = async (event: any): Promise<void> => {
+    event.preventDefault();
+
+    // tslint:disable: no-console
+    console.log(name);
+    console.log(email);
+    console.log(website);
+    console.log(address);
+    console.log(city);
+    console.log(state);
+    console.log(zipCode);
+    console.log(phoneNumber);
+  };
 
   const handleCancel = async (event: any): Promise<void> => {};
 
@@ -74,6 +159,7 @@ const GymEditPage: React.FunctionComponent = () => {
         handleChange={handleChange}
         type="text"
         autoComplete="website"
+        helpText={websiteMessage}
       />
       <Input
         placeholder="Address"
@@ -82,6 +168,7 @@ const GymEditPage: React.FunctionComponent = () => {
         handleChange={handleChange}
         type="text"
         autoComplete="street-address"
+        helpText={addressMessage}
       />
       <Input
         placeholder="City"
@@ -91,6 +178,7 @@ const GymEditPage: React.FunctionComponent = () => {
         type="text"
         autoComplete="city"
         autoCapitalize="true"
+        helpText={cityMessage}
       />
       <Input
         placeholder="State"
@@ -100,6 +188,7 @@ const GymEditPage: React.FunctionComponent = () => {
         type="text"
         autoComplete="state"
         autoCapitalize="true"
+        helpText={stateMessage}
       />
       <Input
         placeholder="Zip Code"
@@ -107,7 +196,8 @@ const GymEditPage: React.FunctionComponent = () => {
         value={zipCode}
         handleChange={handleChange}
         type="text"
-        autoComplete="zipcode"
+        autoComplete="zip-code"
+        helpText={zipCodeMessage}
       />
       <Input
         placeholder="Email"
@@ -116,6 +206,7 @@ const GymEditPage: React.FunctionComponent = () => {
         handleChange={handleChange}
         type="text"
         autoComplete="email"
+        helpText={emailMessage}
       />
       <Input
         placeholder="Phone Number"
@@ -124,6 +215,7 @@ const GymEditPage: React.FunctionComponent = () => {
         handleChange={handleChange}
         type="text"
         autoComplete="phone-number"
+        helpText={phoneNumberMessage}
       />
     </React.Fragment>
   );
