@@ -1,5 +1,6 @@
 import React from "react";
 import * as ReactRouter from "react-router";
+import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
@@ -8,14 +9,12 @@ import * as RegexUtils from "../../../utils/regexUtils";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
-import { toast } from "react-toastify";
 
 export interface IGymEditPageProps {
   gym: Gym;
 }
 
 const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
-  console.log(gym);
   const history = ReactRouter.useHistory();
   const [gymId] = React.useState<string>(gym.id);
   const [name, setName] = React.useState<string>(gym.name);
