@@ -21,4 +21,4 @@ const SimpleTable: React.FC<ISimpleTableProps> = ({ head, body }) => {
   );
 };
 
-export default React.memo(SimpleTable);
+export default SimpleTable;

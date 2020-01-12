@@ -148,6 +148,8 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         value={firstName}
         handleChange={handleChange}
         type="text"
+        autoComplete="first-name"
+        autoCapitalize="true"
       />
       <Input
         placeholder="Last Name"
@@ -155,6 +157,8 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         value={lastName}
         handleChange={handleChange}
         type="text"
+        autoComplete="last-name"
+        autoCapitalize="true"
       />
       <Input
         placeholder="Email"
@@ -163,6 +167,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         handleChange={handleChange}
         helpText={emailMessage}
         type="text"
+        autoComplete="email"
       />
       <Input
         placeholder="Phone Number"
@@ -171,6 +176,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         handleChange={handleChange}
         helpText={phoneNumberMessage}
         type="text"
+        autoComplete="phone-number"
       />
       <Input
         placeholder="Password"
@@ -179,6 +185,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
         handleChange={handleChange}
         helpText={passwordMessage}
         type="password"
+        autoComplete="password"
       />
     </React.Fragment>
   );
@@ -210,4 +217,4 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   );
 };
 
-export default React.memo(SignUpForm);
+export default SignUpForm;

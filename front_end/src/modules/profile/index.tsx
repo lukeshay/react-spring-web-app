@@ -3,4 +3,4 @@ import ProfilePage from "./ProfilePage";
 
 const ProfilePageIndex: React.FC = () => <ProfilePage />;
 
-export default React.memo(ProfilePageIndex);
+export default ProfilePageIndex;

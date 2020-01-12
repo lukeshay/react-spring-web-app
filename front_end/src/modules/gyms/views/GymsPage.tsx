@@ -12,7 +12,7 @@ interface IGymRowProps {
   gym: Gym;
 }
 
-const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
+const GymRow: React.FC<IGymRowProps> = ({ gym }) => {
   const history = useHistory();
 
   return (
@@ -26,7 +26,7 @@ const GymRow: React.FC<IGymRowProps> = React.memo(({ gym }) => {
       <TableCell>{gym.website}</TableCell>
     </TableRow>
   );
-});
+};
 
 const GymsPage: React.FC = () => {
   const { state, dispatch } = useContext(GymsContext);

@@ -6,10 +6,12 @@ export interface IPropsInput {
   id?: string;
   name?: string;
   type: string;
-  value: string;
+  value?: string;
   placeholder?: string;
   fullWidth?: boolean;
-  handleChange(event: any): void;
+  autoComplete?: string;
+  autoCapitalize?: "true" | undefined;
+  handleChange?(event: any): void;
 }
 
 const Input: React.FC<IPropsInput> = ({
@@ -20,24 +22,25 @@ const Input: React.FC<IPropsInput> = ({
   value,
   placeholder,
   handleChange,
+  autoComplete,
+  autoCapitalize,
   fullWidth
 }) => (
-  <React.Fragment>
-    <TextField
-      id={id}
-      type={type}
-      label={placeholder}
-      name={name}
-      variant="outlined"
-      margin="normal"
-      onChange={handleChange}
-      value={value}
-      fullWidth={fullWidth}
-    />
-    <small id={id + "Help"} className="form-text text-danger">
-      {helpText}
-    </small>
-  </React.Fragment>
+  <TextField
+    id={id}
+    type={type}
+    label={placeholder}
+    name={name}
+    variant="outlined"
+    margin="normal"
+    onChange={handleChange}
+    value={(value || "").toString()}
+    fullWidth={fullWidth}
+    autoComplete={autoComplete}
+    autoCapitalize={autoCapitalize}
+    helperText={helpText}
+    error={helpText !== ""}
+  />
 );
 
 Input.defaultProps = {
@@ -48,4 +51,4 @@ Input.defaultProps = {
   placeholder: ""
 };
 
-export default React.memo(Input);
+export default Input;

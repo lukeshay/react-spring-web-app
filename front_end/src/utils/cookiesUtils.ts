@@ -1,7 +1,9 @@
 import Cookies from "universal-cookie";
+import { User } from "../types";
 import * as Time from "./timeUtils";
 
 const cookies = new Cookies();
+const USER = "user";
 const USER_ID = "userId";
 const USERNAME = "username";
 const JWT_TOKEN = "jwtToken";
@@ -39,4 +41,13 @@ export function setUserId(userId: string) {
 
 export function getUserId(): string {
   return cookies.get(USER_ID);
+}
+
+export function setUser(user: User) {
+  const d = Time.getOneDay();
+  cookies.set(USER, user, { path: "/", expires: d });
+}
+
+export function getUser(): User {
+  return cookies.get(USER);
 }

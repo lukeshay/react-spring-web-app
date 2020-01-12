@@ -10,14 +10,14 @@ export interface IPropsLogInForm {
   handleSignUpClick(event: any): void;
 }
 
-const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
+const SignInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   const { dispatch } = useContext(UserContext);
   const [email, setEmail] = useState<string>("");
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordMessage, setPasswordMessage] = useState<string>("");
 
-  async function handleChange(event: any): Promise<void> {
+  const handleChange = async (event: any) => {
     const { id, value } = event.target;
 
     if (id === "email") {
@@ -25,23 +25,21 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
     } else if (id === "password") {
       setPassword(value);
     }
-  }
+  };
 
-  async function handleSubmit(event: any): Promise<void> {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const response = await UserActions.signIn(dispatch, email, password);
-
-    if (response instanceof Response && response.status === 401) {
-      setPasswordMessage(
-        "User not found or incorrect password. Try a different username or password."
-      );
-    } else if (response instanceof Response && response.status === 200) {
-      setPasswordMessage("");
-    } else {
-      setPasswordMessage("There was an error. Please try again.");
-    }
-  }
+    UserActions.signIn(dispatch, email, password).then((response) => {
+      if (response instanceof Response && response.status === 401) {
+        setPasswordMessage(
+          "User not found or incorrect password. Try a different username or password."
+        );
+      } else if (!(response instanceof Response)) {
+        setPasswordMessage("There was an error. Please try again.");
+      }
+    });
+  };
 
   const formInputs: JSX.Element = (
     <React.Fragment>
@@ -52,6 +50,7 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
         handleChange={handleChange}
         helpText={emailMessage}
         type="text"
+        autoComplete="email"
       />
       <Input
         placeholder="Password"
@@ -60,6 +59,7 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
         handleChange={handleChange}
         helpText={passwordMessage}
         type="password"
+        autoComplete="current-password"
       />
     </React.Fragment>
   );
@@ -91,4 +91,4 @@ const LogInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   );
 };
 
-export default React.memo(LogInForm);
+export default SignInForm;

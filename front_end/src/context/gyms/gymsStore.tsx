@@ -56,3 +56,5 @@ export const GymsStore: React.FC = ({ children }) => {
     </GymsContext.Provider>
   );
 };
+
+export const useGymsContext = () => React.useContext(GymsContext);

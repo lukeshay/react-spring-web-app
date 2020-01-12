@@ -1,1 +1,3 @@
-export const AuthRoutes = {};
+export const AuthRoutes = {
+  EDIT_GYM: "/gyms/edit"
+};

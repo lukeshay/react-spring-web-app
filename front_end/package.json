@@ -1,6 +1,6 @@
 {
   "name": "front_end",
-  "version": "0.4.3",
+  "version": "1.1.1",
   "private": true,
   "homepage": "http://lukeshay.com",
   "main": "src/index.tsx",
@@ -14,7 +14,9 @@
     "deploy": "pm2 serve dist --name web-app -- 3000",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
-    "format": "prettier --write \"**/*.+(ts|tsx|json|css|md)\""
+    "format": "prettier --write \"**/*.+(ts|tsx|json|css|md)\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "validate": "yarn typecheck && yarn lint"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.2",

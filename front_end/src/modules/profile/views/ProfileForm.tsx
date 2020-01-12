@@ -60,6 +60,8 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         placeholder="First Name"
         type="text"
         handleChange={handleChange}
+        autoComplete="first-name"
+        autoCapitalize="true"
       />
       <Input
         value={lastName}
@@ -67,6 +69,8 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         placeholder="Last Name"
         type="text"
         handleChange={handleChange}
+        autoComplete="last-name"
+        autoCapitalize="true"
       />
       <Input
         value={email}
@@ -74,6 +78,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         placeholder="Email"
         type="text"
         handleChange={handleChange}
+        autoComplete="email"
       />
       <Input
         value={phoneNumber}
@@ -81,6 +86,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
         placeholder="Phone Number"
         type="text"
         handleChange={handleChange}
+        autoComplete="phone-number"
       />
     </React.Fragment>
   );
@@ -108,4 +114,4 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
   );
 };
 
-export default React.memo(ProfileForm);
+export default ProfileForm;
