@@ -11,8 +11,8 @@ const GymEditPage: React.FunctionComponent = () => {
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
 
-  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
-  const { state: userState, dispatch: userDispatch } = useUserContext();
+  const { state: gymsState } = useGymsContext();
+  const { state: userState } = useUserContext();
 
   React.useEffect(() => {
     const gymId = history.location.pathname
