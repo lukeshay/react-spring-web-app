@@ -4,6 +4,8 @@ import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym, Wall } from "../../../types";
+import * as UrlUtils from "../../../utils/urlUtils";
+import WallEditForm from "./WallEditForm";
 
 const WallEditPage: React.FunctionComponent = () => {
   const history = ReactRouter.useHistory();
@@ -17,10 +19,7 @@ const WallEditPage: React.FunctionComponent = () => {
   React.useEffect(() => {
     const { user } = userState;
 
-    const wallId = history.location.pathname
-      .split("/")
-      .splice(-1)
-      .pop();
+    const wallId = UrlUtils.getLastPathVariable(history.location.pathname);
 
     const tempGym = gymsState.gyms
       .filter(
@@ -56,7 +55,11 @@ const WallEditPage: React.FunctionComponent = () => {
     }
   }, []);
 
-  return <div>{wall}</div>;
+  if (wall.id) {
+    return <WallEditForm wall={wall} />;
+  } else {
+    return <React.Fragment />;
+  }
 };
 
 export default WallEditPage;
