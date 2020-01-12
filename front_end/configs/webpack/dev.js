@@ -13,6 +13,8 @@ module.exports = merge(commonConfig, {
     "./index.tsx" // the entry point of our app
   ],
   devServer: {
+    historyApiFallback: true,
+    contentBase: "./",
     host: "0.0.0.0",
     hot: true, // enable HMR on the server
     port: 3000
