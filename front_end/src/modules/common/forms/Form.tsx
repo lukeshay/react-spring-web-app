@@ -12,7 +12,7 @@ export interface IFormProps {
   formInputs: React.ReactNode;
   title: React.ReactNode;
   helpElements?: React.ReactNode[];
-  handleSubmit(event: any): Promise<void>;
+  handleSubmit(event: any): Promise<void> | void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
