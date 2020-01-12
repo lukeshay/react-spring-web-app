@@ -1,19 +1,19 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { UserContext } from "../../../context/user/userStore";
-import { Routes, AuthRoutes } from "../../../routes";
+import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
-import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       right: "10px"
     },
-    icons: {
-      paddingRight: theme.spacing(1)
-    },
     buttonWrapper: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1)
+    },
+    icons: {
+      paddingRight: theme.spacing(1)
     },
     wallList: {
       marginTop: theme.spacing(2)
@@ -40,15 +40,15 @@ const GymPage: React.FC = () => {
   );
   const { state: userState } = React.useContext(UserContext);
 
-  const [gym, setGym] = useState<Gym>({} as Gym);
-  const [walls, setWalls] = useState<boolean>(true);
-  const [routes, setRoutes] = useState<Route[]>([]);
+  const [gym, setGym] = React.useState<Gym>({} as Gym);
+  const [walls, setWalls] = React.useState<boolean>(true);
+  const [routes, setRoutes] = React.useState<Route[]>([]);
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
   const [wallId, setWallId] = React.useState<string>("");
 
   const classes = useStyles();
   const history = useHistory();
-  const [gymId] = useState<string | undefined>(
+  const [gymId] = React.useState<string | undefined>(
     history.location.pathname
       .split("/")
       .splice(-1)
@@ -104,9 +104,9 @@ const GymPage: React.FC = () => {
     return <h3>Cannot find the gym you are looking for.</h3>;
   }
 
-  const onWallRowClick = async (wallId: string) => {
+  const onWallRowClick = async (rowWallId: string) => {
     const wall = gym.walls
-      ? gym.walls.find((element: Wall) => element.id === wallId)
+      ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
     if (
