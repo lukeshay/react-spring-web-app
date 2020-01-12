@@ -1,4 +1,4 @@
 export const AuthRoutes = {
   EDIT_GYM: "/gyms/edit",
-  EDIT_WALL: "/walls"
+  EDIT_WALL: "/walls/edit"
 };
