@@ -59,7 +59,7 @@ public class RouteControllerTest {
 
     testGym.setId("1");
 
-    testWall = new Wall(testGym.getId(), "Wall", WallTypes.BOULDER);
+    testWall = new Wall(testGym.getId(), "Wall", Collections.singletonList(WallTypes.BOULDER));
 
     User user =
         new User(

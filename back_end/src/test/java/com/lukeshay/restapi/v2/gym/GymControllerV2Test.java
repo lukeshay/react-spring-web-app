@@ -48,7 +48,7 @@ public class GymControllerV2Test {
 
     testGym = gymRepository.save(testGym);
 
-    testWall = new Wall(testGym.getId(), "Wall", WallTypes.BOULDER);
+    testWall = new Wall(testGym.getId(), "Wall", Collections.singletonList(WallTypes.BOULDER));
 
     testWall = wallRepository.save(testWall);
 

@@ -60,7 +60,7 @@ public class WallController {
 
     Wall wall =
         wallService.updateWall(
-            request, body.getId(), body.getGymId(), body.getName(), body.getType());
+            request, body.getId(), body.getGymId(), body.getName(), body.getTypes());
 
     if (wall == null) {
       return Responses.badRequestJsonResponse(Bodys.error("Error updating wall."));
