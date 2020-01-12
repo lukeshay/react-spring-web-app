@@ -26,6 +26,8 @@ const WallAddPage: React.FunctionComponent = () => {
   useEffect(() => {
     const currentGymId = UrlUtils.getLastPathVariable(window.location.pathname);
 
+    console.log(currentGymId);
+
     setGymId(currentGymId);
 
     const tempGym = gymsState.gyms

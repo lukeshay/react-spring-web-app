@@ -3,5 +3,5 @@ export const getLastPathVariable = (url: string): string => {
     .split("/")
     .splice(-1)
     .pop();
-  return url || "";
+  return str || "";
 };
