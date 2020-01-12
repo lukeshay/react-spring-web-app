@@ -1,7 +1,5 @@
-export const getLastPathVariable = (url: string): string => {
-  const str = url
+export const getLastPathVariable = (url: string): string =>
+  url
     .split("/")
     .splice(-1)
-    .pop();
-  return str || "";
-};
+    .pop() || "";

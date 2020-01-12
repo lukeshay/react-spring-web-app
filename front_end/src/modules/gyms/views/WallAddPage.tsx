@@ -1,4 +1,10 @@
-import { FormGroup, FormLabel } from "@material-ui/core";
+import {
+  FormGroup,
+  FormLabel,
+  makeStyles,
+  createStyles,
+  Theme
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import * as ReactRouter from "react-router";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
@@ -10,7 +16,17 @@ import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    checkboxGroup: {
+      marginLeft: "145px"
+    }
+  })
+);
+
 const WallAddPage: React.FunctionComponent = () => {
+  const classes = useStyles();
+
   const history = ReactRouter.useHistory();
 
   const [name, setName] = React.useState<string>("");
@@ -24,14 +40,14 @@ const WallAddPage: React.FunctionComponent = () => {
   const { state: userState } = useUserContext();
 
   useEffect(() => {
-    const currentGymId = UrlUtils.getLastPathVariable(window.location.pathname);
-
-    console.log(currentGymId);
+    const currentGymId = UrlUtils.getLastPathVariable(
+      history.location.pathname
+    );
 
     setGymId(currentGymId);
 
     const tempGym = gymsState.gyms
-      .filter((element) => element.id === gymId)
+      .filter((element) => element.id === currentGymId)
       .pop();
 
     const { user } = userState;
@@ -65,7 +81,9 @@ const WallAddPage: React.FunctionComponent = () => {
     }
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const types;
+  };
 
   const handleCancel = () => {
     history.push(Routes.GYMS + "/" + gymId);
@@ -103,6 +121,7 @@ const WallAddPage: React.FunctionComponent = () => {
           value="TOP_ROPE"
           label="Top rope"
           onChange={handleChange}
+          className={classes.checkboxGroup}
         />
         <CheckBox
           id="lead"
@@ -110,6 +129,7 @@ const WallAddPage: React.FunctionComponent = () => {
           value="LEAD"
           label="Lead"
           onChange={handleChange}
+          className={classes.checkboxGroup}
         />
         <CheckBox
           id="autoBelay"
@@ -117,6 +137,7 @@ const WallAddPage: React.FunctionComponent = () => {
           value="AUTO_BELAY"
           label="Auto belay"
           onChange={handleChange}
+          className={classes.checkboxGroup}
         />
         <CheckBox
           id="boulder"
@@ -124,6 +145,7 @@ const WallAddPage: React.FunctionComponent = () => {
           value="BOULDER"
           label="Boulder"
           onChange={handleChange}
+          className={classes.checkboxGroup}
         />
       </FormGroup>
     </React.Fragment>

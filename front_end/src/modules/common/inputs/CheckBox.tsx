@@ -3,6 +3,7 @@ import * as React from "react";
 
 export interface ICheckBoxProps {
   checked: boolean;
+  className?: any;
   id: string;
   label: string;
   value: string;
@@ -11,6 +12,7 @@ export interface ICheckBoxProps {
 
 const CheckBox: React.FunctionComponent<ICheckBoxProps> = ({
   checked,
+  className,
   id,
   value,
   onChange,
@@ -22,6 +24,7 @@ const CheckBox: React.FunctionComponent<ICheckBoxProps> = ({
         <Checkbox id={id} checked={checked} onChange={onChange} value={value} />
       }
       label={label}
+      className={className}
     />
   );
 };
