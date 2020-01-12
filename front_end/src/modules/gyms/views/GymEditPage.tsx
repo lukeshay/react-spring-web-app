@@ -39,6 +39,8 @@ const GymEditPage: React.FunctionComponent = () => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState, dispatch: userDispatch } = useUserContext();
 
+  const nameRef = React.createRef<HTMLInputElement>();
+
   React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
@@ -55,6 +57,17 @@ const GymEditPage: React.FunctionComponent = () => {
       )
     ) {
       setGym(tempGym);
+      if (nameRef.current) {
+        nameRef.current.value = tempGym.name;
+      }
+      setName(tempGym.name);
+      setAddress(tempGym.address);
+      setCity(tempGym.city);
+      setState(tempGym.state);
+      setZipCode(tempGym.zipCode);
+      setWebsite(tempGym.website);
+      setPhoneNumber(tempGym.phoneNumber);
+      setEmail(tempGym.email);
     } else {
       history.push(Routes.GYMS + "/" + gymId);
     }
@@ -161,6 +174,9 @@ const GymEditPage: React.FunctionComponent = () => {
     console.log(state);
     console.log(zipCode);
     console.log(phoneNumber);
+    if (nameRef.current) {
+      console.log(nameRef.current.value);
+    }
   };
 
   const handleCancel = async (): Promise<void> => {

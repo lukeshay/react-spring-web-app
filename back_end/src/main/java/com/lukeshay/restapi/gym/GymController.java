@@ -50,6 +50,7 @@ public class GymController {
             gym.getAddress(),
             gym.getCity(),
             gym.getState(),
+            gym.getZipCode(),
             gym.getEmail(),
             gym.getPhoneNumber(),
             gym.getWebsite(),

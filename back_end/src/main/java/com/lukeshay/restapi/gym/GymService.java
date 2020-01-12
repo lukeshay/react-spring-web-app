@@ -35,6 +35,7 @@ public class GymService {
       String address,
       String city,
       String state,
+      String zipCode,
       String email,
       String phoneNumber,
       String website,
@@ -65,6 +66,10 @@ public class GymService {
 
     if (state != null && !state.equals("")) {
       gym.setState(state);
+    }
+
+    if (zipCode != null && !zipCode.equals("")) {
+      gym.setZipCode(zipCode);
     }
 
     if (website != null && !website.equals("")) {
