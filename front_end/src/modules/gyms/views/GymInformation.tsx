@@ -97,19 +97,17 @@ const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
       </div>
       <Table
         body={[
-          <GymPageRow key="name" label="Name" text={gym.name} />,
+          <GymPageRow key="name" label="Gym" text={gym.name} />,
           <GymPageRow key="website" label="Website" text={gym.website} />,
           <GymPageRow
             key="address"
             label="Address"
             text={
-              gym.address +
-              "\n" +
-              gym.city +
-              ", " +
-              gym.state +
-              " " +
-              gym.zipCode
+              <React.Fragment>
+                {gym.address}
+                <br />
+                {gym.city + ", " + gym.state + " " + gym.zipCode}
+              </React.Fragment>
             }
           />,
           <GymPageRow key="email" label="Email" text={gym.email} />,

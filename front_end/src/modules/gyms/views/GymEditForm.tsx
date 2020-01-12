@@ -130,16 +130,6 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    // tslint:disable: no-console
-    console.log(name);
-    console.log(email);
-    console.log(website);
-    console.log(address);
-    console.log(city);
-    console.log(state);
-    console.log(zipCode);
-    console.log(phoneNumber);
-
     GymsActions.updateGym(
       gymsDispatch,
       {

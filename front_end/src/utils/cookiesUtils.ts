@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
-import * as Time from "./timeUtils";
 import { User } from "../types";
+import * as Time from "./timeUtils";
 
 const cookies = new Cookies();
 const USER = "user";
