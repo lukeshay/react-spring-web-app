@@ -36,7 +36,7 @@ const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick, canEdit }) => {
           <Button
             component={Link}
             to={AuthRoutes.EDIT_WALL + "/" + wall.id}
-            variant="contained"
+            variant="text"
             fullWidth={false}
             size="medium"
             type="button"
@@ -64,6 +64,7 @@ const WallList: React.FC<IWallListProps> = ({ walls, onRowClick, canEdit }) => {
           <TableCell key="wall">Wall</TableCell>
           <TableCell key="routes">Routes</TableCell>
           <TableCell key="type">Type</TableCell>
+          {canEdit && <TableCell key="edit">Edit</TableCell>}
         </TableRow>
       }
       body={

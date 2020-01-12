@@ -1,28 +1,33 @@
 import {
   createStyles,
   FormGroup,
+  FormHelperText,
   FormLabel,
   makeStyles,
   Theme
 } from "@material-ui/core";
 import React, { useEffect } from "react";
 import * as ReactRouter from "react-router";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
+import { Wall } from "../../../types";
 import * as UrlUtils from "../../../utils/urlUtils";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { Wall } from "../../../types";
-import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     checkboxGroup: {
       marginLeft: "145px"
+    },
+    helpText: {
+      color: theme.palette.error.main,
+      padding: "5px"
     }
   })
 );
@@ -159,6 +164,7 @@ const WallAddPage: React.FunctionComponent = () => {
         type="text"
         autoComplete="name"
         autoCapitalize="true"
+        helpText={nameMessage}
       />
       <FormLabel component="legend">Pick one</FormLabel>
       <FormGroup>
@@ -169,6 +175,7 @@ const WallAddPage: React.FunctionComponent = () => {
           label="Top rope"
           onChange={handleChange}
           className={classes.checkboxGroup}
+          color="primary"
         />
         <CheckBox
           id="lead"
@@ -177,6 +184,7 @@ const WallAddPage: React.FunctionComponent = () => {
           label="Lead"
           onChange={handleChange}
           className={classes.checkboxGroup}
+          color="primary"
         />
         <CheckBox
           id="autoBelay"
@@ -185,6 +193,7 @@ const WallAddPage: React.FunctionComponent = () => {
           label="Auto belay"
           onChange={handleChange}
           className={classes.checkboxGroup}
+          color="primary"
         />
         <CheckBox
           id="boulder"
@@ -193,7 +202,11 @@ const WallAddPage: React.FunctionComponent = () => {
           label="Boulder"
           onChange={handleChange}
           className={classes.checkboxGroup}
+          color="primary"
         />
+        <FormHelperText className={classes.helpText}>
+          {typesMessage}
+        </FormHelperText>
       </FormGroup>
     </React.Fragment>
   );

@@ -7,6 +7,7 @@ export interface ICheckBoxProps {
   id: string;
   label: string;
   value: string;
+  color?: "primary" | "secondary" | "default";
   onChange?(event: any): Promise<void> | void;
 }
 
@@ -16,17 +17,28 @@ const CheckBox: React.FunctionComponent<ICheckBoxProps> = ({
   id,
   value,
   onChange,
+  color,
   label
 }) => {
   return (
     <FormControlLabel
       control={
-        <Checkbox id={id} checked={checked} onChange={onChange} value={value} />
+        <Checkbox
+          id={id}
+          checked={checked}
+          onChange={onChange}
+          value={value}
+          color={color}
+        />
       }
       label={label}
       className={className}
     />
   );
+};
+
+CheckBox.defaultProps = {
+  color: "default"
 };
 
 export default CheckBox;

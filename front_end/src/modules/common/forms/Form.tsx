@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1)
     },
     form: {
-      marginTop: theme.spacing(1),
       marginLeft: "auto",
       marginRight: "auto",
+      marginTop: theme.spacing(1),
       width: "100%"
     },
     paper: {
