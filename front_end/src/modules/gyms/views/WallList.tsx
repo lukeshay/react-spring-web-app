@@ -30,7 +30,7 @@ const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick, canEdit }) => {
     <TableRow hover id={wall.id} onClick={() => onRowClick(wall.id)}>
       <TableCell>{wall.name}</TableCell>
       <TableCell>{wall.routes ? wall.routes.length : 0}</TableCell>
-      <TableCell>{wall.type}</TableCell>
+      <TableCell>{wall.types}</TableCell>
       {canEdit && (
         <TableCell>
           <Button

@@ -1,8 +1,8 @@
 import {
+  createStyles,
   FormGroup,
   FormLabel,
   makeStyles,
-  createStyles,
   Theme
 } from "@material-ui/core";
 import React, { useEffect } from "react";
@@ -15,6 +15,9 @@ import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { Wall } from "../../../types";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,8 +38,10 @@ const WallAddPage: React.FunctionComponent = () => {
   const [topRope, setTopRope] = React.useState<boolean>(false);
   const [autoBelay, setAutoBelay] = React.useState<boolean>(false);
   const [boulder, setBoulder] = React.useState<boolean>(false);
+  const [typesMessage, setTypesMessage] = React.useState<string>("");
+  const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const { state: gymsState } = useGymsContext();
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
   useEffect(() => {
@@ -81,8 +86,50 @@ const WallAddPage: React.FunctionComponent = () => {
     }
   };
 
-  const handleSubmit = () => {
-    const types;
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    const types: string[] = [];
+
+    if (lead) {
+      types.push("LEAD");
+    }
+
+    if (topRope) {
+      types.push("TOP_ROPE");
+    }
+
+    if (autoBelay) {
+      types.push("AUTO_BELAY");
+    }
+
+    if (boulder) {
+      types.push("BOULDER");
+    }
+
+    if (types.length === 0) {
+      setTypesMessage("Select a type.");
+    }
+
+    if (name.trim().length === 0) {
+      setNameMessage("Name cannot be blank.");
+    }
+
+    if (types.length !== 0 && name.trim().length !== 0) {
+      setTypesMessage("");
+      setNameMessage("");
+      GymsActions.createWall(
+        gymsDispatch,
+        { name, types, gymId } as Wall,
+        gymId
+      ).then((response) => {
+        if (response instanceof Response && response.ok) {
+          history.push(Routes.GYMS + "/" + gymId);
+        } else {
+          toast.error("Error adding wall.");
+        }
+      });
+    }
   };
 
   const handleCancel = () => {

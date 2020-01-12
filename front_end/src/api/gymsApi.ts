@@ -1,4 +1,4 @@
-import { Gym } from "../types";
+import { Gym, Wall } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
