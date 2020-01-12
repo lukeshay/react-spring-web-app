@@ -14,18 +14,6 @@ import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, User } from "../../../types";
 import Table from "../../common/table/Table";
 
-interface IGymPageRowProps {
-  label: React.ReactNode;
-  text: React.ReactNode;
-}
-
-const GymPageRow: React.FC<IGymPageRowProps> = ({ label, text }) => (
-  <TableRow>
-    <TableCell>{label}</TableCell>
-    <TableCell>{text}</TableCell>
-  </TableRow>
-);
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     buttonWrapper: {
@@ -42,29 +30,28 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+interface IGymPageRowProps {
+  label: React.ReactNode;
+  text: React.ReactNode;
+}
+
+const GymPageRow: React.FC<IGymPageRowProps> = ({ label, text }) => (
+  <TableRow>
+    <TableCell>{label}</TableCell>
+    <TableCell>{text}</TableCell>
+  </TableRow>
+);
+
 export interface IGymInformationProps {
   gym: Gym;
-  user: User | null;
+  canEdit: boolean;
 }
 
 const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
   gym,
-  user
+  canEdit
 }) => {
   const classes = useStyles();
-  const [canEdit, setCanEdit] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    const { authorizedEditors } = gym;
-
-    if (
-      user &&
-      authorizedEditors &&
-      authorizedEditors.find((editorId: string) => editorId === user.userId)
-    ) {
-      setCanEdit(true);
-    }
-  }, [gym]);
 
   return (
     <React.Fragment>

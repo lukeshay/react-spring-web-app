@@ -2,20 +2,26 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { GymsContext } from "../../../context/gyms/gymsStore";
 import { UserContext } from "../../../context/user/userStore";
-import { Routes } from "../../../routes";
+import { Routes, AuthRoutes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
+import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    backIcon: {
+    addButton: {
+      position: "absolute",
+      right: "10px"
+    },
+    icons: {
       paddingRight: theme.spacing(1)
     },
     buttonWrapper: {
@@ -32,13 +38,14 @@ const GymPage: React.FC = () => {
   const { state: gymsState, dispatch: gymsDispatch } = React.useContext(
     GymsContext
   );
-  const { state: userState, dispatch: userDispatch } = React.useContext(
-    UserContext
-  );
+  const { state: userState } = React.useContext(UserContext);
 
   const [gym, setGym] = useState<Gym>({} as Gym);
   const [walls, setWalls] = useState<boolean>(true);
   const [routes, setRoutes] = useState<Route[]>([]);
+  const [canEdit, setCanEdit] = React.useState<boolean>(false);
+  const [wallId, setWallId] = React.useState<string>("");
+
   const classes = useStyles();
   const history = useHistory();
   const [gymId] = useState<string | undefined>(
@@ -64,8 +71,22 @@ const GymPage: React.FC = () => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
+
     if (tempGym && tempGym !== gym) {
       setGym(tempGym);
+
+      const { user } = userState;
+      const { authorizedEditors } = tempGym;
+
+      if (
+        user &&
+        authorizedEditors &&
+        authorizedEditors.find((editorId: string) => editorId === user.userId)
+      ) {
+        setCanEdit(true);
+      } else {
+        setCanEdit(false);
+      }
     }
   }, [gymsState]);
 
@@ -97,6 +118,7 @@ const GymPage: React.FC = () => {
     } else if (wall) {
       setWalls(false);
       setRoutes(wall.routes);
+      setWallId(wall.id);
     } else {
       toast.error("Could not find wall.");
     }
@@ -104,32 +126,52 @@ const GymPage: React.FC = () => {
 
   return (
     <React.Fragment>
-      <GymInformation gym={gym} user={userState.user} />
+      <GymInformation gym={gym} canEdit={canEdit} />
       <div
         className={classes.wallList}
-        style={{
-          display: !gym.walls || gym.walls.length === 0 ? "none" : "block"
-        }}
+        style={shouldDisplay((gym.walls && gym.walls.length !== 0) || canEdit)}
       >
-        <div
-          className={classes.buttonWrapper}
-          style={{ visibility: walls ? "hidden" : "visible" }}
-        >
+        <div className={classes.buttonWrapper}>
           <Button
             variant="text"
             fullWidth={false}
             size="medium"
             type="button"
-            onClick={() => setWalls(true)}
+            onClick={() => {
+              setWalls(true);
+              setWallId("");
+            }}
+            style={shouldBeVisible(!walls)}
           >
-            <ArrowBackIcon className={classes.backIcon} />
+            <ArrowBackIcon className={classes.icons} />
             Back
+          </Button>
+          <Button
+            component={Link}
+            to={
+              walls
+                ? AuthRoutes.ADD_WALL + "/" + gymId
+                : AuthRoutes.ADD_ROUTE + "/" + gymId + "/" + wallId
+            }
+            className={classes.addButton}
+            variant="text"
+            fullWidth={false}
+            size="medium"
+            type="button"
+            style={shouldBeVisible(canEdit)}
+          >
+            <AddIcon className={classes.icons} />
+            Add
           </Button>
         </div>
         {walls ? (
-          <WallList walls={gym.walls} onRowClick={onWallRowClick} />
+          <WallList
+            walls={gym.walls}
+            onRowClick={onWallRowClick}
+            canEdit={canEdit}
+          />
         ) : (
-          <RoutesList routes={routes} />
+          <RoutesList routes={routes} canEdit={canEdit} />
         )}
       </div>
     </React.Fragment>

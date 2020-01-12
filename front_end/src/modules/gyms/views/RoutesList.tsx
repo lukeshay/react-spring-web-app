@@ -19,10 +19,11 @@ const RouteRow: React.FC<IRouteRowProps> = ({ route }) => (
 );
 
 export interface IRoutesListProps {
+  canEdit: boolean;
   routes: Route[];
 }
 
-const RoutesList: React.FunctionComponent<IRoutesListProps> = ({ routes }) => (
+const RoutesList: React.FC<IRoutesListProps> = ({ routes, canEdit }) => (
   <Table
     head={
       <TableRow>

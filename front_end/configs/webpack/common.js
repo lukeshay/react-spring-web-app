@@ -1,4 +1,3 @@
-// shared config (dev and prod)
 const {resolve} = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
