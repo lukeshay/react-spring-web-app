@@ -1,13 +1,14 @@
 import React from "react";
 import * as ReactRouter from "react-router";
+import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import * as RegexUtils from "../../../utils/regexUtils";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
+import { toast } from "react-toastify";
 
 export interface IGymEditPageProps {
   gym: Gym;
@@ -35,7 +36,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     ""
   );
 
-  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
+  const { dispatch: gymsDispatch } = useGymsContext();
 
   React.useEffect(() => {
     if (RegexUtils.containsSpecialCharacter(address)) {
@@ -91,7 +92,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     }
   }, [phoneNumber]);
 
-  const handleChange = async (event: any): Promise<void> => {
+  const handleChange = async (event: any) => {
     event.preventDefault();
     const { id, value } = event.target;
 
@@ -126,7 +127,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     }
   };
 
-  const handleSubmit = async (event: any): Promise<void> => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
 
     // tslint:disable: no-console
@@ -138,9 +139,31 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     console.log(state);
     console.log(zipCode);
     console.log(phoneNumber);
+
+    GymsActions.updateGym(
+      gymsDispatch,
+      {
+        address,
+        city,
+        email,
+        id: gym.id,
+        name,
+        phoneNumber,
+        state,
+        website,
+        zipCode
+      } as Gym,
+      gym
+    ).then((response) => {
+      if (response instanceof Response && response.status === 200) {
+        toast.success("Gym updated.");
+      } else {
+        toast.error("Error updating gym.");
+      }
+    });
   };
 
-  const handleCancel = async (): Promise<void> => {
+  const handleCancel = () => {
     history.push(Routes.GYMS + "/" + gymId);
   };
 
