@@ -31,7 +31,7 @@ const GymRow: React.FC<IGymRowProps> = ({ gym }) => {
 const GymsPage: React.FC = () => {
   const { state, dispatch } = useContext(GymsContext);
 
-  useEffect(() => {
+   React.useEffect(() => {
     loadGyms();
   }, []);
 

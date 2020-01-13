@@ -4,7 +4,7 @@ import {
   ThemeProvider
 } from "@material-ui/core";
 import ToggleSwitch from "@material-ui/core/Switch";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GymsStore } from "./context/gyms/gymsStore";
@@ -21,15 +21,15 @@ interface Style {
 }
 
 const App: React.FC = () => {
-  const [style, setStyle] = useState<Style>({
+  const [style, setStyle] = React.useState<Style>({
     marginLeft: "0px",
     marginRight: "0px",
     marginTop: "0px"
   });
 
-  const [dark, setDark] = useState<boolean>(true);
+  const [dark, setDark] = React.useState<boolean>(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     handleResize();
 
     window.addEventListener("resize", handleResize);
