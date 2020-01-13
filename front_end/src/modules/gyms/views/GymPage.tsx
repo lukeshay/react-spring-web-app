@@ -193,4 +193,4 @@ const GymPage: React.FC = () => {
   );
 };
 
-export default GymPage;
+export default React.memo(GymPage);

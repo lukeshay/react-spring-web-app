@@ -159,4 +159,4 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ children }) => {
   );
 };
 
-export default NavigationBar;
+export default React.memo(NavigationBar);

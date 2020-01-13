@@ -61,4 +61,4 @@ const GymsPage: React.FC = () => {
   );
 };
 
-export default GymsPage;
+export default React.memo(GymsPage);

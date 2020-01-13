@@ -20,4 +20,4 @@ const GymRouter: React.FC = () => (
   </React.Suspense>
 );
 
-export default React.memo(GymRouter);
+export default GymRouter;
