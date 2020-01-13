@@ -138,7 +138,7 @@ const WallAddPage: React.FunctionComponent = () => {
   };
 
   const handleCancel = () => {
-    history.push(Routes.GYMS + "/" + gymId);
+    history.goBack();
   };
 
   const FormHead: JSX.Element = (

@@ -6,8 +6,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext } from "../../../context/gyms/gymsStore";
-import { UserContext } from "../../../context/user/userStore";
+import { GymsContext, useGymsContext } from "../../../context/gyms/gymsStore";
+import { UserContext, useUserContext } from "../../../context/user/userStore";
 import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
@@ -35,10 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const GymPage: React.FC = () => {
-  const { state: gymsState, dispatch: gymsDispatch } = React.useContext(
-    GymsContext
-  );
-  const { state: userState } = React.useContext(UserContext);
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
+  const { state: userState } = useUserContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [walls, setWalls] = React.useState<boolean>(true);
@@ -72,7 +70,7 @@ const GymPage: React.FC = () => {
       .filter((element) => element.id === gymId)
       .pop();
 
-    if (tempGym && tempGym !== gym) {
+    if (tempGym) {
       setGym(tempGym);
 
       const { user } = userState;
@@ -109,13 +107,7 @@ const GymPage: React.FC = () => {
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
-    if (
-      wall &&
-      (!wall.routes || wall.routes.length === 0 || !wall.routes[0]) &&
-      gymId
-    ) {
-      GymsActions.loadGymV2(gymsDispatch, gymId);
-    } else if (wall) {
+    if (wall) {
       setWalls(false);
       setRoutes(wall.routes);
       setWallId(wall.id);
@@ -135,6 +127,30 @@ const GymPage: React.FC = () => {
       );
     } else {
       toast.error("Error deleting wall.");
+    }
+  };
+
+  const handleDeleteRoute = async (routeId: string) => {
+    if (gymId) {
+      GymsActions.deleteRoute(
+        gymsDispatch,
+        { id: routeId, gymId } as Route,
+        gymId
+      ).then((response: Response) => {
+        if (!response || !(response instanceof Response) || !response.ok) {
+          toast.error("Error deleting route.");
+        } else {
+          const newRoutes: Route[] = [];
+
+          routes.forEach(
+            (element) => element.id !== routeId && newRoutes.push(element)
+          );
+
+          setRoutes(newRoutes);
+        }
+      });
+    } else {
+      toast.error("Error deleting route.");
     }
   };
 
@@ -165,7 +181,7 @@ const GymPage: React.FC = () => {
             to={
               walls
                 ? AuthRoutes.ADD_WALL + "/" + gymId
-                : AuthRoutes.ADD_ROUTE + "/" + gymId + "/" + wallId
+                : AuthRoutes.ADD_ROUTE + "/" + wallId
             }
             className={classes.addButton}
             variant="text"
@@ -186,7 +202,11 @@ const GymPage: React.FC = () => {
             handleDeleteWall={handleDeleteWall}
           />
         ) : (
-          <RoutesList routes={routes} canEdit={canEdit} />
+          <RoutesList
+            routes={routes}
+            canEdit={canEdit}
+            onDeleteClick={handleDeleteRoute}
+          />
         )}
       </div>
     </React.Fragment>

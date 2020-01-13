@@ -7,6 +7,8 @@ const GymPage = React.lazy(() => import("./views/GymPage"));
 const GymEditPage = React.lazy(() => import("./views/GymEditPage"));
 const WallEditPage = React.lazy(() => import("./views/WallEditPage"));
 const WallAddPage = React.lazy(() => import("./views/WallAddPage"));
+const RouteAddPage = React.lazy(() => import("./views/RouteAddPage"));
+const RouteEditPage = React.lazy(() => import("./views/RouteEditPage"));
 
 const GymRouter: React.FC = () => (
   <React.Suspense fallback={<div />}>
@@ -16,6 +18,8 @@ const GymRouter: React.FC = () => (
       <Route path={Routes.GYMS} component={GymPage} />
       <Route path={AuthRoutes.EDIT_WALL} component={WallEditPage} />
       <Route path={AuthRoutes.ADD_WALL} component={WallAddPage} />
+      <Route path={AuthRoutes.ADD_ROUTE} component={RouteAddPage} />
+      <Route path={AuthRoutes.EDIT_ROUTE} component={RouteEditPage} />
     </Switch>
   </React.Suspense>
 );

@@ -8,12 +8,7 @@ import {
   Theme
 } from "@material-ui/core";
 import React from "react";
-import * as ReactRouter from "react-router";
-import { toast } from "react-toastify";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { Routes } from "../../../routes";
-import { Wall } from "../../../types";
+import { Route } from "../../../types";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
@@ -30,52 +25,51 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface IWallEditFormProps {
-  wall: Wall;
+export interface IRouteFormProps {
+  route: Route;
+  formHeadText: string;
+  nameMessage?: string;
+  submitButtonText: string;
+  typesMessage?: string;
+  handleCancel(event: any): Promise<void> | void;
+  handleSubmit(route: Route): Promise<void> | void;
 }
 
-const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
-  wall
+const RouteForm: React.FC<IRouteFormProps> = ({
+  route,
+  formHeadText,
+  nameMessage,
+  submitButtonText,
+  typesMessage,
+  handleCancel,
+  handleSubmit
 }) => {
-  const history = ReactRouter.useHistory();
-
   const classes = useStyles();
 
-  const { dispatch: gymsDispatch } = useGymsContext();
+  const [name, setName] = React.useState<string>(route.name || "");
+  const [setter, setSetter] = React.useState<string>(route.setter || "");
 
-  const [name, setName] = React.useState<string>(wall.name);
   const [lead, setLead] = React.useState<boolean>(
-    wall.types.filter((element) => element === "LEAD").length > 0
+    route.types &&
+      route.types.filter((element) => element === "LEAD").length > 0
   );
   const [topRope, setTopRope] = React.useState<boolean>(
-    wall.types.filter((element) => element === "TOP_ROPE").length > 0
+    route.types &&
+      route.types.filter((element) => element === "TOP_ROPE").length > 0
   );
   const [autoBelay, setAutoBelay] = React.useState<boolean>(
-    wall.types.filter((element) => element === "AUTO_BELAY").length > 0
+    route.types &&
+      route.types.filter((element) => element === "AUTO_BELAY").length > 0
   );
   const [boulder, setBoulder] = React.useState<boolean>(
-    wall.types.filter((element) => element === "BOULDER").length > 0
+    route.types &&
+      route.types.filter((element) => element === "BOULDER").length > 0
   );
-  const [typesMessage, setTypesMessage] = React.useState<string>("");
-  const [nameMessage, setNameMessage] = React.useState<string>("");
+  const [holdColor, setHoldColor] = React.useState<string>(
+    route.holdColor || ""
+  );
 
-  const handleChange = (event: any) => {
-    const { id, value } = event.target;
-
-    if (id === "name") {
-      setName(value);
-    } else if (id === "topRope") {
-      setTopRope(!topRope);
-    } else if (id === "lead") {
-      setLead(!lead);
-    } else if (id === "autoBelay") {
-      setAutoBelay(!autoBelay);
-    } else if (id === "boulder") {
-      setBoulder(!boulder);
-    }
-  };
-
-  const handleSubmit = (event: any) => {
+  const onSubmit = (event: any) => {
     event.preventDefault();
 
     const types: string[] = [];
@@ -96,39 +90,33 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
       types.push("BOULDER");
     }
 
-    if (types.length === 0) {
-      setTypesMessage("Select a type.");
-    }
-
-    if (name.trim().length === 0) {
-      setNameMessage("Name cannot be blank.");
-    }
-
-    if (types.length !== 0 && name.trim().length !== 0) {
-      setTypesMessage("");
-      setNameMessage("");
-      GymsActions.updateWall(
-        gymsDispatch,
-        { name, types, gymId: wall.gymId, id: wall.id } as Wall,
-        wall.gymId
-      ).then((response) => {
-        if (response instanceof Response && response.ok) {
-          history.push(Routes.GYMS + "/" + wall.gymId);
-        } else {
-          toast.error("Error updating wall.");
-        }
-      });
-    }
+    handleSubmit({ name, setter, holdColor, types } as Route);
   };
 
-  const handleCancel = () => {
-    history.goBack();
+  const handleChange = (event: any) => {
+    const { id, value } = event.target;
+
+    if (id === "name") {
+      setName(value);
+    } else if (id === "topRope") {
+      setTopRope(!topRope);
+    } else if (id === "lead") {
+      setLead(!lead);
+    } else if (id === "autoBelay") {
+      setAutoBelay(!autoBelay);
+    } else if (id === "boulder") {
+      setBoulder(!boulder);
+    } else if (id === "setter") {
+      setSetter(value);
+    } else if (id === "holdColor") {
+      setHoldColor(value);
+    }
   };
 
   const FormHead: JSX.Element = (
     <div style={{ display: "inline" }}>
       <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
-        Update Wall
+        {formHeadText}
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button onClick={handleCancel} type="button" variant="outlined">
@@ -146,9 +134,26 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
         value={name}
         handleChange={handleChange}
         type="text"
-        autoComplete="name"
+        autoComplete="title"
         autoCapitalize="true"
         helpText={nameMessage}
+      />
+      <Input
+        placeholder="Setter"
+        id="setter"
+        value={setter}
+        handleChange={handleChange}
+        type="text"
+        autoComplete="name"
+        autoCapitalize="true"
+      />
+      <Input
+        placeholder="Hold Color"
+        id="holdColor"
+        value={holdColor}
+        handleChange={handleChange}
+        type="text"
+        autoCapitalize="true"
       />
       <FormLabel component="legend">Pick one</FormLabel>
       <FormGroup>
@@ -199,10 +204,10 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
     <Form
       title={FormHead}
       formInputs={FormInputs}
-      buttonText="Update wall"
-      handleSubmit={handleSubmit}
+      buttonText={submitButtonText}
+      handleSubmit={onSubmit}
     />
   );
 };
 
-export default WallEditForm;
+export default RouteForm;
