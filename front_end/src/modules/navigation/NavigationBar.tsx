@@ -68,7 +68,8 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ children }) => {
   const navItems: Array<{ text: string; link: string }> = [
     { text: "Home", link: Routes.HOME },
     { text: "Gyms", link: Routes.GYMS },
-    { text: "Profile", link: Routes.PROFILE }
+    { text: "Profile", link: Routes.PROFILE },
+    { text: "About", link: Routes.ABOUT }
   ];
 
   const classes = useStyles();

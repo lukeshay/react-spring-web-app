@@ -6,6 +6,7 @@ const HomePage = lazy(() => import("./modules/homepage/HomePage"));
 const NotFoundPage = lazy(() => import("./modules/NotFoundPage"));
 const ProfilePage = lazy(() => import("./modules/profile"));
 const GymsPage = lazy(() => import("./modules/gyms"));
+const AboutPage = lazy(() => import("./modules/about"));
 
 const Router: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const Router: React.FC = () => {
         <Route exact={true} path="/index" component={HomePage} />
         <Route path={Routes.PROFILE} component={ProfilePage} />
         <Route path={Routes.GYMS} component={GymsPage} />
+        <Route path={Routes.ABOUT} component={AboutPage} />
         <Route path={AuthRoutes.WALLS} component={GymsPage} />
         <Route path={AuthRoutes.ROUTES} component={GymsPage} />
         <Route component={NotFoundPage} />

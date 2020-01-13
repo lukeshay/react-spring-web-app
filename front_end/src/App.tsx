@@ -13,6 +13,7 @@ import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import StoreCombiner from "./StoreCombiner";
 import { darkTheme, getTheme, lightTheme } from "./theme";
+import Favicon from "react-favicon";
 
 interface Style {
   marginLeft: string;
@@ -49,6 +50,7 @@ const App: React.FC = () => {
 
   return (
     <StoreCombiner stores={[UserStore, GymsStore]}>
+      <Favicon url="./favicon.ico" />
       <div style={style}>
         <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
           <CssBaseline />
