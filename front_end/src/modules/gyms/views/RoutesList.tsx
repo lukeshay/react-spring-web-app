@@ -1,13 +1,40 @@
-import { TableCell, TableHead, TableRow } from "@material-ui/core";
+import {
+  TableCell,
+  TableRow,
+  makeStyles,
+  Theme,
+  createStyles,
+  Button
+} from "@material-ui/core";
 import React from "react";
 import { Route } from "../../../types";
 import Table from "../../common/table/Table";
+import { AuthRoutes } from "../../../routes";
+import { Link } from "react-router-dom";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    icons: {
+      paddingRight: theme.spacing(1)
+    }
+  })
+);
 
 export interface IRouteRowProps {
   route: Route;
+  canEdit: boolean;
+  onDeleteClick(routeId: string): Promise<void> | void;
 }
 
-const RouteRow: React.FC<IRouteRowProps> = ({ route }) => {
+const RouteRow: React.FC<IRouteRowProps> = ({
+  route,
+  canEdit,
+  onDeleteClick
+}) => {
+  const classes = useStyles();
+
   let types = "";
 
   route.types.forEach((value) => {
@@ -40,6 +67,37 @@ const RouteRow: React.FC<IRouteRowProps> = ({ route }) => {
       <TableCell>{route.holdColor}</TableCell>
       <TableCell>{route.averageGrade}</TableCell>
       <TableCell>{route.averageRating}</TableCell>
+      {canEdit && (
+        <TableCell>
+          <Button
+            component={Link}
+            to={AuthRoutes.EDIT_ROUTE + "/" + route.id}
+            variant="outlined"
+            fullWidth={false}
+            size="medium"
+            type="button"
+            color="secondary"
+          >
+            <EditIcon className={classes.icons} />
+            Edit
+          </Button>
+        </TableCell>
+      )}
+      {canEdit && (
+        <TableCell>
+          <Button
+            variant="outlined"
+            fullWidth={false}
+            size="medium"
+            type="button"
+            color="primary"
+            onClick={() => onDeleteClick(route.id)}
+          >
+            <DeleteIcon className={classes.icons} />
+            Delete
+          </Button>
+        </TableCell>
+      )}
     </TableRow>
   );
 };
@@ -47,9 +105,14 @@ const RouteRow: React.FC<IRouteRowProps> = ({ route }) => {
 export interface IRoutesListProps {
   canEdit: boolean;
   routes: Route[];
+  onDeleteClick(routeId: string): Promise<void> | void;
 }
 
-const RoutesList: React.FC<IRoutesListProps> = ({ routes, canEdit }) => (
+const RoutesList: React.FC<IRoutesListProps> = ({
+  routes,
+  canEdit,
+  onDeleteClick
+}) => (
   <Table
     head={
       <TableRow>
@@ -59,11 +122,20 @@ const RoutesList: React.FC<IRoutesListProps> = ({ routes, canEdit }) => (
         <TableCell key="color">Color</TableCell>
         <TableCell key="grade">Grade</TableCell>
         <TableCell key="rating">Rating</TableCell>
+        {canEdit && <TableCell key="edit">Edit</TableCell>}
+        {canEdit && <TableCell key="delete">Delete</TableCell>}
       </TableRow>
     }
     body={
       routes &&
-      routes.map((route: Route) => <RouteRow key={route.id} route={route} />)
+      routes.map((route: Route) => (
+        <RouteRow
+          key={route.id}
+          route={route}
+          canEdit={canEdit}
+          onDeleteClick={onDeleteClick}
+        />
+      ))
     }
   />
 );

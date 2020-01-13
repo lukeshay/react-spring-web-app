@@ -95,7 +95,7 @@ const RouteAddPage: React.FC = () => {
       <RouteForm
         route={route}
         formHeadText="Add route"
-        handleCancel={() => history.push(Routes.GYMS + "/" + gymId)}
+        handleCancel={() => history.goBack()}
         handleSubmit={handleSubmit}
         submitButtonText="Add route"
         nameMessage={nameMessage}

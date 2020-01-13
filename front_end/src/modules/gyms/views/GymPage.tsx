@@ -6,8 +6,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext } from "../../../context/gyms/gymsStore";
-import { UserContext } from "../../../context/user/userStore";
+import { GymsContext, useGymsContext } from "../../../context/gyms/gymsStore";
+import { UserContext, useUserContext } from "../../../context/user/userStore";
 import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
@@ -35,10 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const GymPage: React.FC = () => {
-  const { state: gymsState, dispatch: gymsDispatch } = React.useContext(
-    GymsContext
-  );
-  const { state: userState } = React.useContext(UserContext);
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
+  const { state: userState } = useUserContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [walls, setWalls] = React.useState<boolean>(true);
@@ -72,7 +70,7 @@ const GymPage: React.FC = () => {
       .filter((element) => element.id === gymId)
       .pop();
 
-    if (tempGym && tempGym !== gym) {
+    if (tempGym) {
       setGym(tempGym);
 
       const { user } = userState;
@@ -132,6 +130,30 @@ const GymPage: React.FC = () => {
     }
   };
 
+  const handleDeleteRoute = async (routeId: string) => {
+    if (gymId) {
+      GymsActions.deleteRoute(
+        gymsDispatch,
+        { id: routeId, gymId } as Route,
+        gymId
+      ).then((response: Response) => {
+        if (!response || !(response instanceof Response) || !response.ok) {
+          toast.error("Error deleting route.");
+        } else {
+          let newRoutes: Route[] = [];
+
+          routes.forEach(
+            (element) => element.id !== routeId && newRoutes.push(element)
+          );
+
+          setRoutes(newRoutes);
+        }
+      });
+    } else {
+      toast.error("Error deleting route.");
+    }
+  };
+
   return (
     <React.Fragment>
       <GymInformation gym={gym} canEdit={canEdit} />
@@ -180,7 +202,11 @@ const GymPage: React.FC = () => {
             handleDeleteWall={handleDeleteWall}
           />
         ) : (
-          <RoutesList routes={routes} canEdit={canEdit} />
+          <RoutesList
+            routes={routes}
+            canEdit={canEdit}
+            onDeleteClick={handleDeleteRoute}
+          />
         )}
       </div>
     </React.Fragment>

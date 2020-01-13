@@ -122,7 +122,7 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
   };
 
   const handleCancel = () => {
-    history.push(Routes.GYMS + "/" + wall.gymId);
+    history.goBack();
   };
 
   const FormHead: JSX.Element = (
