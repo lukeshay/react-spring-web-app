@@ -1,5 +1,5 @@
 import React from "react";
-import ReactRouter from "react-router";
+import * as ReactRouter from "react-router";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
