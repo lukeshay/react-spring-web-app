@@ -13,8 +13,8 @@
     "build": "webpack -p --config=configs/webpack/prod.js",
     "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "deploy": "pm2 serve dist --name web-app -- 3000",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts*'",
+    "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts*'",
     "format": "prettier --write \"**/*.+(ts|tsx|json|css|md)\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "validate": "yarn typecheck && yarn lint"

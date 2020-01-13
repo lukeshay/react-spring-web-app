@@ -17,7 +17,9 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
   const [lastName, setLastName] = React.useState<string>(user.lastName);
   const [email, setEmail] = React.useState<string>(user.email);
   const [password, setPassword] = React.useState<string>("");
-  const [phoneNumber, setPhoneNumber] = React.useState<string>(user.phoneNumber);
+  const [phoneNumber, setPhoneNumber] = React.useState<string>(
+    user.phoneNumber
+  );
 
   async function handleSignOutClick(): Promise<void> {
     UserActions.signOut(dispatch);

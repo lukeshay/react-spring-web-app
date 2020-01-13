@@ -22,19 +22,21 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   const [password, setPassword] = React.useState<string>("");
   const [passwordMessage, setPasswordMessage] = React.useState<string>("");
   const [phoneNumber, setPhoneNumber] = React.useState<string>("");
-  const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>("");
+  const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
+    ""
+  );
   const [errorCode, setErrorCode] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string>("");
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     validatePassword();
   }, [password]);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     validateEmail();
   }, [email]);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     validatePhoneNumber();
   }, [phoneNumber]);
 

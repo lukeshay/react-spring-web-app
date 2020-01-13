@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import ProfilePage from "./ProfilePage";
 
 const ProfilePageIndex: React.FC = () => <ProfilePage />;

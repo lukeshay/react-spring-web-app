@@ -55,7 +55,7 @@ const GymPage: React.FC = () => {
       .pop()
   );
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -67,7 +67,7 @@ const GymPage: React.FC = () => {
     }
   }, []);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();

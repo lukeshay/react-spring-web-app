@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel } from "@material-ui/core";
-import * as React from "react";
+import React from "react";
 
 export interface ICheckBoxProps {
   checked: boolean;

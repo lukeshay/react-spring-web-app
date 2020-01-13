@@ -1,5 +1,5 @@
 import React from "react";
-import * as ReactRouter from "react-router";
+import ReactRouter from "react-router";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import EditIcon from "@material-ui/icons/Edit";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, User } from "../../../types";
