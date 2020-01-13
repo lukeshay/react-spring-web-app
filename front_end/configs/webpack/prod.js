@@ -1,6 +1,6 @@
 const merge = require("webpack-merge");
 const { resolve } = require("path");
-
+const BrotliPlugin = require("brotli-webpack-plugin");
 const { DefinePlugin } = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
@@ -38,13 +38,18 @@ module.exports = merge(commonConfig, {
       }
     }
   },
-  devtool: "source-map",
   plugins: [
     new DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production"),
         BASE_URL: JSON.stringify("https://restapi.lukeshay.com/")
       }
+    }),
+    new BrotliPlugin({
+      asset: "[path].br[query]",
+      test: /\.(ts|tsx|js|jsx|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8
     })
   ]
 });

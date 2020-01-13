@@ -3,7 +3,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import * as React from "react";
+import React from "react";
 
 export interface ISimpleTableProps {
   head?: React.ReactNode;

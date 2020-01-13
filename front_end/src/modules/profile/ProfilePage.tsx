@@ -7,7 +7,7 @@ import SignUpForm from "./views/SignUpForm";
 
 const ProfilePage: React.FC = () => {
   const { state } = useContext(UserContext);
-  const [createAccount, setCreateAccount] = useState<boolean>(true);
+  const [createAccount, setCreateAccount] = React.useState<boolean>(true);
 
   const handleSignInClick = (event: any) => {
     event.preventDefault();
@@ -30,4 +30,4 @@ const ProfilePage: React.FC = () => {
   }
 };
 
-export default ProfilePage;
+export default React.memo(ProfilePage);

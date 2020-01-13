@@ -12,10 +12,10 @@ export interface IPropsLogInForm {
 
 const SignInForm: React.FC<IPropsLogInForm> = (props: IPropsLogInForm) => {
   const { dispatch } = useContext(UserContext);
-  const [email, setEmail] = useState<string>("");
-  const [emailMessage, setEmailMessage] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordMessage, setPasswordMessage] = useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [emailMessage, setEmailMessage] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [passwordMessage, setPasswordMessage] = React.useState<string>("");
 
   const handleChange = async (event: any) => {
     const { id, value } = event.target;

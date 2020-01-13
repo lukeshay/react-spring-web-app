@@ -13,11 +13,13 @@ export interface IPropsProfileForm {
 
 const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
   const { dispatch } = useContext(UserContext);
-  const [firstName, setFirstName] = useState<string>(user.firstName);
-  const [lastName, setLastName] = useState<string>(user.lastName);
-  const [email, setEmail] = useState<string>(user.email);
-  const [password, setPassword] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>(user.phoneNumber);
+  const [firstName, setFirstName] = React.useState<string>(user.firstName);
+  const [lastName, setLastName] = React.useState<string>(user.lastName);
+  const [email, setEmail] = React.useState<string>(user.email);
+  const [password, setPassword] = React.useState<string>("");
+  const [phoneNumber, setPhoneNumber] = React.useState<string>(
+    user.phoneNumber
+  );
 
   async function handleSignOutClick(): Promise<void> {
     UserActions.signOut(dispatch);

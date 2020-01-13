@@ -6,7 +6,7 @@ import {
   makeStyles,
   Theme
 } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import * as ReactRouter from "react-router";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
@@ -49,7 +49,7 @@ const WallAddPage: React.FunctionComponent = () => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const currentGymId = UrlUtils.getLastPathVariable(
       history.location.pathname
     );

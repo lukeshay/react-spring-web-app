@@ -55,7 +55,7 @@ const GymPage: React.FC = () => {
       .pop()
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -67,7 +67,7 @@ const GymPage: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -193,4 +193,4 @@ const GymPage: React.FC = () => {
   );
 };
 
-export default GymPage;
+export default React.memo(GymPage);

@@ -15,26 +15,28 @@ export interface IPropsSignUpForm {
 
 const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
   const { dispatch } = useContext(UserContext);
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [emailMessage, setEmailMessage] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordMessage, setPasswordMessage] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [phoneNumberMessage, setPhoneNumberMessage] = useState<string>("");
-  const [errorCode, setErrorCode] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [firstName, setFirstName] = React.useState<string>("");
+  const [lastName, setLastName] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [emailMessage, setEmailMessage] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [passwordMessage, setPasswordMessage] = React.useState<string>("");
+  const [phoneNumber, setPhoneNumber] = React.useState<string>("");
+  const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
+    ""
+  );
+  const [errorCode, setErrorCode] = React.useState<string>("");
+  const [errorMessage, setErrorMessage] = React.useState<string>("");
 
-  useEffect(() => {
+  React.useEffect(() => {
     validatePassword();
   }, [password]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     validateEmail();
   }, [email]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     validatePhoneNumber();
   }, [phoneNumber]);
 

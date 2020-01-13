@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export interface IStoreCombinerProps {
   stores: Array<React.JSXElementConstructor<React.PropsWithChildren<any>>>;

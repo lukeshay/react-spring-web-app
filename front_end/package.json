@@ -13,8 +13,8 @@
     "build": "webpack -p --config=configs/webpack/prod.js",
     "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "deploy": "pm2 serve dist --name web-app -- 3000",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts*'",
+    "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts*'",
     "format": "prettier --write \"**/*.+(ts|tsx|json|css|md)\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "validate": "yarn typecheck && yarn lint"
@@ -62,6 +62,7 @@
     "@types/universal-cookie": "^2.2.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
+    "brotli-webpack-plugin": "^1.1.0",
     "clean-webpack-plugin": "*",
     "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
