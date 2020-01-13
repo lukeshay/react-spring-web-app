@@ -157,3 +157,57 @@ export const deleteWall = async (
 
   return responsePromise;
 };
+
+export const createRoute = async (
+  dispatch: any,
+  route: Route,
+  gymId: string
+) => {
+  const responsePromise = RoutesApi.createRoute(route).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
+
+export const updateRoute = async (
+  dispatch: any,
+  route: Route,
+  gymId: string
+) => {
+  const responsePromise = RoutesApi.updateRoute(route).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
+
+export const deleteRoute = async (
+  dispatch: any,
+  route: Route,
+  gymId: string
+) => {
+  const responsePromise = RoutesApi.deleteRoute(route).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
