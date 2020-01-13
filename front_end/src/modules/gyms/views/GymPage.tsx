@@ -140,7 +140,7 @@ const GymPage: React.FC = () => {
         if (!response || !(response instanceof Response) || !response.ok) {
           toast.error("Error deleting route.");
         } else {
-          let newRoutes: Route[] = [];
+          const newRoutes: Route[] = [];
 
           routes.forEach(
             (element) => element.id !== routeId && newRoutes.push(element)

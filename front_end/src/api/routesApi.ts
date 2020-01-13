@@ -1,6 +1,6 @@
-import { handleError } from "./apiUtils";
 import { Route } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
+import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "routes";
 

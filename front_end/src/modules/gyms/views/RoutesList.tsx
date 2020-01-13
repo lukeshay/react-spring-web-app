@@ -1,18 +1,18 @@
 import {
+  Button,
+  createStyles,
+  makeStyles,
   TableCell,
   TableRow,
-  makeStyles,
-  Theme,
-  createStyles,
-  Button
+  Theme
 } from "@material-ui/core";
-import React from "react";
-import { Route } from "../../../types";
-import Table from "../../common/table/Table";
-import { AuthRoutes } from "../../../routes";
-import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import React from "react";
+import { Link } from "react-router-dom";
+import { AuthRoutes } from "../../../routes";
+import { Route } from "../../../types";
+import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

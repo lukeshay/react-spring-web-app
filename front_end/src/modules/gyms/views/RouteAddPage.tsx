@@ -1,13 +1,13 @@
 import React from "react";
 import * as ReactRouter from "react-router";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
+import { Route } from "../../../types";
 import * as UrlUtils from "../../../utils/urlUtils";
 import RouteForm from "./RouteForm";
-import { Route } from "../../../types";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { toast } from "react-toastify";
 
 const RouteAddPage: React.FC = () => {
   const history = ReactRouter.useHistory();
