@@ -7,16 +7,42 @@ export interface IRouteRowProps {
   route: Route;
 }
 
-const RouteRow: React.FC<IRouteRowProps> = ({ route }) => (
-  <TableRow hover id={route.id}>
-    <TableCell>{route.name}</TableCell>
-    <TableCell>{route.types}</TableCell>
-    <TableCell>{route.setter}</TableCell>
-    <TableCell>{route.holdColor}</TableCell>
-    <TableCell>{route.averageGrade}</TableCell>
-    <TableCell>{route.averageRating}</TableCell>
-  </TableRow>
-);
+const RouteRow: React.FC<IRouteRowProps> = ({ route }) => {
+  let types = "";
+
+  route.types.forEach((value) => {
+    if (types.length !== 0) {
+      types += ", ";
+    }
+
+    if (value === "LEAD") {
+      types += "Lead";
+    }
+
+    if (value === "TOP_ROPE") {
+      types += "Top rope";
+    }
+
+    if (value === "BOULDER") {
+      types += "Boulder";
+    }
+
+    if (value === "AUTO_BELAY") {
+      types += "Auto belay";
+    }
+  });
+
+  return (
+    <TableRow hover id={route.id}>
+      <TableCell>{route.name}</TableCell>
+      <TableCell>{types}</TableCell>
+      <TableCell>{route.setter}</TableCell>
+      <TableCell>{route.holdColor}</TableCell>
+      <TableCell>{route.averageGrade}</TableCell>
+      <TableCell>{route.averageRating}</TableCell>
+    </TableRow>
+  );
+};
 
 export interface IRoutesListProps {
   canEdit: boolean;

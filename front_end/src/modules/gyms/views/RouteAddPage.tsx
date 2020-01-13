@@ -6,6 +6,8 @@ import { Routes } from "../../../routes";
 import * as UrlUtils from "../../../utils/urlUtils";
 import RouteForm from "./RouteForm";
 import { Route } from "../../../types";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { toast } from "react-toastify";
 
 const RouteAddPage: React.FC = () => {
   const history = ReactRouter.useHistory();
@@ -16,7 +18,7 @@ const RouteAddPage: React.FC = () => {
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const { state: gymsState } = useGymsContext();
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
   React.useEffect(() => {
@@ -76,9 +78,15 @@ const RouteAddPage: React.FC = () => {
     }
 
     if (newRoute.types.length > 0 && newRoute.name.trim().length > 0) {
-      console.log("Success", newRoute);
-    } else {
-      console.log("Failure", newRoute);
+      GymsActions.createRoute(gymsDispatch, newRoute, gymId).then(
+        (response: Response) => {
+          if (response instanceof Response && response.ok) {
+            history.push(Routes.GYMS + "/" + gymId);
+          } else {
+            toast.error("Error adding route.");
+          }
+        }
+      );
     }
   };
 
