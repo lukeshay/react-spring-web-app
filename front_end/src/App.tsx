@@ -5,6 +5,7 @@ import {
 } from "@material-ui/core";
 import ToggleSwitch from "@material-ui/core/Switch";
 import React from "react";
+import Favicon from "react-favicon";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GymsStore } from "./context/gyms/gymsStore";
@@ -13,7 +14,6 @@ import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import StoreCombiner from "./StoreCombiner";
 import { darkTheme, getTheme, lightTheme } from "./theme";
-import Favicon from "react-favicon";
 
 interface Style {
   marginLeft: string;
