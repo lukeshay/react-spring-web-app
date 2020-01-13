@@ -125,3 +125,17 @@ export const createWall = async (dispatch: any, wall: Wall, gymId: string) => {
 
   return responsePromise;
 };
+
+export const updateWall = async (dispatch: any, wall: Wall, gymId: string) => {
+  const responsePromise = WallsApi.updateWall(wall).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};

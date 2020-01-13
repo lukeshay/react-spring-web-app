@@ -9,6 +9,9 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import * as ReactRouter from "react-router";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
 import { Wall } from "../../../types";
 import Form from "../../common/forms/Form";
@@ -37,6 +40,8 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
   const history = ReactRouter.useHistory();
 
   const classes = useStyles();
+
+  const { dispatch: gymsDispatch } = useGymsContext();
 
   const [name, setName] = React.useState<string>(wall.name);
   const [lead, setLead] = React.useState<boolean>(
@@ -102,6 +107,17 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
     if (types.length !== 0 && name.trim().length !== 0) {
       setTypesMessage("");
       setNameMessage("");
+      GymsActions.updateWall(
+        gymsDispatch,
+        { name, types, gymId: wall.gymId, id: wall.id } as Wall,
+        wall.gymId
+      ).then((response) => {
+        if (response instanceof Response && response.ok) {
+          history.push(Routes.GYMS + "/" + wall.gymId);
+        } else {
+          toast.error("Error updating wall.");
+        }
+      });
     }
   };
 
