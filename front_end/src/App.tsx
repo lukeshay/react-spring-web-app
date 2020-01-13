@@ -49,7 +49,6 @@ const App: React.FC = () => {
 
   return (
     <StoreCombiner stores={[UserStore, GymsStore]}>
-      <Favicon url="./favicon.ico" />
       <div style={style}>
         <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
           <CssBaseline />
