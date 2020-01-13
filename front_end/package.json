@@ -8,6 +8,7 @@
   "license": "LGPL",
   "scripts": {
     "start": "webpack-dev-server --open --hot --config configs/webpack/dev.js",
+    "start:local": "webpack-dev-server --open --hot --config configs/webpack/local.js",
     "prebuild": "yarn",
     "build": "webpack -p --config=configs/webpack/prod.js",
     "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",

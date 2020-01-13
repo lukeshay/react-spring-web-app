@@ -1,3 +1,5 @@
+import { Wall } from "../types";
+import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "wall";
@@ -7,5 +9,54 @@ export const getWalls = async (gymId: string): Promise<void | Response> => {
     .then((response: Response) => {
       return response;
     })
+    .catch(handleError);
+};
+
+export const createWall = async (wall: Wall): Promise<void | Response> => {
+  return fetch(baseUrl, {
+    body: JSON.stringify(wall),
+    headers: {
+      Authorization: Cookies.getJwtToken(),
+      "Content-Type": "application/json"
+    },
+    method: "POST"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
+    .catch(handleError);
+};
+
+export const updateWall = async (wall: Wall): Promise<void | Response> => {
+  return fetch(baseUrl, {
+    body: JSON.stringify(wall),
+    headers: {
+      Authorization: Cookies.getJwtToken(),
+      "Content-Type": "application/json"
+    },
+    method: "PUT"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
+    .catch(handleError);
+};
+
+export const deleteWall = async (wallId: string): Promise<void | Response> => {
+  return fetch(baseUrl + "/" + wallId, {
+    headers: {
+      Authorization: Cookies.getJwtToken()
+    },
+    method: "DELETE"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
     .catch(handleError);
 };

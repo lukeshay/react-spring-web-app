@@ -1,8 +1,7 @@
 import * as GymsApi from "../../api/gymsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, Route, User, Wall } from "../../types";
-import * as Cookies from "../../utils/cookiesUtils";
+import { Gym, Route, Wall } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
 
@@ -107,6 +106,52 @@ export const updateGym = async (
       }
 
       return response;
+    }
+  );
+
+  return responsePromise;
+};
+
+export const createWall = async (dispatch: any, wall: Wall, gymId: string) => {
+  const responsePromise = WallsApi.createWall(wall).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
+
+export const updateWall = async (dispatch: any, wall: Wall, gymId: string) => {
+  const responsePromise = WallsApi.updateWall(wall).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
+
+export const deleteWall = async (
+  dispatch: any,
+  wallId: string,
+  gymId: string
+) => {
+  const responsePromise = WallsApi.deleteWall(wallId).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
     }
   );
 

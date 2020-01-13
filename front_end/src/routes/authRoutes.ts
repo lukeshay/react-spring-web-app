@@ -1,3 +1,8 @@
 export const AuthRoutes = {
-  EDIT_GYM: "/gyms/edit"
+  ADD_ROUTE: "/routes/add",
+  ADD_WALL: "/walls/add",
+  EDIT_GYM: "/gyms/edit",
+  EDIT_WALL: "/walls/edit",
+  ROUTES: "/routes",
+  WALLS: "/walls"
 };

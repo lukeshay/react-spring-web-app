@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1)
     },
     form: {
+      marginLeft: "auto",
+      marginRight: "auto",
       marginTop: theme.spacing(1),
       width: "100%"
     },
