@@ -1,17 +1,17 @@
 import {
-  createStyles,
-  makeStyles,
-  Theme,
   Button,
-  FormLabel,
+  createStyles,
   FormGroup,
-  FormHelperText
+  FormHelperText,
+  FormLabel,
+  makeStyles,
+  Theme
 } from "@material-ui/core";
 import React from "react";
 import { Route } from "../../../types";
 import Form from "../../common/forms/Form";
-import Input from "../../common/inputs/Input";
 import CheckBox from "../../common/inputs/CheckBox";
+import Input from "../../common/inputs/Input";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,24 +46,52 @@ const RouteForm: React.FC<IRouteFormProps> = ({
 }) => {
   const classes = useStyles();
 
-  const [name, setName] = React.useState<string>(route.name);
-  const [setter, setSetter] = React.useState<string>(route.setter);
+  const [name, setName] = React.useState<string>(route.name || "");
+  const [setter, setSetter] = React.useState<string>(route.setter || "");
 
   const [lead, setLead] = React.useState<boolean>(
-    route.types.filter((element) => element === "LEAD").length > 0
+    route.types &&
+      route.types.filter((element) => element === "LEAD").length > 0
   );
   const [topRope, setTopRope] = React.useState<boolean>(
-    route.types.filter((element) => element === "TOP_ROPE").length > 0
+    route.types &&
+      route.types.filter((element) => element === "TOP_ROPE").length > 0
   );
   const [autoBelay, setAutoBelay] = React.useState<boolean>(
-    route.types.filter((element) => element === "AUTO_BELAY").length > 0
+    route.types &&
+      route.types.filter((element) => element === "AUTO_BELAY").length > 0
   );
   const [boulder, setBoulder] = React.useState<boolean>(
-    route.types.filter((element) => element === "BOULDER").length > 0
+    route.types &&
+      route.types.filter((element) => element === "BOULDER").length > 0
   );
-  const [holdColor, setHoldColor] = React.useState<string>(route.holdColor);
-  const [gymId, setGymId] = React.useState<string>(route.gymId);
-  const [wallId, setWallId] = React.useState<string>(route.wallId);
+  const [holdColor, setHoldColor] = React.useState<string>(
+    route.holdColor || ""
+  );
+
+  const onSubmit = (event: any) => {
+    event.preventDefault();
+
+    const types: string[] = [];
+
+    if (lead) {
+      types.push("LEAD");
+    }
+
+    if (topRope) {
+      types.push("TOP_ROPE");
+    }
+
+    if (autoBelay) {
+      types.push("AUTO_BELAY");
+    }
+
+    if (boulder) {
+      types.push("BOULDER");
+    }
+
+    handleSubmit({ name, setter, holdColor, types } as Route);
+  };
 
   const handleChange = (event: any) => {
     const { id, value } = event.target;
@@ -122,7 +150,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
       <Input
         placeholder="Hold Color"
         id="holdColor"
-        value={name}
+        value={holdColor}
         handleChange={handleChange}
         type="text"
         autoCapitalize="true"
@@ -177,7 +205,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
       title={FormHead}
       formInputs={FormInputs}
       buttonText={submitButtonText}
-      handleSubmit={handleSubmit}
+      handleSubmit={onSubmit}
     />
   );
 };

@@ -10,8 +10,11 @@ import { Route } from "../../../types";
 const RouteAddPage: React.FC = () => {
   const history = ReactRouter.useHistory();
 
+  const [route, setRoute] = React.useState<Route>({} as Route);
   const [wallId, setWallId] = React.useState<string>("");
   const [gymId, setGymId] = React.useState<string>("");
+  const [typesMessage, setTypesMessage] = React.useState<string>("");
+  const [nameMessage, setNameMessage] = React.useState<string>("");
 
   const { state: gymsState } = useGymsContext();
   const { state: userState } = useUserContext();
@@ -55,15 +58,45 @@ const RouteAddPage: React.FC = () => {
     }
   }, []);
 
-  return (
-    <RouteForm
-      route={{} as Route}
-      formHeadText="Add route"
-      handleCancel={() => history.push(Routes.GYMS + "/" + gymId)}
-      handleSubmit={(route: Route) => console.log(route)}
-      submitButtonText="Add route"
-    />
-  );
+  const handleSubmit = async (returnRoute: Route) => {
+    const newRoute = { wallId, gymId, ...returnRoute };
+
+    setRoute(newRoute);
+
+    if (newRoute.types.length < 1) {
+      setTypesMessage("Must select a type.");
+    } else {
+      setTypesMessage("");
+    }
+
+    if (newRoute.name.trim().length < 1) {
+      setNameMessage("Name cannot be blank");
+    } else {
+      setNameMessage("");
+    }
+
+    if (newRoute.types.length > 0 && newRoute.name.trim().length > 0) {
+      console.log("Success", newRoute);
+    } else {
+      console.log("Failure", newRoute);
+    }
+  };
+
+  if (gymId !== "" && wallId !== "") {
+    return (
+      <RouteForm
+        route={route}
+        formHeadText="Add route"
+        handleCancel={() => history.push(Routes.GYMS + "/" + gymId)}
+        handleSubmit={handleSubmit}
+        submitButtonText="Add route"
+        nameMessage={nameMessage}
+        typesMessage={typesMessage}
+      />
+    );
+  } else {
+    return <React.Fragment />;
+  }
 };
 
 export default RouteAddPage;

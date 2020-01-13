@@ -109,13 +109,7 @@ const GymPage: React.FC = () => {
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
-    if (
-      wall &&
-      (!wall.routes || wall.routes.length === 0 || !wall.routes[0]) &&
-      gymId
-    ) {
-      GymsActions.loadGymV2(gymsDispatch, gymId);
-    } else if (wall) {
+    if (wall) {
       setWalls(false);
       setRoutes(wall.routes);
       setWallId(wall.id);
@@ -165,7 +159,7 @@ const GymPage: React.FC = () => {
             to={
               walls
                 ? AuthRoutes.ADD_WALL + "/" + gymId
-                : AuthRoutes.ADD_ROUTE + "/" + gymId + "/" + wallId
+                : AuthRoutes.ADD_ROUTE + "/" + wallId
             }
             className={classes.addButton}
             variant="text"
