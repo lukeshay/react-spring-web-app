@@ -2,6 +2,7 @@ import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -20,10 +21,16 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface IWallRowProps {
   wall: Wall;
   canEdit: boolean;
-  onRowClick(wallId: string): Promise<void>;
+  onRowClick(wallId: string): Promise<void> | void;
+  onDeleteClick(wallId: string): Promise<void> | void;
 }
 
-const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick, canEdit }) => {
+const WallRow: React.FC<IWallRowProps> = ({
+  wall,
+  onRowClick,
+  canEdit,
+  onDeleteClick
+}) => {
   const classes = useStyles();
 
   return (
@@ -36,13 +43,29 @@ const WallRow: React.FC<IWallRowProps> = ({ wall, onRowClick, canEdit }) => {
           <Button
             component={Link}
             to={AuthRoutes.EDIT_WALL + "/" + wall.id}
-            variant="text"
+            variant="outlined"
             fullWidth={false}
             size="medium"
             type="button"
+            color="secondary"
           >
             <EditIcon className={classes.icons} />
             Edit
+          </Button>
+        </TableCell>
+      )}
+      {canEdit && (
+        <TableCell>
+          <Button
+            variant="outlined"
+            fullWidth={false}
+            size="medium"
+            type="button"
+            color="primary"
+            onClick={() => onDeleteClick(wall.id)}
+          >
+            <DeleteIcon className={classes.icons} />
+            Delete
           </Button>
         </TableCell>
       )}
@@ -54,9 +77,15 @@ export interface IWallListProps {
   walls: Wall[] | null;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void>;
+  handleDeleteWall(wallId: string): Promise<void>;
 }
 
-const WallList: React.FC<IWallListProps> = ({ walls, onRowClick, canEdit }) => {
+const WallList: React.FC<IWallListProps> = ({
+  walls,
+  onRowClick,
+  canEdit,
+  handleDeleteWall
+}) => {
   return (
     <Table
       head={
@@ -65,6 +94,7 @@ const WallList: React.FC<IWallListProps> = ({ walls, onRowClick, canEdit }) => {
           <TableCell key="routes">Routes</TableCell>
           <TableCell key="type">Type</TableCell>
           {canEdit && <TableCell key="edit">Edit</TableCell>}
+          {canEdit && <TableCell key="delete">Delete</TableCell>}
         </TableRow>
       }
       body={
@@ -75,6 +105,7 @@ const WallList: React.FC<IWallListProps> = ({ walls, onRowClick, canEdit }) => {
             wall={wall}
             onRowClick={onRowClick}
             canEdit={canEdit}
+            onDeleteClick={handleDeleteWall}
           />
         ))
       }

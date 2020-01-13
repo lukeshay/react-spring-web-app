@@ -45,3 +45,18 @@ export const updateWall = async (wall: Wall): Promise<void | Response> => {
     )
     .catch(handleError);
 };
+
+export const deleteWall = async (wallId: string): Promise<void | Response> => {
+  return fetch(baseUrl + "/" + wallId, {
+    headers: {
+      Authorization: Cookies.getJwtToken()
+    },
+    method: "DELETE"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
+    .catch(handleError);
+};

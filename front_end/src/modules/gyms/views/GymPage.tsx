@@ -124,6 +124,20 @@ const GymPage: React.FC = () => {
     }
   };
 
+  const handleDeleteWall = async (rowWallId: string) => {
+    if (gymId) {
+      GymsActions.deleteWall(gymsDispatch, rowWallId, gymId).then(
+        (response: Response) => {
+          if (!response || !(response instanceof Response) || !response.ok) {
+            toast.error("Error deleting wall.");
+          }
+        }
+      );
+    } else {
+      toast.error("Error deleting wall.");
+    }
+  };
+
   return (
     <React.Fragment>
       <GymInformation gym={gym} canEdit={canEdit} />
@@ -169,6 +183,7 @@ const GymPage: React.FC = () => {
             walls={gym.walls}
             onRowClick={onWallRowClick}
             canEdit={canEdit}
+            handleDeleteWall={handleDeleteWall}
           />
         ) : (
           <RoutesList routes={routes} canEdit={canEdit} />

@@ -139,3 +139,21 @@ export const updateWall = async (dispatch: any, wall: Wall, gymId: string) => {
 
   return responsePromise;
 };
+
+export const deleteWall = async (
+  dispatch: any,
+  wallId: string,
+  gymId: string
+) => {
+  const responsePromise = WallsApi.deleteWall(wallId).then(
+    (response: Response) => {
+      if (response instanceof Response && response.ok) {
+        return loadGymV2(dispatch, gymId);
+      } else {
+        return response;
+      }
+    }
+  );
+
+  return responsePromise;
+};
