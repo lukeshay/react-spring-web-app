@@ -17,7 +17,7 @@ public class WallWithRoutes extends Wall {
   private List<Route> routes = new ArrayList<>();
 
   public WallWithRoutes(Wall wall, List<Route> routes) {
-    super(wall.getId(), wall.getGymId(), wall.getName(), wall.getType(), wall.isPersistable());
+    super(wall.getId(), wall.getGymId(), wall.getName(), wall.getTypes(), wall.isPersistable());
     this.routes = routes;
   }
 }

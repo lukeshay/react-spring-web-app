@@ -46,7 +46,7 @@ public class WallService {
       String wallId,
       String gymId,
       String updatedName,
-      WallTypes updatedType) {
+      List<WallTypes> updatedTypes) {
     if (gymId == null || wallId == null) {
       return null;
     }
@@ -68,8 +68,8 @@ public class WallService {
       wall.setName(updatedName);
     }
 
-    if (updatedType != null) {
-      wall.setType(updatedType);
+    if (updatedTypes != null && updatedTypes.size() > 0) {
+      wall.setTypes(updatedTypes);
     }
 
     wall.setPersistable(true);
