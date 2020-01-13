@@ -5,6 +5,7 @@ import com.lukeshay.restapi.utils.Bodys;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/users")
@@ -141,6 +143,17 @@ public class UserController {
     } else {
       return Responses.okJsonResponse(user);
     }
+  }
+
+  @GetMapping("/all")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiIgnore
+  public ResponseEntity<?> getAllUsers(HttpServletRequest request) {
+    LOG.debug("Getting all users.");
+
+    List<User> users = userService.getAllUsers();
+
+    return Responses.okJsonResponse(users);
   }
 
   private ResponseEntity<?> checkDuplicate(

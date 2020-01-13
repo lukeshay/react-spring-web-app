@@ -2,6 +2,7 @@ package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.services.Requests;
 import java.util.Collections;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -142,5 +143,9 @@ class UserService {
       userRepository.deleteById(userId);
       return deletedUser;
     }
+  }
+
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
   }
 }
