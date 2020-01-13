@@ -1,3 +1,5 @@
+import { makeStyles, Theme, createStyles } from "@material-ui/core";
+
 export const shouldDisplay = (
   condition: boolean | null
 ): { display: "block" | "none" } => {

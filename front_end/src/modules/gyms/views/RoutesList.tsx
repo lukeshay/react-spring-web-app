@@ -71,7 +71,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
         <TableCell>
           <Button
             component={Link}
-            to={AuthRoutes.EDIT_ROUTE + "/" + route.id}
+            to={AuthRoutes.EDIT_ROUTE + "/" + route.id + "/" + route.wallId}
             variant="outlined"
             fullWidth={false}
             size="medium"
