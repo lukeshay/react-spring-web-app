@@ -32,17 +32,42 @@ const WallRow: React.FC<IWallRowProps> = ({
   onDeleteClick
 }) => {
   const classes = useStyles();
+  const { id, routes, name } = wall;
+
+  let types = "";
+
+  wall.types.forEach((value) => {
+    if (types.length !== 0) {
+      types += ", ";
+    }
+
+    if (value === "LEAD") {
+      types += "Lead";
+    }
+
+    if (value === "TOP_ROPE") {
+      types += "Top rope";
+    }
+
+    if (value === "BOULDER") {
+      types += "Boulder";
+    }
+
+    if (value === "AUTO_BELAY") {
+      types += "Auto belay";
+    }
+  });
 
   return (
-    <TableRow hover id={wall.id} onClick={() => onRowClick(wall.id)}>
-      <TableCell>{wall.name}</TableCell>
-      <TableCell>{wall.routes ? wall.routes.length : 0}</TableCell>
-      <TableCell>{wall.types}</TableCell>
+    <TableRow hover id={id} onClick={() => onRowClick(id)}>
+      <TableCell>{name}</TableCell>
+      <TableCell>{routes ? routes.length : 0}</TableCell>
+      <TableCell>{types}</TableCell>
       {canEdit && (
         <TableCell>
           <Button
             component={Link}
-            to={AuthRoutes.EDIT_WALL + "/" + wall.id}
+            to={AuthRoutes.EDIT_WALL + "/" + id}
             variant="outlined"
             fullWidth={false}
             size="medium"
@@ -62,7 +87,7 @@ const WallRow: React.FC<IWallRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={() => onDeleteClick(wall.id)}
+            onClick={() => onDeleteClick(id)}
           >
             <DeleteIcon className={classes.icons} />
             Delete
