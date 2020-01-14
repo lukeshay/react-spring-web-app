@@ -35,7 +35,10 @@ interface IGymPageRowProps {
   text: React.ReactNode;
 }
 
-const GymPageRow: React.FC<IGymPageRowProps> = ({ label, text }) => (
+const GymPageRow: React.FC<IGymPageRowProps> = ({
+  label,
+  text
+}): JSX.Element => (
   <TableRow>
     <TableCell>{label}</TableCell>
     <TableCell>{text}</TableCell>
@@ -50,7 +53,7 @@ export interface IGymInformationProps {
 const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
   gym,
   canEdit
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
 
   return (

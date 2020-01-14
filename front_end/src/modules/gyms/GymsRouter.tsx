@@ -10,7 +10,7 @@ const WallAddPage = React.lazy(() => import("./views/WallAddPage"));
 const RouteAddPage = React.lazy(() => import("./views/RouteAddPage"));
 const RouteEditPage = React.lazy(() => import("./views/RouteEditPage"));
 
-const GymRouter: React.FC = () => (
+const GymRouter: React.FC = (): JSX.Element => (
   <React.Suspense fallback={<div />}>
     <Switch>
       <Route exact={true} path={Routes.GYMS} component={GymsPage} />

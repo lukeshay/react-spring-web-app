@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 
-const AboutPage: React.FC = () => {
+const AboutPage: React.FC = (): JSX.Element => {
   return (
     <React.Fragment>
       <Typography variant="h3">About This Web Application</Typography>

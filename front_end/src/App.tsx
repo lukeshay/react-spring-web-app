@@ -7,12 +7,10 @@ import ToggleSwitch from "@material-ui/core/Switch";
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GymsStore } from "./context/gyms/gymsStore";
 import * as UserActions from "./context/user/userActions";
-import { UserStore, useUserContext } from "./context/user/userStore";
+import { useUserContext } from "./context/user/userStore";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
-import StoreCombiner from "./StoreCombiner";
 import { darkTheme, getTheme, lightTheme } from "./theme";
 
 interface Style {
@@ -21,7 +19,7 @@ interface Style {
   marginTop: string;
 }
 
-const App: React.FC = () => {
+const App: React.FC = (): JSX.Element => {
   const [style, setStyle] = React.useState<Style>({
     marginLeft: "0px",
     marginRight: "0px",
@@ -39,10 +37,10 @@ const App: React.FC = () => {
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return (): void => window.removeEventListener("resize", handleResize);
   }, []);
 
-  function handleResize() {
+  function handleResize(): void {
     const width = window.innerWidth;
 
     if (width < 600) {
@@ -60,7 +58,10 @@ const App: React.FC = () => {
         <NavigationBar>
           <FormControlLabel
             control={
-              <ToggleSwitch checked={dark} onChange={() => setDark(!dark)} />
+              <ToggleSwitch
+                checked={dark}
+                onChange={(): void => setDark(!dark)}
+              />
             }
             label="Dark Mode"
             style={{

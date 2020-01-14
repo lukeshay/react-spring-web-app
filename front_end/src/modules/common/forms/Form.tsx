@@ -45,7 +45,7 @@ const Form: React.FC<IFormProps> = ({
   buttonText,
   helpElements,
   handleSubmit
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
 
   return (

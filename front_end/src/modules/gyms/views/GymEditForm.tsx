@@ -14,7 +14,9 @@ export interface IGymEditPageProps {
   gym: Gym;
 }
 
-const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
+const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
+  gym
+}): JSX.Element => {
   const history = ReactRouter.useHistory();
   const [gymId] = React.useState<string>(gym.id);
   const [name, setName] = React.useState<string>(gym.name);
@@ -91,7 +93,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     }
   }, [phoneNumber]);
 
-  const handleChange = async (event: any) => {
+  const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
     const { id, value } = event.target;
 
@@ -126,7 +128,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     }
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: any): void => {
     event.preventDefault();
 
     GymsActions.updateGym(
@@ -152,7 +154,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({ gym }) => {
     });
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     history.push(Routes.GYMS + "/" + gymId);
   };
 

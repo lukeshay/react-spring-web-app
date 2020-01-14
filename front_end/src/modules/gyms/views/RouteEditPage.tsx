@@ -1,68 +1,34 @@
 import React from "react";
-import * as ReactRouter from "react-router";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { useUserContext } from "../../../context/user/userStore";
-import { Routes } from "../../../routes";
 import { Route } from "../../../types";
-import * as GymsUtils from "../../../utils/gymsUtils";
-import * as UrlUtils from "../../../utils/urlUtils";
+import TransitionModal from "../../common/modal/Modal";
 import RouteForm from "./RouteForm";
 
-const RouteEditPage: React.FC = () => {
-  const history = ReactRouter.useHistory();
+export interface IRouteEditPageProps {
+  gymId: string;
+  open: boolean;
+  route: Route;
+  wallId: string;
+  handleClose(): Promise<void> | void;
+}
 
-  const [routeId, setRouteId] = React.useState<string>("");
-  const [wallId, setWallId] = React.useState<string>("");
-  const [gymId, setGymId] = React.useState<string>("");
-  const [route, setRoute] = React.useState<Route>({} as Route);
-  const [updatedRoute, setUpdatedRoute] = React.useState<Route>({} as Route);
+const RouteEditPage: React.FC<IRouteEditPageProps> = ({
+  gymId,
+  open,
+  route,
+  wallId,
+  handleClose
+}): JSX.Element => {
+  const [updatedRoute, setUpdatedRoute] = React.useState<Route>(route);
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
-  const { state: userState, dispatch: userDispatch } = useUserContext();
+  const { dispatch: gymsDispatch } = useGymsContext();
 
-  React.useEffect(() => {
-    const urlWallId = UrlUtils.getLastPathVariable(history.location.pathname);
-    const urlRouteId = UrlUtils.getSecondLastPathVariable(
-      history.location.pathname
-    );
-
-    setRouteId(urlRouteId);
-    setWallId(urlWallId);
-
-    const tempGym = GymsUtils.getGymByWallId(gymsState.gyms, urlWallId);
-
-    if (
-      tempGym &&
-      userState.user &&
-      GymsUtils.isAuthorizedEditor(tempGym, userState.user)
-    ) {
-      setGymId(tempGym.id);
-
-      const tempWall = GymsUtils.getWallById(tempGym, urlWallId);
-
-      if (tempWall) {
-        const tempRoute = GymsUtils.getRouteById(tempWall, urlRouteId);
-
-        if (!tempRoute) {
-          history.goBack();
-        } else {
-          setRoute(tempRoute);
-          setUpdatedRoute(tempRoute);
-        }
-      } else {
-        history.goBack();
-      }
-    } else {
-      history.goBack();
-    }
-  }, []);
-
-  const handleSubmit = async (returnRoute: Route) => {
-    const newRoute = { id: routeId, wallId, gymId, ...returnRoute };
+  const handleSubmit = async (returnRoute: Route): Promise<void> => {
+    const newRoute = { id: route.id, wallId, gymId, ...returnRoute };
 
     setUpdatedRoute(newRoute);
 
@@ -82,7 +48,7 @@ const RouteEditPage: React.FC = () => {
       GymsActions.updateRoute(gymsDispatch, newRoute, gymId).then(
         (response: Response) => {
           if (response instanceof Response && response.ok) {
-            history.push(Routes.GYMS + "/" + gymId);
+            handleClose();
           } else {
             toast.error("Error updating route.");
           }
@@ -91,21 +57,23 @@ const RouteEditPage: React.FC = () => {
     }
   };
 
-  if (updatedRoute.id) {
-    return (
+  return (
+    <TransitionModal
+      open={open}
+      handleClose={handleClose}
+      style={{ width: "475px" }}
+    >
       <RouteForm
         formHeadText="Update route"
         route={updatedRoute}
-        handleCancel={() => history.goBack()}
+        handleCancel={handleClose}
         handleSubmit={handleSubmit}
         submitButtonText="Update route"
         nameMessage={nameMessage}
         typesMessage={typesMessage}
       />
-    );
-  } else {
-    return <div />;
-  }
+    </TransitionModal>
+  );
 };
 
 export default RouteEditPage;

@@ -4,7 +4,9 @@ import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "routes";
 
-export const getRoutesOfWall = async (wallId: string) => {
+export const getRoutesOfWall = async (
+  wallId: string
+): Promise<void | Response> => {
   return fetch(baseUrl + "/" + wallId)
     .then(
       (response: Response): Response => {

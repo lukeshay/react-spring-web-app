@@ -12,11 +12,14 @@ interface IGymRowProps {
   gym: Gym;
 }
 
-const GymRow: React.FC<IGymRowProps> = ({ gym }) => {
+const GymRow: React.FC<IGymRowProps> = ({ gym }): JSX.Element => {
   const history = useHistory();
 
   return (
-    <TableRow hover onClick={() => history.push(Routes.GYMS + "/" + gym.id)}>
+    <TableRow
+      hover
+      onClick={(): void => history.push(Routes.GYMS + "/" + gym.id)}
+    >
       <TableCell>{gym.name}</TableCell>
       <TableCell>
         {gym.address}
@@ -28,14 +31,14 @@ const GymRow: React.FC<IGymRowProps> = ({ gym }) => {
   );
 };
 
-const GymsPage: React.FC = () => {
+const GymsPage: React.FC = (): JSX.Element => {
   const { state, dispatch } = useContext(GymsContext);
 
   React.useEffect(() => {
     loadGyms();
   }, []);
 
-  const loadGyms = async () => {
+  const loadGyms = async (): Promise<void> => {
     if (state.gyms.length === 0) {
       const response = await GymsActions.loadGyms(dispatch);
 

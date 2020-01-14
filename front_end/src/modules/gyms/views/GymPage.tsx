@@ -2,17 +2,21 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext, useGymsContext } from "../../../context/gyms/gymsStore";
-import { UserContext, useUserContext } from "../../../context/user/userStore";
+import { useGymsContext } from "../../../context/gyms/gymsStore";
+import { useUserContext } from "../../../context/user/userStore";
 import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
+import RouteAddPage from "./RouteAddPage";
+import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
+import WallAddPage from "./WallAddPage";
+import WallEditPage from "./WallEditPage";
 import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,15 +38,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const GymPage: React.FC = () => {
+const GymPage: React.FC = (): JSX.Element => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [walls, setWalls] = React.useState<boolean>(true);
+  const [wall, setWall] = React.useState<Wall | undefined>(undefined);
   const [routes, setRoutes] = React.useState<Route[]>([]);
+  const [route, setRoute] = React.useState<Route | undefined>(undefined);
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
   const [wallId, setWallId] = React.useState<string>("");
+  const [openAdd, setOpenAdd] = React.useState<boolean>(false);
+  const [openEdit, setOpenEdit] = React.useState<boolean>(false);
 
   const classes = useStyles();
   const history = useHistory();
@@ -76,6 +84,15 @@ const GymPage: React.FC = () => {
       const { user } = userState;
       const { authorizedEditors } = tempGym;
 
+      const tempWall = tempGym.walls
+        ? tempGym.walls.find((element: Wall) => element.id === wallId)
+        : null;
+
+      if (tempWall) {
+        setRoutes(tempWall.routes);
+        setWallId(tempWall.id);
+      }
+
       if (
         user &&
         authorizedEditors &&
@@ -88,7 +105,7 @@ const GymPage: React.FC = () => {
     }
   }, [gymsState]);
 
-  const loadFullGym = () => {
+  const loadFullGym = (): void => {
     if (gymId) {
       GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
         if (!response || !(response instanceof Response) || !response.ok) {
@@ -98,60 +115,85 @@ const GymPage: React.FC = () => {
     }
   };
 
-  if (!gym) {
-    return <h3>Cannot find the gym you are looking for.</h3>;
-  }
-
-  const onWallRowClick = async (rowWallId: string) => {
-    const wall = gym.walls
+  const onWallRowClick = async (rowWallId: string): Promise<void> => {
+    const tempWall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
-    if (wall) {
+    if (tempWall) {
       setWalls(false);
-      setRoutes(wall.routes);
-      setWallId(wall.id);
+      setRoutes(tempWall.routes);
+      setWallId(tempWall.id);
     } else {
       toast.error("Could not find wall.");
     }
   };
 
-  const handleDeleteWall = async (rowWallId: string) => {
-    if (gymId) {
-      GymsActions.deleteWall(gymsDispatch, rowWallId, gymId).then(
-        (response: Response) => {
-          if (!response || !(response instanceof Response) || !response.ok) {
-            toast.error("Error deleting wall.");
+  const handleDeleteWall = async (rowWallId: string): Promise<void> => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this wall? This action cannot be undone."
+      )
+    ) {
+      if (gymId) {
+        GymsActions.deleteWall(gymsDispatch, rowWallId, gymId).then(
+          (response: Response) => {
+            if (!response || !(response instanceof Response) || !response.ok) {
+              toast.error("Error deleting wall.");
+            }
           }
-        }
-      );
-    } else {
-      toast.error("Error deleting wall.");
+        );
+      } else {
+        toast.error("Error deleting wall.");
+      }
     }
   };
 
-  const handleDeleteRoute = async (routeId: string) => {
-    if (gymId) {
-      GymsActions.deleteRoute(
-        gymsDispatch,
-        { id: routeId, gymId } as Route,
-        gymId
-      ).then((response: Response) => {
-        if (!response || !(response instanceof Response) || !response.ok) {
-          toast.error("Error deleting route.");
-        } else {
-          const newRoutes: Route[] = [];
-
-          routes.forEach(
-            (element) => element.id !== routeId && newRoutes.push(element)
-          );
-
-          setRoutes(newRoutes);
-        }
-      });
-    } else {
-      toast.error("Error deleting route.");
+  const handleDeleteRoute = async (routeId: string): Promise<void> => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this route? This action cannot be undone."
+      )
+    ) {
+      if (gymId) {
+        GymsActions.deleteRoute(
+          gymsDispatch,
+          { id: routeId, gymId } as Route,
+          gymId
+        ).then((response: Response) => {
+          if (!response || !(response instanceof Response) || !response.ok) {
+            toast.error("Error deleting route.");
+          }
+        });
+      } else {
+        toast.error("Error deleting route.");
+      }
     }
+  };
+
+  const handleEditRoute = async (tempRoute: Route): Promise<void> => {
+    setRoute(tempRoute);
+    setOpenEdit(true);
+    setOpenAdd(false);
+  };
+
+  const handleEditWall = async (tempWall: Wall): Promise<void> => {
+    setWall(tempWall);
+    setOpenEdit(true);
+    setOpenAdd(false);
+  };
+
+  const handleOpenAdd = async (): Promise<void> => {
+    setOpenAdd(true);
+    setOpenEdit(false);
+  };
+
+  const handleCloseAdd = async (): Promise<void> => setOpenAdd(false);
+
+  const handleCloseEdit = async (): Promise<void> => {
+    setOpenEdit(false);
+    setRoute(undefined);
+    setWall(undefined);
   };
 
   return (
@@ -167,7 +209,7 @@ const GymPage: React.FC = () => {
             fullWidth={false}
             size="medium"
             type="button"
-            onClick={() => {
+            onClick={(): void => {
               setWalls(true);
               setWallId("");
             }}
@@ -177,12 +219,7 @@ const GymPage: React.FC = () => {
             Back
           </Button>
           <Button
-            component={Link}
-            to={
-              walls
-                ? AuthRoutes.ADD_WALL + "/" + gymId
-                : AuthRoutes.ADD_ROUTE + "/" + wallId
-            }
+            onClick={handleOpenAdd}
             className={classes.addButton}
             variant="text"
             fullWidth={false}
@@ -200,15 +237,49 @@ const GymPage: React.FC = () => {
             onRowClick={onWallRowClick}
             canEdit={canEdit}
             handleDeleteWall={handleDeleteWall}
+            onEditClick={handleEditWall}
           />
         ) : (
           <RoutesList
             routes={routes}
             canEdit={canEdit}
-            onDeleteClick={handleDeleteRoute}
+            handleEditRoute={handleEditRoute}
+            handleDeleteRoute={handleDeleteRoute}
           />
         )}
       </div>
+      {gymId && (
+        <RouteAddPage
+          open={!walls && openAdd}
+          handleClose={handleCloseAdd}
+          gymId={gymId}
+          wallId={wallId}
+        />
+      )}
+      {gymId && route && (
+        <RouteEditPage
+          open={!walls && openEdit}
+          handleClose={handleCloseEdit}
+          gymId={gymId}
+          wallId={wallId}
+          route={route}
+        />
+      )}
+      {gymId && (
+        <WallAddPage
+          open={walls && openAdd}
+          handleClose={handleCloseAdd}
+          gymId={gymId}
+        />
+      )}
+      {gymId && wall && (
+        <WallEditPage
+          open={walls && openEdit}
+          handleClose={handleCloseEdit}
+          gymId={gymId}
+          wall={wall}
+        />
+      )}
     </React.Fragment>
   );
 };

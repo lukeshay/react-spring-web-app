@@ -5,16 +5,16 @@ import ProfileForm from "./views/ProfileForm";
 import SignInForm from "./views/SignInForm";
 import SignUpForm from "./views/SignUpForm";
 
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = (): JSX.Element => {
   const { state } = useContext(UserContext);
   const [createAccount, setCreateAccount] = React.useState<boolean>(true);
 
-  const handleSignInClick = (event: any) => {
+  const handleSignInClick = (event: any): void => {
     event.preventDefault();
     setCreateAccount(false);
   };
 
-  const handleSignUpClick = (event: any) => {
+  const handleSignUpClick = (event: any): void => {
     event.preventDefault();
     setCreateAccount(true);
   };

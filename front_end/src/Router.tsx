@@ -8,7 +8,7 @@ const ProfilePage = lazy(() => import("./modules/profile"));
 const GymsPage = lazy(() => import("./modules/gyms"));
 const AboutPage = lazy(() => import("./modules/about"));
 
-const Router: React.FC = () => {
+const Router: React.FC = (): JSX.Element => {
   return (
     <Suspense fallback={<div />}>
       <Switch>

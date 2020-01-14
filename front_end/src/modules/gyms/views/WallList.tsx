@@ -4,9 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
-import { Link } from "react-router-dom";
-import { AuthRoutes } from "../../../routes";
-import { Gym, Wall } from "../../../types";
+import { Wall } from "../../../types";
 import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,6 +19,7 @@ export interface IWallRowProps {
   wall: Wall;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void> | void;
+  onEditClick(wall: Wall): Promise<void> | void;
   onDeleteClick(wallId: string): Promise<void> | void;
 }
 
@@ -28,8 +27,9 @@ const WallRow: React.FC<IWallRowProps> = ({
   wall,
   onRowClick,
   canEdit,
+  onEditClick,
   onDeleteClick
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
   const { id, routes, name } = wall;
 
@@ -57,16 +57,31 @@ const WallRow: React.FC<IWallRowProps> = ({
     }
   });
 
+  const handleEditClick = (event: any): void => {
+    event.stopPropagation();
+
+    onEditClick(wall);
+  };
+
+  const handleDeleteClick = (event: any): void => {
+    event.stopPropagation();
+
+    onDeleteClick(wall.id);
+  };
+
   return (
-    <TableRow hover id={id} onClick={() => onRowClick(id)}>
+    <TableRow
+      hover
+      id={id}
+      onClick={(): void | Promise<void> => onRowClick(id)}
+    >
       <TableCell>{name}</TableCell>
       <TableCell>{routes ? routes.length : 0}</TableCell>
       <TableCell>{types}</TableCell>
       {canEdit && (
         <TableCell>
           <Button
-            component={Link}
-            to={AuthRoutes.EDIT_WALL + "/" + id}
+            onClick={handleEditClick}
             variant="outlined"
             fullWidth={false}
             size="medium"
@@ -86,7 +101,7 @@ const WallRow: React.FC<IWallRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={() => onDeleteClick(id)}
+            onClick={handleDeleteClick}
           >
             <DeleteIcon className={classes.icons} />
             Delete
@@ -101,6 +116,7 @@ export interface IWallListProps {
   walls: Wall[] | null;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void>;
+  onEditClick(wall: Wall): Promise<void> | void;
   handleDeleteWall(wallId: string): Promise<void>;
 }
 
@@ -108,8 +124,9 @@ const WallList: React.FC<IWallListProps> = ({
   walls,
   onRowClick,
   canEdit,
-  handleDeleteWall
-}) => {
+  handleDeleteWall,
+  onEditClick
+}): JSX.Element => {
   return (
     <Table
       head={
@@ -130,6 +147,7 @@ const WallList: React.FC<IWallListProps> = ({
             onRowClick={onRowClick}
             canEdit={canEdit}
             onDeleteClick={handleDeleteWall}
+            onEditClick={onEditClick}
           />
         ))
       }

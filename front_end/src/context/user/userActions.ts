@@ -67,7 +67,9 @@ export async function updateUser(
   return updateUserResponse;
 }
 
-export const loadUserFromCookies = async (dispatch: any) => {
+export const loadUserFromCookies = async (
+  dispatch: any
+): Promise<void | Response> => {
   const getUserResponse = await UserApi.getUser();
 
   if (getUserResponse instanceof Response && getUserResponse.ok) {

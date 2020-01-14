@@ -8,11 +8,6 @@ import {
   Theme
 } from "@material-ui/core";
 import React from "react";
-import * as ReactRouter from "react-router";
-import { toast } from "react-toastify";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { Routes } from "../../../routes";
 import { Wall } from "../../../types";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
@@ -20,9 +15,6 @@ import Input from "../../common/inputs/Input";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    checkboxGroup: {
-      marginLeft: "145px"
-    },
     helpText: {
       color: theme.palette.error.main,
       padding: "5px"
@@ -30,36 +22,45 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface IWallEditFormProps {
+export interface IWallFormProps {
   wall: Wall;
+  formHeadText: string;
+  nameMessage?: string;
+  submitButtonText: string;
+  typesMessage?: string;
+  handleCancel(event: any): Promise<void> | void;
+  handleSubmit(wall: Wall): Promise<void> | void;
 }
 
-const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
-  wall
-}) => {
-  const history = ReactRouter.useHistory();
-
+const WallForm: React.FC<IWallFormProps> = ({
+  wall,
+  formHeadText,
+  nameMessage,
+  submitButtonText,
+  typesMessage,
+  handleCancel,
+  handleSubmit
+}): JSX.Element => {
   const classes = useStyles();
-
-  const { dispatch: gymsDispatch } = useGymsContext();
 
   const [name, setName] = React.useState<string>(wall.name);
   const [lead, setLead] = React.useState<boolean>(
-    wall.types.filter((element) => element === "LEAD").length > 0
+    wall.types && wall.types.filter((element) => element === "LEAD").length > 0
   );
   const [topRope, setTopRope] = React.useState<boolean>(
-    wall.types.filter((element) => element === "TOP_ROPE").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "TOP_ROPE").length > 0
   );
   const [autoBelay, setAutoBelay] = React.useState<boolean>(
-    wall.types.filter((element) => element === "AUTO_BELAY").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "AUTO_BELAY").length > 0
   );
   const [boulder, setBoulder] = React.useState<boolean>(
-    wall.types.filter((element) => element === "BOULDER").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "BOULDER").length > 0
   );
-  const [typesMessage, setTypesMessage] = React.useState<string>("");
-  const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const handleChange = (event: any) => {
+  const handleChange = async (event: any): Promise<void> => {
     const { id, value } = event.target;
 
     if (id === "name") {
@@ -75,7 +76,7 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
     }
   };
 
-  const handleSubmit = (event: any) => {
+  const onSubmit = (event: any): void => {
     event.preventDefault();
 
     const types: string[] = [];
@@ -96,39 +97,13 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
       types.push("BOULDER");
     }
 
-    if (types.length === 0) {
-      setTypesMessage("Select a type.");
-    }
-
-    if (name.trim().length === 0) {
-      setNameMessage("Name cannot be blank.");
-    }
-
-    if (types.length !== 0 && name.trim().length !== 0) {
-      setTypesMessage("");
-      setNameMessage("");
-      GymsActions.updateWall(
-        gymsDispatch,
-        { name, types, gymId: wall.gymId, id: wall.id } as Wall,
-        wall.gymId
-      ).then((response) => {
-        if (response instanceof Response && response.ok) {
-          history.push(Routes.GYMS + "/" + wall.gymId);
-        } else {
-          toast.error("Error updating wall.");
-        }
-      });
-    }
-  };
-
-  const handleCancel = () => {
-    history.goBack();
+    handleSubmit({ name, types } as Wall);
   };
 
   const FormHead: JSX.Element = (
     <div style={{ display: "inline" }}>
       <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
-        Update Wall
+        {formHeadText}
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button onClick={handleCancel} type="button" variant="outlined">
@@ -158,7 +133,6 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
           value="TOP_ROPE"
           label="Top rope"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -167,7 +141,6 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
           value="LEAD"
           label="Lead"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -176,7 +149,6 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
           value="AUTO_BELAY"
           label="Auto belay"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -185,7 +157,6 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
           value="BOULDER"
           label="Boulder"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <FormHelperText className={classes.helpText}>
@@ -199,10 +170,10 @@ const WallEditForm: React.FunctionComponent<IWallEditFormProps> = ({
     <Form
       title={FormHead}
       formInputs={FormInputs}
-      buttonText="Update wall"
-      handleSubmit={handleSubmit}
+      buttonText={submitButtonText}
+      handleSubmit={onSubmit}
     />
   );
 };
 
-export default WallEditForm;
+export default WallForm;

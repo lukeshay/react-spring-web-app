@@ -10,7 +10,10 @@ export interface ISimpleTableProps {
   body: React.ReactNode[] | null;
 }
 
-const SimpleTable: React.FC<ISimpleTableProps> = ({ head, body }) => {
+const SimpleTable: React.FC<ISimpleTableProps> = ({
+  head,
+  body
+}): JSX.Element => {
   return (
     <TableContainer component={Paper}>
       <Table>

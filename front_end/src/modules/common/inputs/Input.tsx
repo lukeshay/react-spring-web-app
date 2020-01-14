@@ -25,7 +25,7 @@ const Input: React.FC<IPropsInput> = ({
   autoComplete,
   autoCapitalize,
   fullWidth
-}) => (
+}): JSX.Element => (
   <TextField
     id={id}
     type={type}

@@ -13,7 +13,9 @@ export interface IPropsSignUpForm {
   handleSignInClick(event: any): void;
 }
 
-const SignUpForm: React.FC<IPropsSignUpForm> = (props: IPropsSignUpForm) => {
+const SignUpForm: React.FC<IPropsSignUpForm> = (
+  props: IPropsSignUpForm
+): JSX.Element => {
   const { dispatch } = useContext(UserContext);
   const [firstName, setFirstName] = React.useState<string>("");
   const [lastName, setLastName] = React.useState<string>("");

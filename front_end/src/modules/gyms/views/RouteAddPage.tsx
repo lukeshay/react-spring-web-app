@@ -1,66 +1,31 @@
 import React from "react";
-import * as ReactRouter from "react-router";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { useUserContext } from "../../../context/user/userStore";
-import { Routes } from "../../../routes";
 import { Route } from "../../../types";
-import * as UrlUtils from "../../../utils/urlUtils";
+import TransitionModal from "../../common/modal/Modal";
 import RouteForm from "./RouteForm";
 
-const RouteAddPage: React.FC = () => {
-  const history = ReactRouter.useHistory();
+export interface IRouteAddPageProps {
+  gymId: string;
+  open: boolean;
+  wallId: string;
+  handleClose(): Promise<void> | void;
+}
 
+const RouteAddPage: React.FC<IRouteAddPageProps> = ({
+  gymId,
+  open,
+  wallId,
+  handleClose
+}): JSX.Element => {
   const [route, setRoute] = React.useState<Route>({} as Route);
-  const [wallId, setWallId] = React.useState<string>("");
-  const [gymId, setGymId] = React.useState<string>("");
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
-  const { state: userState } = useUserContext();
+  const { dispatch: gymsDispatch } = useGymsContext();
 
-  React.useEffect(() => {
-    const { user } = userState;
-
-    const urlWallId = UrlUtils.getLastPathVariable(history.location.pathname);
-
-    const tempGym = gymsState.gyms
-      .filter(
-        (element) =>
-          element.walls &&
-          element.walls.filter((elementWall) => elementWall.id === urlWallId)
-            .length > 0
-      )
-      .pop();
-
-    if (
-      tempGym &&
-      user &&
-      tempGym.authorizedEditors &&
-      tempGym.authorizedEditors.find(
-        (editorId: string) => editorId === user.userId
-      ) &&
-      tempGym.walls
-    ) {
-      const tempWall = tempGym.walls
-        .filter((element) => element.id === urlWallId)
-        .pop();
-      setGymId(tempGym.id);
-
-      // Only here to silence warning
-      if (tempWall) {
-        setWallId(urlWallId);
-      }
-    } else if (tempGym) {
-      history.push(Routes.GYMS + "/" + tempGym.id);
-    } else {
-      history.push(Routes.GYMS);
-    }
-  }, []);
-
-  const handleSubmit = async (returnRoute: Route) => {
+  const handleSubmit = async (returnRoute: Route): Promise<void> => {
     const newRoute = { wallId, gymId, ...returnRoute };
 
     setRoute(newRoute);
@@ -81,7 +46,8 @@ const RouteAddPage: React.FC = () => {
       GymsActions.createRoute(gymsDispatch, newRoute, gymId).then(
         (response: Response) => {
           if (response instanceof Response && response.ok) {
-            history.push(Routes.GYMS + "/" + gymId);
+            setRoute({} as Route);
+            handleClose();
           } else {
             toast.error("Error adding route.");
           }
@@ -92,15 +58,21 @@ const RouteAddPage: React.FC = () => {
 
   if (gymId !== "" && wallId !== "") {
     return (
-      <RouteForm
-        route={route}
-        formHeadText="Add route"
-        handleCancel={() => history.goBack()}
-        handleSubmit={handleSubmit}
-        submitButtonText="Add route"
-        nameMessage={nameMessage}
-        typesMessage={typesMessage}
-      />
+      <TransitionModal
+        open={open}
+        handleClose={handleClose}
+        style={{ width: "475px" }}
+      >
+        <RouteForm
+          route={route}
+          formHeadText="Add route"
+          handleCancel={handleClose}
+          handleSubmit={handleSubmit}
+          submitButtonText="Add route"
+          nameMessage={nameMessage}
+          typesMessage={typesMessage}
+        />
+      </TransitionModal>
     );
   } else {
     return <React.Fragment />;
