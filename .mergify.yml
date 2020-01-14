@@ -1,0 +1,11 @@
+pull_request_rules:
+  - name: automatic merge with strict
+    conditions:
+      - status-success=web-app-folder/front-end-branches
+      - status-success=web-app-folder/back-end-branches
+      - label=["automerge"]
+    actions:
+      delete_head_branch: {}
+      merge:
+        method: merge
+        strict: true
