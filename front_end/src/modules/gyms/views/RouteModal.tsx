@@ -202,12 +202,12 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   );
 
   return (
-      <Form
-        title={FormHead}
-        formInputs={FormInputs}
-        buttonText={submitButtonText}
-        handleSubmit={onSubmit}
-      />
+    <Form
+      title={FormHead}
+      formInputs={FormInputs}
+      buttonText={submitButtonText}
+      handleSubmit={onSubmit}
+    />
   );
 };
 

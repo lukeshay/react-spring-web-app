@@ -12,9 +12,9 @@ import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
+import RouteAddPage from "./RouteAddPage";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
-import RouteAddPage from "./RouteAddPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

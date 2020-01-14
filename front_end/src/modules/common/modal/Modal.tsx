@@ -1,10 +1,10 @@
 import {
-  Fade,
-  Modal,
   Backdrop,
+  createStyles,
+  Fade,
   makeStyles,
-  Theme,
-  createStyles
+  Modal,
+  Theme
 } from "@material-ui/core";
 import React from "react";
 
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       border: "2px solid #000",
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      outline: 0
+      outline: 0,
+      padding: theme.spacing(2, 4, 3)
     }
   })
 );
