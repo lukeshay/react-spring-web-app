@@ -25,10 +25,10 @@ export async function signIn(
     .catch(handleError);
 }
 
-export async function getUser(username: string): Promise<void | Response> {
+export async function getUser(): Promise<void | Response> {
   const token = Cookies.getJwtToken();
 
-  return fetch(userUrl + "?username=" + username, {
+  return fetch(userUrl, {
     headers: { Authorization: token },
     method: "GET"
   })
