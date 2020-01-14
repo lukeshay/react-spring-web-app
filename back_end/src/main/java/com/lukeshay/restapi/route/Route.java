@@ -33,7 +33,7 @@ public class Route implements Persistable<String> {
   @Expose private List<Grade> userGrade = new ArrayList<>();
   @Expose private Grade averageGrade;
   @Expose private List<Integer> userRating = new ArrayList<>();;
-  @Expose private Integer averageRating;
+  @Expose private double averageRating;
   private boolean persistable;
 
   public Route(
@@ -49,6 +49,27 @@ public class Route implements Persistable<String> {
     this.setter = setter;
     this.holdColor = holdColor;
     this.types = types;
+  }
+
+  public void addUserGrade(Grade grade) {
+    userGrade.add(grade);
+  }
+
+  public void addUserRating(Integer rating) {
+    userRating.add(rating);
+  }
+
+  public void updateAverages() {
+    int numberGrades = userGrade.size();
+    int numberRatings = userRating.size();
+    double averageGrade;
+    double averageRating;
+
+    averageGrade = userGrade.stream().mapToDouble(Grade::getValue).sum() / numberGrades;
+    averageRating = userRating.stream().mapToDouble(element -> element).sum() / numberRatings;
+
+    setAverageRating(averageRating);
+    setAverageGrade(Grade.getGrade(averageGrade));
   }
 
   @Override

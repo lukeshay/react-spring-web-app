@@ -17,6 +17,10 @@ public class Responses {
     return httpJsonResponse(HttpStatus.BAD_REQUEST, body);
   }
 
+  public static <T> ResponseEntity<?> unauthorizedJsonResponse(T body) {
+    return httpJsonResponse(HttpStatus.UNAUTHORIZED, body);
+  }
+
   private static <T> ResponseEntity<?> httpJsonResponse(HttpStatus status, T body) {
     return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(body);
   }

@@ -1,6 +1,8 @@
-package com.lukeshay.restapi.rating;
+package com.lukeshay.restapi.rating.route;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,30 +17,40 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Rating {
+public class RouteRating {
   @Id @Expose private String id;
+  @Expose private String creatorId;
+  @Expose private String creatorUsername;
   @CreatedDate @Expose private String createdDate;
   @Expose private String routeId;
-  @Expose private String wallId;
-  @Expose private String gymId;
   @Expose private String review;
   @Expose private Grade grade;
   @Expose private int rating;
 
-  public Rating(
+  public RouteRating(
+      String creatorId,
+      String creatorUsername,
       String createdDate,
       String routeId,
-      String wallId,
-      String gymId,
       String review,
       Grade grade,
       int rating) {
+    this.creatorId = creatorId;
+    this.creatorUsername = creatorUsername;
     this.createdDate = createdDate;
     this.routeId = routeId;
-    this.wallId = wallId;
-    this.gymId = gymId;
     this.review = review;
     this.grade = grade;
     this.rating = rating;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof Route && toString().equals(obj.toString());
+  }
+
+  @Override
+  public String toString() {
+    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
   }
 }

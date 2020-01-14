@@ -1,3 +1,8 @@
-package com.lukeshay.restapi.rating;
+package com.lukeshay.restapi.rating.route;
 
-public class RatingRepository {}
+import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface RouteRatingRepository extends MongoRepository<RouteRating, String> {
+  List<RouteRating> findAllByRouteId(String routeId);
+}
