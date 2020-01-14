@@ -36,7 +36,7 @@ const TransitionModal: React.FC<ITransitionModalProps> = ({
   open,
   handleClose,
   children
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
   return (
     <Modal

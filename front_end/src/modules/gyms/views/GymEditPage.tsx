@@ -6,7 +6,7 @@ import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import GymEditForm from "./GymEditForm";
 
-const GymEditPage: React.FunctionComponent = () => {
+const GymEditPage: React.FC = (): JSX.Element => {
   const history = ReactRouter.useHistory();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);

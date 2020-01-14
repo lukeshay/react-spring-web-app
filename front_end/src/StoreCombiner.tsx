@@ -8,7 +8,7 @@ export interface IStoreCombinerProps {
 const StoreCombiner: React.FunctionComponent<IStoreCombinerProps> = ({
   stores,
   children
-}) => {
+}): JSX.Element => {
   return (
     <>
       {stores.reduceRight((acc, Comp) => {

@@ -12,7 +12,7 @@ const ButtonPrimary: React.FC<IButtonProps> = ({
   children,
   onClick,
   ...rest
-}) => {
+}): JSX.Element => {
   return (
     <Button
       id={id}

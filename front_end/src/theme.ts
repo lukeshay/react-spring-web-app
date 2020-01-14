@@ -1,5 +1,5 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
-import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
+import { Theme, ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
 
 // A custom darkTheme for this app
 export const darkTheme: ThemeOptions = {
@@ -55,5 +55,5 @@ export const lightTheme: ThemeOptions = {
   }
 };
 
-export const getTheme = (themeOptions: ThemeOptions) =>
+export const getTheme = (themeOptions: ThemeOptions): Theme =>
   responsiveFontSizes(createMuiTheme(themeOptions));

@@ -45,7 +45,7 @@ const WallForm: React.FC<IWallFormProps> = ({
   typesMessage,
   handleCancel,
   handleSubmit
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
 
   const [name, setName] = React.useState<string>(wall.name);
@@ -65,7 +65,7 @@ const WallForm: React.FC<IWallFormProps> = ({
       wall.types.filter((element) => element === "BOULDER").length > 0
   );
 
-  const handleChange = (event: any) => {
+  const handleChange = async (event: any): Promise<void> => {
     const { id, value } = event.target;
 
     if (id === "name") {
@@ -81,7 +81,7 @@ const WallForm: React.FC<IWallFormProps> = ({
     }
   };
 
-  const onSubmit = (event: any) => {
+  const onSubmit = (event: any): void => {
     event.preventDefault();
 
     const types: string[] = [];

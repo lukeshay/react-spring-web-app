@@ -5,7 +5,7 @@ import { Gym, Route, Wall } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
 
-export const loadGyms = (dispatch: any) => {
+export const loadGyms = (dispatch: any): Promise<void | Response> => {
   const responsePromise = GymsApi.getGyms().then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym[]) => {
@@ -22,7 +22,10 @@ export const loadGyms = (dispatch: any) => {
   return responsePromise;
 };
 
-export const loadGymV2 = (dispatch: any, gymId: string) => {
+export const loadGymV2 = (
+  dispatch: any,
+  gymId: string
+): Promise<void | Response> => {
   const responsePromise = GymsApi.getGymV2(gymId).then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym) => {
@@ -39,7 +42,10 @@ export const loadGymV2 = (dispatch: any, gymId: string) => {
   return responsePromise;
 };
 
-export const loadWalls = (dispatch: any, gym: Gym) => {
+export const loadWalls = (
+  dispatch: any,
+  gym: Gym
+): Promise<void | Response> => {
   const responsePromise = WallsApi.getWalls(gym.id).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -60,7 +66,11 @@ export const loadWalls = (dispatch: any, gym: Gym) => {
   return responsePromise;
 };
 
-export const loadRoutes = (dispatch: any, gym: Gym, wallId: string) => {
+export const loadRoutes = (
+  dispatch: any,
+  gym: Gym,
+  wallId: string
+): Promise<void | Response> => {
   const responsePromise = RoutesApi.getRoutesOfWall(wallId).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -93,7 +103,7 @@ export const updateGym = async (
   dispatch: any,
   updatedGym: Gym,
   oldGym: Gym
-) => {
+): Promise<void | Response> => {
   const responsePromise = GymsApi.updateGym(updatedGym).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -112,7 +122,11 @@ export const updateGym = async (
   return responsePromise;
 };
 
-export const createWall = async (dispatch: any, wall: Wall, gymId: string) => {
+export const createWall = async (
+  dispatch: any,
+  wall: Wall,
+  gymId: string
+): Promise<void | Response> => {
   const responsePromise = WallsApi.createWall(wall).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -126,7 +140,11 @@ export const createWall = async (dispatch: any, wall: Wall, gymId: string) => {
   return responsePromise;
 };
 
-export const updateWall = async (dispatch: any, wall: Wall, gymId: string) => {
+export const updateWall = async (
+  dispatch: any,
+  wall: Wall,
+  gymId: string
+): Promise<void | Response> => {
   const responsePromise = WallsApi.updateWall(wall).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -144,7 +162,7 @@ export const deleteWall = async (
   dispatch: any,
   wallId: string,
   gymId: string
-) => {
+): Promise<void | Response> => {
   const responsePromise = WallsApi.deleteWall(wallId).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -162,7 +180,7 @@ export const createRoute = async (
   dispatch: any,
   route: Route,
   gymId: string
-) => {
+): Promise<void | Response> => {
   const responsePromise = RoutesApi.createRoute(route).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -180,7 +198,7 @@ export const updateRoute = async (
   dispatch: any,
   route: Route,
   gymId: string
-) => {
+): Promise<void | Response> => {
   const responsePromise = RoutesApi.updateRoute(route).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
@@ -198,7 +216,7 @@ export const deleteRoute = async (
   dispatch: any,
   route: Route,
   gymId: string
-) => {
+): Promise<void | Response> => {
   const responsePromise = RoutesApi.deleteRoute(route).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {

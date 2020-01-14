@@ -18,14 +18,14 @@ const RouteAddPage: React.FC<IRouteAddPageProps> = ({
   open,
   wallId,
   handleClose
-}) => {
+}): JSX.Element => {
   const [route, setRoute] = React.useState<Route>({} as Route);
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
   const { dispatch: gymsDispatch } = useGymsContext();
 
-  const handleSubmit = async (returnRoute: Route) => {
+  const handleSubmit = async (returnRoute: Route): Promise<void> => {
     const newRoute = { wallId, gymId, ...returnRoute };
 
     setRoute(newRoute);

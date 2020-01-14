@@ -19,7 +19,7 @@ const CheckBox: React.FunctionComponent<ICheckBoxProps> = ({
   onChange,
   color,
   label
-}) => {
+}): JSX.Element => {
   return (
     <FormControlLabel
       control={

@@ -11,7 +11,7 @@ export interface IPropsProfileForm {
   user: User;
 }
 
-const ProfileForm: React.FC<IPropsProfileForm> = ({ user }) => {
+const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
   const { dispatch } = useContext(UserContext);
   const [firstName, setFirstName] = React.useState<string>(user.firstName);
   const [lastName, setLastName] = React.useState<string>(user.lastName);

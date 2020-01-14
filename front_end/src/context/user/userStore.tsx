@@ -41,7 +41,7 @@ const initialState: IUserContextState = {
   user: null
 };
 
-export const UserStore: React.FC = ({ children }) => {
+export const UserStore: React.FC = ({ children }): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -51,4 +51,5 @@ export const UserStore: React.FC = ({ children }) => {
   );
 };
 
-export const useUserContext = () => React.useContext(UserContext);
+export const useUserContext = (): IContextProps =>
+  React.useContext(UserContext);

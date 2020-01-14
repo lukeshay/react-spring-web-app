@@ -13,7 +13,9 @@
     "ordered-imports": true,
     "jsx-no-lambda": false,
     "jsx-boolean-value": ["never"],
-    "jsx-equals-spacing": [true, "never"]
+    "jsx-equals-spacing": [true, "never"],
+    "no-empty-interface": true,
+    "typedef": [true, "call-signature", "arrow-call-signature"]
   },
   "linterOptions": {
     "exclude": ["./config/**/*.js", "./node_modules/**/*.ts"],

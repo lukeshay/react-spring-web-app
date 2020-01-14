@@ -15,9 +15,9 @@ import GymInformation from "./GymInformation";
 import RouteAddPage from "./RouteAddPage";
 import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
+import WallAddPage from "./WallAddPage";
 import WallEditPage from "./WallEditPage";
 import WallList from "./WallList";
-import WallAddPage from "./WallAddPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const GymPage: React.FC = () => {
+const GymPage: React.FC = (): JSX.Element => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
@@ -105,7 +105,7 @@ const GymPage: React.FC = () => {
     }
   }, [gymsState]);
 
-  const loadFullGym = () => {
+  const loadFullGym = (): void => {
     if (gymId) {
       GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
         if (!response || !(response instanceof Response) || !response.ok) {
@@ -115,7 +115,7 @@ const GymPage: React.FC = () => {
     }
   };
 
-  const onWallRowClick = async (rowWallId: string) => {
+  const onWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
@@ -129,7 +129,7 @@ const GymPage: React.FC = () => {
     }
   };
 
-  const handleDeleteWall = async (rowWallId: string) => {
+  const handleDeleteWall = async (rowWallId: string): Promise<void> => {
     if (
       window.confirm(
         "Are you sure you want to delete this wall? This action cannot be undone."
@@ -149,7 +149,7 @@ const GymPage: React.FC = () => {
     }
   };
 
-  const handleDeleteRoute = async (routeId: string) => {
+  const handleDeleteRoute = async (routeId: string): Promise<void> => {
     if (
       window.confirm(
         "Are you sure you want to delete this route? This action cannot be undone."
@@ -171,26 +171,26 @@ const GymPage: React.FC = () => {
     }
   };
 
-  const handleEditRoute = async (tempRoute: Route) => {
+  const handleEditRoute = async (tempRoute: Route): Promise<void> => {
     setRoute(tempRoute);
     setOpenEdit(true);
     setOpenAdd(false);
   };
 
-  const handleEditWall = async (tempWall: Wall) => {
+  const handleEditWall = async (tempWall: Wall): Promise<void> => {
     setWall(tempWall);
     setOpenEdit(true);
     setOpenAdd(false);
   };
 
-  const handleOpenAdd = async () => {
+  const handleOpenAdd = async (): Promise<void> => {
     setOpenAdd(true);
     setOpenEdit(false);
   };
 
-  const handleCloseAdd = async () => setOpenAdd(false);
+  const handleCloseAdd = async (): Promise<void> => setOpenAdd(false);
 
-  const handleCloseEdit = async () => {
+  const handleCloseEdit = async (): Promise<void> => {
     setOpenEdit(false);
     setRoute(undefined);
     setWall(undefined);
@@ -209,7 +209,7 @@ const GymPage: React.FC = () => {
             fullWidth={false}
             size="medium"
             type="button"
-            onClick={() => {
+            onClick={(): void => {
               setWalls(true);
               setWallId("");
             }}

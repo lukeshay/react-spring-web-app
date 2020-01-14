@@ -43,7 +43,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   typesMessage,
   handleCancel,
   handleSubmit
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
 
   const [name, setName] = React.useState<string>(route.name || "");
@@ -69,7 +69,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
     route.holdColor || ""
   );
 
-  const onSubmit = (event: any) => {
+  const onSubmit = (event: any): void => {
     event.preventDefault();
 
     const types: string[] = [];
@@ -93,7 +93,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
     handleSubmit({ name, setter, holdColor, types } as Route);
   };
 
-  const handleChange = (event: any) => {
+  const handleChange = async (event: any): Promise<void> => {
     const { id, value } = event.target;
 
     if (id === "name") {

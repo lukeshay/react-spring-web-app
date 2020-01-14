@@ -34,7 +34,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
   canEdit,
   onEditClick,
   onDeleteClick
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
 
   let types = "";
@@ -72,7 +72,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
       {canEdit && (
         <TableCell>
           <Button
-            onClick={() => onEditClick(route)}
+            onClick={(): void | Promise<void> => onEditClick(route)}
             variant="outlined"
             fullWidth={false}
             size="medium"
@@ -92,7 +92,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={() => onDeleteClick(route.id)}
+            onClick={(): void | Promise<void> => onDeleteClick(route.id)}
           >
             <DeleteIcon className={classes.icons} />
             Delete
@@ -115,7 +115,7 @@ const RoutesList: React.FC<IRoutesListProps> = ({
   canEdit,
   handleEditRoute,
   handleDeleteRoute
-}) => (
+}): JSX.Element => (
   <Table
     head={
       <TableRow>

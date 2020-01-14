@@ -16,14 +16,14 @@ const WallAddPage: React.FC<IWallAddPageProps> = ({
   gymId,
   open,
   handleClose
-}) => {
+}): JSX.Element => {
   const [wall, setWall] = React.useState<Wall>({} as Wall);
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
   const { dispatch: gymsDispatch } = useGymsContext();
 
-  const handleSubmit = (returnWall: Wall) => {
+  const handleSubmit = (returnWall: Wall): void => {
     const newWall = { gymId, ...returnWall };
 
     setWall(newWall);

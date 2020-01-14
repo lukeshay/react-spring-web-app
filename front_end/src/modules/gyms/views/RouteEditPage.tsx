@@ -20,14 +20,14 @@ const RouteEditPage: React.FC<IRouteEditPageProps> = ({
   route,
   wallId,
   handleClose
-}) => {
+}): JSX.Element => {
   const [updatedRoute, setUpdatedRoute] = React.useState<Route>(route);
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
   const { dispatch: gymsDispatch } = useGymsContext();
 
-  const handleSubmit = async (returnRoute: Route) => {
+  const handleSubmit = async (returnRoute: Route): Promise<void> => {
     const newRoute = { id: route.id, wallId, gymId, ...returnRoute };
 
     setUpdatedRoute(newRoute);

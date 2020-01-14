@@ -47,7 +47,7 @@ const initialState: IGymsContextState = {
   gyms: Array<Gym>()
 };
 
-export const GymsStore: React.FC = ({ children }) => {
+export const GymsStore: React.FC = ({ children }): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -57,4 +57,5 @@ export const GymsStore: React.FC = ({ children }) => {
   );
 };
 
-export const useGymsContext = () => React.useContext(GymsContext);
+export const useGymsContext = (): IContextProps =>
+  React.useContext(GymsContext);

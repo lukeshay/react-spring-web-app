@@ -64,7 +64,9 @@ export interface INavigationBarProps {
   children: React.ReactNode;
 }
 
-const NavigationBar: React.FC<INavigationBarProps> = ({ children }) => {
+const NavigationBar: React.FC<INavigationBarProps> = ({
+  children
+}): JSX.Element => {
   const navItems: Array<{ text: string; link: string }> = [
     { text: "Home", link: Routes.HOME },
     { text: "Gyms", link: Routes.GYMS },
@@ -76,7 +78,7 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ children }) => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const handleDrawerToggle = (): void => setMobileOpen(!mobileOpen);
 
   const drawer = (
     <React.Fragment>

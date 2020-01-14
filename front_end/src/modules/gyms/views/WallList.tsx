@@ -29,7 +29,7 @@ const WallRow: React.FC<IWallRowProps> = ({
   canEdit,
   onEditClick,
   onDeleteClick
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
   const { id, routes, name } = wall;
 
@@ -57,20 +57,24 @@ const WallRow: React.FC<IWallRowProps> = ({
     }
   });
 
-  const handleEditClick = (event: any) => {
+  const handleEditClick = (event: any): void => {
     event.stopPropagation();
 
     onEditClick(wall);
   };
 
-  const handleDeleteClick = (event: any) => {
+  const handleDeleteClick = (event: any): void => {
     event.stopPropagation();
 
     onDeleteClick(wall.id);
   };
 
   return (
-    <TableRow hover id={id} onClick={() => onRowClick(id)}>
+    <TableRow
+      hover
+      id={id}
+      onClick={(): void | Promise<void> => onRowClick(id)}
+    >
       <TableCell>{name}</TableCell>
       <TableCell>{routes ? routes.length : 0}</TableCell>
       <TableCell>{types}</TableCell>
@@ -122,7 +126,7 @@ const WallList: React.FC<IWallListProps> = ({
   canEdit,
   handleDeleteWall,
   onEditClick
-}) => {
+}): JSX.Element => {
   return (
     <Table
       head={
