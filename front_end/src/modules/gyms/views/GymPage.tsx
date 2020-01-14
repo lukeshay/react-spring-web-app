@@ -16,6 +16,7 @@ import RouteAddPage from "./RouteAddPage";
 import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
+import WallEditPage from "./WallEditPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,6 +43,7 @@ const GymPage: React.FC = () => {
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [walls, setWalls] = React.useState<boolean>(true);
+  const [wall, setWall] = React.useState<Wall | undefined>(undefined);
   const [routes, setRoutes] = React.useState<Route[]>([]);
   const [route, setRoute] = React.useState<Route | undefined>(undefined);
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
@@ -113,14 +115,14 @@ const GymPage: React.FC = () => {
   };
 
   const onWallRowClick = async (rowWallId: string) => {
-    const wall = gym.walls
+    const tempWall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
-    if (wall) {
+    if (tempWall) {
       setWalls(false);
-      setRoutes(wall.routes);
-      setWallId(wall.id);
+      setRoutes(tempWall.routes);
+      setWallId(tempWall.id);
     } else {
       toast.error("Could not find wall.");
     }
@@ -162,6 +164,12 @@ const GymPage: React.FC = () => {
     setOpenAdd(false);
   };
 
+  const handleEditWall = async (tempWall: Wall) => {
+    setWall(tempWall);
+    setOpenEdit(true);
+    setOpenAdd(false);
+  };
+
   const handleOpenAdd = async () => {
     setOpenAdd(true);
     setOpenEdit(false);
@@ -172,7 +180,7 @@ const GymPage: React.FC = () => {
   const handleCloseEdit = async () => {
     setOpenEdit(false);
     setRoute(undefined);
-    // setWall(undefined);
+    setWall(undefined);
   };
 
   return (
@@ -216,6 +224,7 @@ const GymPage: React.FC = () => {
             onRowClick={onWallRowClick}
             canEdit={canEdit}
             handleDeleteWall={handleDeleteWall}
+            onEditClick={handleEditWall}
           />
         ) : (
           <RoutesList
@@ -241,6 +250,14 @@ const GymPage: React.FC = () => {
           gymId={gymId}
           wallId={wallId}
           route={route}
+        />
+      )}
+      {gymId && wall && (
+        <WallEditPage
+          open={walls && openEdit}
+          handleClose={handleCloseEdit}
+          gymId={gymId}
+          wall={wall}
         />
       )}
     </React.Fragment>

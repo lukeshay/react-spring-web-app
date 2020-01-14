@@ -1,65 +1,73 @@
 import React from "react";
-import * as ReactRouter from "react-router";
+import { Wall } from "../../../types";
+import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
-import { useUserContext } from "../../../context/user/userStore";
-import { Routes } from "../../../routes";
-import { Gym, Wall } from "../../../types";
-import * as UrlUtils from "../../../utils/urlUtils";
-import WallEditForm from "./WallEditForm";
+import { toast } from "react-toastify";
+import WallForm from "./WallForm";
+import TransitionModal from "../../common/modal/Modal";
 
-const WallEditPage: React.FunctionComponent = () => {
-  const history = ReactRouter.useHistory();
+export interface IWallEditPageProps {
+  gymId: string;
+  open: boolean;
+  wall: Wall;
+  handleClose(): Promise<void> | void;
+}
 
-  const [wall, setWall] = React.useState<Wall>({} as Wall);
-  const [gym, setGym] = React.useState<Gym>({} as Gym);
+const WallEditPage: React.FC<IWallEditPageProps> = ({
+  gymId,
+  open,
+  wall,
+  handleClose
+}) => {
+  const [updatedWall, setUpdatedWall] = React.useState<Wall>(wall);
+  const [typesMessage, setTypesMessage] = React.useState<string>("");
+  const [nameMessage, setNameMessage] = React.useState<string>("");
 
-  const { state: gymsState } = useGymsContext();
-  const { state: userState } = useUserContext();
+  const { dispatch: gymsDispatch } = useGymsContext();
 
-  React.useEffect(() => {
-    const { user } = userState;
+  const handleSubmit = (returnWall: Wall) => {
+    const newWall = { id: wall.id, gymId, ...returnWall };
 
-    const wallId = UrlUtils.getLastPathVariable(history.location.pathname);
+    setUpdatedWall(newWall);
 
-    const tempGym = gymsState.gyms
-      .filter(
-        (element) =>
-          element.walls &&
-          element.walls.filter((elementWall) => elementWall.id === wallId)
-            .length > 0
-      )
-      .pop();
-
-    if (
-      tempGym &&
-      user &&
-      tempGym.authorizedEditors &&
-      tempGym.authorizedEditors.find(
-        (editorId: string) => editorId === user.userId
-      ) &&
-      tempGym.walls
-    ) {
-      const tempWall = tempGym.walls
-        .filter((element) => element.id === wallId)
-        .pop();
-      setGym(tempGym);
-
-      // Only here to silence warning
-      if (tempWall) {
-        setWall(tempWall);
-      }
-    } else if (tempGym) {
-      history.push(Routes.GYMS + "/" + tempGym.id);
+    if (newWall.types.length === 0) {
+      setTypesMessage("Select a type.");
     } else {
-      history.push(Routes.GYMS);
+      setTypesMessage("");
     }
-  }, []);
 
-  if (wall.id) {
-    return <WallEditForm wall={wall} />;
-  } else {
-    return <React.Fragment />;
-  }
+    if (newWall.name.trim().length === 0) {
+      setNameMessage("Name cannot be blank.");
+    } else {
+      setNameMessage("");
+    }
+
+    if (newWall.types.length !== 0 && newWall.name.trim().length !== 0) {
+      setTypesMessage("");
+      setNameMessage("");
+      GymsActions.updateWall(gymsDispatch, newWall, gymId).then((response) => {
+        if (response instanceof Response && response.ok) {
+          handleClose();
+        } else {
+          toast.error("Error updating wall.");
+        }
+      });
+    }
+  };
+
+  return (
+    <TransitionModal open={open} handleClose={handleClose}>
+      <WallForm
+        formHeadText="Update wall"
+        wall={updatedWall}
+        handleCancel={handleClose}
+        handleSubmit={handleSubmit}
+        submitButtonText="Update wall"
+        nameMessage={nameMessage}
+        typesMessage={typesMessage}
+      />
+    </TransitionModal>
+  );
 };
 
 export default WallEditPage;

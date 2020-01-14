@@ -21,6 +21,7 @@ export interface IWallRowProps {
   wall: Wall;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void> | void;
+  onEditClick(wall: Wall): Promise<void> | void;
   onDeleteClick(wallId: string): Promise<void> | void;
 }
 
@@ -28,6 +29,7 @@ const WallRow: React.FC<IWallRowProps> = ({
   wall,
   onRowClick,
   canEdit,
+  onEditClick,
   onDeleteClick
 }) => {
   const classes = useStyles();
@@ -65,8 +67,7 @@ const WallRow: React.FC<IWallRowProps> = ({
       {canEdit && (
         <TableCell>
           <Button
-            component={Link}
-            to={AuthRoutes.EDIT_WALL + "/" + id}
+            onClick={() => onEditClick(wall)}
             variant="outlined"
             fullWidth={false}
             size="medium"
@@ -101,6 +102,7 @@ export interface IWallListProps {
   walls: Wall[] | null;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void>;
+  onEditClick(wall: Wall): Promise<void> | void;
   handleDeleteWall(wallId: string): Promise<void>;
 }
 
@@ -108,7 +110,8 @@ const WallList: React.FC<IWallListProps> = ({
   walls,
   onRowClick,
   canEdit,
-  handleDeleteWall
+  handleDeleteWall,
+  onEditClick
 }) => {
   return (
     <Table
@@ -130,6 +133,7 @@ const WallList: React.FC<IWallListProps> = ({
             onRowClick={onRowClick}
             canEdit={canEdit}
             onDeleteClick={handleDeleteWall}
+            onEditClick={onEditClick}
           />
         ))
       }
