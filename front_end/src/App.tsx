@@ -8,12 +8,12 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GymsStore } from "./context/gyms/gymsStore";
+import * as UserActions from "./context/user/userActions";
 import { UserStore, useUserContext } from "./context/user/userStore";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import StoreCombiner from "./StoreCombiner";
 import { darkTheme, getTheme, lightTheme } from "./theme";
-import * as UserActions from "./context/user/userActions";
 
 interface Style {
   marginLeft: string;
