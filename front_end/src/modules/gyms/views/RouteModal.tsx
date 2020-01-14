@@ -32,8 +32,6 @@ export interface IRouteFormProps {
   nameMessage?: string;
   submitButtonText: string;
   typesMessage?: string;
-  open: boolean;
-  handleClose(): Promise<void> | void;
   handleCancel(event: any): Promise<void> | void;
   handleSubmit(route: Route): Promise<void> | void;
 }
@@ -44,8 +42,6 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   nameMessage,
   submitButtonText,
   typesMessage,
-  open,
-  handleClose,
   handleCancel,
   handleSubmit
 }) => {
@@ -206,14 +202,12 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   );
 
   return (
-    <TransitionModal open={open} handleClose={handleClose}>
       <Form
         title={FormHead}
         formInputs={FormInputs}
         buttonText={submitButtonText}
         handleSubmit={onSubmit}
       />
-    </TransitionModal>
   );
 };
 

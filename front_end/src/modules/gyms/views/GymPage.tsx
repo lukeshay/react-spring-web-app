@@ -2,18 +2,19 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext, useGymsContext } from "../../../context/gyms/gymsStore";
-import { UserContext, useUserContext } from "../../../context/user/userStore";
+import { useGymsContext } from "../../../context/gyms/gymsStore";
+import { useUserContext } from "../../../context/user/userStore";
 import { AuthRoutes, Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
+import RouteAddPage from "./RouteAddPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,6 +44,7 @@ const GymPage: React.FC = () => {
   const [routes, setRoutes] = React.useState<Route[]>([]);
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
   const [wallId, setWallId] = React.useState<string>("");
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const classes = useStyles();
   const history = useHistory();
@@ -98,10 +100,6 @@ const GymPage: React.FC = () => {
     }
   };
 
-  if (!gym) {
-    return <h3>Cannot find the gym you are looking for.</h3>;
-  }
-
   const onWallRowClick = async (rowWallId: string) => {
     const wall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
@@ -154,6 +152,10 @@ const GymPage: React.FC = () => {
     }
   };
 
+  const handleOpen = async () => setOpen(true);
+
+  const handleClose = async () => setOpen(false);
+
   return (
     <React.Fragment>
       <GymInformation gym={gym} canEdit={canEdit} />
@@ -177,12 +179,7 @@ const GymPage: React.FC = () => {
             Back
           </Button>
           <Button
-            component={Link}
-            to={
-              walls
-                ? AuthRoutes.ADD_WALL + "/" + gymId
-                : AuthRoutes.ADD_ROUTE + "/" + wallId
-            }
+            onClick={handleOpen}
             className={classes.addButton}
             variant="text"
             fullWidth={false}
@@ -209,6 +206,14 @@ const GymPage: React.FC = () => {
           />
         )}
       </div>
+      {gymId && (
+        <RouteAddPage
+          open={!walls && open}
+          handleClose={handleClose}
+          gymId={gymId}
+          wallId={wallId}
+        />
+      )}
     </React.Fragment>
   );
 };

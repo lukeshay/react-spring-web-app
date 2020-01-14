@@ -1,9 +1,33 @@
-import { Fade, Modal, Backdrop } from "@material-ui/core";
+import {
+  Fade,
+  Modal,
+  Backdrop,
+  makeStyles,
+  Theme,
+  createStyles
+} from "@material-ui/core";
 import React from "react";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    modal: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      outline: 0
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: "2px solid #000",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      outline: 0
+    }
+  })
+);
 
 export interface ITransitionModalProps {
   open: boolean;
-  className?: any;
   children: React.ReactNode;
   handleClose?(): Promise<void> | void;
 }
@@ -11,21 +35,25 @@ export interface ITransitionModalProps {
 const TransitionModal: React.FC<ITransitionModalProps> = ({
   open,
   handleClose,
-  className,
   children
-}) => (
-  <Modal
-    className={className}
-    open={open}
-    onClose={handleClose}
-    closeAfterTransition
-    BackdropComponent={Backdrop}
-    BackdropProps={{
-      timeout: 500
-    }}
-  >
-    <Fade in={open}>{children}</Fade>
-  </Modal>
-);
+}) => {
+  const classes = useStyles();
+  return (
+    <Modal
+      className={classes.modal}
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500
+      }}
+    >
+      <Fade in={open}>
+        <div className={classes.paper}>{children}</div>
+      </Fade>
+    </Modal>
+  );
+};
 
 export default TransitionModal;
