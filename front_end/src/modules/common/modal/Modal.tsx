@@ -3,7 +3,7 @@ import React from "react";
 
 export interface ITransitionModalProps {
   open: boolean;
-  className: any;
+  className?: any;
   children: React.ReactNode;
   handleClose?(): Promise<void> | void;
 }

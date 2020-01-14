@@ -12,6 +12,7 @@ import { Route } from "../../../types";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
+import TransitionModal from "../../common/modal/Modal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,7 @@ export interface IRouteFormProps {
   submitButtonText: string;
   typesMessage?: string;
   open: boolean;
+  handleClose(): Promise<void> | void;
   handleCancel(event: any): Promise<void> | void;
   handleSubmit(route: Route): Promise<void> | void;
 }
@@ -43,6 +45,7 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   submitButtonText,
   typesMessage,
   open,
+  handleClose,
   handleCancel,
   handleSubmit
 }) => {
@@ -203,12 +206,14 @@ const RouteForm: React.FC<IRouteFormProps> = ({
   );
 
   return (
-    <Form
-      title={FormHead}
-      formInputs={FormInputs}
-      buttonText={submitButtonText}
-      handleSubmit={onSubmit}
-    />
+    <TransitionModal open={open} handleClose={handleClose}>
+      <Form
+        title={FormHead}
+        formInputs={FormInputs}
+        buttonText={submitButtonText}
+        handleSubmit={onSubmit}
+      />
+    </TransitionModal>
   );
 };
 
