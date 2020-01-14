@@ -13,6 +13,7 @@ import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
 import RouteAddPage from "./RouteAddPage";
+import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
 import WallList from "./WallList";
 
@@ -42,9 +43,11 @@ const GymPage: React.FC = () => {
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [walls, setWalls] = React.useState<boolean>(true);
   const [routes, setRoutes] = React.useState<Route[]>([]);
+  const [route, setRoute] = React.useState<Route | undefined>(undefined);
   const [canEdit, setCanEdit] = React.useState<boolean>(false);
   const [wallId, setWallId] = React.useState<string>("");
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [openAdd, setOpenAdd] = React.useState<boolean>(false);
+  const [openEdit, setOpenEdit] = React.useState<boolean>(false);
 
   const classes = useStyles();
   const history = useHistory();
@@ -153,9 +156,24 @@ const GymPage: React.FC = () => {
     }
   };
 
-  const handleOpen = async () => setOpen(true);
+  const handleEditRoute = async (tempRoute: Route) => {
+    setRoute(tempRoute);
+    setOpenEdit(true);
+    setOpenAdd(false);
+  };
 
-  const handleClose = async () => setOpen(false);
+  const handleOpenAdd = async () => {
+    setOpenAdd(true);
+    setOpenEdit(false);
+  };
+
+  const handleCloseAdd = async () => setOpenAdd(false);
+
+  const handleCloseEdit = async () => {
+    setOpenEdit(false);
+    setRoute(undefined);
+    // setWall(undefined);
+  };
 
   return (
     <React.Fragment>
@@ -180,7 +198,7 @@ const GymPage: React.FC = () => {
             Back
           </Button>
           <Button
-            onClick={handleOpen}
+            onClick={handleOpenAdd}
             className={classes.addButton}
             variant="text"
             fullWidth={false}
@@ -203,16 +221,26 @@ const GymPage: React.FC = () => {
           <RoutesList
             routes={routes}
             canEdit={canEdit}
-            onDeleteClick={handleDeleteRoute}
+            handleEditRoute={handleEditRoute}
+            handleDeleteRoute={handleDeleteRoute}
           />
         )}
       </div>
       {gymId && (
         <RouteAddPage
-          open={!walls && open}
-          handleClose={handleClose}
+          open={!walls && openAdd}
+          handleClose={handleCloseAdd}
           gymId={gymId}
           wallId={wallId}
+        />
+      )}
+      {gymId && route && (
+        <RouteEditPage
+          open={!walls && openEdit}
+          handleClose={handleCloseEdit}
+          gymId={gymId}
+          wallId={wallId}
+          route={route}
         />
       )}
     </React.Fragment>
