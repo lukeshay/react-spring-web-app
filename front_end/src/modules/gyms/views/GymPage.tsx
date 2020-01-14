@@ -15,8 +15,8 @@ import GymInformation from "./GymInformation";
 import RouteAddPage from "./RouteAddPage";
 import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
-import WallList from "./WallList";
 import WallEditPage from "./WallEditPage";
+import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -83,13 +83,13 @@ const GymPage: React.FC = () => {
       const { user } = userState;
       const { authorizedEditors } = tempGym;
 
-      const wall = tempGym.walls
+      const tempWall = tempGym.walls
         ? tempGym.walls.find((element: Wall) => element.id === wallId)
         : null;
 
-      if (wall) {
-        setRoutes(wall.routes);
-        setWallId(wall.id);
+      if (tempWall) {
+        setRoutes(tempWall.routes);
+        setWallId(tempWall.id);
       }
 
       if (
