@@ -56,7 +56,11 @@ const WallEditPage: React.FC<IWallEditPageProps> = ({
   };
 
   return (
-    <TransitionModal open={open} handleClose={handleClose}>
+    <TransitionModal
+      open={open}
+      handleClose={handleClose}
+      style={{ width: "475px" }}
+    >
       <WallForm
         formHeadText="Update wall"
         wall={updatedWall}

@@ -58,7 +58,11 @@ const RouteEditPage: React.FC<IRouteEditPageProps> = ({
   };
 
   return (
-    <TransitionModal open={open} handleClose={handleClose}>
+    <TransitionModal
+      open={open}
+      handleClose={handleClose}
+      style={{ width: "475px" }}
+    >
       <RouteForm
         formHeadText="Update route"
         route={updatedRoute}

@@ -29,12 +29,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface ITransitionModalProps {
   open: boolean;
   children: React.ReactNode;
+  style?: any;
   handleClose?(): Promise<void> | void;
 }
 
 const TransitionModal: React.FC<ITransitionModalProps> = ({
   open,
   handleClose,
+  style,
   children
 }): JSX.Element => {
   const classes = useStyles();
@@ -50,7 +52,9 @@ const TransitionModal: React.FC<ITransitionModalProps> = ({
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>{children}</div>
+        <div className={classes.paper} style={style}>
+          {children}
+        </div>
       </Fade>
     </Modal>
   );

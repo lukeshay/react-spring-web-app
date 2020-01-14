@@ -8,8 +8,6 @@ import {
   Theme
 } from "@material-ui/core";
 import React from "react";
-import * as ReactRouter from "react-router";
-import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Wall } from "../../../types";
 import Form from "../../common/forms/Form";
 import CheckBox from "../../common/inputs/CheckBox";
@@ -17,9 +15,6 @@ import Input from "../../common/inputs/Input";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    checkboxGroup: {
-      marginLeft: "145px"
-    },
     helpText: {
       color: theme.palette.error.main,
       padding: "5px"
@@ -138,7 +133,6 @@ const WallForm: React.FC<IWallFormProps> = ({
           value="TOP_ROPE"
           label="Top rope"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -147,7 +141,6 @@ const WallForm: React.FC<IWallFormProps> = ({
           value="LEAD"
           label="Lead"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -156,7 +149,6 @@ const WallForm: React.FC<IWallFormProps> = ({
           value="AUTO_BELAY"
           label="Auto belay"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <CheckBox
@@ -165,7 +157,6 @@ const WallForm: React.FC<IWallFormProps> = ({
           value="BOULDER"
           label="Boulder"
           onChange={handleChange}
-          className={classes.checkboxGroup}
           color="primary"
         />
         <FormHelperText className={classes.helpText}>
