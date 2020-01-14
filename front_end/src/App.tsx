@@ -8,7 +8,8 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GymsStore } from "./context/gyms/gymsStore";
-import { UserStore } from "./context/user/userStore";
+import * as UserActions from "./context/user/userActions";
+import { UserStore, useUserContext } from "./context/user/userStore";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import StoreCombiner from "./StoreCombiner";
@@ -29,11 +30,15 @@ const App: React.FC = () => {
 
   const [dark, setDark] = React.useState<boolean>(true);
 
+  const { state: userState, dispatch: userDispatch } = useUserContext();
+
   React.useEffect(() => {
+    if (!userState.user || !userState.user.userId) {
+      UserActions.loadUserFromCookies(userDispatch);
+    }
+
     handleResize();
-
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -48,28 +53,26 @@ const App: React.FC = () => {
   }
 
   return (
-    <StoreCombiner stores={[UserStore, GymsStore]}>
-      <div style={style}>
-        <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
-          <CssBaseline />
-          <ToastContainer autoClose={3000} hideProgressBar={true} />
-          <NavigationBar>
-            <FormControlLabel
-              control={
-                <ToggleSwitch checked={dark} onChange={() => setDark(!dark)} />
-              }
-              label="Dark Mode"
-              style={{
-                bottom: "0",
-                marginLeft: "10px",
-                position: "absolute"
-              }}
-            />
-          </NavigationBar>
-          <Router />
-        </ThemeProvider>
-      </div>
-    </StoreCombiner>
+    <div style={style}>
+      <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
+        <CssBaseline />
+        <ToastContainer autoClose={3000} hideProgressBar={true} />
+        <NavigationBar>
+          <FormControlLabel
+            control={
+              <ToggleSwitch checked={dark} onChange={() => setDark(!dark)} />
+            }
+            label="Dark Mode"
+            style={{
+              bottom: "0",
+              marginLeft: "10px",
+              position: "absolute"
+            }}
+          />
+        </NavigationBar>
+        <Router />
+      </ThemeProvider>
+    </div>
   );
 };
 

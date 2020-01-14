@@ -66,3 +66,20 @@ export async function updateUser(
 
   return updateUserResponse;
 }
+
+export const loadUserFromCookies = async (dispatch: any) => {
+  const getUserResponse = await UserApi.getUser();
+
+  if (getUserResponse instanceof Response && getUserResponse.ok) {
+    const getUserBody = await getUserResponse.json();
+
+    Cookies.setUser(getUserBody);
+
+    dispatch({
+      actionType: Types.SIGN_IN,
+      user: getUserBody
+    });
+  }
+
+  return getUserResponse;
+};
