@@ -78,6 +78,15 @@ const GymPage: React.FC = () => {
       const { user } = userState;
       const { authorizedEditors } = tempGym;
 
+      const wall = tempGym.walls
+        ? tempGym.walls.find((element: Wall) => element.id === wallId)
+        : null;
+
+      if (wall) {
+        setRoutes(wall.routes);
+        setWallId(wall.id);
+      }
+
       if (
         user &&
         authorizedEditors &&
@@ -137,14 +146,6 @@ const GymPage: React.FC = () => {
       ).then((response: Response) => {
         if (!response || !(response instanceof Response) || !response.ok) {
           toast.error("Error deleting route.");
-        } else {
-          const newRoutes: Route[] = [];
-
-          routes.forEach(
-            (element) => element.id !== routeId && newRoutes.push(element)
-          );
-
-          setRoutes(newRoutes);
         }
       });
     } else {
