@@ -50,16 +50,19 @@ const WallForm: React.FC<IWallFormProps> = ({
 
   const [name, setName] = React.useState<string>(wall.name);
   const [lead, setLead] = React.useState<boolean>(
-    wall.types.filter((element) => element === "LEAD").length > 0
+    wall.types && wall.types.filter((element) => element === "LEAD").length > 0
   );
   const [topRope, setTopRope] = React.useState<boolean>(
-    wall.types.filter((element) => element === "TOP_ROPE").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "TOP_ROPE").length > 0
   );
   const [autoBelay, setAutoBelay] = React.useState<boolean>(
-    wall.types.filter((element) => element === "AUTO_BELAY").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "AUTO_BELAY").length > 0
   );
   const [boulder, setBoulder] = React.useState<boolean>(
-    wall.types.filter((element) => element === "BOULDER").length > 0
+    wall.types &&
+      wall.types.filter((element) => element === "BOULDER").length > 0
   );
 
   const handleChange = (event: any) => {

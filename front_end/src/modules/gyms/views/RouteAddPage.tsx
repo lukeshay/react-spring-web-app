@@ -46,6 +46,7 @@ const RouteAddPage: React.FC<IRouteAddPageProps> = ({
       GymsActions.createRoute(gymsDispatch, newRoute, gymId).then(
         (response: Response) => {
           if (response instanceof Response && response.ok) {
+            setRoute({} as Route);
             handleClose();
           } else {
             toast.error("Error adding route.");

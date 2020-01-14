@@ -17,6 +17,7 @@ import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
 import WallEditPage from "./WallEditPage";
 import WallList from "./WallList";
+import WallAddPage from "./WallAddPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -129,32 +130,44 @@ const GymPage: React.FC = () => {
   };
 
   const handleDeleteWall = async (rowWallId: string) => {
-    if (gymId) {
-      GymsActions.deleteWall(gymsDispatch, rowWallId, gymId).then(
-        (response: Response) => {
-          if (!response || !(response instanceof Response) || !response.ok) {
-            toast.error("Error deleting wall.");
+    if (
+      window.confirm(
+        "Are you sure you want to delete this wall? This action cannot be undone."
+      )
+    ) {
+      if (gymId) {
+        GymsActions.deleteWall(gymsDispatch, rowWallId, gymId).then(
+          (response: Response) => {
+            if (!response || !(response instanceof Response) || !response.ok) {
+              toast.error("Error deleting wall.");
+            }
           }
-        }
-      );
-    } else {
-      toast.error("Error deleting wall.");
+        );
+      } else {
+        toast.error("Error deleting wall.");
+      }
     }
   };
 
   const handleDeleteRoute = async (routeId: string) => {
-    if (gymId) {
-      GymsActions.deleteRoute(
-        gymsDispatch,
-        { id: routeId, gymId } as Route,
-        gymId
-      ).then((response: Response) => {
-        if (!response || !(response instanceof Response) || !response.ok) {
-          toast.error("Error deleting route.");
-        }
-      });
-    } else {
-      toast.error("Error deleting route.");
+    if (
+      window.confirm(
+        "Are you sure you want to delete this route? This action cannot be undone."
+      )
+    ) {
+      if (gymId) {
+        GymsActions.deleteRoute(
+          gymsDispatch,
+          { id: routeId, gymId } as Route,
+          gymId
+        ).then((response: Response) => {
+          if (!response || !(response instanceof Response) || !response.ok) {
+            toast.error("Error deleting route.");
+          }
+        });
+      } else {
+        toast.error("Error deleting route.");
+      }
     }
   };
 
@@ -250,6 +263,13 @@ const GymPage: React.FC = () => {
           gymId={gymId}
           wallId={wallId}
           route={route}
+        />
+      )}
+      {gymId && (
+        <WallAddPage
+          open={walls && openAdd}
+          handleClose={handleCloseAdd}
+          gymId={gymId}
         />
       )}
       {gymId && wall && (

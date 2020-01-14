@@ -4,9 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
-import { Link } from "react-router-dom";
-import { AuthRoutes } from "../../../routes";
-import { Gym, Wall } from "../../../types";
+import { Wall } from "../../../types";
 import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,6 +57,18 @@ const WallRow: React.FC<IWallRowProps> = ({
     }
   });
 
+  const handleEditClick = (event: any) => {
+    event.stopPropagation();
+
+    onEditClick(wall);
+  };
+
+  const handleDeleteClick = (event: any) => {
+    event.stopPropagation();
+
+    onDeleteClick(wall.id);
+  };
+
   return (
     <TableRow hover id={id} onClick={() => onRowClick(id)}>
       <TableCell>{name}</TableCell>
@@ -67,7 +77,7 @@ const WallRow: React.FC<IWallRowProps> = ({
       {canEdit && (
         <TableCell>
           <Button
-            onClick={() => onEditClick(wall)}
+            onClick={handleEditClick}
             variant="outlined"
             fullWidth={false}
             size="medium"
@@ -87,7 +97,7 @@ const WallRow: React.FC<IWallRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={() => onDeleteClick(id)}
+            onClick={handleDeleteClick}
           >
             <DeleteIcon className={classes.icons} />
             Delete
