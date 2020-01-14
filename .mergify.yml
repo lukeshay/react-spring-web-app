@@ -6,6 +6,10 @@ pull_request_rules:
       - label=automerge
     actions:
       delete_head_branch: {}
+      review: {
+        type: APPROVE,
+        message: "LGTM"
+      }
       merge:
         method: merge
         strict: true
