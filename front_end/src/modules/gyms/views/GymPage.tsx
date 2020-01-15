@@ -12,13 +12,13 @@ import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
+import RatingPage from "./RatingPage";
 import RouteAddPage from "./RouteAddPage";
 import RouteEditPage from "./RouteEditPage";
 import RoutesList from "./RoutesList";
 import WallAddPage from "./WallAddPage";
 import WallEditPage from "./WallEditPage";
 import WallList from "./WallList";
-import RatingPage from "./RatingPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -198,6 +198,7 @@ const GymPage: React.FC = (): JSX.Element => {
       setOpenAdd(true);
       setOpenEdit(false);
     } else if (view === "RATING") {
+      // tslint:disable-next-line: no-console
       console.log("New Rating Modal");
     }
   };
