@@ -9,8 +9,6 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
-import { Link } from "react-router-dom";
-import { AuthRoutes } from "../../../routes";
 import { Route } from "../../../types";
 import Table from "../../common/table/Table";
 
@@ -27,7 +25,7 @@ export interface IRouteRowProps {
   route: Route;
   onDeleteClick(routeId: string): Promise<void> | void;
   onEditClick(route: Route): Promise<void> | void;
-  onRowClick(routeId: string): Promise<void> | void;
+  onRowClick(route: Route): Promise<void> | void;
 }
 
 const RouteRow: React.FC<IRouteRowProps> = ({
@@ -68,15 +66,15 @@ const RouteRow: React.FC<IRouteRowProps> = ({
   return (
     <TableRow
       hover
-      id={route.id}
-      onClick={(): void | Promise<void> => onRowClick(id)}
+      id={id}
+      onClick={(): void | Promise<void> => onRowClick(route)}
     >
       <TableCell>{name}</TableCell>
       <TableCell>{types}</TableCell>
       <TableCell>{setter}</TableCell>
       <TableCell>{holdColor}</TableCell>
       <TableCell>{grade}</TableCell>
-      <TableCell>{rating}</TableCell>
+      <TableCell>{rating > 0 && rating}</TableCell>
       {canEdit && (
         <TableCell>
           <Button
@@ -116,7 +114,7 @@ export interface IRoutesListProps {
   routes: Route[];
   handleDeleteRoute(routeId: string): Promise<void> | void;
   handleEditRoute(route: Route): Promise<void> | void;
-  handleRowClick(routeId: string): Promise<void> | void;
+  handleRowClick(route: Route): Promise<void> | void;
 }
 
 const RoutesList: React.FC<IRoutesListProps> = ({

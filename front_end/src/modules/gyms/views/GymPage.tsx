@@ -3,12 +3,12 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
-import { AuthRoutes, Routes } from "../../../routes";
+import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
@@ -43,7 +43,7 @@ const GymPage: React.FC = (): JSX.Element => {
   const { state: userState } = useUserContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
-  const [walls, setWalls] = React.useState<boolean>(true);
+  const [view, setView] = React.useState<"WALL" | "ROUTE" | "RATING">("WALL");
   const [wall, setWall] = React.useState<Wall | undefined>(undefined);
   const [routes, setRoutes] = React.useState<Route[]>([]);
   const [route, setRoute] = React.useState<Route | undefined>(undefined);
@@ -115,13 +115,13 @@ const GymPage: React.FC = (): JSX.Element => {
     }
   };
 
-  const onWallRowClick = async (rowWallId: string): Promise<void> => {
+  const handleWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
     if (tempWall) {
-      setWalls(false);
+      setView("ROUTE");
       setRoutes(tempWall.routes);
       setWallId(tempWall.id);
     } else {
@@ -147,6 +147,10 @@ const GymPage: React.FC = (): JSX.Element => {
         toast.error("Error deleting wall.");
       }
     }
+  };
+
+  const handleRouteRowClick = async (route: Route): Promise<void> => {
+    console.log(route);
   };
 
   const handleDeleteRoute = async (routeId: string): Promise<void> => {
@@ -196,6 +200,69 @@ const GymPage: React.FC = (): JSX.Element => {
     setWall(undefined);
   };
 
+  const Buttons: React.FC = (): JSX.Element => (
+    <div className={classes.buttonWrapper}>
+      <Button
+        variant="text"
+        fullWidth={false}
+        size="medium"
+        type="button"
+        onClick={(): void => {
+          setView("WALL");
+          setWallId("");
+        }}
+        style={shouldBeVisible(view !== "WALL")}
+      >
+        <ArrowBackIcon className={classes.icons} />
+        Back
+      </Button>
+      <Button
+        onClick={handleOpenAdd}
+        className={classes.addButton}
+        variant="text"
+        fullWidth={false}
+        size="medium"
+        type="button"
+        style={shouldBeVisible(canEdit)}
+      >
+        <AddIcon className={classes.icons} />
+        Add
+      </Button>
+    </div>
+  );
+
+  const CurrentView: React.FC = (): JSX.Element => {
+    if (view === "WALL") {
+      return (
+        <WallList
+          walls={gym.walls}
+          onRowClick={handleWallRowClick}
+          canEdit={canEdit}
+          handleDeleteWall={handleDeleteWall}
+          handleEditClick={handleEditWall}
+        />
+      );
+    }
+
+    if (view === "ROUTE") {
+      return (
+        <RoutesList
+          canEdit={canEdit}
+          routes={routes}
+          handleDeleteRoute={handleDeleteRoute}
+          handleEditRoute={handleEditRoute}
+          handleRowClick={handleRouteRowClick}
+        />
+      );
+    }
+
+    if (view === "RATING") {
+      return <div>YEET</div>;
+    }
+
+    return <React.Fragment />;
+  };
+
   return (
     <React.Fragment>
       <GymInformation gym={gym} canEdit={canEdit} />
@@ -203,62 +270,12 @@ const GymPage: React.FC = (): JSX.Element => {
         className={classes.wallList}
         style={shouldDisplay((gym.walls && gym.walls.length !== 0) || canEdit)}
       >
-        <div className={classes.buttonWrapper}>
-          <Button
-            variant="text"
-            fullWidth={false}
-            size="medium"
-            type="button"
-            onClick={(): void => {
-              setWalls(true);
-              setWallId("");
-            }}
-            style={shouldBeVisible(!walls)}
-          >
-            <ArrowBackIcon className={classes.icons} />
-            Back
-          </Button>
-          <Button
-            onClick={handleOpenAdd}
-            className={classes.addButton}
-            variant="text"
-            fullWidth={false}
-            size="medium"
-            type="button"
-            style={shouldBeVisible(canEdit)}
-          >
-            <AddIcon className={classes.icons} />
-            Add
-          </Button>
-        </div>
-        {walls ? (
-          <WallList
-            walls={gym.walls}
-            onRowClick={onWallRowClick}
-            canEdit={canEdit}
-            handleDeleteWall={handleDeleteWall}
-            onEditClick={handleEditWall}
-          />
-        ) : (
-          <RoutesList
-            routes={routes}
-            canEdit={canEdit}
-            handleEditRoute={handleEditRoute}
-            handleDeleteRoute={handleDeleteRoute}
-          />
-        )}
+        <Buttons />
+        <CurrentView />
       </div>
-      {gymId && (
-        <RouteAddPage
-          open={!walls && openAdd}
-          handleClose={handleCloseAdd}
-          gymId={gymId}
-          wallId={wallId}
-        />
-      )}
       {gymId && route && (
         <RouteEditPage
-          open={!walls && openEdit}
+          open={view === "ROUTE" && openEdit}
           handleClose={handleCloseEdit}
           gymId={gymId}
           wallId={wallId}
@@ -267,14 +284,14 @@ const GymPage: React.FC = (): JSX.Element => {
       )}
       {gymId && (
         <WallAddPage
-          open={walls && openAdd}
+          open={view === "WALL" && openAdd}
           handleClose={handleCloseAdd}
           gymId={gymId}
         />
       )}
       {gymId && wall && (
         <WallEditPage
-          open={walls && openEdit}
+          open={view === "WALL" && openEdit}
           handleClose={handleCloseEdit}
           gymId={gymId}
           wall={wall}

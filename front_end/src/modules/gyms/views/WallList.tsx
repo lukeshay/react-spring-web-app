@@ -116,7 +116,7 @@ export interface IWallListProps {
   walls: Wall[] | null;
   canEdit: boolean;
   onRowClick(wallId: string): Promise<void>;
-  onEditClick(wall: Wall): Promise<void> | void;
+  handleEditClick(wall: Wall): Promise<void> | void;
   handleDeleteWall(wallId: string): Promise<void>;
 }
 
@@ -125,7 +125,7 @@ const WallList: React.FC<IWallListProps> = ({
   onRowClick,
   canEdit,
   handleDeleteWall,
-  onEditClick
+  handleEditClick
 }): JSX.Element => {
   return (
     <Table
@@ -147,7 +147,7 @@ const WallList: React.FC<IWallListProps> = ({
             onRowClick={onRowClick}
             canEdit={canEdit}
             onDeleteClick={handleDeleteWall}
-            onEditClick={onEditClick}
+            onEditClick={handleEditClick}
           />
         ))
       }
