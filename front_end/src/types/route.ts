@@ -6,8 +6,6 @@ export interface Route {
   setter: string;
   holdColor: string;
   types: Array<"BOULDER" | "TOP_ROPE" | "LEAD" | "AUTO_BELAY">;
-  userGrade: string[];
-  averageGrade: string;
-  userRating: number[];
-  averageRating: number;
+  grade: string;
+  rating: number;
 }

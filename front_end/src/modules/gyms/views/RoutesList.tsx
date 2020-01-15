@@ -23,19 +23,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface IRouteRowProps {
-  route: Route;
   canEdit: boolean;
-  onEditClick(route: Route): Promise<void> | void;
+  route: Route;
   onDeleteClick(routeId: string): Promise<void> | void;
+  onEditClick(route: Route): Promise<void> | void;
+  onRowClick(routeId: string): Promise<void> | void;
 }
 
 const RouteRow: React.FC<IRouteRowProps> = ({
-  route,
   canEdit,
+  route,
+  onDeleteClick,
   onEditClick,
-  onDeleteClick
+  onRowClick
 }): JSX.Element => {
   const classes = useStyles();
+
+  const { grade, holdColor, id, name, rating, setter } = route;
 
   let types = "";
 
@@ -62,13 +66,17 @@ const RouteRow: React.FC<IRouteRowProps> = ({
   });
 
   return (
-    <TableRow hover id={route.id}>
-      <TableCell>{route.name}</TableCell>
+    <TableRow
+      hover
+      id={route.id}
+      onClick={(): void | Promise<void> => onRowClick(id)}
+    >
+      <TableCell>{name}</TableCell>
       <TableCell>{types}</TableCell>
-      <TableCell>{route.setter}</TableCell>
-      <TableCell>{route.holdColor}</TableCell>
-      <TableCell>{route.averageGrade}</TableCell>
-      <TableCell>{route.averageRating}</TableCell>
+      <TableCell>{setter}</TableCell>
+      <TableCell>{holdColor}</TableCell>
+      <TableCell>{grade}</TableCell>
+      <TableCell>{rating}</TableCell>
       {canEdit && (
         <TableCell>
           <Button
@@ -92,7 +100,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={(): void | Promise<void> => onDeleteClick(route.id)}
+            onClick={(): void | Promise<void> => onDeleteClick(id)}
           >
             <DeleteIcon className={classes.icons} />
             Delete
@@ -106,15 +114,17 @@ const RouteRow: React.FC<IRouteRowProps> = ({
 export interface IRoutesListProps {
   canEdit: boolean;
   routes: Route[];
-  handleEditRoute(route: Route): Promise<void> | void;
   handleDeleteRoute(routeId: string): Promise<void> | void;
+  handleEditRoute(route: Route): Promise<void> | void;
+  handleRowClick(routeId: string): Promise<void> | void;
 }
 
 const RoutesList: React.FC<IRoutesListProps> = ({
-  routes,
   canEdit,
+  routes,
+  handleDeleteRoute,
   handleEditRoute,
-  handleDeleteRoute
+  handleRowClick
 }): JSX.Element => (
   <Table
     head={
@@ -133,11 +143,12 @@ const RoutesList: React.FC<IRoutesListProps> = ({
       routes &&
       routes.map((route: Route) => (
         <RouteRow
+          canEdit={canEdit}
           key={route.id}
           route={route}
-          canEdit={canEdit}
-          onEditClick={handleEditRoute}
           onDeleteClick={handleDeleteRoute}
+          onEditClick={handleEditRoute}
+          onRowClick={handleRowClick}
         />
       ))
     }
