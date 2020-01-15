@@ -2,7 +2,6 @@ package com.lukeshay.restapi.rating.route;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,17 +26,7 @@ public class RouteRating {
   @Expose private Grade grade;
   @Expose private int rating;
 
-  public RouteRating(
-      String creatorId,
-      String creatorUsername,
-      String createdDate,
-      String routeId,
-      String review,
-      Grade grade,
-      int rating) {
-    this.creatorId = creatorId;
-    this.creatorUsername = creatorUsername;
-    this.createdDate = createdDate;
+  public RouteRating(String routeId, String review, Grade grade, int rating) {
     this.routeId = routeId;
     this.review = review;
     this.grade = grade;
@@ -46,7 +35,7 @@ public class RouteRating {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof Route && toString().equals(obj.toString());
+    return obj instanceof RouteRating && toString().equals(obj.toString());
   }
 
   @Override
