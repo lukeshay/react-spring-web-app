@@ -240,7 +240,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const FormHead: JSX.Element = (
     <div style={{ display: "inline" }}>
       <div style={{ float: "left", marginRight: "25px", marginTop: "5px" }}>
-        Update Gym
+        Edit Gym
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button onClick={handleCancel} type="button" variant="outlined">

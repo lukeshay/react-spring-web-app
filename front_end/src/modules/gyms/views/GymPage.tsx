@@ -18,6 +18,7 @@ import RoutesList from "./RoutesList";
 import WallAddPage from "./WallAddPage";
 import WallEditPage from "./WallEditPage";
 import WallList from "./WallList";
+import RatingPage from "./RatingPage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -149,8 +150,9 @@ const GymPage: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleRouteRowClick = async (route: Route): Promise<void> => {
-    console.log(route);
+  const handleRouteRowClick = async (routeFromRow: Route): Promise<void> => {
+    setRoute(routeFromRow);
+    setView("RATING");
   };
 
   const handleDeleteRoute = async (routeId: string): Promise<void> => {
@@ -176,20 +178,28 @@ const GymPage: React.FC = (): JSX.Element => {
   };
 
   const handleEditRoute = async (tempRoute: Route): Promise<void> => {
-    setRoute(tempRoute);
-    setOpenEdit(true);
-    setOpenAdd(false);
+    if (canEdit) {
+      setRoute(tempRoute);
+      setOpenEdit(true);
+      setOpenAdd(false);
+    }
   };
 
   const handleEditWall = async (tempWall: Wall): Promise<void> => {
-    setWall(tempWall);
-    setOpenEdit(true);
-    setOpenAdd(false);
+    if (canEdit) {
+      setWall(tempWall);
+      setOpenEdit(true);
+      setOpenAdd(false);
+    }
   };
 
   const handleOpenAdd = async (): Promise<void> => {
-    setOpenAdd(true);
-    setOpenEdit(false);
+    if (view !== "RATING" && canEdit) {
+      setOpenAdd(true);
+      setOpenEdit(false);
+    } else if (view === "RATING") {
+      console.log("New Rating Modal");
+    }
   };
 
   const handleCloseAdd = async (): Promise<void> => setOpenAdd(false);
@@ -208,8 +218,13 @@ const GymPage: React.FC = (): JSX.Element => {
         size="medium"
         type="button"
         onClick={(): void => {
-          setView("WALL");
-          setWallId("");
+          if (view === "ROUTE") {
+            setView("WALL");
+            setWallId("");
+          } else {
+            setView("ROUTE");
+            setRoute(undefined);
+          }
         }}
         style={shouldBeVisible(view !== "WALL")}
       >
@@ -223,7 +238,7 @@ const GymPage: React.FC = (): JSX.Element => {
         fullWidth={false}
         size="medium"
         type="button"
-        style={shouldBeVisible(canEdit)}
+        style={shouldBeVisible(canEdit || view === "RATING")}
       >
         <AddIcon className={classes.icons} />
         Add
@@ -257,10 +272,49 @@ const GymPage: React.FC = (): JSX.Element => {
     }
 
     if (view === "RATING") {
-      return <div>YEET</div>;
+      return <RatingPage route={route || ({} as Route)} />;
     }
 
     return <React.Fragment />;
+  };
+
+  const Modals: React.FC = (): JSX.Element => {
+    if (gymId) {
+      return (
+        <React.Fragment>
+          <RouteAddPage
+            open={view === "ROUTE" && openAdd}
+            handleClose={handleCloseAdd}
+            gymId={gymId}
+            wallId={wallId}
+          />
+          {route && (
+            <RouteEditPage
+              open={view === "ROUTE" && openEdit}
+              handleClose={handleCloseEdit}
+              gymId={gymId}
+              wallId={wallId}
+              route={route}
+            />
+          )}
+          <WallAddPage
+            open={view === "WALL" && openAdd}
+            handleClose={handleCloseAdd}
+            gymId={gymId}
+          />
+          {wall && (
+            <WallEditPage
+              open={view === "WALL" && openEdit}
+              handleClose={handleCloseEdit}
+              gymId={gymId}
+              wall={wall}
+            />
+          )}
+        </React.Fragment>
+      );
+    } else {
+      return <React.Fragment />;
+    }
   };
 
   return (
@@ -272,31 +326,8 @@ const GymPage: React.FC = (): JSX.Element => {
       >
         <Buttons />
         <CurrentView />
+        <Modals />
       </div>
-      {gymId && route && (
-        <RouteEditPage
-          open={view === "ROUTE" && openEdit}
-          handleClose={handleCloseEdit}
-          gymId={gymId}
-          wallId={wallId}
-          route={route}
-        />
-      )}
-      {gymId && (
-        <WallAddPage
-          open={view === "WALL" && openAdd}
-          handleClose={handleCloseAdd}
-          gymId={gymId}
-        />
-      )}
-      {gymId && wall && (
-        <WallEditPage
-          open={view === "WALL" && openEdit}
-          handleClose={handleCloseEdit}
-          gymId={gymId}
-          wall={wall}
-        />
-      )}
     </React.Fragment>
   );
 };

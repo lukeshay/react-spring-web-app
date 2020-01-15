@@ -62,11 +62,11 @@ const WallAddPage: React.FC<IWallAddPageProps> = ({
         style={{ width: "475px" }}
       >
         <WallForm
-          formHeadText="Create wall"
+          formHeadText="Add wall"
           wall={wall}
           handleCancel={handleClose}
           handleSubmit={handleSubmit}
-          submitButtonText="Create wall"
+          submitButtonText="Add wall"
           nameMessage={nameMessage}
           typesMessage={typesMessage}
         />

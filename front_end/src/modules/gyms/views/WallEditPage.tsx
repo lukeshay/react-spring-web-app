@@ -62,11 +62,11 @@ const WallEditPage: React.FC<IWallEditPageProps> = ({
       style={{ width: "475px" }}
     >
       <WallForm
-        formHeadText="Update wall"
+        formHeadText="Edit wall"
         wall={updatedWall}
         handleCancel={handleClose}
         handleSubmit={handleSubmit}
-        submitButtonText="Update wall"
+        submitButtonText="Save"
         nameMessage={nameMessage}
         typesMessage={typesMessage}
       />
