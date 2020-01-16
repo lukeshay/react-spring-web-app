@@ -108,10 +108,7 @@ const NavigationBar: React.FC<INavigationBarProps> = ({
           to={Routes.GYMS}
           className={classes.listItem}
         >
-          <SvgIcon
-            component={ClimberIcon}
-            viewBox="0 0 600 476.6"
-          />
+          <SvgIcon component={ClimberIcon} viewBox="0 0 600 476.6" />
           <ListItemText primary={"Gyms"} />
         </ListItem>
         <ListItem
