@@ -1,14 +1,16 @@
 import { TableCell, TableRow } from "@material-ui/core";
 import React from "react";
-import { Route } from "../../../types";
+import * as RouteRatingsApi from "../../../api/routeRatingsApi";
+import { Route, RouteRating } from "../../../types";
 import Table from "../../common/table/Table";
+import { toast } from "react-toastify";
 
-interface IGymPageRowProps {
+interface IRouteInformationRowProps {
   label: React.ReactNode;
   text: React.ReactNode;
 }
 
-const RatingPageRow: React.FC<IGymPageRowProps> = ({
+const RouteInformationRow: React.FC<IRouteInformationRowProps> = ({
   label,
   text
 }): JSX.Element => (
@@ -25,7 +27,8 @@ export interface IRatingPageProps {
 const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
   route
 }): JSX.Element => {
-  const { name, grade, rating, setter, holdColor } = route;
+  const [ratings, setRatings] = React.useState<RouteRating[]>([]);
+  const { id, name, grade, rating, setter, holdColor } = route;
   let types = "";
 
   route.types.forEach((value) => {
@@ -50,15 +53,31 @@ const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
     }
   });
 
+  React.useEffect(() => {
+    RouteRatingsApi.getRouteRatings(id).then((response: Response) => {
+      if (response instanceof Response && response.ok) {
+        response.json().then((body: RouteRating[]) => {
+          setRatings(body);
+        });
+      } else {
+        toast.error("Error getting ratings.");
+      }
+    });
+  }, []);
+
   return (
     <Table
       body={[
-        <RatingPageRow key="route" label="Route" text={name} />,
-        <RatingPageRow key="type" label="Type" text={types} />,
-        <RatingPageRow key="setter" label="Setter" text={setter} />,
-        <RatingPageRow key="color" label="Route" text={holdColor} />,
-        <RatingPageRow key="grade" label="Average Grade" text={grade} />,
-        <RatingPageRow key="rating" label="Average Rating" text={rating} />
+        <RouteInformationRow key="route" label="Route" text={name} />,
+        <RouteInformationRow key="type" label="Type" text={types} />,
+        <RouteInformationRow key="setter" label="Setter" text={setter} />,
+        <RouteInformationRow key="color" label="Route" text={holdColor} />,
+        <RouteInformationRow key="grade" label="Average Grade" text={grade} />,
+        <RouteInformationRow
+          key="rating"
+          label="Average Rating"
+          text={rating}
+        />
       ]}
     />
   );
