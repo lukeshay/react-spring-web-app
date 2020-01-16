@@ -13,6 +13,10 @@ const AboutPage: React.FC = (): JSX.Element => {
         >
           https://www.iconfinder.com/icons/310343/climbing_sport_icon
         </a>
+        <Typography variant="h4">Wall Icon Credit</Typography>
+        <a href="https://www.iconfinder.com/icons/1664204/climb_climbing_mountain_nature_rock_stone_wind_icon">
+          https://www.iconfinder.com/icons/1664204/climb_climbing_mountain_nature_rock_stone_wind_icon
+        </a>
       </Typography>
     </React.Fragment>
   );

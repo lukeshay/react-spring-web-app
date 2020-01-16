@@ -9,6 +9,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as UserActions from "./context/user/userActions";
 import { useUserContext } from "./context/user/userStore";
+import {
+  DARK_THEME,
+  LIGHT_THEME,
+  Types,
+  useViewContext
+} from "./context/view/viewStore";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import { darkTheme, getTheme, lightTheme } from "./theme";
@@ -26,9 +32,8 @@ const App: React.FC = (): JSX.Element => {
     marginTop: "0px"
   });
 
-  const [dark, setDark] = React.useState<boolean>(true);
-
   const { state: userState, dispatch: userDispatch } = useUserContext();
+  const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
   React.useEffect(() => {
     if (!userState.user || !userState.user.userId) {
@@ -42,25 +47,41 @@ const App: React.FC = (): JSX.Element => {
 
   function handleResize(): void {
     const width = window.innerWidth;
+    const { theme } = viewState;
 
     if (width < 600) {
       setStyle({ marginLeft: "10px", marginTop: "60px", marginRight: "10px" });
+
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
     } else {
       setStyle({ marginLeft: "180px", marginTop: "0px", marginRight: "10px" });
+
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
     }
   }
 
   return (
     <div style={style}>
-      <ThemeProvider theme={getTheme(dark ? darkTheme : lightTheme)}>
+      <ThemeProvider
+        theme={getTheme(
+          viewState.theme === DARK_THEME ? darkTheme : lightTheme
+        )}
+      >
         <CssBaseline />
         <ToastContainer autoClose={3000} hideProgressBar={true} />
         <NavigationBar>
           <FormControlLabel
             control={
               <ToggleSwitch
-                checked={dark}
-                onChange={(): void => setDark(!dark)}
+                checked={viewState.theme === DARK_THEME}
+                onChange={(): void =>
+                  viewDispatch({
+                    actionType: Types.UPDATE_VIEW,
+                    mobile: viewState.mobile,
+                    theme:
+                      viewState.theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
+                  })
+                }
               />
             }
             label="Dark Mode"

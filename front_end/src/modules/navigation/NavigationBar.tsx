@@ -23,8 +23,14 @@ import InfoIcon from "@material-ui/icons/Info";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import ClimberIcon from "../../icons/favicon.svg";
+import ClimberIconWhite from "../../icons/climber_white.svg";
+import ClimberIconBlack from "../../icons/climber_black.svg";
 import { Routes } from "../../routes";
+import {
+  useViewContext,
+  Types,
+  LIGHT_THEME
+} from "../../context/view/viewStore";
 
 const drawerWidth = 170;
 const useStyles = makeStyles((theme: Theme) =>
@@ -75,16 +81,11 @@ export interface INavigationBarProps {
 const NavigationBar: React.FC<INavigationBarProps> = ({
   children
 }): JSX.Element => {
-  const navItems: Array<{ text: string; link: string }> = [
-    { text: "Home", link: Routes.HOME },
-    { text: "Gyms", link: Routes.GYMS },
-    { text: "Profile", link: Routes.PROFILE },
-    { text: "About", link: Routes.ABOUT }
-  ];
-
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const { state: viewState } = useViewContext();
 
   const handleDrawerToggle = (): void => setMobileOpen(!mobileOpen);
 
@@ -108,7 +109,14 @@ const NavigationBar: React.FC<INavigationBarProps> = ({
           to={Routes.GYMS}
           className={classes.listItem}
         >
-          <SvgIcon component={ClimberIcon} viewBox="0 0 600 476.6" />
+          <SvgIcon
+            component={
+              viewState.theme === LIGHT_THEME
+                ? ClimberIconBlack
+                : ClimberIconWhite
+            }
+            className={classes.icons}
+          />
           <ListItemText primary={"Gyms"} />
         </ListItem>
         <ListItem
