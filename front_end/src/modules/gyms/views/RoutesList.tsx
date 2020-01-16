@@ -9,9 +9,8 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
-import { Link } from "react-router-dom";
-import { AuthRoutes } from "../../../routes";
 import { Route } from "../../../types";
+import * as GradeUtils from "../../../utils/gradeUtils";
 import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,19 +22,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface IRouteRowProps {
-  route: Route;
   canEdit: boolean;
-  onEditClick(route: Route): Promise<void> | void;
+  route: Route;
   onDeleteClick(routeId: string): Promise<void> | void;
+  onEditClick(route: Route): Promise<void> | void;
+  onRowClick(route: Route): Promise<void> | void;
 }
 
 const RouteRow: React.FC<IRouteRowProps> = ({
-  route,
   canEdit,
+  route,
+  onDeleteClick,
   onEditClick,
-  onDeleteClick
+  onRowClick
 }): JSX.Element => {
   const classes = useStyles();
+
+  const { averageGrade, holdColor, id, name, averageRating, setter } = route;
 
   let types = "";
 
@@ -62,13 +65,21 @@ const RouteRow: React.FC<IRouteRowProps> = ({
   });
 
   return (
-    <TableRow hover id={route.id}>
-      <TableCell>{route.name}</TableCell>
+    <TableRow
+      hover
+      id={id}
+      onClick={(): void | Promise<void> => onRowClick(route)}
+    >
+      <TableCell>{name}</TableCell>
       <TableCell>{types}</TableCell>
-      <TableCell>{route.setter}</TableCell>
-      <TableCell>{route.holdColor}</TableCell>
-      <TableCell>{route.averageGrade}</TableCell>
-      <TableCell>{route.averageRating}</TableCell>
+      <TableCell>{setter}</TableCell>
+      <TableCell>{holdColor}</TableCell>
+      <TableCell>
+        {averageGrade && GradeUtils.convertGradeToString(averageGrade)}
+      </TableCell>
+      <TableCell>
+        {averageRating > 0 && Math.round(averageRating * 10) / 10}
+      </TableCell>
       {canEdit && (
         <TableCell>
           <Button
@@ -92,7 +103,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
             size="medium"
             type="button"
             color="primary"
-            onClick={(): void | Promise<void> => onDeleteClick(route.id)}
+            onClick={(): void | Promise<void> => onDeleteClick(id)}
           >
             <DeleteIcon className={classes.icons} />
             Delete
@@ -106,20 +117,22 @@ const RouteRow: React.FC<IRouteRowProps> = ({
 export interface IRoutesListProps {
   canEdit: boolean;
   routes: Route[];
-  handleEditRoute(route: Route): Promise<void> | void;
   handleDeleteRoute(routeId: string): Promise<void> | void;
+  handleEditRoute(route: Route): Promise<void> | void;
+  handleRowClick(route: Route): Promise<void> | void;
 }
 
 const RoutesList: React.FC<IRoutesListProps> = ({
-  routes,
   canEdit,
+  routes,
+  handleDeleteRoute,
   handleEditRoute,
-  handleDeleteRoute
+  handleRowClick
 }): JSX.Element => (
   <Table
     head={
       <TableRow>
-        <TableCell key="name">Name</TableCell>
+        <TableCell key="route">Route</TableCell>
         <TableCell key="types">Types</TableCell>
         <TableCell key="setter">Setter</TableCell>
         <TableCell key="color">Color</TableCell>
@@ -133,11 +146,12 @@ const RoutesList: React.FC<IRoutesListProps> = ({
       routes &&
       routes.map((route: Route) => (
         <RouteRow
+          canEdit={canEdit}
           key={route.id}
           route={route}
-          canEdit={canEdit}
-          onEditClick={handleEditRoute}
           onDeleteClick={handleDeleteRoute}
+          onEditClick={handleEditRoute}
+          onRowClick={handleRowClick}
         />
       ))
     }

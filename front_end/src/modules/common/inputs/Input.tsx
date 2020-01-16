@@ -11,6 +11,8 @@ export interface IPropsInput {
   fullWidth?: boolean;
   autoComplete?: string;
   autoCapitalize?: "true" | undefined;
+  rows?: number;
+  error?: boolean;
   handleChange?(event: any): void;
 }
 
@@ -24,6 +26,8 @@ const Input: React.FC<IPropsInput> = ({
   handleChange,
   autoComplete,
   autoCapitalize,
+  error,
+  rows,
   fullWidth
 }): JSX.Element => (
   <TextField
@@ -39,11 +43,14 @@ const Input: React.FC<IPropsInput> = ({
     autoComplete={autoComplete}
     autoCapitalize={autoCapitalize}
     helperText={helpText}
-    error={helpText !== ""}
+    error={helpText !== "" && error}
+    rows={rows}
+    multiline={rows !== undefined && rows > 1}
   />
 );
 
 Input.defaultProps = {
+  error: true,
   fullWidth: true,
   helpText: "",
   id: "",

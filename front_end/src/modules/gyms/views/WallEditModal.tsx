@@ -6,27 +6,29 @@ import { Wall } from "../../../types";
 import TransitionModal from "../../common/modal/Modal";
 import WallForm from "./WallForm";
 
-export interface IWallAddPageProps {
+export interface IWallEditPageProps {
   gymId: string;
   open: boolean;
+  wall: Wall;
   handleClose(): Promise<void> | void;
 }
 
-const WallAddPage: React.FC<IWallAddPageProps> = ({
+const WallEditPage: React.FC<IWallEditPageProps> = ({
   gymId,
   open,
+  wall,
   handleClose
 }): JSX.Element => {
-  const [wall, setWall] = React.useState<Wall>({} as Wall);
+  const [updatedWall, setUpdatedWall] = React.useState<Wall>(wall);
   const [typesMessage, setTypesMessage] = React.useState<string>("");
   const [nameMessage, setNameMessage] = React.useState<string>("");
 
   const { dispatch: gymsDispatch } = useGymsContext();
 
   const handleSubmit = (returnWall: Wall): void => {
-    const newWall = { gymId, ...returnWall };
+    const newWall = { id: wall.id, gymId, ...returnWall };
 
-    setWall(newWall);
+    setUpdatedWall(newWall);
 
     if (newWall.types.length === 0) {
       setTypesMessage("Select a type.");
@@ -43,9 +45,8 @@ const WallAddPage: React.FC<IWallAddPageProps> = ({
     if (newWall.types.length !== 0 && newWall.name.trim().length !== 0) {
       setTypesMessage("");
       setNameMessage("");
-      GymsActions.createWall(gymsDispatch, newWall, gymId).then((response) => {
+      GymsActions.updateWall(gymsDispatch, newWall, gymId).then((response) => {
         if (response instanceof Response && response.ok) {
-          setWall({} as Wall);
           handleClose();
         } else {
           toast.error("Error updating wall.");
@@ -54,27 +55,23 @@ const WallAddPage: React.FC<IWallAddPageProps> = ({
     }
   };
 
-  if (gymId !== "") {
-    return (
-      <TransitionModal
-        open={open}
-        handleClose={handleClose}
-        style={{ width: "475px" }}
-      >
-        <WallForm
-          formHeadText="Create wall"
-          wall={wall}
-          handleCancel={handleClose}
-          handleSubmit={handleSubmit}
-          submitButtonText="Create wall"
-          nameMessage={nameMessage}
-          typesMessage={typesMessage}
-        />
-      </TransitionModal>
-    );
-  } else {
-    return <React.Fragment />;
-  }
+  return (
+    <TransitionModal
+      open={open}
+      handleClose={handleClose}
+      style={{ width: "475px" }}
+    >
+      <WallForm
+        formHeadText="Edit wall"
+        wall={updatedWall}
+        handleCancel={handleClose}
+        handleSubmit={handleSubmit}
+        submitButtonText="Save"
+        nameMessage={nameMessage}
+        typesMessage={typesMessage}
+      />
+    </TransitionModal>
+  );
 };
 
-export default WallAddPage;
+export default WallEditPage;

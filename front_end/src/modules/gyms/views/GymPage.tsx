@@ -3,20 +3,22 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
-import { AuthRoutes, Routes } from "../../../routes";
+import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
-import RouteAddPage from "./RouteAddPage";
-import RouteEditPage from "./RouteEditPage";
+import RatingAddModal from "./RatingAddModal";
+import RatingPage from "./RatingPage";
+import RouteAddModal from "./RouteAddModal";
+import RouteEditModal from "./RouteEditModal";
 import RoutesList from "./RoutesList";
-import WallAddPage from "./WallAddPage";
-import WallEditPage from "./WallEditPage";
+import WallAddModal from "./WallAddModal";
+import WallEditModal from "./WallEditModal";
 import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +45,7 @@ const GymPage: React.FC = (): JSX.Element => {
   const { state: userState } = useUserContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
-  const [walls, setWalls] = React.useState<boolean>(true);
+  const [view, setView] = React.useState<"WALL" | "ROUTE" | "RATING">("WALL");
   const [wall, setWall] = React.useState<Wall | undefined>(undefined);
   const [routes, setRoutes] = React.useState<Route[]>([]);
   const [route, setRoute] = React.useState<Route | undefined>(undefined);
@@ -91,6 +93,16 @@ const GymPage: React.FC = (): JSX.Element => {
       if (tempWall) {
         setRoutes(tempWall.routes);
         setWallId(tempWall.id);
+
+        if (route) {
+          const tempRoute = tempWall.routes
+            ? tempWall.routes.find((element: Route) => route.id === element.id)
+            : null;
+
+          if (tempRoute) {
+            setRoute(tempRoute);
+          }
+        }
       }
 
       if (
@@ -115,13 +127,13 @@ const GymPage: React.FC = (): JSX.Element => {
     }
   };
 
-  const onWallRowClick = async (rowWallId: string): Promise<void> => {
+  const handleWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls
       ? gym.walls.find((element: Wall) => element.id === rowWallId)
       : null;
 
     if (tempWall) {
-      setWalls(false);
+      setView("ROUTE");
       setRoutes(tempWall.routes);
       setWallId(tempWall.id);
     } else {
@@ -149,6 +161,11 @@ const GymPage: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleRouteRowClick = async (routeFromRow: Route): Promise<void> => {
+    setRoute(routeFromRow);
+    setView("RATING");
+  };
+
   const handleDeleteRoute = async (routeId: string): Promise<void> => {
     if (
       window.confirm(
@@ -172,20 +189,26 @@ const GymPage: React.FC = (): JSX.Element => {
   };
 
   const handleEditRoute = async (tempRoute: Route): Promise<void> => {
-    setRoute(tempRoute);
-    setOpenEdit(true);
-    setOpenAdd(false);
+    if (canEdit) {
+      setRoute(tempRoute);
+      setOpenEdit(true);
+      setOpenAdd(false);
+    }
   };
 
   const handleEditWall = async (tempWall: Wall): Promise<void> => {
-    setWall(tempWall);
-    setOpenEdit(true);
-    setOpenAdd(false);
+    if (canEdit) {
+      setWall(tempWall);
+      setOpenEdit(true);
+      setOpenAdd(false);
+    }
   };
 
   const handleOpenAdd = async (): Promise<void> => {
-    setOpenAdd(true);
-    setOpenEdit(false);
+    if ((view !== "RATING" && canEdit) || view === "RATING") {
+      setOpenAdd(true);
+      setOpenEdit(false);
+    }
   };
 
   const handleCloseAdd = async (): Promise<void> => setOpenAdd(false);
@@ -196,6 +219,121 @@ const GymPage: React.FC = (): JSX.Element => {
     setWall(undefined);
   };
 
+  const Buttons: React.FC = (): JSX.Element => (
+    <div className={classes.buttonWrapper}>
+      <Button
+        variant="text"
+        fullWidth={false}
+        size="medium"
+        type="button"
+        onClick={(): void => {
+          if (view === "ROUTE") {
+            setView("WALL");
+            setWallId("");
+          } else {
+            setView("ROUTE");
+            setRoute(undefined);
+          }
+        }}
+        style={shouldBeVisible(view !== "WALL")}
+      >
+        <ArrowBackIcon className={classes.icons} />
+        Back
+      </Button>
+      <Button
+        onClick={handleOpenAdd}
+        className={classes.addButton}
+        variant="text"
+        fullWidth={false}
+        size="medium"
+        type="button"
+        style={shouldBeVisible(canEdit || view === "RATING")}
+      >
+        <AddIcon className={classes.icons} />
+        Add
+      </Button>
+    </div>
+  );
+
+  const CurrentView: React.FC = (): JSX.Element => {
+    if (view === "WALL") {
+      return (
+        <WallList
+          walls={gym.walls}
+          onRowClick={handleWallRowClick}
+          canEdit={canEdit}
+          handleDeleteWall={handleDeleteWall}
+          handleEditClick={handleEditWall}
+        />
+      );
+    }
+
+    if (view === "ROUTE") {
+      return (
+        <RoutesList
+          canEdit={canEdit}
+          routes={routes}
+          handleDeleteRoute={handleDeleteRoute}
+          handleEditRoute={handleEditRoute}
+          handleRowClick={handleRouteRowClick}
+        />
+      );
+    }
+
+    if (view === "RATING") {
+      return <RatingPage route={route || ({} as Route)} />;
+    }
+
+    return <React.Fragment />;
+  };
+
+  const Modals: React.FC = (): JSX.Element => {
+    if (gymId) {
+      return (
+        <React.Fragment>
+          <RouteAddModal
+            open={view === "ROUTE" && openAdd}
+            handleClose={handleCloseAdd}
+            gymId={gymId}
+            wallId={wallId}
+          />
+          {route && (
+            <RouteEditModal
+              open={view === "ROUTE" && openEdit}
+              handleClose={handleCloseEdit}
+              gymId={gymId}
+              wallId={wallId}
+              route={route}
+            />
+          )}
+          <WallAddModal
+            open={view === "WALL" && openAdd}
+            handleClose={handleCloseAdd}
+            gymId={gymId}
+          />
+          {wall && (
+            <WallEditModal
+              open={view === "WALL" && openEdit}
+              handleClose={handleCloseEdit}
+              gymId={gymId}
+              wall={wall}
+            />
+          )}
+          {route && (
+            <RatingAddModal
+              open={view === "RATING" && openAdd}
+              handleClose={handleCloseAdd}
+              routeId={route.id}
+              gymId={gymId}
+            />
+          )}
+        </React.Fragment>
+      );
+    } else {
+      return <React.Fragment />;
+    }
+  };
+
   return (
     <React.Fragment>
       <GymInformation gym={gym} canEdit={canEdit} />
@@ -203,83 +341,10 @@ const GymPage: React.FC = (): JSX.Element => {
         className={classes.wallList}
         style={shouldDisplay((gym.walls && gym.walls.length !== 0) || canEdit)}
       >
-        <div className={classes.buttonWrapper}>
-          <Button
-            variant="text"
-            fullWidth={false}
-            size="medium"
-            type="button"
-            onClick={(): void => {
-              setWalls(true);
-              setWallId("");
-            }}
-            style={shouldBeVisible(!walls)}
-          >
-            <ArrowBackIcon className={classes.icons} />
-            Back
-          </Button>
-          <Button
-            onClick={handleOpenAdd}
-            className={classes.addButton}
-            variant="text"
-            fullWidth={false}
-            size="medium"
-            type="button"
-            style={shouldBeVisible(canEdit)}
-          >
-            <AddIcon className={classes.icons} />
-            Add
-          </Button>
-        </div>
-        {walls ? (
-          <WallList
-            walls={gym.walls}
-            onRowClick={onWallRowClick}
-            canEdit={canEdit}
-            handleDeleteWall={handleDeleteWall}
-            onEditClick={handleEditWall}
-          />
-        ) : (
-          <RoutesList
-            routes={routes}
-            canEdit={canEdit}
-            handleEditRoute={handleEditRoute}
-            handleDeleteRoute={handleDeleteRoute}
-          />
-        )}
+        <Buttons />
+        <CurrentView />
+        <Modals />
       </div>
-      {gymId && (
-        <RouteAddPage
-          open={!walls && openAdd}
-          handleClose={handleCloseAdd}
-          gymId={gymId}
-          wallId={wallId}
-        />
-      )}
-      {gymId && route && (
-        <RouteEditPage
-          open={!walls && openEdit}
-          handleClose={handleCloseEdit}
-          gymId={gymId}
-          wallId={wallId}
-          route={route}
-        />
-      )}
-      {gymId && (
-        <WallAddPage
-          open={walls && openAdd}
-          handleClose={handleCloseAdd}
-          gymId={gymId}
-        />
-      )}
-      {gymId && wall && (
-        <WallEditPage
-          open={walls && openEdit}
-          handleClose={handleCloseEdit}
-          gymId={gymId}
-          wall={wall}
-        />
-      )}
     </React.Fragment>
   );
 };

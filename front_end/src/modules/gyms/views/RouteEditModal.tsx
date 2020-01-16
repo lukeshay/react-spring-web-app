@@ -64,11 +64,11 @@ const RouteEditPage: React.FC<IRouteEditPageProps> = ({
       style={{ width: "475px" }}
     >
       <RouteForm
-        formHeadText="Update route"
+        formHeadText="Edit route"
         route={updatedRoute}
         handleCancel={handleClose}
         handleSubmit={handleSubmit}
-        submitButtonText="Update route"
+        submitButtonText="Save"
         nameMessage={nameMessage}
         typesMessage={typesMessage}
       />

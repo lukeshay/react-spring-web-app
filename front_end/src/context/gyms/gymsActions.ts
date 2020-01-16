@@ -1,12 +1,13 @@
 import * as GymsApi from "../../api/gymsApi";
+import * as RouteRatingsApi from "../../api/routeRatingsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, Route, Wall } from "../../types";
+import { Gym, Route, RouteRating, Wall } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
 
 export const loadGyms = (dispatch: any): Promise<void | Response> => {
-  const responsePromise = GymsApi.getGyms().then((response: Response) => {
+  return GymsApi.getGyms().then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym[]) => {
         dispatch({
@@ -18,15 +19,13 @@ export const loadGyms = (dispatch: any): Promise<void | Response> => {
       return response;
     }
   });
-
-  return responsePromise;
 };
 
 export const loadGymV2 = (
   dispatch: any,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = GymsApi.getGymV2(gymId).then((response: Response) => {
+  return GymsApi.getGymV2(gymId).then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym) => {
         dispatch({
@@ -38,32 +37,26 @@ export const loadGymV2 = (
 
     return response;
   });
-
-  return responsePromise;
 };
 
 export const loadWalls = (
   dispatch: any,
   gym: Gym
 ): Promise<void | Response> => {
-  const responsePromise = WallsApi.getWalls(gym.id).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        response.json().then((body: Wall[]) => {
-          gym.walls = body;
+  return WallsApi.getWalls(gym.id).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Wall[]) => {
+        gym.walls = body;
 
-          dispatch({
-            actionType: Types.UPDATE_GYM,
-            gym
-          } as IGymsContextAction);
-        });
-      }
-
-      return response;
+        dispatch({
+          actionType: Types.UPDATE_GYM,
+          gym
+        } as IGymsContextAction);
+      });
     }
-  );
 
-  return responsePromise;
+    return response;
+  });
 };
 
 export const loadRoutes = (
@@ -71,32 +64,28 @@ export const loadRoutes = (
   gym: Gym,
   wallId: string
 ): Promise<void | Response> => {
-  const responsePromise = RoutesApi.getRoutesOfWall(wallId).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        response.json().then((body: Route[]) => {
-          if (gym.walls) {
-            gym.walls = gym.walls.map((wall: Wall) => {
-              if (wallId === wall.id) {
-                wall.routes = body;
-              }
+  return RoutesApi.getRoutesOfWall(wallId).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Route[]) => {
+        if (gym.walls) {
+          gym.walls = gym.walls.map((wall: Wall) => {
+            if (wallId === wall.id) {
+              wall.routes = body;
+            }
 
-              return wall;
-            });
+            return wall;
+          });
 
-            dispatch({
-              actionType: Types.UPDATE_GYM,
-              gym
-            } as IGymsContextAction);
-          }
-        });
-      }
-
-      return response;
+          dispatch({
+            actionType: Types.UPDATE_GYM,
+            gym
+          } as IGymsContextAction);
+        }
+      });
     }
-  );
 
-  return responsePromise;
+    return response;
+  });
 };
 
 export const updateGym = async (
@@ -104,22 +93,18 @@ export const updateGym = async (
   updatedGym: Gym,
   oldGym: Gym
 ): Promise<void | Response> => {
-  const responsePromise = GymsApi.updateGym(updatedGym).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        response.json().then((body: Gym) => {
-          dispatch({
-            actionType: Types.UPDATE_GYM,
-            gym: { ...body, walls: oldGym.walls }
-          } as IGymsContextAction);
-        });
-      }
-
-      return response;
+  return GymsApi.updateGym(updatedGym).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Gym) => {
+        dispatch({
+          actionType: Types.UPDATE_GYM,
+          gym: { ...body, walls: oldGym.walls }
+        } as IGymsContextAction);
+      });
     }
-  );
 
-  return responsePromise;
+    return response;
+  });
 };
 
 export const createWall = async (
@@ -127,17 +112,13 @@ export const createWall = async (
   wall: Wall,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = WallsApi.createWall(wall).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        return loadGymV2(dispatch, gymId);
-      } else {
-        return response;
-      }
+  return WallsApi.createWall(wall).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
     }
-  );
-
-  return responsePromise;
+  });
 };
 
 export const updateWall = async (
@@ -145,17 +126,13 @@ export const updateWall = async (
   wall: Wall,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = WallsApi.updateWall(wall).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        return loadGymV2(dispatch, gymId);
-      } else {
-        return response;
-      }
+  return WallsApi.updateWall(wall).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
     }
-  );
-
-  return responsePromise;
+  });
 };
 
 export const deleteWall = async (
@@ -163,17 +140,13 @@ export const deleteWall = async (
   wallId: string,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = WallsApi.deleteWall(wallId).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        return loadGymV2(dispatch, gymId);
-      } else {
-        return response;
-      }
+  return WallsApi.deleteWall(wallId).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
     }
-  );
-
-  return responsePromise;
+  });
 };
 
 export const createRoute = async (
@@ -181,17 +154,13 @@ export const createRoute = async (
   route: Route,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = RoutesApi.createRoute(route).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        return loadGymV2(dispatch, gymId);
-      } else {
-        return response;
-      }
+  return RoutesApi.createRoute(route).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
     }
-  );
-
-  return responsePromise;
+  });
 };
 
 export const updateRoute = async (
@@ -199,17 +168,13 @@ export const updateRoute = async (
   route: Route,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = RoutesApi.updateRoute(route).then(
-    (response: Response) => {
-      if (response instanceof Response && response.ok) {
-        return loadGymV2(dispatch, gymId);
-      } else {
-        return response;
-      }
+  return RoutesApi.updateRoute(route).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
     }
-  );
-
-  return responsePromise;
+  });
 };
 
 export const deleteRoute = async (
@@ -217,7 +182,21 @@ export const deleteRoute = async (
   route: Route,
   gymId: string
 ): Promise<void | Response> => {
-  const responsePromise = RoutesApi.deleteRoute(route).then(
+  return RoutesApi.deleteRoute(route).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      return loadGymV2(dispatch, gymId);
+    } else {
+      return response;
+    }
+  });
+};
+
+export const createRouteRating = async (
+  dispatch: any,
+  rating: RouteRating,
+  gymId: string
+): Promise<void | Response> => {
+  return RouteRatingsApi.createRouteRating(rating).then(
     (response: Response) => {
       if (response instanceof Response && response.ok) {
         return loadGymV2(dispatch, gymId);
@@ -226,6 +205,4 @@ export const deleteRoute = async (
       }
     }
   );
-
-  return responsePromise;
 };
