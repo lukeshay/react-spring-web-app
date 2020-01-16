@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import * as UserActions from "../../../context/user/userActions";
-import { UserContext } from "../../../context/user/userStore";
+import { useUserContext } from "../../../context/user/userStore";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
@@ -11,7 +11,7 @@ export interface IPropsLogInForm {
 }
 
 const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
-  const { dispatch } = useContext(UserContext);
+  const { dispatch: userDispatch } = useUserContext();
   const [email, setEmail] = React.useState<string>("");
   const [emailMessage, setEmailMessage] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -30,7 +30,7 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
   const handleSubmit = (event: any): void => {
     event.preventDefault();
 
-    UserActions.signIn(dispatch, email, password).then((response) => {
+    UserActions.signIn(userDispatch, email, password).then((response) => {
       if (response instanceof Response && response.status === 401) {
         setPasswordMessage(
           "User not found or incorrect password. Try a different username or password."
@@ -83,10 +83,11 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
 
   return (
     <Form
-      title={title}
       buttonText="Sign in"
       formInputs={formInputs}
       handleSubmit={handleSubmit}
+      icon={<LockOutlinedIcon />}
+      title={title}
     />
   );
 };

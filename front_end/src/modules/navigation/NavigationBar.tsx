@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  SvgIcon,
   Toolbar,
   Typography
 } from "@material-ui/core";
@@ -15,10 +16,16 @@ import {
   Theme,
   useTheme
 } from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import CloseIcon from "@material-ui/icons/Close";
+import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
+import { LIGHT_THEME, useViewContext } from "../../context/view/viewStore";
+import ClimberIconBlack from "../../icons/climber_black.svg";
+import ClimberIconWhite from "../../icons/climber_white.svg";
 import { Routes } from "../../routes";
 
 const drawerWidth = 170;
@@ -44,6 +51,9 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: drawerWidth
     },
+    icons: {
+      paddingRight: theme.spacing(1)
+    },
     listItem: {
       paddingLeft: theme.spacing(3)
     },
@@ -67,33 +77,64 @@ export interface INavigationBarProps {
 const NavigationBar: React.FC<INavigationBarProps> = ({
   children
 }): JSX.Element => {
-  const navItems: Array<{ text: string; link: string }> = [
-    { text: "Home", link: Routes.HOME },
-    { text: "Gyms", link: Routes.GYMS },
-    { text: "Profile", link: Routes.PROFILE },
-    { text: "About", link: Routes.ABOUT }
-  ];
-
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const { state: viewState } = useViewContext();
 
   const handleDrawerToggle = (): void => setMobileOpen(!mobileOpen);
 
   const drawer = (
     <React.Fragment>
       <List>
-        {navItems.map((obj) => (
-          <ListItem
-            button
-            key={obj.text}
-            component={Link}
-            to={obj.link}
-            className={classes.listItem}
-          >
-            <ListItemText primary={obj.text} />
-          </ListItem>
-        ))}
+        <ListItem
+          button
+          key={"home"}
+          component={Link}
+          to={Routes.HOME}
+          className={classes.listItem}
+        >
+          <HomeIcon className={classes.icons} />
+          <ListItemText primary={"Home"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"gyms"}
+          component={Link}
+          to={Routes.GYMS}
+          className={classes.listItem}
+        >
+          <SvgIcon
+            component={
+              viewState.theme === LIGHT_THEME
+                ? ClimberIconBlack
+                : ClimberIconWhite
+            }
+            className={classes.icons}
+          />
+          <ListItemText primary={"Gyms"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"profile"}
+          component={Link}
+          to={Routes.PROFILE}
+          className={classes.listItem}
+        >
+          <AccountCircleIcon className={classes.icons} />
+          <ListItemText primary={"Profile"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"about"}
+          component={Link}
+          to={Routes.ABOUT}
+          className={classes.listItem}
+        >
+          <InfoIcon className={classes.icons} />
+          <ListItemText primary={"About"} />
+        </ListItem>
       </List>
     </React.Fragment>
   );

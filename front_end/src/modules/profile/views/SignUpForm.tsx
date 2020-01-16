@@ -1,3 +1,4 @@
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { toast } from "react-toastify";
@@ -23,12 +24,14 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   const [emailMessage, setEmailMessage] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [passwordMessage, setPasswordMessage] = React.useState<string>("");
+  const [repeatPassword, setRepeatPassword] = React.useState<string>("");
+  const [repeatPasswordMessage, setRepeatPasswordMessage] = React.useState<
+    string
+  >("");
   const [phoneNumber, setPhoneNumber] = React.useState<string>("");
   const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
     ""
   );
-  const [errorCode, setErrorCode] = React.useState<string>("");
-  const [errorMessage, setErrorMessage] = React.useState<string>("");
 
   React.useEffect(() => {
     validatePassword();
@@ -41,6 +44,14 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   React.useEffect(() => {
     validatePhoneNumber();
   }, [phoneNumber]);
+
+  React.useEffect(() => {
+    if (repeatPassword !== password) {
+      setRepeatPasswordMessage("Passwords do not match.");
+    } else {
+      setRepeatPasswordMessage("");
+    }
+  }, [repeatPassword]);
 
   const validatePassword = (): boolean => {
     const lowerCaseLetters = /[a-z]/g;
@@ -116,6 +127,8 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
       setPassword(value);
     } else if (id === "phoneNumber") {
       setPhoneNumber(value);
+    } else if (id === "repeatPassword") {
+      setRepeatPassword(value);
     }
   };
 
@@ -191,6 +204,14 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         type="password"
         autoComplete="password"
       />
+      <Input
+        placeholder="Repeat Password"
+        id="repeatPassword"
+        value={repeatPassword}
+        handleChange={handleChange}
+        helpText={repeatPasswordMessage}
+        type="password"
+      />
     </React.Fragment>
   );
 
@@ -213,10 +234,11 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
 
   return (
     <Form
-      title={title}
       buttonText="Create Account"
       formInputs={formInputs}
       handleSubmit={handleSubmit}
+      icon={<LockOutlinedIcon />}
+      title={title}
     />
   );
 };

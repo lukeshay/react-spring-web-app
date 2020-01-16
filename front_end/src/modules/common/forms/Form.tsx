@@ -1,17 +1,16 @@
-import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import Button from "../buttons/ButtonSecondary";
 
 export interface IFormProps {
   buttonText: string;
   formInputs: React.ReactNode;
-  title: React.ReactNode;
   helpElements?: React.ReactNode[];
+  icon?: React.ReactNode;
+  title: React.ReactNode;
   handleSubmit(event: any): Promise<void> | void;
 }
 
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       display: "flex",
       flexDirection: "column",
-      marginTop: theme.spacing(8)
+      marginTop: theme.spacing(4)
     },
     submit: {
       margin: theme.spacing(3, 0, 2)
@@ -40,20 +39,22 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Form: React.FC<IFormProps> = ({
-  title,
-  formInputs,
   buttonText,
+  formInputs,
+  handleSubmit,
   helpElements,
-  handleSubmit
+  icon,
+  title
 }): JSX.Element => {
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        {/* <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar> */}
+        {icon}
+        {/*
+            <GradeIcon fontSize="small" />
+        <GradeIcon fontSize="small" /> */}
         <Typography component="h1" variant="h5">
           {title}
         </Typography>
