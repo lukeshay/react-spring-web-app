@@ -23,11 +23,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  LIGHT_THEME,
-  Types,
-  useViewContext
-} from "../../context/view/viewStore";
+import { LIGHT_THEME, useViewContext } from "../../context/view/viewStore";
 import ClimberIconBlack from "../../icons/climber_black.svg";
 import ClimberIconWhite from "../../icons/climber_white.svg";
 import { Routes } from "../../routes";

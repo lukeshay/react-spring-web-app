@@ -10,8 +10,9 @@ import Button from "../buttons/ButtonSecondary";
 export interface IFormProps {
   buttonText: string;
   formInputs: React.ReactNode;
-  title: React.ReactNode;
   helpElements?: React.ReactNode[];
+  icon?: React.ReactNode;
+  title: React.ReactNode;
   handleSubmit(event: any): Promise<void> | void;
 }
 
@@ -40,20 +41,19 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Form: React.FC<IFormProps> = ({
-  title,
-  formInputs,
   buttonText,
+  formInputs,
+  handleSubmit,
   helpElements,
-  handleSubmit
+  icon,
+  title
 }): JSX.Element => {
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        {/* <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar> */}
+        {icon && <Avatar className={classes.avatar}>{icon}</Avatar>}
         <Typography component="h1" variant="h5">
           {title}
         </Typography>

@@ -1,3 +1,4 @@
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { toast } from "react-toastify";
@@ -213,10 +214,11 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
 
   return (
     <Form
-      title={title}
       buttonText="Create Account"
       formInputs={formInputs}
       handleSubmit={handleSubmit}
+      icon={<LockOutlinedIcon />}
+      title={title}
     />
   );
 };

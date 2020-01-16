@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import React from "react";
 import * as UserActions from "../../../context/user/userActions";
-import { UserContext } from "../../../context/user/userStore";
+import { useUserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
@@ -12,7 +12,7 @@ export interface IPropsProfileForm {
 }
 
 const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
-  const { dispatch } = useContext(UserContext);
+  const { dispatch: userDispatch } = useUserContext();
   const [firstName, setFirstName] = React.useState<string>(user.firstName);
   const [lastName, setLastName] = React.useState<string>(user.lastName);
   const [email, setEmail] = React.useState<string>(user.email);
@@ -22,13 +22,13 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
   );
 
   async function handleSignOutClick(): Promise<void> {
-    UserActions.signOut(dispatch);
+    UserActions.signOut(userDispatch);
   }
 
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
-    UserActions.updateUser(dispatch, {
+    UserActions.updateUser(userDispatch, {
       ...user,
       email,
       firstName,
@@ -108,10 +108,11 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
 
   return (
     <Form
-      title={title}
       buttonText="Update Account"
-      formInputs={formInputs}
       handleSubmit={handleSubmit}
+      formInputs={formInputs}
+      title={title}
+      icon={<AccountCircleIcon />}
     />
   );
 };

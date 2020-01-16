@@ -34,6 +34,7 @@ const reducer: Reducer<IViewContextState, IViewContextAction> = (
 
   switch (actionType) {
     case Types.UPDATE_VIEW:
+      Cookies.setTheme(theme);
       return { mobile, theme };
 
     default:
