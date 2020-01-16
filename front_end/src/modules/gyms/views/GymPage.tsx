@@ -13,11 +13,11 @@ import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
 import RatingPage from "./RatingPage";
-import RouteAddPage from "./RouteAddPage";
-import RouteEditPage from "./RouteEditPage";
+import RouteAddModal from "./RouteAddModal";
+import RouteEditModal from "./RouteEditModal";
 import RoutesList from "./RoutesList";
-import WallAddPage from "./WallAddPage";
-import WallEditPage from "./WallEditPage";
+import WallAddModal from "./WallAddModal";
+import WallEditModal from "./WallEditModal";
 import WallList from "./WallList";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -283,14 +283,14 @@ const GymPage: React.FC = (): JSX.Element => {
     if (gymId) {
       return (
         <React.Fragment>
-          <RouteAddPage
+          <RouteAddModal
             open={view === "ROUTE" && openAdd}
             handleClose={handleCloseAdd}
             gymId={gymId}
             wallId={wallId}
           />
           {route && (
-            <RouteEditPage
+            <RouteEditModal
               open={view === "ROUTE" && openEdit}
               handleClose={handleCloseEdit}
               gymId={gymId}
@@ -298,13 +298,13 @@ const GymPage: React.FC = (): JSX.Element => {
               route={route}
             />
           )}
-          <WallAddPage
+          <WallAddModal
             open={view === "WALL" && openAdd}
             handleClose={handleCloseAdd}
             gymId={gymId}
           />
           {wall && (
-            <WallEditPage
+            <WallEditModal
               open={view === "WALL" && openEdit}
               handleClose={handleCloseEdit}
               gymId={gymId}

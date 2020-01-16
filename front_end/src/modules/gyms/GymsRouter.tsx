@@ -5,10 +5,10 @@ import { AuthRoutes, Routes } from "../../routes";
 const GymsPage = React.lazy(() => import("./views/GymsPage"));
 const GymPage = React.lazy(() => import("./views/GymPage"));
 const GymEditPage = React.lazy(() => import("./views/GymEditPage"));
-const WallEditPage = React.lazy(() => import("./views/WallEditPage"));
-const WallAddPage = React.lazy(() => import("./views/WallAddPage"));
-const RouteAddPage = React.lazy(() => import("./views/RouteAddPage"));
-const RouteEditPage = React.lazy(() => import("./views/RouteEditPage"));
+const WallEditPage = React.lazy(() => import("./views/WallEditModal"));
+const WallAddPage = React.lazy(() => import("./views/WallAddModal"));
+const RouteAddPage = React.lazy(() => import("./views/RouteAddModal"));
+const RouteEditPage = React.lazy(() => import("./views/RouteEditModal"));
 
 const GymRouter: React.FC = (): JSX.Element => (
   <React.Suspense fallback={<div />}>
