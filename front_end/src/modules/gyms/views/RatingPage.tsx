@@ -1,9 +1,10 @@
 import { TableCell, TableRow } from "@material-ui/core";
 import React from "react";
+import { toast } from "react-toastify";
 import * as RouteRatingsApi from "../../../api/routeRatingsApi";
 import { Route, RouteRating } from "../../../types";
+import * as GradeUtils from "../../../utils/gradeUtils";
 import Table from "../../common/table/Table";
-import { toast } from "react-toastify";
 
 interface IRouteInformationRowProps {
   label: React.ReactNode;
@@ -28,7 +29,7 @@ const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
   route
 }): JSX.Element => {
   const [ratings, setRatings] = React.useState<RouteRating[]>([]);
-  const { id, name, grade, rating, setter, holdColor } = route;
+  const { id, name, averageGrade, averageRating, setter, holdColor } = route;
   let types = "";
 
   route.types.forEach((value) => {
@@ -72,11 +73,15 @@ const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
         <RouteInformationRow key="type" label="Type" text={types} />,
         <RouteInformationRow key="setter" label="Setter" text={setter} />,
         <RouteInformationRow key="color" label="Route" text={holdColor} />,
-        <RouteInformationRow key="grade" label="Average Grade" text={grade} />,
+        <RouteInformationRow
+          key="grade"
+          label="Average Grade"
+          text={averageGrade && GradeUtils.convertGradeToString(averageGrade)}
+        />,
         <RouteInformationRow
           key="rating"
           label="Average Rating"
-          text={rating}
+          text={averageRating > 0 && averageRating}
         />
       ]}
     />

@@ -10,6 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
 import { Route } from "../../../types";
+import * as GradeUtils from "../../../utils/gradeUtils";
 import Table from "../../common/table/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,7 +38,7 @@ const RouteRow: React.FC<IRouteRowProps> = ({
 }): JSX.Element => {
   const classes = useStyles();
 
-  const { grade, holdColor, id, name, rating, setter } = route;
+  const { averageGrade, holdColor, id, name, averageRating, setter } = route;
 
   let types = "";
 
@@ -73,8 +74,10 @@ const RouteRow: React.FC<IRouteRowProps> = ({
       <TableCell>{types}</TableCell>
       <TableCell>{setter}</TableCell>
       <TableCell>{holdColor}</TableCell>
-      <TableCell>{grade}</TableCell>
-      <TableCell>{rating > 0 && rating}</TableCell>
+      <TableCell>
+        {averageGrade && GradeUtils.convertGradeToString(averageGrade)}
+      </TableCell>
+      <TableCell>{averageRating > 0 && averageRating}</TableCell>
       {canEdit && (
         <TableCell>
           <Button
