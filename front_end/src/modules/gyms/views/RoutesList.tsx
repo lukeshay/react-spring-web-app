@@ -77,7 +77,9 @@ const RouteRow: React.FC<IRouteRowProps> = ({
       <TableCell>
         {averageGrade && GradeUtils.convertGradeToString(averageGrade)}
       </TableCell>
-      <TableCell>{averageRating > 0 && averageRating}</TableCell>
+      <TableCell>
+        {averageRating > 0 && Math.round(averageRating * 10) / 10}
+      </TableCell>
       {canEdit && (
         <TableCell>
           <Button

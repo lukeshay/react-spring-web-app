@@ -81,7 +81,7 @@ const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
         <RouteInformationRow
           key="rating"
           label="Average Rating"
-          text={averageRating > 0 && averageRating}
+          text={averageRating > 0 && Math.round(averageRating * 10) / 10}
         />
       ]}
     />

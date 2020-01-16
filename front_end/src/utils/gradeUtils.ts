@@ -6,5 +6,5 @@ export const convertGradeToString = (grade: string): string => {
 };
 
 export const convertStringToGrade = (str: string): string => {
-  return "GRADE_" + str.replace(".", "_").toUpperCase();
+  return "GRADE_" + str.replace(".", "_").toLowerCase();
 };

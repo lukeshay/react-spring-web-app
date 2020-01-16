@@ -12,6 +12,7 @@ import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
 import GymInformation from "./GymInformation";
+import RatingAddModal from "./RatingAddModal";
 import RatingPage from "./RatingPage";
 import RouteAddModal from "./RouteAddModal";
 import RouteEditModal from "./RouteEditModal";
@@ -194,12 +195,9 @@ const GymPage: React.FC = (): JSX.Element => {
   };
 
   const handleOpenAdd = async (): Promise<void> => {
-    if (view !== "RATING" && canEdit) {
+    if ((view !== "RATING" && canEdit) || view === "RATING") {
       setOpenAdd(true);
       setOpenEdit(false);
-    } else if (view === "RATING") {
-      // tslint:disable-next-line: no-console
-      console.log("New Rating Modal");
     }
   };
 
@@ -309,6 +307,13 @@ const GymPage: React.FC = (): JSX.Element => {
               handleClose={handleCloseEdit}
               gymId={gymId}
               wall={wall}
+            />
+          )}
+          {route && (
+            <RatingAddModal
+              open={view === "RATING" && openAdd}
+              handleClose={handleCloseAdd}
+              routeId={route.id}
             />
           )}
         </React.Fragment>
