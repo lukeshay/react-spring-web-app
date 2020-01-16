@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  SvgIcon,
   Toolbar,
   Typography
 } from "@material-ui/core";
@@ -15,10 +16,14 @@ import {
   Theme,
   useTheme
 } from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import CloseIcon from "@material-ui/icons/Close";
+import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
+import ClimberIcon from "../../icons/favicon.svg";
 import { Routes } from "../../routes";
 
 const drawerWidth = 170;
@@ -43,6 +48,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: drawerWidth
+    },
+    icons: {
+      paddingRight: theme.spacing(1)
     },
     listItem: {
       paddingLeft: theme.spacing(3)
@@ -83,17 +91,49 @@ const NavigationBar: React.FC<INavigationBarProps> = ({
   const drawer = (
     <React.Fragment>
       <List>
-        {navItems.map((obj) => (
-          <ListItem
-            button
-            key={obj.text}
-            component={Link}
-            to={obj.link}
-            className={classes.listItem}
-          >
-            <ListItemText primary={obj.text} />
-          </ListItem>
-        ))}
+        <ListItem
+          button
+          key={"home"}
+          component={Link}
+          to={Routes.HOME}
+          className={classes.listItem}
+        >
+          <HomeIcon className={classes.icons} />
+          <ListItemText primary={"Home"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"gyms"}
+          component={Link}
+          to={Routes.GYMS}
+          className={classes.listItem}
+        >
+          <SvgIcon
+            component={ClimberIcon}
+            viewBox="0 0 600 476.6"
+          />
+          <ListItemText primary={"Gyms"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"profile"}
+          component={Link}
+          to={Routes.PROFILE}
+          className={classes.listItem}
+        >
+          <AccountCircleIcon className={classes.icons} />
+          <ListItemText primary={"Profile"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"about"}
+          component={Link}
+          to={Routes.ABOUT}
+          className={classes.listItem}
+        >
+          <InfoIcon className={classes.icons} />
+          <ListItemText primary={"About"} />
+        </ListItem>
       </List>
     </React.Fragment>
   );
