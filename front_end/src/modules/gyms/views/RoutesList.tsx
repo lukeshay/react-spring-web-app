@@ -132,7 +132,7 @@ const RoutesList: React.FC<IRoutesListProps> = ({
   <Table
     head={
       <TableRow>
-        <TableCell key="name">Name</TableCell>
+        <TableCell key="route">Route</TableCell>
         <TableCell key="types">Types</TableCell>
         <TableCell key="setter">Setter</TableCell>
         <TableCell key="color">Color</TableCell>
