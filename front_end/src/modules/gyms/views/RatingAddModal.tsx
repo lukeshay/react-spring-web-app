@@ -1,17 +1,23 @@
 import { Button } from "@material-ui/core";
 import React from "react";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
+import { useGymsContext } from "../../../context/gyms/gymsStore";
+import { RouteRating } from "../../../types";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
 import Selector from "../../common/inputs/Select";
 import TransitionModal from "../../common/modal/Modal";
 
 export interface IRatingAddModalProps {
+  gymId: string;
   routeId: string;
   open: boolean;
   handleClose(): Promise<void> | void;
 }
 
 const RatingAddModal: React.FunctionComponent<IRatingAddModalProps> = ({
+  gymId,
   routeId,
   open,
   handleClose
@@ -23,6 +29,8 @@ const RatingAddModal: React.FunctionComponent<IRatingAddModalProps> = ({
     "0/140 characters used."
   );
 
+  const { dispatch: gymsDispatch } = useGymsContext();
+
   const handleChange = async (event: any): Promise<void> => {
     const { id, value } = event.target;
 
@@ -33,6 +41,29 @@ const RatingAddModal: React.FunctionComponent<IRatingAddModalProps> = ({
     } else if (id === "review" && value.length <= 140) {
       setReviewMessage(value.length + "/140 characters used.");
       setReview(value);
+    }
+  };
+
+  const handleSubmit = (event: any): void => {
+    event.preventDefault();
+
+    if (rating !== 0 && grade !== "") {
+      GymsActions.createRouteRating(
+        gymsDispatch,
+        {
+          grade,
+          rating,
+          review,
+          routeId
+        } as RouteRating,
+        gymId
+      ).then((response: Response) => {
+        if (!(response instanceof Response) || !response.ok) {
+          toast.error("Error creating review.");
+        } else {
+          handleClose();
+        }
+      });
     }
   };
 
@@ -116,9 +147,7 @@ const RatingAddModal: React.FunctionComponent<IRatingAddModalProps> = ({
         title={FormHead}
         formInputs={FormBody}
         buttonText="Save"
-        handleSubmit={(event: any): void => {
-          event.preventDefault();
-        }}
+        handleSubmit={handleSubmit}
       />
     </TransitionModal>
   );

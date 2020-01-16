@@ -93,6 +93,16 @@ const GymPage: React.FC = (): JSX.Element => {
       if (tempWall) {
         setRoutes(tempWall.routes);
         setWallId(tempWall.id);
+
+        if (route) {
+          const tempRoute = tempWall.routes
+            ? tempWall.routes.find((element: Route) => route.id === element.id)
+            : null;
+
+          if (tempRoute) {
+            setRoute(tempRoute);
+          }
+        }
       }
 
       if (
@@ -314,6 +324,7 @@ const GymPage: React.FC = (): JSX.Element => {
               open={view === "RATING" && openAdd}
               handleClose={handleCloseAdd}
               routeId={route.id}
+              gymId={gymId}
             />
           )}
         </React.Fragment>

@@ -1,3 +1,5 @@
+import { RouteRating } from "../types";
+import * as Cookies from "../utils/cookiesUtils";
 import { handleError } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL;
@@ -11,4 +13,17 @@ export const getRouteRatings = (routeId: string): Promise<void | Response> => {
       }
     )
     .catch(handleError);
+};
+
+export const createRouteRating = (
+  rating: RouteRating
+): Promise<void | Response> => {
+  return fetch(routeRatingsUrl, {
+    body: JSON.stringify(rating),
+    headers: {
+      Authorization: Cookies.getJwtToken(),
+      "Content-Type": "application/json"
+    },
+    method: "POST"
+  });
 };
