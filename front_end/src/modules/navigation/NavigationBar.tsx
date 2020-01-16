@@ -23,14 +23,14 @@ import InfoIcon from "@material-ui/icons/Info";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import ClimberIconWhite from "../../icons/climber_white.svg";
-import ClimberIconBlack from "../../icons/climber_black.svg";
-import { Routes } from "../../routes";
 import {
-  useViewContext,
+  LIGHT_THEME,
   Types,
-  LIGHT_THEME
+  useViewContext
 } from "../../context/view/viewStore";
+import ClimberIconBlack from "../../icons/climber_black.svg";
+import ClimberIconWhite from "../../icons/climber_white.svg";
+import { Routes } from "../../routes";
 
 const drawerWidth = 170;
 const useStyles = makeStyles((theme: Theme) =>
