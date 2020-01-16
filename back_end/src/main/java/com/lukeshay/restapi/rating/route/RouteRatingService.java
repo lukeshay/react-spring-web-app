@@ -65,6 +65,8 @@ public class RouteRatingService {
 
     route.setPersistable(true);
 
+    routeRepository.save(route);
+
     return Responses.okJsonResponse(newRating);
   }
 
