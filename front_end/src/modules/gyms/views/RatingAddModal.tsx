@@ -1,4 +1,5 @@
 import { Button } from "@material-ui/core";
+import GradeIcon from "@material-ui/icons/Grade";
 import React from "react";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
@@ -148,6 +149,15 @@ const RatingAddModal: React.FunctionComponent<IRatingAddModalProps> = ({
         formInputs={FormBody}
         buttonText="Save"
         handleSubmit={handleSubmit}
+        icon={
+          <div style={{ display: "inline", paddingBottom: "10px" }}>
+            <GradeIcon fontSize="small" />
+            <GradeIcon fontSize="small" />
+            <GradeIcon fontSize="small" />
+            <GradeIcon fontSize="small" />
+            <GradeIcon fontSize="small" />
+          </div>
+        }
       />
     </TransitionModal>
   );

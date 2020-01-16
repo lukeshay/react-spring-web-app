@@ -2,6 +2,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import RateReviewIcon from "@material-ui/icons/RateReview";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -247,10 +248,16 @@ const GymPage: React.FC = (): JSX.Element => {
         fullWidth={false}
         size="medium"
         type="button"
-        style={shouldBeVisible(canEdit || view === "RATING")}
+        style={shouldBeVisible(
+          canEdit || (view === "RATING" && userState.user !== null)
+        )}
       >
-        <AddIcon className={classes.icons} />
-        Add
+        {view === "RATING" ? (
+          <RateReviewIcon className={classes.icons} />
+        ) : (
+          <AddIcon className={classes.icons} />
+        )}
+        {view === "RATING" ? "Review" : "Add"}
       </Button>
     </div>
   );
