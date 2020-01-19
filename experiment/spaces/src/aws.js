@@ -4,8 +4,8 @@ const space = new AWS.Endpoint("nyc3.digitaloceanspaces.com")
 
 const s3 = new AWS.S3({
     endpoint: space,
-    accessKeyId: "AJI44VAODNQTV43TNOEQ",
-    secretAccessKey: "iZ43dQIm5R+cYP7PIqDHOKEk89/M9BNApUe9JBqMq7w"
+    accessKeyId: "",
+    secretAccessKey: ""
 })
 
 var params = {
