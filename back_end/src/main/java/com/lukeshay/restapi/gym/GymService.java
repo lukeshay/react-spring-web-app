@@ -108,7 +108,8 @@ public class GymService {
     return gymRepository.save(gym);
   }
 
-  ResponseEntity<?> uploadLogo(HttpServletRequest request, MultipartFile file, String gymId) {
+  ResponseEntity<?> uploadLogo(
+      HttpServletRequest request, MultipartFile file, String gymId, String imageName) {
     Gym gym = gymRepository.findById(gymId).orElse(null);
     User user = requests.getUserFromRequest(request);
 
@@ -119,6 +120,10 @@ public class GymService {
             && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
       return Responses.unauthorizedJsonResponse(
           Bodys.error("You are unauthorized to perform this action."));
+    }
+
+    if (!imageName.equals("logo") && !imageName.equals("gym")) {
+      return Responses.badRequestJsonResponse(Bodys.error("Invalid upload."));
     }
 
     String url = awsService.uploadFileToS3(String.format("%s/logo.jpg", gym.getId()), file);

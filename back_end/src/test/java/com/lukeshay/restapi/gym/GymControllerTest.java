@@ -125,7 +125,8 @@ class GymControllerTest {
   @Test
   void uploadLogoTest() {
 
-    ResponseEntity<?> response = gymController.uploadLogo(request, testFile, testGym.getId());
+    ResponseEntity<?> response =
+        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
 
     testGym = gymRepository.findById(testGym.getId()).orElse(null);
 
@@ -133,23 +134,31 @@ class GymControllerTest {
         () -> Assertions.assertEquals(testGym, response.getBody()),
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()));
 
+    ResponseEntity<?> invalidNameResponse =
+        gymController.uploadLogo(request, testFile, testGym.getId(), "invalid");
+
+    Assertions.assertAll(
+        () ->
+            Assertions.assertEquals(Bodys.error("Invalid upload."), invalidNameResponse.getBody()),
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
+
     Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
         .thenReturn(null);
 
-    ResponseEntity<?> errorResponse = gymController.uploadLogo(request, testFile, testGym.getId());
+    ResponseEntity<?> errorResponse =
+        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
 
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(
                 HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
         () ->
-            Assertions.assertEquals(
-                Bodys.error("Error uploading file."), errorResponse.getBody()));
+            Assertions.assertEquals(Bodys.error("Error uploading file."), errorResponse.getBody()));
 
     Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
 
     ResponseEntity<?> unauthorizedResponse =
-        gymController.uploadLogo(request, testFile, testGym.getId());
+        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
 
     Assertions.assertAll(
         () ->

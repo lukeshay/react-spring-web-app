@@ -100,15 +100,16 @@ public class GymController {
     }
   }
 
-  @PostMapping("/logo")
+  @PostMapping("/image/{imageName}")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Upload the gym's logo.", response = Gym.class)
   public ResponseEntity<?> uploadLogo(
       HttpServletRequest request,
       @RequestParam("file") MultipartFile file,
-      @RequestParam("gymId") String gymId) {
+      @RequestParam("gymId") String gymId,
+      @PathVariable String imageName) {
     LOG.debug("Uploading logo to gym {}", gymId);
 
-    return gymService.uploadLogo(request, file, gymId);
+    return gymService.uploadLogo(request, file, gymId, imageName);
   }
 }
