@@ -60,6 +60,10 @@ dependencies {
     // Swagger dependencies
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    // AWS dependencies
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228')
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3'
 }
 
 test {

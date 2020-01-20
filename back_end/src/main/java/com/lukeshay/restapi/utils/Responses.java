@@ -21,6 +21,10 @@ public class Responses {
     return httpJsonResponse(HttpStatus.UNAUTHORIZED, body);
   }
 
+  public static <T> ResponseEntity<?> internalServerErrorResponse(T body) {
+    return httpJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR, body);
+  }
+
   private static <T> ResponseEntity<?> httpJsonResponse(HttpStatus status, T body) {
     return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(body);
   }

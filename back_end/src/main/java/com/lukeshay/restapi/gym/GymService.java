@@ -1,23 +1,34 @@
 package com.lukeshay.restapi.gym;
 
+import com.lukeshay.restapi.services.AwsService;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
+import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Responses;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class GymService {
 
+  private static Logger LOG = LoggerFactory.getLogger(GymService.class.getName());
+
   private GymRepository gymRepository;
   private Requests requests;
+  private AwsService awsService;
 
   @Autowired
-  public GymService(GymRepository gymRepository, Requests requests) {
+  public GymService(GymRepository gymRepository, Requests requests, AwsService awsService) {
     this.gymRepository = gymRepository;
     this.requests = requests;
+    this.awsService = awsService;
   }
 
   List<Gym> getAllGyms() {
@@ -95,5 +106,33 @@ public class GymService {
 
   Gym createGym(Gym gym) {
     return gymRepository.save(gym);
+  }
+
+  ResponseEntity<?> uploadLogo(
+      HttpServletRequest request, MultipartFile file, String gymId, String imageName) {
+    Gym gym = gymRepository.findById(gymId).orElse(null);
+    User user = requests.getUserFromRequest(request);
+
+    if (gym == null
+        || user == null
+        || ((gym.getAuthorizedEditors() == null
+                || !gym.getAuthorizedEditors().contains(user.getId()))
+            && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
+      return Responses.unauthorizedJsonResponse(
+          Bodys.error("You are unauthorized to perform this action."));
+    }
+
+    if (!imageName.equals("logo") && !imageName.equals("gym")) {
+      return Responses.badRequestJsonResponse(Bodys.error("Invalid upload."));
+    }
+
+    String url = awsService.uploadFileToS3(String.format("%s/logo.jpg", gym.getId()), file);
+    if (url == null) {
+      return Responses.internalServerErrorResponse(Bodys.error("Error uploading file."));
+    } else {
+      gym.setLogoUrl(url);
+      gym = gymRepository.save(gym);
+      return Responses.okJsonResponse(gym);
+    }
   }
 }
