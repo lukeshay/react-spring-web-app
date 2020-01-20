@@ -47,9 +47,8 @@ As I learn ReactJS, I am going to be working on this web app. I am creating a we
 
 # Contributions
 
-If you would like to contribute or do not have a github account please send me an email at shay.luke17@gmail.com. If you do not personally want to commit, but have a suggestion, please leave an [issue](https://github.com/LukeShay/react_spring_web_app/issues) using the correct template.
+If you would like to contribute or do not have a github account please send me an email at shay.luke17@gmail.com. If you do not personally want to commit, but have a suggestion, please leave an [issue](https://github.com/LukeShay/react-spring-web-app/issues) using the correct template.
 
 # For Me
 -  https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
 -  https://github.com/vikpe/react-webpack-typescript-starter
--  https://www.callicoder.com/spring-boot-file-upload-download-rest-api-example/
