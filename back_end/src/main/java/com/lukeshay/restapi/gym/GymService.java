@@ -126,11 +126,18 @@ public class GymService {
       return Responses.badRequestJsonResponse(Bodys.error("Invalid upload."));
     }
 
-    String url = awsService.uploadFileToS3(String.format("%s/logo.jpg", gym.getId()), file);
+    String url =
+        awsService.uploadFileToS3(String.format("%s/%s.jpg", gym.getId(), imageName), file);
+
     if (url == null) {
       return Responses.internalServerErrorResponse(Bodys.error("Error uploading file."));
     } else {
-      gym.setLogoUrl(url);
+      if (imageName.equals("logo")) {
+        gym.setLogoUrl(url);
+      } else {
+        gym.setPhotoUrl(url);
+      }
+
       gym = gymRepository.save(gym);
       return Responses.okJsonResponse(gym);
     }

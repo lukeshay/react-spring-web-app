@@ -15,18 +15,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class AwsService {
-  AWSCredentialsProvider credentialsProvider;
-
-  @Value("${file.bucket.url}")
-  private String bucketUrl;
 
   @Value("${file.bucket.name}")
   private String bucketName;
 
+  @Value("${file.bucket.url}")
+  private String bucketUrl;
+
+  AWSCredentialsProvider credentialsProvider;
+
   public AwsService() {
-    credentialsProvider =
-        new AWSStaticCredentialsProvider(
-            new BasicAWSCredentials(System.getenv("ACCESS_KEY"), System.getenv("SECRET_KEY")));
+    String accessKey = System.getenv("ACCESS_KEY");
+    String secretKey = System.getenv("SECRET_KEY");
+
+    if (accessKey == null) {
+      credentialsProvider = new AWSStaticCredentialsProvider(new BasicAWSCredentials("", ""));
+    } else {
+      credentialsProvider =
+          new AWSStaticCredentialsProvider(
+              new BasicAWSCredentials(System.getenv("ACCESS_KEY"), System.getenv("SECRET_KEY")));
+    }
   }
 
   public String uploadFileToS3(String fileName, MultipartFile file) {
