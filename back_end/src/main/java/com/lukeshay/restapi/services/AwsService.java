@@ -41,7 +41,11 @@ public class AwsService {
 
     awsBuckets.putObject(bucketName, fileName, converted);
 
-    return String.format("%s.%s/%s", bucketName, bucketUrl, fileName);
+    if (awsBuckets.doesObjectExist(bucketName, fileName)) {
+      return String.format("%s.%s/%s", bucketName, bucketUrl, fileName);
+    } else {
+      return null;
+    }
   }
 
   private File convertFile(MultipartFile file) {

@@ -33,17 +33,19 @@ class GymControllerTest {
   private GymController gymController;
 
   @Autowired private GymRepository gymRepository;
-  @Autowired private AwsService awsService;
 
+  @Mock private AwsService awsService;
   @Mock private HttpServletRequest request;
   @Mock private Requests requests;
 
   private Gym testGym;
+  private MultipartFile testFile;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.initMocks(this);
 
+    // Initialize objects
     testGym =
         new Gym(
             "Jim",
@@ -55,10 +57,6 @@ class GymControllerTest {
             "climbing@gym.com",
             "phoneNumber",
             Collections.singletonList("1111111111"));
-
-    testGym = gymRepository.save(testGym);
-
-    requests = Mockito.mock(Requests.class);
 
     User user =
         new User(
@@ -74,8 +72,29 @@ class GymControllerTest {
     user.setUserId("1111111111");
     user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
 
-    Mockito.when(requests.getUserFromRequest(request)).thenReturn(user);
+    // Setup files
+    Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
+    String name = "file.txt";
+    String originalFileName = "file.txt";
+    String contentType = "text/plain";
+    byte[] content = null;
 
+    try {
+      content = Files.readAllBytes(path);
+    } catch (final IOException ignored) {
+    }
+
+    testFile = new MockMultipartFile(name, originalFileName, contentType, content);
+
+    // Save gym
+    testGym = gymRepository.save(testGym);
+
+    // Mock methods
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(user);
+    Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
+        .thenReturn("some/url.jpg");
+
+    // Create class under test
     gymController = new GymController(new GymService(gymRepository, requests, awsService));
   }
 
@@ -105,18 +124,6 @@ class GymControllerTest {
 
   @Test
   void uploadLogoTest() {
-    Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
-    String name = "file.txt";
-    String originalFileName = "file.txt";
-    String contentType = "text/plain";
-    byte[] content = null;
-
-    try {
-      content = Files.readAllBytes(path);
-    } catch (final IOException ignored) {
-    }
-
-    MultipartFile testFile = new MockMultipartFile(name, originalFileName, contentType, content);
 
     ResponseEntity<?> response = gymController.uploadLogo(request, testFile, testGym.getId());
 
@@ -125,6 +132,19 @@ class GymControllerTest {
     Assertions.assertAll(
         () -> Assertions.assertEquals(testGym, response.getBody()),
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()));
+
+    Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
+        .thenReturn(null);
+
+    ResponseEntity<?> errorResponse = gymController.uploadLogo(request, testFile, testGym.getId());
+
+    Assertions.assertAll(
+        () ->
+            Assertions.assertEquals(
+                HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
+        () ->
+            Assertions.assertEquals(
+                Bodys.error("Error uploading file."), errorResponse.getBody()));
 
     Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
 

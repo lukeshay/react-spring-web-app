@@ -122,9 +122,12 @@ public class GymService {
     }
 
     String url = awsService.uploadFileToS3(String.format("%s/logo.jpg", gym.getId()), file);
-    gym.setLogoUrl(url);
-    gym = gymRepository.save(gym);
-
-    return Responses.okJsonResponse(gym);
+    if (url == null) {
+      return Responses.internalServerErrorResponse(Bodys.error("Error uploading file."));
+    } else {
+      gym.setLogoUrl(url);
+      gym = gymRepository.save(gym);
+      return Responses.okJsonResponse(gym);
+    }
   }
 }
