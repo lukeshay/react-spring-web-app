@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/gyms")
@@ -96,5 +98,17 @@ public class GymController {
     } else {
       return Responses.okJsonResponse(foundGym);
     }
+  }
+
+  @PostMapping("/logo")
+  @PreAuthorize("isAuthenticated()")
+  @ApiOperation(value = "Upload the gym's logo.", response = Gym.class)
+  public ResponseEntity<?> uploadLogo(
+      HttpServletRequest request,
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("gymId") String gymId) {
+    LOG.debug("Uploading logo to gym {}", gymId);
+
+    return gymService.uploadLogo(request, file, gymId);
   }
 }

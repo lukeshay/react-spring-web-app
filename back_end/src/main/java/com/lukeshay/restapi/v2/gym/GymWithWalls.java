@@ -29,6 +29,8 @@ public class GymWithWalls extends Gym {
         gym.getWebsite(),
         gym.getEmail(),
         gym.getPhoneNumber(),
+        gym.getLogoUrl(),
+        gym.getPhotoUrl(),
         gym.getAuthorizedEditors());
     this.walls = walls;
   }

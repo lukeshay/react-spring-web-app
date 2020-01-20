@@ -43,6 +43,8 @@ public class Gym implements Persistable<String> {
   @Expose private String website;
   @Expose private String email;
   @Expose private String phoneNumber;
+  @Expose private String logoUrl;
+  @Expose private String photoUrl;
   @Expose private List<String> authorizedEditors;
 
   public Gym(

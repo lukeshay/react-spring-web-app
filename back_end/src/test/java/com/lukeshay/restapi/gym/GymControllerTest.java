@@ -1,5 +1,6 @@
 package com.lukeshay.restapi.gym;
 
+import com.lukeshay.restapi.services.AwsService;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
@@ -25,9 +26,9 @@ class GymControllerTest {
   private GymController gymController;
 
   @Autowired private GymRepository gymRepository;
+  @Autowired private AwsService awsService;
 
   @Mock private HttpServletRequest request;
-
   @Mock private Requests requests;
 
   private Gym testGym;
@@ -68,7 +69,7 @@ class GymControllerTest {
 
     Mockito.when(requests.getUserFromRequest(request)).thenReturn(user);
 
-    gymController = new GymController(new GymService(gymRepository, requests));
+    gymController = new GymController(new GymService(gymRepository, requests, awsService));
   }
 
   @Test
