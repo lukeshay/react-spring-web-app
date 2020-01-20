@@ -26,8 +26,7 @@ public class AwsService {
   public AwsService() {
     credentialsProvider =
         new AWSStaticCredentialsProvider(
-            new BasicAWSCredentials(
-                "AJI44VAODNQTV43TNOEQ", "iZ43dQIm5R+cYP7PIqDHOKEk89/M9BNApUe9JBqMq7w"));
+            new BasicAWSCredentials(System.getenv("ACCESS_KEY"), System.getenv("SECRET_KEY")));
   }
 
   public String uploadFileToS3(String fileName, MultipartFile file) {
