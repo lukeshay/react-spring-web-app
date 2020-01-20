@@ -4,6 +4,11 @@ import com.lukeshay.restapi.services.AwsService;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
+import com.lukeshay.restapi.utils.Bodys;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +22,9 @@ import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @AutoConfigureDataMongo
@@ -94,5 +101,42 @@ class GymControllerTest {
     testGym = gymRepository.findById(testGym.getId()).get();
 
     Assertions.assertEquals(testGym, response.getBody());
+  }
+
+  @Test
+  void uploadLogoTest() {
+    Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
+    String name = "file.txt";
+    String originalFileName = "file.txt";
+    String contentType = "text/plain";
+    byte[] content = null;
+
+    try {
+      content = Files.readAllBytes(path);
+    } catch (final IOException ignored) {
+    }
+
+    MultipartFile testFile = new MockMultipartFile(name, originalFileName, contentType, content);
+
+    ResponseEntity<?> response = gymController.uploadLogo(request, testFile, testGym.getId());
+
+    testGym = gymRepository.findById(testGym.getId()).orElse(null);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(testGym, response.getBody()),
+        () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()));
+
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
+
+    ResponseEntity<?> unauthorizedResponse =
+        gymController.uploadLogo(request, testFile, testGym.getId());
+
+    Assertions.assertAll(
+        () ->
+            Assertions.assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode()),
+        () ->
+            Assertions.assertEquals(
+                Bodys.error("You are unauthorized to perform this action."),
+                unauthorizedResponse.getBody()));
   }
 }
