@@ -6,6 +6,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,7 +48,9 @@ public class AwsService {
             .withEndpointConfiguration(new EndpointConfiguration(bucketUrl, "nyc3"))
             .build();
 
-    awsBuckets.putObject(bucketName, fileName, converted);
+    PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, converted);
+    putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+    awsBuckets.putObject(putObjectRequest);
 
     if (awsBuckets.doesObjectExist(bucketName, fileName)) {
       return String.format("%s.%s/%s", bucketName, bucketUrl, fileName);
@@ -56,15 +60,15 @@ public class AwsService {
   }
 
   private File convertFile(MultipartFile file) {
-    File convFile = new File(file.getOriginalFilename());
+    File convertedFile = new File(file.getOriginalFilename());
     try {
-      FileOutputStream fos = new FileOutputStream(convFile);
+      FileOutputStream fos = new FileOutputStream(convertedFile);
       fos.write(file.getBytes());
       fos.close();
     } catch (IOException e) {
       e.printStackTrace();
       return null;
     }
-    return convFile;
+    return convertedFile;
   }
 }
