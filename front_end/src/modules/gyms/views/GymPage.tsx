@@ -72,9 +72,17 @@ const GymPage: React.FC = (): JSX.Element => {
     if (!tempGym) {
       history.push(Routes.GYMS);
     } else if (!tempGym.walls) {
-      loadFullGym();
+      if (tempGym.id) {
+        GymsActions.loadGymV2(gymsDispatch, tempGym.id).then(
+          (response: Response) => {
+            if (!response || !(response instanceof Response) || !response.ok) {
+              toast.error("Error getting gym.");
+            }
+          }
+        );
+      }
     }
-  }, []);
+  }, [gymId, gymsDispatch, gymsState.gyms, history]);
 
   React.useEffect(() => {
     const tempGym = gymsState.gyms
@@ -116,17 +124,7 @@ const GymPage: React.FC = (): JSX.Element => {
         setCanEdit(false);
       }
     }
-  }, [gymsState]);
-
-  const loadFullGym = (): void => {
-    if (gymId) {
-      GymsActions.loadGymV2(gymsDispatch, gymId).then((response: Response) => {
-        if (!response || !(response instanceof Response) || !response.ok) {
-          toast.error("Error getting gym.");
-        }
-      });
-    }
-  };
+  }, [gymId, gymsState, route, userState, wallId]);
 
   const handleWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls

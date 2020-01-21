@@ -12,4 +12,6 @@ export interface Gym {
   phoneNumber: string;
   authorizedEditors: string[];
   walls: Wall[] | null;
+  photoUrl: string;
+  logoUrl: string;
 }
