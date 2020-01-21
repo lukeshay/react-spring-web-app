@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Button,
   createStyles,
@@ -96,7 +97,7 @@ const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
         <CardMedia className={classes.photoWrapper}>
           <img
             src={"https://" + gym.photoUrl}
-            alt="Gym"
+            alt="This gym does not have a photo."
             className={classes.photo}
           />
         </CardMedia>

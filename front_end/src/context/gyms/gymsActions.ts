@@ -94,11 +94,30 @@ export const updateGym = async (
   oldGym: Gym
 ): Promise<void | Response> => {
   return GymsApi.updateGym(updatedGym).then((response: Response) => {
+    // if (response instanceof Response && response.ok) {
+    //   response.json().then((body: Gym) => {
+    //     dispatch({
+    //       actionType: Types.UPDATE_GYM,
+    //       gym: { ...body, walls: oldGym.walls }
+    //     } as IGymsContextAction);
+    //   });
+    // }
+
+    return response;
+  });
+};
+
+export const updateGymPhoto = async (
+  dispatch: any,
+  file: File,
+  gym: Gym
+): Promise<void | Response> => {
+  return GymsApi.updateGymPhoto(file, gym.id).then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym) => {
         dispatch({
           actionType: Types.UPDATE_GYM,
-          gym: { ...body, walls: oldGym.walls }
+          gym: { ...body, walls: gym.walls }
         } as IGymsContextAction);
       });
     }

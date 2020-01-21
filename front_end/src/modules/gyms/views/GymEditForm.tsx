@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import * as ReactRouter from "react-router";
 import { toast } from "react-toastify";
@@ -36,6 +37,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
     ""
   );
+  const [photo, setPhoto] = React.useState<File | null>(null);
 
   const { dispatch: gymsDispatch } = useGymsContext();
 
@@ -95,7 +97,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
 
   const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
-    const { id, value } = event.target;
+    const { id, value, files } = event.target;
 
     switch (id) {
       case "name":
@@ -122,6 +124,9 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
       case "phoneNumber":
         setPhoneNumber(value);
         return;
+      case "photo":
+        setPhoto(files[0]);
+        return;
 
       default:
         return;
@@ -145,11 +150,23 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         zipCode
       } as Gym,
       gym
-    ).then((response) => {
-      if (response instanceof Response && response.status === 200) {
-        toast.success("Gym updated.");
+    ).then((responseOne) => {
+      if (!photo) {
+        if (responseOne instanceof Response && responseOne.status === 200) {
+          toast.success("Gym updated.");
+        } else {
+          toast.error("Error updating gym.");
+        }
       } else {
-        toast.error("Error updating gym.");
+        GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
+          (responseTwo) => {
+            if (responseTwo instanceof Response && responseTwo.status === 200) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
       }
     });
   };
@@ -160,6 +177,18 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
 
   const FormInputs: JSX.Element = (
     <React.Fragment>
+      <img
+        src={"https://" + gym.photoUrl}
+        alt="No photo yet."
+        style={{ maxWidth: "150px" }}
+      />
+      <input
+        accept="image/*,.jpg,.png,.jpeg"
+        id="photo"
+        multiple={false}
+        type="file"
+        onChange={handleChange}
+      />
       <Input
         placeholder="Name"
         id="name"
