@@ -126,6 +126,25 @@ export const updateGymPhoto = async (
   });
 };
 
+export const updateGymLogo = async (
+  dispatch: any,
+  file: File,
+  gym: Gym
+): Promise<void | Response> => {
+  return GymsApi.updateGymLogo(file, gym.id).then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: Gym) => {
+        dispatch({
+          actionType: Types.UPDATE_GYM,
+          gym: { ...body, walls: gym.walls }
+        } as IGymsContextAction);
+      });
+    }
+
+    return response;
+  });
+};
+
 export const createWall = async (
   dispatch: any,
   wall: Wall,

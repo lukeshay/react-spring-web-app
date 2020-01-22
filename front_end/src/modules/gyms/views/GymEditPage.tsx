@@ -42,7 +42,11 @@ const GymEditPage: React.FC = (): JSX.Element => {
     }
   }, [gymsState, history, userState]);
 
-  const handleSubmit = (updatedGym: Gym, photo: File | null): void => {
+  const handleSubmit = (
+    updatedGym: Gym,
+    photo: File | null,
+    logo: File | null
+  ): void => {
     GymsActions.updateGym(
       gymsDispatch,
       {
@@ -51,19 +55,68 @@ const GymEditPage: React.FC = (): JSX.Element => {
       } as Gym,
       gym
     ).then((responseOne) => {
-      if (!photo) {
+      if (!photo && !logo) {
         if (responseOne instanceof Response && responseOne.status === 200) {
           toast.success("Gym updated.");
         } else {
           toast.error("Error updating gym.");
         }
-      } else {
+      } else if (photo && logo) {
         GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
           (responseTwo) => {
-            if (responseTwo instanceof Response && responseTwo.status === 200) {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
               toast.success("Gym updated.");
             } else {
-              toast.error("Error updating photo for gym.");
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+        GymsActions.updateGymLogo(gymsDispatch, logo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+      } else if (logo) {
+        GymsActions.updateGymLogo(gymsDispatch, logo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+      } else if (photo) {
+        GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
             }
           }
         );

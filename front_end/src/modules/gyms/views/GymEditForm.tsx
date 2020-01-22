@@ -9,6 +9,8 @@ import * as RegexUtils from "../../../utils/regexUtils";
 import Button from "../../common/buttons/Button";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
+import ImageInput from "../../common/inputs/ImageInput";
+import PublishIcon from "@material-ui/icons/Publish";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface IGymEditPageProps {
   gym: Gym;
-  handleSubmit(updatedGym: Gym, photo: File | null): void;
+  handleSubmit(updatedGym: Gym, photo: File | null, logo: File | null): void;
 }
 
 const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
@@ -61,6 +63,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
     ""
   );
   const [photo, setPhoto] = React.useState<File | null>(null);
+  const [logo, setLogo] = React.useState<File | null>(null);
 
   React.useEffect(() => {
     if (RegexUtils.containsSpecialCharacter(address)) {
@@ -148,6 +151,9 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
       case "photo":
         setPhoto(files[0]);
         return;
+      case "logo":
+        setLogo(files[0]);
+        return;
 
       default:
         return;
@@ -168,7 +174,8 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         website,
         zipCode
       } as Gym,
-      photo
+      photo,
+      logo
     );
   };
 
@@ -179,32 +186,45 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const FormInputs: JSX.Element = (
     <React.Fragment>
       <Typography variant="h6">Gym Photo</Typography>
-      <img
+      <ImageInput
         src={photo ? URL.createObjectURL(photo) : "https://" + gym.photoUrl}
-        alt="No photo yet."
-        className={classes.photo}
-        id="photoImg"
-      />
-      <div className={classes.uploadButtonWrapper}>
-        <input
-          accept="image/*,.jpg,.png,.jpeg"
-          id="photo"
-          multiple={false}
-          type="file"
-          onChange={handleChange}
-          style={{ display: "none" }}
-        />
-        <label htmlFor="photo">
-          <Button
-            variant="contained"
-            component="span"
-            fullWidth={false}
-            color="primary"
-          >
-            Upload
-          </Button>
-        </label>
-      </div>
+        alt="No photo yet"
+        imgClassName={classes.photo}
+        accept="image/*,.jpg,.png,.jpeg"
+        multiple={false}
+        id="photo"
+        onChange={handleChange}
+      >
+        <Button
+          variant="contained"
+          component="span"
+          fullWidth={false}
+          color="primary"
+        >
+          <PublishIcon className={classes.icons} />
+          Upload Gym Photo
+        </Button>
+      </ImageInput>
+      <Typography variant="h6">Gym Photo</Typography>
+      <ImageInput
+        src={logo ? URL.createObjectURL(logo) : "https://" + gym.logoUrl}
+        alt="No logo yet"
+        imgClassName={classes.photo}
+        accept="image/*,.jpg,.png,.jpeg"
+        multiple={false}
+        id="logo"
+        onChange={handleChange}
+      >
+        <Button
+          variant="contained"
+          component="span"
+          fullWidth={false}
+          color="primary"
+        >
+          <PublishIcon className={classes.icons} />
+          Upload Gym Logo
+        </Button>
+      </ImageInput>
       <Input
         placeholder="Name"
         id="name"
