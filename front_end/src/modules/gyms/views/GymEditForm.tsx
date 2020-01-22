@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import React from "react";
 import * as ReactRouter from "react-router";
 import { Routes } from "../../../routes";
@@ -11,8 +12,19 @@ import Input from "../../common/inputs/Input";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    icons: {
+      paddingRight: theme.spacing(1)
+    },
     photo: {
-      maxWidth: "100%"
+      maxWidth: "100%",
+      paddingBottom: theme.spacing(1),
+      paddingTop: theme.spacing(1)
+    },
+    uploadButtonWrapper: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      width: "100%"
     }
   })
 );
@@ -166,24 +178,33 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
 
   const FormInputs: JSX.Element = (
     <React.Fragment>
+      <Typography variant="h6">Gym Photo</Typography>
       <img
         src={photo ? URL.createObjectURL(photo) : "https://" + gym.photoUrl}
         alt="No photo yet."
         className={classes.photo}
+        id="photoImg"
       />
-      <input
-        accept="image/*,.jpg,.png,.jpeg"
-        id="photo"
-        multiple={false}
-        type="file"
-        onChange={handleChange}
-        style={{ display: "none" }}
-      />
-      <label htmlFor="photo">
-        <Button variant="contained" component="span" fullWidth={false}>
-          Upload
-        </Button>
-      </label>
+      <div className={classes.uploadButtonWrapper}>
+        <input
+          accept="image/*,.jpg,.png,.jpeg"
+          id="photo"
+          multiple={false}
+          type="file"
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
+        <label htmlFor="photo">
+          <Button
+            variant="contained"
+            component="span"
+            fullWidth={false}
+            color="primary"
+          >
+            Upload
+          </Button>
+        </label>
+      </div>
       <Input
         placeholder="Name"
         id="name"
