@@ -1,5 +1,7 @@
 import React from "react";
 import * as ReactRouter from "react-router";
+import { toast } from "react-toastify";
+import * as GymsActions from "../../../context/gyms/gymsActions";
 import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
@@ -11,7 +13,7 @@ const GymEditPage: React.FC = (): JSX.Element => {
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
 
-  const { state: gymsState } = useGymsContext();
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
 
   React.useEffect(() => {
@@ -38,10 +40,92 @@ const GymEditPage: React.FC = (): JSX.Element => {
     } else {
       history.push(Routes.GYMS + "/" + gymId);
     }
-  });
+  }, [gymsState, history, userState]);
+
+  const handleSubmit = (
+    updatedGym: Gym,
+    photo: File | null,
+    logo: File | null
+  ): void => {
+    GymsActions.updateGym(
+      gymsDispatch,
+      {
+        id: gym.id,
+        ...updatedGym
+      } as Gym,
+      gym
+    ).then((responseOne) => {
+      if (!photo && !logo) {
+        if (responseOne instanceof Response && responseOne.status === 200) {
+          toast.success("Gym updated.");
+        } else {
+          toast.error("Error updating gym.");
+        }
+      } else if (photo && logo) {
+        GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+        GymsActions.updateGymLogo(gymsDispatch, logo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+      } else if (logo) {
+        GymsActions.updateGymLogo(gymsDispatch, logo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+      } else if (photo) {
+        GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
+          (responseTwo) => {
+            if (
+              responseTwo instanceof Response &&
+              responseTwo.status === 200 &&
+              responseOne instanceof Response &&
+              responseOne.status === 200
+            ) {
+              toast.success("Gym updated.");
+            } else {
+              toast.error("Error updating gym.");
+            }
+          }
+        );
+      }
+    });
+  };
 
   if (gym && gym.id) {
-    return <GymEditForm gym={gym} />;
+    return <GymEditForm gym={gym} handleSubmit={handleSubmit} />;
   } else {
     return <div />;
   }

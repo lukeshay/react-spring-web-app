@@ -42,3 +42,49 @@ export const updateGym = async (updatedGym: Gym): Promise<void | Response> => {
     )
     .catch(handleError);
 };
+
+export const updateGymPhoto = async (
+  file: File,
+  gymId: string
+): Promise<void | Response> => {
+  const data = new FormData();
+  data.append("file", file);
+  data.append("gymId", gymId);
+
+  return fetch(gymsUrl + "/image/gym", {
+    body: data,
+    headers: {
+      Authorization: Cookies.getJwtToken()
+    },
+    method: "POST"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
+    .catch(handleError);
+};
+
+export const updateGymLogo = async (
+  file: File,
+  gymId: string
+): Promise<void | Response> => {
+  const data = new FormData();
+  data.append("file", file);
+  data.append("gymId", gymId);
+
+  return fetch(gymsUrl + "/image/logo", {
+    body: data,
+    headers: {
+      Authorization: Cookies.getJwtToken()
+    },
+    method: "POST"
+  })
+    .then(
+      (response: Response): Response => {
+        return response;
+      }
+    )
+    .catch(handleError);
+};

@@ -1,23 +1,49 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import PublishIcon from "@material-ui/icons/Publish";
 import React from "react";
 import * as ReactRouter from "react-router";
-import { toast } from "react-toastify";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import * as RegexUtils from "../../../utils/regexUtils";
-import Button from "../../common/buttons/ButtonSecondary";
+import Button from "../../common/buttons/Button";
 import Form from "../../common/forms/Form";
+import ImageInput from "../../common/inputs/ImageInput";
 import Input from "../../common/inputs/Input";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    icons: {
+      paddingRight: theme.spacing(1)
+    },
+    photo: {
+      maxWidth: "100%",
+      paddingBottom: theme.spacing(1),
+      paddingTop: theme.spacing(1)
+    },
+    uploadButtonWrapper: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      width: "100%"
+    }
+  })
+);
 
 export interface IGymEditPageProps {
   gym: Gym;
+  handleSubmit(updatedGym: Gym, photo: File | null, logo: File | null): void;
 }
 
 const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
-  gym
+  gym,
+  handleSubmit
 }): JSX.Element => {
+  const classes = useStyles();
+
   const history = ReactRouter.useHistory();
+
   const [gymId] = React.useState<string>(gym.id);
   const [name, setName] = React.useState<string>(gym.name);
   const [website, setWebsite] = React.useState<string>(gym.website);
@@ -36,8 +62,8 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
     ""
   );
-
-  const { dispatch: gymsDispatch } = useGymsContext();
+  const [photo, setPhoto] = React.useState<File | null>(null);
+  const [logo, setLogo] = React.useState<File | null>(null);
 
   React.useEffect(() => {
     if (RegexUtils.containsSpecialCharacter(address)) {
@@ -95,7 +121,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
 
   const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
-    const { id, value } = event.target;
+    const { id, value, files } = event.target;
 
     switch (id) {
       case "name":
@@ -122,36 +148,35 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
       case "phoneNumber":
         setPhoneNumber(value);
         return;
+      case "photo":
+        setPhoto(files[0]);
+        return;
+      case "logo":
+        setLogo(files[0]);
+        return;
 
       default:
         return;
     }
   };
 
-  const handleSubmit = (event: any): void => {
+  const handleSubmitWrapper = (event: any): void => {
     event.preventDefault();
 
-    GymsActions.updateGym(
-      gymsDispatch,
+    handleSubmit(
       {
         address,
         city,
         email,
-        id: gym.id,
         name,
         phoneNumber,
         state,
         website,
         zipCode
       } as Gym,
-      gym
-    ).then((response) => {
-      if (response instanceof Response && response.status === 200) {
-        toast.success("Gym updated.");
-      } else {
-        toast.error("Error updating gym.");
-      }
-    });
+      photo,
+      logo
+    );
   };
 
   const handleCancel = (): void => {
@@ -160,6 +185,46 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
 
   const FormInputs: JSX.Element = (
     <React.Fragment>
+      <Typography variant="h6">Gym Photo</Typography>
+      <ImageInput
+        src={photo ? URL.createObjectURL(photo) : "https://" + gym.photoUrl}
+        alt="No photo yet"
+        imgClassName={classes.photo}
+        accept="image/*,.jpg,.png,.jpeg"
+        multiple={false}
+        id="photo"
+        onChange={handleChange}
+      >
+        <Button
+          variant="contained"
+          component="span"
+          fullWidth={false}
+          color="primary"
+        >
+          <PublishIcon className={classes.icons} />
+          Upload Gym Photo
+        </Button>
+      </ImageInput>
+      <Typography variant="h6">Gym Photo</Typography>
+      <ImageInput
+        src={logo ? URL.createObjectURL(logo) : "https://" + gym.logoUrl}
+        alt="No logo yet"
+        imgClassName={classes.photo}
+        accept="image/*,.jpg,.png,.jpeg"
+        multiple={false}
+        id="logo"
+        onChange={handleChange}
+      >
+        <Button
+          variant="contained"
+          component="span"
+          fullWidth={false}
+          color="primary"
+        >
+          <PublishIcon className={classes.icons} />
+          Upload Gym Logo
+        </Button>
+      </ImageInput>
       <Input
         placeholder="Name"
         id="name"
@@ -243,7 +308,12 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         Edit Gym
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <Button onClick={handleCancel} type="button" variant="outlined">
+        <Button
+          onClick={handleCancel}
+          type="button"
+          variant="outlined"
+          color="secondary"
+        >
           Cancel
         </Button>
       </div>
@@ -254,7 +324,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
     <Form
       buttonText={"Save"}
       formInputs={FormInputs}
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmitWrapper}
       title={FormHead}
     />
   );

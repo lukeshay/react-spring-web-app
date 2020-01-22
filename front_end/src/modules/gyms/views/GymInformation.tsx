@@ -1,18 +1,20 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   createStyles,
   makeStyles,
-  TableCell,
-  TableRow,
-  Theme
+  Theme,
+  Typography
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AuthRoutes, Routes } from "../../../routes";
-import { Gym, User } from "../../../types";
-import Table from "../../common/table/Table";
+import { Gym } from "../../../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,29 +22,32 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1)
     },
+    card: {
+      display: "flex"
+    },
+    content: {
+      flex: "1 0 auto"
+    },
     editButton: {
       position: "absolute",
       right: "10px"
     },
     icons: {
       paddingRight: theme.spacing(1)
+    },
+    information: {
+      paddingLeft: theme.spacing(2)
+    },
+    photo: {
+      width: "90%"
+    },
+    photoWrapper: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      width: "50%"
     }
   })
-);
-
-interface IGymPageRowProps {
-  label: React.ReactNode;
-  text: React.ReactNode;
-}
-
-const GymPageRow: React.FC<IGymPageRowProps> = ({
-  label,
-  text
-}): JSX.Element => (
-  <TableRow>
-    <TableCell>{label}</TableCell>
-    <TableCell>{text}</TableCell>
-  </TableRow>
 );
 
 export interface IGymInformationProps {
@@ -85,29 +90,28 @@ const GymInformation: React.FunctionComponent<IGymInformationProps> = ({
           </Button>
         )}
       </div>
-      <Table
-        body={[
-          <GymPageRow key="name" label="Gym" text={gym.name} />,
-          <GymPageRow key="website" label="Website" text={gym.website} />,
-          <GymPageRow
-            key="address"
-            label="Address"
-            text={
-              <React.Fragment>
-                {gym.address}
-                <br />
-                {gym.city + ", " + gym.state + " " + gym.zipCode}
-              </React.Fragment>
-            }
-          />,
-          <GymPageRow key="email" label="Email" text={gym.email} />,
-          <GymPageRow
-            key="phoneNumber"
-            label="Phone Number"
-            text={gym.phoneNumber}
+      <Card className={classes.card}>
+        <CardMedia className={classes.photoWrapper}>
+          <img
+            src={"https://" + gym.photoUrl}
+            alt="This gym does not have a photo."
+            className={classes.photo}
           />
-        ]}
-      />
+        </CardMedia>
+        <CardContent className={classes.content}>
+          <Typography variant="h2">{gym.name}</Typography>
+          <div className={classes.information}>
+            <Typography variant="body1">{gym.website}</Typography>
+            <Typography variant="body1">
+              {gym.address}
+              <br />
+              {gym.city + ", " + gym.state + " " + gym.zipCode}
+            </Typography>
+            <Typography variant="body1">{gym.email}</Typography>
+            <Typography variant="body1">{gym.phoneNumber}</Typography>
+          </div>
+        </CardContent>
+      </Card>
     </React.Fragment>
   );
 };

@@ -53,3 +53,4 @@ If you would like to contribute or do not have a github account please send me a
 -  https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
 -  https://github.com/vikpe/react-webpack-typescript-starter
 -  https://www.callicoder.com/spring-boot-file-upload-download-rest-api-example/
+-  https://stackoverflow.com/questions/18279141/javascript-string-encryption-and-decryption
