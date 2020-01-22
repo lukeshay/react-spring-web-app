@@ -1,24 +1,35 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import React from "react";
 import * as ReactRouter from "react-router";
-import { toast } from "react-toastify";
-import * as GymsActions from "../../../context/gyms/gymsActions";
-import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import * as RegexUtils from "../../../utils/regexUtils";
-import Button from "../../common/buttons/ButtonSecondary";
+import Button from "../../common/buttons/Button";
 import Form from "../../common/forms/Form";
 import Input from "../../common/inputs/Input";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    photo: {
+      maxWidth: "100%"
+    }
+  })
+);
+
 export interface IGymEditPageProps {
   gym: Gym;
+  handleSubmit(updatedGym: Gym, photo: File | null): void;
 }
 
 const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
-  gym
+  gym,
+  handleSubmit
 }): JSX.Element => {
+  const classes = useStyles();
+
   const history = ReactRouter.useHistory();
+
   const [gymId] = React.useState<string>(gym.id);
   const [name, setName] = React.useState<string>(gym.name);
   const [website, setWebsite] = React.useState<string>(gym.website);
@@ -38,8 +49,6 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
     ""
   );
   const [photo, setPhoto] = React.useState<File | null>(null);
-
-  const { dispatch: gymsDispatch } = useGymsContext();
 
   React.useEffect(() => {
     if (RegexUtils.containsSpecialCharacter(address)) {
@@ -133,42 +142,22 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
     }
   };
 
-  const handleSubmit = (event: any): void => {
+  const handleSubmitWrapper = (event: any): void => {
     event.preventDefault();
 
-    GymsActions.updateGym(
-      gymsDispatch,
+    handleSubmit(
       {
         address,
         city,
         email,
-        id: gym.id,
         name,
         phoneNumber,
         state,
         website,
         zipCode
       } as Gym,
-      gym
-    ).then((responseOne) => {
-      if (!photo) {
-        if (responseOne instanceof Response && responseOne.status === 200) {
-          toast.success("Gym updated.");
-        } else {
-          toast.error("Error updating gym.");
-        }
-      } else {
-        GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
-          (responseTwo) => {
-            if (responseTwo instanceof Response && responseTwo.status === 200) {
-              toast.success("Gym updated.");
-            } else {
-              toast.error("Error updating gym.");
-            }
-          }
-        );
-      }
-    });
+      photo
+    );
   };
 
   const handleCancel = (): void => {
@@ -178,9 +167,9 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const FormInputs: JSX.Element = (
     <React.Fragment>
       <img
-        src={"https://" + gym.photoUrl}
+        src={photo ? URL.createObjectURL(photo) : "https://" + gym.photoUrl}
         alt="No photo yet."
-        style={{ maxWidth: "150px" }}
+        className={classes.photo}
       />
       <input
         accept="image/*,.jpg,.png,.jpeg"
@@ -188,7 +177,13 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         multiple={false}
         type="file"
         onChange={handleChange}
+        style={{ display: "none" }}
       />
+      <label htmlFor="photo">
+        <Button variant="contained" component="span" fullWidth={false}>
+          Upload
+        </Button>
+      </label>
       <Input
         placeholder="Name"
         id="name"
@@ -272,7 +267,12 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         Edit Gym
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
-        <Button onClick={handleCancel} type="button" variant="outlined">
+        <Button
+          onClick={handleCancel}
+          type="button"
+          variant="outlined"
+          color="secondary"
+        >
           Cancel
         </Button>
       </div>
@@ -283,7 +283,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
     <Form
       buttonText={"Save"}
       formInputs={FormInputs}
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmitWrapper}
       title={FormHead}
     />
   );

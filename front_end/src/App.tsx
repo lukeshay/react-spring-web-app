@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   CssBaseline,
   FormControlLabel,
@@ -35,30 +36,41 @@ const App: React.FC = (): JSX.Element => {
   const { state: userState, dispatch: userDispatch } = useUserContext();
   const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     if (!userState.user || !userState.user.userId) {
       UserActions.loadUserFromCookies(userDispatch);
     }
+  }, [userState.user]);
+
+  React.useEffect(() => {
+    const handleResize = (): void => {
+      const width = window.innerWidth;
+      const { theme } = viewState;
+
+      if (width < 600) {
+        setStyle({
+          marginLeft: "10px",
+          marginRight: "10px",
+          marginTop: "60px"
+        });
+
+        viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
+      } else {
+        setStyle({
+          marginLeft: "180px",
+          marginRight: "10px",
+          marginTop: "0px"
+        });
+
+        viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
+      }
+    };
 
     handleResize();
+
     window.addEventListener("resize", handleResize);
     return (): void => window.removeEventListener("resize", handleResize);
   }, []);
-
-  function handleResize(): void {
-    const width = window.innerWidth;
-    const { theme } = viewState;
-
-    if (width < 600) {
-      setStyle({ marginLeft: "10px", marginTop: "60px", marginRight: "10px" });
-
-      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
-    } else {
-      setStyle({ marginLeft: "180px", marginTop: "0px", marginRight: "10px" });
-
-      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
-    }
-  }
 
   return (
     <div style={style}>

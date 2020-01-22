@@ -5,8 +5,6 @@ import Types from "./userActionTypes";
 
 export async function signOut(dispatch: any): Promise<void> {
   Cookies.setJwtToken("");
-  Cookies.setUsername("");
-  Cookies.setUser({} as User);
 
   dispatch({
     actionType: Types.SIGN_OUT
@@ -26,7 +24,6 @@ export async function signIn(
     const user = signInBody.user;
 
     Cookies.setJwtToken(jwtToken);
-    Cookies.setUser(user);
 
     dispatch({
       actionType: Types.SIGN_IN,
@@ -56,7 +53,6 @@ export async function updateUser(
 
   if (updateUserResponse instanceof Response && updateUserResponse.ok) {
     const updatedUserBody = await updateUserResponse.json();
-    Cookies.setUser(updatedUserBody);
 
     dispatch({
       actionType: Types.UPDATE_USER,
@@ -74,8 +70,6 @@ export const loadUserFromCookies = async (
 
   if (getUserResponse instanceof Response && getUserResponse.ok) {
     const getUserBody = await getUserResponse.json();
-
-    Cookies.setUser(getUserBody);
 
     dispatch({
       actionType: Types.SIGN_IN,

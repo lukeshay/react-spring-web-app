@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Button,
-  createStyles,
-  makeStyles,
-  TableCell,
-  TableRow,
-  Theme,
   Card,
   CardContent,
   CardMedia,
+  createStyles,
+  makeStyles,
+  Theme,
   Typography
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -16,8 +14,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AuthRoutes, Routes } from "../../../routes";
-import { Gym, User } from "../../../types";
-import Table from "../../common/table/Table";
+import { Gym } from "../../../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
