@@ -9,6 +9,7 @@ plugins {
     id 'com.github.sherter.google-java-format' version '0.8'
     id 'org.jetbrains.kotlin.jvm' version '1.3.61'
     id 'jacoco'
+    id "org.sonarqube" version "2.7"
 }
 
 ext {
@@ -57,6 +58,7 @@ dependencies {
     // Security dependencies
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.springBootVersion
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.4.1'
+    implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.4.0.RELEASE'
     testImplementation group: 'org.springframework.security', name: 'spring-security-test'
 
     // Swagger dependencies
@@ -85,11 +87,13 @@ task verifyFormatting(type: VerifyGoogleJavaFormat) {
     include '**/*.java'
     ignoreFailures true
 }
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
+
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
@@ -104,4 +108,3 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
-check.dependsOn verifyFormatting
