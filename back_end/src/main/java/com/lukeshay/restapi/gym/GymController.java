@@ -59,7 +59,7 @@ public class GymController {
             gym.getAuthorizedEditors());
 
     if (gym == null) {
-      return Response.notFound(Body.error("Gym not found"));
+      return Response.badRequest(Body.error("Gym not found"));
     } else {
       return Response.ok(gym);
     }
@@ -94,7 +94,7 @@ public class GymController {
     Gym foundGym = gymService.getGymById(gymId);
 
     if (foundGym == null) {
-      return Response.notFound(Body.error("Gym not found."));
+      return Response.badRequest(Body.error("Gym not found."));
     } else {
       return Response.ok(foundGym);
     }

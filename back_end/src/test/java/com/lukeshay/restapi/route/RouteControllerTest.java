@@ -108,8 +108,7 @@ public class RouteControllerTest {
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
-            Assertions.assertEquals(
-                Body.error("Error creating route."), responseNoWall.getBody()));
+            Assertions.assertEquals(Body.error("Error creating route."), responseNoWall.getBody()));
 
     Mockito.when(wallRepository.findById("1")).thenReturn(Optional.of(testWall));
 
@@ -143,8 +142,7 @@ public class RouteControllerTest {
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
-            Assertions.assertEquals(
-                Body.error("Error updating route."), responseNoWall.getBody()));
+            Assertions.assertEquals(Body.error("Error updating route."), responseNoWall.getBody()));
 
     Mockito.when(wallRepository.findById("1")).thenReturn(Optional.of(testWall));
 
@@ -176,7 +174,6 @@ public class RouteControllerTest {
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
-            Assertions.assertEquals(
-                Body.error("Error deleting route."), responseNoWall.getBody()));
+            Assertions.assertEquals(Body.error("Error deleting route."), responseNoWall.getBody()));
   }
 }

@@ -149,8 +149,7 @@ public class WallControllerTest {
 
     Assertions.assertAll(
         () ->
-            Assertions.assertEquals(
-                Body.error("Error updating wall."), responseNoWallId.getBody()),
+            Assertions.assertEquals(Body.error("Error updating wall."), responseNoWallId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWallId.getStatusCode()));
 
     testWall.setId(wallId);
@@ -198,15 +197,13 @@ public class WallControllerTest {
     testWall.setPersistable(true);
 
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(Body.error("Error updating wall."), responseUpdate.getBody()),
+        () -> Assertions.assertEquals(Body.error("Error updating wall."), responseUpdate.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUpdate.getStatusCode()));
 
     ResponseEntity<?> responseDelete = wallController.deleteWall(request, testWall.getId());
 
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(Body.error("Error deleting wall."), responseDelete.getBody()),
+        () -> Assertions.assertEquals(Body.error("Error deleting wall."), responseDelete.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseDelete.getStatusCode()));
   }
 

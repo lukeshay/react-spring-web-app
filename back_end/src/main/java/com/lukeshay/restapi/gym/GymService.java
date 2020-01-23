@@ -118,8 +118,7 @@ public class GymService {
         || ((gym.getAuthorizedEditors() == null
                 || !gym.getAuthorizedEditors().contains(user.getId()))
             && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
-      return Response.unauthorized(
-          Body.error("You are unauthorized to perform this action."));
+      return Response.unauthorized(Body.error("You are unauthorized to perform this action."));
     }
 
     if (!imageName.equals("logo") && !imageName.equals("gym")) {

@@ -120,6 +120,26 @@ class GymControllerTest {
     testGym = gymRepository.findById(testGym.getId()).get();
 
     Assertions.assertEquals(testGym, response.getBody());
+
+    ResponseEntity<?> gymNotFoundResponse =
+        gymController.updateGym(
+            request, "", new Gym("Jimmy", null, null, null, null, null, null, null, null));
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, gymNotFoundResponse.getStatusCode()),
+        () -> Assertions.assertEquals(Body.error("Gym not found"), gymNotFoundResponse.getBody()));
+
+    Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
+
+    ResponseEntity<?> unauthorizedResponse =
+        gymController.updateGym(
+            request,
+            testGym.getId(),
+            new Gym("Jimmy", null, null, null, null, null, null, null, null));
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, unauthorizedResponse.getStatusCode()),
+        () -> Assertions.assertEquals(Body.error("Gym not found"), unauthorizedResponse.getBody()));
   }
 
   @Test
@@ -138,8 +158,7 @@ class GymControllerTest {
         gymController.uploadLogo(request, testFile, testGym.getId(), "invalid");
 
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
+        () -> Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
     Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
