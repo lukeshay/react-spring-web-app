@@ -1,8 +1,8 @@
 package com.lukeshay.restapi.rating.route;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
+import com.lukeshay.restapi.utils.Models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +40,6 @@ public class RouteRating {
 
   @Override
   public String toString() {
-    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+    return Models.toString(this);
   }
 }

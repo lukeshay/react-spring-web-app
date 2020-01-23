@@ -1,6 +1,6 @@
 package com.lukeshay.restapi.v2.gym;
 
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +39,7 @@ public class GymV2Controller {
     GymWithWalls gym = gymV2Service.getGym(gymId);
 
     if (gym == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error getting gym."));
+      return Responses.badRequestJsonResponse(Body.error("Error getting gym."));
     } else {
       return Responses.okJsonResponse(gym);
     }

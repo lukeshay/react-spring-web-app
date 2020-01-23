@@ -4,7 +4,7 @@ import com.lukeshay.restapi.services.AwsService;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -139,7 +139,7 @@ class GymControllerTest {
 
     Assertions.assertAll(
         () ->
-            Assertions.assertEquals(Bodys.error("Invalid upload."), invalidNameResponse.getBody()),
+            Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
     Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
@@ -153,7 +153,7 @@ class GymControllerTest {
             Assertions.assertEquals(
                 HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
         () ->
-            Assertions.assertEquals(Bodys.error("Error uploading file."), errorResponse.getBody()));
+            Assertions.assertEquals(Body.error("Error uploading file."), errorResponse.getBody()));
 
     Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
 
@@ -165,7 +165,7 @@ class GymControllerTest {
             Assertions.assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("You are unauthorized to perform this action."),
+                Body.error("You are unauthorized to perform this action."),
                 unauthorizedResponse.getBody()));
   }
 }

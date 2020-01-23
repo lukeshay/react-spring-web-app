@@ -5,7 +5,7 @@ import com.lukeshay.restapi.route.RouteProperties.Grade;
 import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,7 +96,7 @@ public class RouteRatingControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidRouteResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Rating is invalid."), invalidRouteResponse.getBody()));
+                Body.error("Rating is invalid."), invalidRouteResponse.getBody()));
 
     Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
 

@@ -1,6 +1,6 @@
 package com.lukeshay.restapi.todo;
 
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ class ToDoControllerTest {
 
     Assertions.assertAll(
         () ->
-            Assertions.assertEquals(Bodys.error("To-do not found."), responsePostDelete.getBody()),
+            Assertions.assertEquals(Body.error("To-do not found."), responsePostDelete.getBody()),
         () -> Assertions.assertEquals(HttpStatus.NOT_FOUND, responsePostDelete.getStatusCode()));
   }
 }

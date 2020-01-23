@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +47,7 @@ public class UserController {
 
     if (user == null) {
       LOG.debug("Could not find user");
-      return Responses.notFoundJsonResponse(Bodys.error("User not found."));
+      return Responses.notFoundJsonResponse(Body.error("User not found."));
     } else {
       return Responses.okJsonResponse(user);
     }
@@ -80,7 +80,7 @@ public class UserController {
     if (user == null) {
       LOG.debug("User was not found");
 
-      return Responses.badRequestJsonResponse(Bodys.error("User not found."));
+      return Responses.badRequestJsonResponse(Body.error("User not found."));
     } else {
       return Responses.okJsonResponse(user);
     }
@@ -103,7 +103,7 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create admin user.");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Field missing for user."));
+      return Responses.badRequestJsonResponse(Body.error("Field missing for user."));
     } else {
       return Responses.okJsonResponse(user);
     }
@@ -116,7 +116,7 @@ public class UserController {
     User deletedUser = userService.deleteUserByUserId(userId);
 
     if (deletedUser == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("User not found."));
+      return Responses.badRequestJsonResponse(Body.error("User not found."));
     } else {
       return Responses.okJsonResponse(deletedUser);
     }
@@ -139,7 +139,7 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create user.");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Field missing for user."));
+      return Responses.badRequestJsonResponse(Body.error("Field missing for user."));
     } else {
       return Responses.okJsonResponse(user);
     }
@@ -162,13 +162,13 @@ public class UserController {
     if (userService.isEmailTaken(request, email)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
+      return Responses.badRequestJsonResponse(Body.error("Email taken."));
     }
 
     if (userService.isUsernameTaken(request, username)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+      return Responses.badRequestJsonResponse(Body.error("Username taken."));
     }
 
     return null;

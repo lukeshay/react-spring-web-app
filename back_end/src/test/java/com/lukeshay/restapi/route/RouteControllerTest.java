@@ -4,7 +4,7 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import com.lukeshay.restapi.wall.WallRepository;
@@ -109,7 +109,7 @@ public class RouteControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Error creating route."), responseNoWall.getBody()));
+                Body.error("Error creating route."), responseNoWall.getBody()));
 
     Mockito.when(wallRepository.findById("1")).thenReturn(Optional.of(testWall));
 
@@ -121,7 +121,7 @@ public class RouteControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNotEditor.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Error creating route."), responseNotEditor.getBody()));
+                Body.error("Error creating route."), responseNotEditor.getBody()));
   }
 
   @Test
@@ -144,7 +144,7 @@ public class RouteControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Error updating route."), responseNoWall.getBody()));
+                Body.error("Error updating route."), responseNoWall.getBody()));
 
     Mockito.when(wallRepository.findById("1")).thenReturn(Optional.of(testWall));
 
@@ -156,7 +156,7 @@ public class RouteControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNotEditor.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Error updating route."), responseNotEditor.getBody()));
+                Body.error("Error updating route."), responseNotEditor.getBody()));
   }
 
   @Test
@@ -177,6 +177,6 @@ public class RouteControllerTest {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("Error deleting route."), responseNoWall.getBody()));
+                Body.error("Error deleting route."), responseNoWall.getBody()));
   }
 }

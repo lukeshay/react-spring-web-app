@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.services.Requests;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,7 +81,7 @@ class UserControllerTest {
     ResponseEntity<?> responseEmail = userController.createUser(request, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Email taken."), responseEmail.getBody()),
+        () -> Assertions.assertEquals(Body.error("Email taken."), responseEmail.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEmail.getStatusCode()));
 
     testUser.setEmail("testtest@email.com");
@@ -89,7 +89,7 @@ class UserControllerTest {
     ResponseEntity<?> responseUsername = userController.createUser(request, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Username taken."), responseUsername.getBody()),
+        () -> Assertions.assertEquals(Body.error("Username taken."), responseUsername.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUsername.getStatusCode()));
   }
 
@@ -131,7 +131,7 @@ class UserControllerTest {
             request, "test.user@email.com", null, null, null, null, null, null);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Username taken."), response.getBody()),
+        () -> Assertions.assertEquals(Body.error("Username taken."), response.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()));
   }
 }

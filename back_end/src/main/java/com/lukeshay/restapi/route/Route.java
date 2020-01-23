@@ -1,8 +1,8 @@
 package com.lukeshay.restapi.route;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
+import com.lukeshay.restapi.utils.Models;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +84,6 @@ public class Route implements Persistable<String> {
 
   @Override
   public String toString() {
-    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+    return Models.toString(this);
   }
 }

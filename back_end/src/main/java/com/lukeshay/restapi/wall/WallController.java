@@ -1,6 +1,6 @@
 package com.lukeshay.restapi.wall;
 
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +46,7 @@ public class WallController {
     Wall wall = wallService.createWall(request, body);
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error adding wall."));
+      return Responses.badRequestJsonResponse(Body.error("Error adding wall."));
     } else {
       return Responses.okJsonResponse(wall);
     }
@@ -63,7 +63,7 @@ public class WallController {
             request, body.getId(), body.getGymId(), body.getName(), body.getTypes());
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error updating wall."));
+      return Responses.badRequestJsonResponse(Body.error("Error updating wall."));
     } else {
       return Responses.okJsonResponse(wall);
     }
@@ -78,7 +78,7 @@ public class WallController {
     Wall wall = wallService.deleteWall(request, wallId);
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error deleting wall."));
+      return Responses.badRequestJsonResponse(Body.error("Error deleting wall."));
     } else {
       return Responses.okJsonResponse(wall);
     }

@@ -4,7 +4,7 @@ import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +53,7 @@ public class RouteRatingService {
 
     if (!validateRating(rating) || route == null) {
       LOG.debug("Rating is invalid");
-      return Responses.badRequestJsonResponse(Bodys.error("Rating is invalid."));
+      return Responses.badRequestJsonResponse(Body.error("Rating is invalid."));
     }
 
     RouteRating newRating = ratingRepository.save(rating);

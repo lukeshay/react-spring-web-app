@@ -52,6 +52,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     String id;
 
+    // TODO: Maybe refresh around here?
     try {
       id = JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
     } catch (SignatureVerificationException | TokenExpiredException ignored) {

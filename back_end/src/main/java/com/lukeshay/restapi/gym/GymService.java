@@ -4,7 +4,7 @@ import com.lukeshay.restapi.services.AwsService;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -119,18 +119,18 @@ public class GymService {
                 || !gym.getAuthorizedEditors().contains(user.getId()))
             && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
       return Responses.unauthorizedJsonResponse(
-          Bodys.error("You are unauthorized to perform this action."));
+          Body.error("You are unauthorized to perform this action."));
     }
 
     if (!imageName.equals("logo") && !imageName.equals("gym")) {
-      return Responses.badRequestJsonResponse(Bodys.error("Invalid upload."));
+      return Responses.badRequestJsonResponse(Body.error("Invalid upload."));
     }
 
     String url =
         awsService.uploadFileToS3(String.format("%s/%s.jpg", gym.getId(), imageName), file);
 
     if (url == null) {
-      return Responses.internalServerErrorResponse(Bodys.error("Error uploading file."));
+      return Responses.internalServerErrorResponse(Body.error("Error uploading file."));
     } else {
       if (imageName.equals("logo")) {
         gym.setLogoUrl(url);

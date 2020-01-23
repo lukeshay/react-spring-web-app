@@ -1,6 +1,6 @@
 package com.lukeshay.restapi.route;
 
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Responses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +44,7 @@ public class RouteController {
     Route route = routeService.createRoute(request, body);
 
     if (route == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error creating route."));
+      return Responses.badRequestJsonResponse(Body.error("Error creating route."));
     } else {
       return Responses.okJsonResponse(route);
     }
@@ -79,7 +79,7 @@ public class RouteController {
             body.getName());
 
     if (route == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error updating route."));
+      return Responses.badRequestJsonResponse(Body.error("Error updating route."));
     } else {
       return Responses.okJsonResponse(route);
     }
@@ -94,7 +94,7 @@ public class RouteController {
     Route route = routeService.deleteRoute(request, body);
 
     if (route == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error deleting route."));
+      return Responses.badRequestJsonResponse(Body.error("Error deleting route."));
     } else {
       return Responses.okJsonResponse(route);
     }
