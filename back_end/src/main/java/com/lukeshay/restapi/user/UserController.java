@@ -2,7 +2,7 @@ package com.lukeshay.restapi.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -47,9 +47,9 @@ public class UserController {
 
     if (user == null) {
       LOG.debug("Could not find user");
-      return Responses.notFoundJsonResponse(Body.error("User not found."));
+      return Response.notFound(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -80,9 +80,9 @@ public class UserController {
     if (user == null) {
       LOG.debug("User was not found");
 
-      return Responses.badRequestJsonResponse(Body.error("User not found."));
+      return Response.badRequest(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -103,9 +103,9 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create admin user.");
 
-      return Responses.badRequestJsonResponse(Body.error("Field missing for user."));
+      return Response.badRequest(Body.error("Field missing for user."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -116,9 +116,9 @@ public class UserController {
     User deletedUser = userService.deleteUserByUserId(userId);
 
     if (deletedUser == null) {
-      return Responses.badRequestJsonResponse(Body.error("User not found."));
+      return Response.badRequest(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(deletedUser);
+      return Response.ok(deletedUser);
     }
   }
 
@@ -139,9 +139,9 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create user.");
 
-      return Responses.badRequestJsonResponse(Body.error("Field missing for user."));
+      return Response.badRequest(Body.error("Field missing for user."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -153,7 +153,7 @@ public class UserController {
 
     List<User> users = userService.getAllUsers();
 
-    return Responses.okJsonResponse(users);
+    return Response.ok(users);
   }
 
   private ResponseEntity<?> checkDuplicate(
@@ -162,13 +162,13 @@ public class UserController {
     if (userService.isEmailTaken(request, email)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Body.error("Email taken."));
+      return Response.badRequest(Body.error("Email taken."));
     }
 
     if (userService.isUsernameTaken(request, username)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Body.error("Username taken."));
+      return Response.badRequest(Body.error("Username taken."));
     }
 
     return null;

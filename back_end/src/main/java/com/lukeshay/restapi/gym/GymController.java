@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.gym;
 
 import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -59,9 +59,9 @@ public class GymController {
             gym.getAuthorizedEditors());
 
     if (gym == null) {
-      return Responses.notFoundJsonResponse(Body.error("Gym not found"));
+      return Response.notFound(Body.error("Gym not found"));
     } else {
-      return Responses.okJsonResponse(gym);
+      return Response.ok(gym);
     }
   }
 
@@ -71,7 +71,7 @@ public class GymController {
   public ResponseEntity<?> createGym(@RequestBody Gym body) {
     Gym gym = gymService.createGym(body);
 
-    return Responses.okJsonResponse(gym);
+    return Response.ok(gym);
   }
 
   @GetMapping("")
@@ -82,7 +82,7 @@ public class GymController {
 
     List<Gym> gyms = gymService.getAllGyms();
 
-    return Responses.okJsonResponse(gyms);
+    return Response.ok(gyms);
   }
 
   @GetMapping("/{gymId}")
@@ -94,9 +94,9 @@ public class GymController {
     Gym foundGym = gymService.getGymById(gymId);
 
     if (foundGym == null) {
-      return Responses.notFoundJsonResponse(Body.error("Gym not found."));
+      return Response.notFound(Body.error("Gym not found."));
     } else {
-      return Responses.okJsonResponse(foundGym);
+      return Response.ok(foundGym);
     }
   }
 

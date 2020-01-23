@@ -5,7 +5,7 @@ import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.services.Requests;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Response;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class RouteRatingService {
   public ResponseEntity<?> getRatingsByRouteId(String routeId) {
     LOG.debug("Getting ratings for route {}", routeId);
     List<RouteRating> ratings = ratingRepository.findAllByRouteId(routeId);
-    return Responses.okJsonResponse(ratings);
+    return Response.ok(ratings);
   }
 
   public ResponseEntity<?> createRating(HttpServletRequest request, RouteRating rating) {
@@ -43,7 +43,7 @@ public class RouteRatingService {
 
     if (user == null) {
       LOG.debug("User is unauthorized");
-      return Responses.unauthorizedJsonResponse(null);
+      return Response.unauthorized(null);
     }
 
     rating.setCreatorId(user.getId());
@@ -53,7 +53,7 @@ public class RouteRatingService {
 
     if (!validateRating(rating) || route == null) {
       LOG.debug("Rating is invalid");
-      return Responses.badRequestJsonResponse(Body.error("Rating is invalid."));
+      return Response.badRequest(Body.error("Rating is invalid."));
     }
 
     RouteRating newRating = ratingRepository.save(rating);
@@ -67,7 +67,7 @@ public class RouteRatingService {
 
     routeRepository.save(route);
 
-    return Responses.okJsonResponse(newRating);
+    return Response.ok(newRating);
   }
 
   private boolean validateRating(RouteRating rating) {
