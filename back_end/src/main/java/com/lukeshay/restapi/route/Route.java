@@ -1,5 +1,7 @@
 package com.lukeshay.restapi.route;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
 import com.lukeshay.restapi.utils.Models;
@@ -10,7 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,6 +25,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Route implements Persistable<String> {
   @Id @Expose String id;
+
+  @CreatedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String createdDate;
+
+  @LastModifiedDate
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String modifiedDate;
 
   @Expose String wallId;
   @Expose String gymId;
