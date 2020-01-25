@@ -78,22 +78,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         JWT.create()
             .withSubject(principal.getUser().getId())
             .withExpiresAt(
-                new Date(System.currentTimeMillis() + SecurityProperties.EXPIRATION_TIME))
-            .sign(HMAC512(SecurityProperties.SECRET.getBytes()));
+                new Date(System.currentTimeMillis() + SecurityProperties.JWT_EXPIRATION_TIME))
+            .sign(HMAC512(SecurityProperties.JWT_SECRET.getBytes()));
 
-    Claims claims = jwtService.buildClaims(principal.getUser());
-    String tokenV2 = jwtService.buildJwt(claims);
+    Claims jwtClaims = jwtService.buildJwtClaims(principal.getUser());
+    Claims refreshClaims = jwtService.buildRefreshClaims(principal.getUser());
+    String tokenV2 = jwtService.buildToken(jwtClaims);
+    String refreshToken = jwtService.buildToken(refreshClaims);
 
     Session session =
         sessionService.createSession(
             tokenV2,
-            claims,
-            JwtService.getExpirationInMinutes(claims),
-            "",
+            jwtClaims,
+            JwtService.getExpirationInMinutes(jwtClaims),
+            refreshToken,
+            refreshClaims,
             principal.getUser().getId());
     //    sessionService.saveSession(session);
 
-    response.addHeader(SecurityProperties.HEADER_STRING, SecurityProperties.TOKEN_PREFIX + token);
+    response.addHeader(SecurityProperties.JWT_HEADER_STRING, SecurityProperties.TOKEN_PREFIX + token);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
 

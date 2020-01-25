@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    String header = request.getHeader(SecurityProperties.HEADER_STRING);
+    String header = request.getHeader(SecurityProperties.JWT_HEADER_STRING);
 
     if (header == null || !header.startsWith(SecurityProperties.TOKEN_PREFIX)) {
       chain.doFilter(request, response);
@@ -49,7 +49,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     String token =
         request
-            .getHeader(SecurityProperties.HEADER_STRING)
+            .getHeader(SecurityProperties.JWT_HEADER_STRING)
             .replace(SecurityProperties.TOKEN_PREFIX, "");
 
     String id;
@@ -57,7 +57,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     // TODO: Maybe refresh around here?
     try {
       id =
-          JWT.require(HMAC512(SecurityProperties.SECRET.getBytes()))
+          JWT.require(HMAC512(SecurityProperties.JWT_SECRET.getBytes()))
               .build()
               .verify(token)
               .getSubject();

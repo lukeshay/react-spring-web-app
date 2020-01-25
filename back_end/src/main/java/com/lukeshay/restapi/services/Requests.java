@@ -24,7 +24,7 @@ public class Requests {
 
   public User getUserFromRequest(HttpServletRequest request) {
 
-    String authHeader = request.getHeader(SecurityProperties.HEADER_STRING);
+    String authHeader = request.getHeader(SecurityProperties.JWT_HEADER_STRING);
 
     if (authHeader == null || authHeader.equals("")) {
       return null;
@@ -36,7 +36,7 @@ public class Requests {
 
     try {
       id =
-          JWT.require(HMAC512(SecurityProperties.SECRET.getBytes()))
+          JWT.require(HMAC512(SecurityProperties.JWT_SECRET.getBytes()))
               .build()
               .verify(token)
               .getSubject();

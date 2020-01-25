@@ -14,10 +14,13 @@ public class RouteRatingJwt {
   @Expose private String jwt;
 
   @JsonProperty(access = Access.WRITE_ONLY)
-  private Claims claims;
+  private Claims jwtClaims;
 
   @Expose private Long expiresIn;
   @Expose private String refreshToken;
+
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private Claims refreshClaims;
 
   @Override
   public String toString() {

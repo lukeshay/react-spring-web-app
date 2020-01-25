@@ -10,6 +10,7 @@ services:
     working_dir: /opt/app
     environment:
       - JWT_SECRET=$JWT_SECRET
+      - REFRESH_SECRET=$REFRESH_SECRET
       - ACCESS_KEY=$ACCESS_KEY
       - SECRET_KEY=$SECRET_KEY
     depends_on:

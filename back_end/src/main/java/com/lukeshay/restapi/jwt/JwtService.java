@@ -21,13 +21,13 @@ public class JwtService {
 
   @PostConstruct
   private void setSigner() {
-    byte[] secret = Base64.getMimeDecoder().decode(SecurityProperties.SECRET);
+    byte[] secret = Base64.getMimeDecoder().decode(SecurityProperties.JWT_SECRET);
 
     jwtParser = Jwts.parser().setSigningKey(secret);
     secretKey = Keys.hmacShaKeyFor(secret);
   }
 
-  public String buildJwt(Claims claims) {
+  public String buildToken(Claims claims) {
     return Jwts.builder()
         .signWith(secretKey)
         .setHeaderParam(SecurityProperties.JWT_HEADER_PARAM, "JWT")
@@ -35,12 +35,20 @@ public class JwtService {
         .compact();
   }
 
-  public Claims buildClaims(User user) {
+  public Claims buildJwtClaims(User user) {
+    return buildClaims(user, SecurityProperties.JWT_EXPIRATION_TIME);
+  }
+
+  public Claims buildRefreshClaims(User user) {
+    return buildClaims(user, SecurityProperties.REFRESH_EXPIRATION_TIME);
+  }
+
+  private Claims buildClaims(User user, Long expiration) {
     Instant now = Instant.now();
     Claims claims = Jwts.claims();
 
     claims
-        .setExpiration(Date.from(now.plusSeconds(SecurityProperties.EXPIRATION_TIME)))
+        .setExpiration(Date.from(now.plusSeconds(expiration)))
         .setIssuedAt(Date.from(now))
         .setSubject(user.toString())
         .setId(user.getId());
@@ -51,4 +59,5 @@ public class JwtService {
   public static Long getExpirationInMinutes(Claims claims) {
     return (claims.getExpiration().getTime() - claims.getIssuedAt().getTime()) / 60000;
   }
+
 }
