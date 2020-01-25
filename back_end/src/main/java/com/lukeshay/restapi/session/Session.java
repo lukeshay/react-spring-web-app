@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
+import com.lukeshay.restapi.utils.Models;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Session implements Persistable<String> {
   @Id @Expose UUID id;
   @Expose private RouteRatingJwt jwtToken;
-  @Expose private String refreshToken;
   @Expose private String userId;
 
   @CreatedDate
@@ -40,9 +40,8 @@ public class Session implements Persistable<String> {
 
   private Boolean persistable;
 
-  public Session(RouteRatingJwt jwtToken, String refreshToken, String userId) {
+  public Session(RouteRatingJwt jwtToken, String userId) {
     this.jwtToken = jwtToken;
-    this.refreshToken = refreshToken;
     this.userId = userId;
     persistable = true;
     active = true;
@@ -55,5 +54,10 @@ public class Session implements Persistable<String> {
   @Override
   public boolean isNew() {
     return !persistable;
+  }
+
+  @Override
+  public String toString() {
+    return Models.toString(this);
   }
 }

@@ -32,9 +32,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    String header = request.getHeader(JwtProperties.HEADER_STRING);
+    String header = request.getHeader(SecurityProperties.HEADER_STRING);
 
-    if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+    if (header == null || !header.startsWith(SecurityProperties.TOKEN_PREFIX)) {
       chain.doFilter(request, response);
       return;
     }
@@ -48,13 +48,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
 
     String token =
-        request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
+        request
+            .getHeader(SecurityProperties.HEADER_STRING)
+            .replace(SecurityProperties.TOKEN_PREFIX, "");
 
     String id;
 
     // TODO: Maybe refresh around here?
     try {
-      id = JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
+      id =
+          JWT.require(HMAC512(SecurityProperties.SECRET.getBytes()))
+              .build()
+              .verify(token)
+              .getSubject();
     } catch (SignatureVerificationException | TokenExpiredException ignored) {
       id = null;
     }

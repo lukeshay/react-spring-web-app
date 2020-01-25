@@ -1,9 +1,11 @@
 package com.lukeshay.restapi.config.security;
 
-public class JwtProperties {
+public class SecurityProperties {
 
   public static final String SECRET = System.getenv("JWT_SECRET");
-  static final int EXPIRATION_TIME = 864_000_000; // 10 days
+  public static final Long EXPIRATION_TIME = 86_400L; // 1 day
   public static final String TOKEN_PREFIX = "Bearer ";
   public static final String HEADER_STRING = "Authorization";
+
+  public static final String JWT_HEADER_PARAM = "typ";
 }

@@ -11,8 +11,9 @@ public class SessionService {
   @Autowired private SessionRepository sessionRepository;
   @Autowired private UserRepository userRepository;
 
-  public Session createSession(String jwtToken, Claims claims, String refreshToken, String userId) {
-    return new Session(new RouteRatingJwt(jwtToken, claims), refreshToken, userId);
+  public Session createSession(
+      String jwtToken, Claims claims, Long expiresIn, String refreshToken, String userId) {
+    return new Session(new RouteRatingJwt(jwtToken, claims, expiresIn, refreshToken), userId);
   }
 
   public Session saveSession(Session session) {
