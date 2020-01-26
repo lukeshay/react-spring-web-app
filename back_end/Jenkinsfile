@@ -1,7 +1,7 @@
 void setBuildStatus(String message, String state) {
   step([
       $class: "GitHubCommitStatusSetter",
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/my-org/my-repo"],
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: env.GIT_URL],
       contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
       errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
       statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
@@ -21,6 +21,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building...'
+        setBuildStatus('Starting build', 'PENDING')
         sh 'cd back_end && ./build.sh'
       }
     }
@@ -48,15 +49,15 @@ pipeline {
       }
       steps {
         echo 'Deploying...'
-        build job: '', propagate: true, wait: true
+//         build job: '', propagate: true, wait: true
       }
     }
     post {
       success {
-        setBuildStatus("Build succeeded", "SUCCESS");
+        setBuildStatus('Build succeeded', 'SUCCESS');
       }
       failure {
-        setBuildStatus("Build failed", "FAILURE");
+        setBuildStatus('Build failed', 'FAILURE');
       }
     }
   }
