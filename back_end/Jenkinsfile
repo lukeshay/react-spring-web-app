@@ -33,6 +33,12 @@ pipeline {
           rest-api:latest
       }
     }
+    stage('Coverage') {
+      steps {
+        echo 'Getting coverage...'
+        ./gradlew jacocoTestCoverageVerification
+      }
+    }
     stage('Deploy') {
       when {
         branch 'master'

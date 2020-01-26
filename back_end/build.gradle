@@ -125,6 +125,19 @@ jacocoTestCoverageVerification {
         })
 
     }
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.70
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.50
+            }
+        }
+    }
 }
 
 jacocoTestReport {
