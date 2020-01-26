@@ -38,6 +38,15 @@ pipeline {
       }
       steps {
         echo 'Deploying...'
+        build job: '', propagate: true, wait: true
+      }
+    }
+    post {
+      success {
+        setBuildStatus("Build succeeded", "SUCCESS");
+      }
+      failure {
+        setBuildStatus("Build failed", "FAILURE");
       }
     }
   }
