@@ -12,11 +12,21 @@ public class SessionService {
   @Autowired private UserRepository userRepository;
 
   public Session createSession(
-      String jwtToken, Claims jwtClaims, Long expiresIn, String refreshToken, Claims refreshClaims, String userId) {
-    return new Session(new RouteRatingJwt(jwtToken, jwtClaims, expiresIn, refreshToken, refreshClaims), userId);
+      String jwtToken,
+      Claims jwtClaims,
+      Long expiresIn,
+      String refreshToken,
+      Claims refreshClaims,
+      String userId) {
+    return new Session(
+        new RouteRatingJwt(jwtToken, jwtClaims, expiresIn, refreshToken, refreshClaims), userId);
   }
 
   public Session saveSession(Session session) {
     return sessionRepository.save(session);
+  }
+
+  public void deleteSession(Session session) {
+    sessionRepository.delete(session);
   }
 }

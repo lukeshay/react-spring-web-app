@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RouteRatingJwt {
-  @Expose private String jwt;
+  @Expose private String jwtToken;
 
   @JsonProperty(access = Access.WRITE_ONLY)
   private Claims jwtClaims;

@@ -1,20 +1,19 @@
-package com.lukeshay.restapi.config.security;
+package com.lukeshay.restapi.security;
 
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-
-import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lukeshay.restapi.jwt.JwtService;
+import com.lukeshay.restapi.jwt.JwtServiceImpl;
 import com.lukeshay.restapi.session.Session;
 import com.lukeshay.restapi.session.SessionService;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,8 +24,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-  private AuthenticationManager authenticationManager;
+  private static Logger LOG = LoggerFactory.getLogger(JwtAuthenticationFilter.class.getName());
 
+  private AuthenticationManager authenticationManager;
   private JwtService jwtService;
   private SessionService sessionService;
 
@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
-            credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
+            credentials.getUsername(), credentials.getPassword(), Collections.emptyList());
 
     return authenticationManager.authenticate(authenticationToken);
   }
@@ -68,27 +68,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       WebApplicationContext webApplicationContext =
           WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
-      jwtService = webApplicationContext.getBean(JwtService.class);
+      jwtService = webApplicationContext.getBean(JwtServiceImpl.class);
       sessionService = webApplicationContext.getBean(SessionService.class);
     }
 
-    MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
-
-    String token =
-        JWT.create()
-            .withSubject(principal.getUser().getId())
-            .withExpiresAt(
-                new Date(System.currentTimeMillis() + SecurityProperties.JWT_EXPIRATION_TIME))
-            .sign(HMAC512(SecurityProperties.JWT_SECRET.getBytes()));
+    UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
 
     Claims jwtClaims = jwtService.buildJwtClaims(principal.getUser());
-    Claims refreshClaims = jwtService.buildRefreshClaims(principal.getUser());
-    String tokenV2 = jwtService.buildToken(jwtClaims);
-    String refreshToken = jwtService.buildToken(refreshClaims);
+    String jwtToken = jwtService.buildToken(jwtClaims);
+    Claims refreshClaims = null;
+    String refreshToken = "";
+
+    if (request.getQueryString().contains("remember=true")) {
+      LOG.debug("Creating refresh token for {}", authResult.getPrincipal().toString());
+      refreshClaims = jwtService.buildRefreshClaims(principal.getUser());
+      refreshToken = jwtService.buildToken(refreshClaims);
+    }
 
     Session session =
         sessionService.createSession(
-            tokenV2,
+            jwtToken,
             jwtClaims,
             JwtService.getExpirationInMinutes(jwtClaims),
             refreshToken,
@@ -96,14 +95,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             principal.getUser().getId());
     //    sessionService.saveSession(session);
 
-    response.addHeader(SecurityProperties.JWT_HEADER_STRING, SecurityProperties.TOKEN_PREFIX + token);
+    response.addHeader(
+        SecurityProperties.JWT_HEADER_STRING, SecurityProperties.TOKEN_PREFIX + jwtToken);
+    response.addHeader(
+        SecurityProperties.REFRESH_HEADER_STRING, SecurityProperties.TOKEN_PREFIX + refreshToken);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
 
-    response
-        .getWriter()
-        .write(
-            new AuthBody(SecurityProperties.TOKEN_PREFIX + token, principal.getUser(), session)
-                .toString());
+    response.getWriter().write(new AuthBody(principal.getUser(), session).toString());
   }
 }

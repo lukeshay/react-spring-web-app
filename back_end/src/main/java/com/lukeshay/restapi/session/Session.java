@@ -24,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Session implements Persistable<String> {
   @Id @Expose UUID id;
-  @Expose private RouteRatingJwt jwtToken;
+  @Expose private RouteRatingJwt tokens;
   @Expose private String userId;
 
   @CreatedDate
@@ -40,8 +40,8 @@ public class Session implements Persistable<String> {
 
   private Boolean persistable;
 
-  public Session(RouteRatingJwt jwtToken, String userId) {
-    this.jwtToken = jwtToken;
+  public Session(RouteRatingJwt tokens, String userId) {
+    this.tokens = tokens;
     this.userId = userId;
     persistable = true;
     active = true;

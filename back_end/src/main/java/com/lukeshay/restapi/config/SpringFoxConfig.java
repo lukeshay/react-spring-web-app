@@ -1,4 +1,4 @@
-package com.lukeshay.restapi.config.swagger;
+package com.lukeshay.restapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

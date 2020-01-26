@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,10 +41,10 @@ public class UserController {
   @GetMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Get a user by email.", response = User.class)
-  public ResponseEntity<?> getUser(HttpServletRequest request) {
+  public ResponseEntity<?> getUser(Authentication authentication) {
     LOG.debug("Getting user.");
 
-    User user = userService.getUser(request);
+    User user = userService.getUser(authentication);
 
     if (user == null) {
       LOG.debug("Could not find user");
@@ -57,7 +58,7 @@ public class UserController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update a user.", response = User.class)
   public ResponseEntity<?> updateUser(
-      HttpServletRequest request,
+      Authentication authentication,
       @JsonProperty("username") String username,
       @JsonProperty("email") String email,
       @JsonProperty("firstName") String firstName,
@@ -68,14 +69,15 @@ public class UserController {
 
     LOG.debug("Updating user.");
 
-    ResponseEntity<?> response = checkDuplicate(request, email, username);
+    ResponseEntity<?> response = checkDuplicate(authentication, email, username);
 
     if (response != null) {
       return response;
     }
 
     User user =
-        userService.updateUser(request, username, email, firstName, lastName, city, state, country);
+        userService.updateUser(
+            authentication, username, email, firstName, lastName, city, state, country);
 
     if (user == null) {
       LOG.debug("User was not found");
@@ -89,10 +91,11 @@ public class UserController {
   @PostMapping("/admin")
   @PreAuthorize("hasAuthority('ADMIN')")
   @ApiOperation(value = "Create an admin user.", response = User.class)
-  public ResponseEntity<?> createAdminUser(HttpServletRequest request, @RequestBody User user) {
+  public ResponseEntity<?> createAdminUser(Authentication authentication, @RequestBody User user) {
     LOG.debug("Creating admin user {}", user.toString());
 
-    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
+    ResponseEntity<?> response =
+        checkDuplicate(authentication, user.getEmail(), user.getUsername());
 
     if (response != null) {
       return response;
@@ -112,7 +115,8 @@ public class UserController {
   @DeleteMapping("/{userId}")
   @PreAuthorize("hasAuthority('ADMIN')")
   @ApiOperation(value = "Delete a user.", response = User.class)
-  public ResponseEntity<?> deleteUserByUserId(@PathVariable String userId) {
+  public ResponseEntity<?> deleteUserByUserId(
+      Authentication authentication, @PathVariable String userId) {
     User deletedUser = userService.deleteUserByUserId(userId);
 
     if (deletedUser == null) {
@@ -125,10 +129,11 @@ public class UserController {
   @PostMapping("/new")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Create a user.", response = User.class)
-  public ResponseEntity<?> createUser(HttpServletRequest request, @RequestBody User user) {
+  public ResponseEntity<?> createUser(Authentication authentication, @RequestBody User user) {
     LOG.debug("Creating user {}", user.toString());
 
-    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
+    ResponseEntity<?> response =
+        checkDuplicate(authentication, user.getEmail(), user.getUsername());
 
     if (response != null) {
       return response;
@@ -157,15 +162,15 @@ public class UserController {
   }
 
   private ResponseEntity<?> checkDuplicate(
-      HttpServletRequest request, String email, String username) {
+      Authentication authentication, String email, String username) {
 
-    if (userService.isEmailTaken(request, email)) {
+    if (userService.isEmailTaken(authentication, email)) {
       LOG.debug("Not creating user because email is taken");
 
       return Response.badRequest(Body.error("Email taken."));
     }
 
-    if (userService.isUsernameTaken(request, username)) {
+    if (userService.isUsernameTaken(authentication, username)) {
       LOG.debug("Not creating user because email is taken");
 
       return Response.badRequest(Body.error("Username taken."));

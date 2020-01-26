@@ -1,4 +1,4 @@
-package com.lukeshay.restapi.config.security;
+package com.lukeshay.restapi.security;
 
 public class SecurityProperties {
 

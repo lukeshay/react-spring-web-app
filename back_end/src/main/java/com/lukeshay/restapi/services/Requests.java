@@ -5,7 +5,7 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.lukeshay.restapi.config.security.SecurityProperties;
+import com.lukeshay.restapi.security.SecurityProperties;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserRepository;
 import javax.servlet.http.HttpServletRequest;

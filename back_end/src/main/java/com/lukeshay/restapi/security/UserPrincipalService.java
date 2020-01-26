@@ -1,4 +1,4 @@
-package com.lukeshay.restapi.config.security;
+package com.lukeshay.restapi.security;
 
 import com.lukeshay.restapi.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +8,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class UserPrincipalService implements UserDetailsService {
 
-  private UserRepository userRepository;
-
-  @Autowired
-  public MyUserDetailsService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+  @Autowired private UserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return new MyUserDetails(userRepository.findByUsername(username).orElse(null));
+    return new UserPrincipal(userRepository.findByUsername(username).orElse(null));
   }
 }

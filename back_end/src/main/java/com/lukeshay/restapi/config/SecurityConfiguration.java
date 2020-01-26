@@ -1,5 +1,7 @@
-package com.lukeshay.restapi.config.security;
+package com.lukeshay.restapi.config;
 
+import com.lukeshay.restapi.security.JwtAuthenticationFilter;
+import com.lukeshay.restapi.security.JwtAuthorizationFilter;
 import com.lukeshay.restapi.user.UserRepository;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired
   public SecurityConfiguration(
-      @Qualifier("myUserDetailsService") UserDetailsService userDetailsService,
+      @Qualifier("userPrincipalService") UserDetailsService userDetailsService,
       UserRepository userRepository) {
     this.userDetailsService = userDetailsService;
     this.userRepository = userRepository;
