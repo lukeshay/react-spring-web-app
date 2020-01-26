@@ -23,27 +23,33 @@ public class RouteControllerTest extends TestBase {
 
   @BeforeEach
   void setUp() {
-    testGym = gymRepository.save(new Gym(
-        "Jim",
-        "street",
-        "city",
-        "state",
-        "50014",
-        "lukeshay.com",
-        "climbing@gym.com",
-        "phoneNumber",
-        Collections.singletonList(testUser.getId())));
+    testGym =
+        gymRepository.save(
+            new Gym(
+                "Jim",
+                "street",
+                "city",
+                "state",
+                "50014",
+                "lukeshay.com",
+                "climbing@gym.com",
+                "phoneNumber",
+                Collections.singletonList(testUser.getId())));
 
-
-    testWall = wallRepository.save(new Wall(testGym.getId(), "Wall", Collections.singletonList(WallTypes.BOULDER)));
+    testWall =
+        wallRepository.save(
+            new Wall(testGym.getId(), "Wall", Collections.singletonList(WallTypes.BOULDER)));
 
     testRoute =
         new Route(
-            testWall.getId(), testGym.getId(), "Yooty", "Yeety", "Green", Collections.singletonList(WallTypes.BOULDER));
+            testWall.getId(),
+            testGym.getId(),
+            "Yooty",
+            "Yeety",
+            "Green",
+            Collections.singletonList(WallTypes.BOULDER));
 
-    routeController =
-        new RouteController(
-            routeService);
+    routeController = new RouteController(routeService);
   }
 
   @Test

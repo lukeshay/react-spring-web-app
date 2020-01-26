@@ -38,8 +38,7 @@ public class WallControllerTest extends TestBase {
 
     testGym = gymRepository.save(testGym);
 
-    wallController =
-        new WallController(wallService);
+    wallController = new WallController(wallService);
 
     testWall = new Wall(testGym.getId(), "Wall", Collections.singletonList(WallTypes.AUTO_BELAY));
   }

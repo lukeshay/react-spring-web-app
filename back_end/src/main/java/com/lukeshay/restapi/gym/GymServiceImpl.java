@@ -16,12 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class GymServiceImpl implements GymService {
 
- private GymRepository gymRepository;
+  private GymRepository gymRepository;
   private AwsService awsService;
 
   @Autowired
-  public GymServiceImpl(GymRepository gymRepository,
-      AwsService awsService) {
+  public GymServiceImpl(GymRepository gymRepository, AwsService awsService) {
     this.gymRepository = gymRepository;
     this.awsService = awsService;
   }

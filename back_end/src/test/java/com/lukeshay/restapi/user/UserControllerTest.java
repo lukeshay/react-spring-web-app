@@ -20,14 +20,14 @@ class UserControllerTest extends TestBase {
 
   @BeforeEach
   void setUp() {
-    userController =
-        new UserController(userService);
+    userController = new UserController(userService);
   }
 
   @Test
   void createUserTest() {
-    authentication = new UsernamePasswordAuthenticationToken(new UserPrincipal(null), null,
-        Collections.emptyList());
+    authentication =
+        new UsernamePasswordAuthenticationToken(
+            new UserPrincipal(null), null, Collections.emptyList());
     User testUserTwo =
         new User(
             "TestUserTwo",

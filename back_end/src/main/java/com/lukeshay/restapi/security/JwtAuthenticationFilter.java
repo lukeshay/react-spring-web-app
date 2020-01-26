@@ -79,7 +79,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     Claims refreshClaims = null;
     String refreshToken = "";
 
-    if (request.getQueryString().contains("remember=true")) {
+    if (request != null
+        && request.getQueryString() != null
+        && request.getQueryString().contains("remember=true")) {
       LOG.debug("Creating refresh token for {}", authResult.getPrincipal().toString());
       refreshClaims = jwtService.buildRefreshClaims(principal.getUser());
       refreshToken = jwtService.buildToken(refreshClaims);
