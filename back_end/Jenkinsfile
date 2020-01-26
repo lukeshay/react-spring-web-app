@@ -52,13 +52,13 @@ pipeline {
 //         build job: '', propagate: true, wait: true
       }
     }
-    post {
-      success {
-        setBuildStatus('Build succeeded', 'SUCCESS');
-      }
-      failure {
-        setBuildStatus('Build failed', 'FAILURE');
-      }
+  }
+  post {
+    success {
+      setBuildStatus('Build succeeded', 'SUCCESS');
+    }
+    failure {
+      setBuildStatus('Build failed', 'FAILURE');
     }
   }
 }
