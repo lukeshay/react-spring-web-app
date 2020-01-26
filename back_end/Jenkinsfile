@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  checkout scm
 
   environment {
     SECRET_KEY = credentials('jenkins-aws-secret-key-id')
