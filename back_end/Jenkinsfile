@@ -11,25 +11,25 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building...'
-        sh './build.sh'
+        sh 'cd back_end && ./build.sh'
       }
     }
     stage('Lint') {
       steps {
         echo 'Linting...'
-        sh './lint.sh'
+        sh 'cd back_end && ./lint.sh'
       }
     }
     stage('Test') {
       steps {
         echo 'Testing...'
-        sh './test.sh'
+        sh 'cd back_end && ./test.sh'
       }
     }
     stage('Coverage') {
       steps {
         echo 'Getting coverage...'
-        sh './coverage.sh'
+        sh 'cd back_end && ./coverage.sh'
       }
     }
     stage('Deploy') {
