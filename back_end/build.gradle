@@ -105,6 +105,28 @@ compileTestKotlin {
     }
 }
 
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                include: [
+                    'com/lukeshay/restapi/**',
+                ],
+                exclude: [
+                    '**/*Repository.class',
+                    '**/*Body.class',
+                    '**/*View.class',
+                    '**/*Payload.class',
+                    '**/*Filter.class',
+                    '**/*Exception.class',
+                    '**/*SpringMain.class',
+                ]
+            )
+        })
+
+    }
+}
+
 jacocoTestReport {
     reports {
         xml.enabled = true
