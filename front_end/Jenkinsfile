@@ -16,7 +16,7 @@ pipeline {
       steps {
         echo 'Building...'
         setBuildStatus('Starting build', 'PENDING')
-        sh 'cd front_end && yarn && yarn build'
+        sh 'cd front_end && yarn build'
       }
     }
     stage('Lint') {

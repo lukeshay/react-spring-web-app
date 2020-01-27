@@ -9,7 +9,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --hot --config configs/webpack/dev.js",
     "start:local": "webpack-dev-server --open --hot --config configs/webpack/local.js",
-    "prebuild": "yarn",
+    "prebuild": "yarn --no-optional",
     "build": "webpack -p --config=configs/webpack/prod.js",
     "build:analyze": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "deploy": "pm2 serve dist --name web-app -- 3000",
