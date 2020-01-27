@@ -53,4 +53,4 @@ pipeline {
       setBuildStatus('Build failed', 'FAILURE');
     }
   }
-}E
+}
