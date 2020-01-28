@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
 import com.lukeshay.restapi.utils.Models;
-import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +27,11 @@ public class Session implements Persistable<String> {
 
   @CreatedDate
   @JsonProperty(access = Access.WRITE_ONLY)
-  private Instant created;
+  private String created;
 
   @LastModifiedDate
   @JsonProperty(access = Access.WRITE_ONLY)
-  private Instant modified;
+  private String modified;
 
   @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean active;
