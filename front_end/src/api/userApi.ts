@@ -8,9 +8,11 @@ const userUrl = baseUrl + "users";
 
 export async function signIn(
   username: string,
-  password: string
+  password: string,
+  rememberMe: boolean
 ): Promise<void | Response> {
-  return fetch(signInUrl, {
+  const remember = rememberMe ? "?remember=true" : "";
+  return fetch(signInUrl + remember, {
     body: JSON.stringify({ username, password }),
     headers: {
       "Content-Type": "application/json"

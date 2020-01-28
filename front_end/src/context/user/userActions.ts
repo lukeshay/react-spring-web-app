@@ -14,14 +14,18 @@ export async function signOut(dispatch: any): Promise<void> {
 export async function signIn(
   dispatch: any,
   username: string,
-  password: string
+  password: string,
+  rememberMe: boolean
 ): Promise<void | Response> {
-  const signInResponse = await UserApi.signIn(username, password);
+  const signInResponse = await UserApi.signIn(username, password, rememberMe);
 
   if (signInResponse instanceof Response && signInResponse.ok) {
     const signInBody: AuthBody = await signInResponse.json();
-    const jwtToken = signInBody.session.tokens.jwtToken;
+    const { session } = signInBody;
+    const jwtToken = session.tokens.jwtToken;
     const user = signInBody.user;
+
+    user.session = session;
 
     Cookies.setJwtToken(jwtToken);
 
@@ -41,7 +45,7 @@ export async function createUser(
   const createUserResponse = await UserApi.createUser(newUser);
 
   return !(createUserResponse instanceof Response) || createUserResponse.ok
-    ? await signIn(dispatch, newUser.username, newUser.password)
+    ? await signIn(dispatch, newUser.username, newUser.password, false)
     : createUserResponse;
 }
 

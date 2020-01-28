@@ -61,7 +61,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
         id="firstName"
         placeholder="First Name"
         type="text"
-        handleChange={handleChange}
+        onChange={handleChange}
         autoComplete="first-name"
         autoCapitalize="true"
       />
@@ -70,7 +70,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
         id="lastName"
         placeholder="Last Name"
         type="text"
-        handleChange={handleChange}
+        onChange={handleChange}
         autoComplete="last-name"
         autoCapitalize="true"
       />
@@ -79,7 +79,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
         id="email"
         placeholder="Email"
         type="text"
-        handleChange={handleChange}
+        onChange={handleChange}
         autoComplete="email"
       />
       <Input
@@ -87,7 +87,7 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
         id="phoneNumber"
         placeholder="Phone Number"
         type="text"
-        handleChange={handleChange}
+        onChange={handleChange}
         autoComplete="phone-number"
       />
     </React.Fragment>
