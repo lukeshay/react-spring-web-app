@@ -9,7 +9,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-  agent any
+  agent master
 
   stages {
     stage('Build') {
