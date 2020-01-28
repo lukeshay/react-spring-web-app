@@ -5,3 +5,6 @@ export { Wall } from "./wall";
 export { Route } from "./route";
 export { RouteRating } from "./rating";
 export { ButtonEvent, InputEvent } from "./events";
+export { RouteRatingJwt } from "./routeRatingJwt";
+export { Session } from "./session";
+export { AuthBody } from "./authBody";

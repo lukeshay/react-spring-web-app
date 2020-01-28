@@ -1,3 +1,5 @@
+import { Session } from "./session";
+
 export interface User {
   userId: string;
   firstName: string;
@@ -10,4 +12,5 @@ export interface User {
   phoneNumber: string;
   authorities: string[];
   roles: string[];
+  session: Session | null;
 }

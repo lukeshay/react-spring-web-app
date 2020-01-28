@@ -1,5 +1,5 @@
 import * as UserApi from "../../api/userApi";
-import { User } from "../../types";
+import { User, AuthBody } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
 
@@ -19,8 +19,8 @@ export async function signIn(
   const signInResponse = await UserApi.signIn(username, password);
 
   if (signInResponse instanceof Response && signInResponse.ok) {
-    const signInBody = await signInResponse.json();
-    const jwtToken = signInBody.Authorization;
+    const signInBody: AuthBody = await signInResponse.json();
+    const jwtToken = signInBody.session.tokens.jwtToken;
     const user = signInBody.user;
 
     Cookies.setJwtToken(jwtToken);
