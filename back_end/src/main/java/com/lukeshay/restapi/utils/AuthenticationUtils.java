@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 
 public class AuthenticationUtils {
   public static User getUser(Authentication authentication) {
-    return ((UserPrincipal) authentication.getPrincipal()).getUser();
+    if (authentication == null) return null;
+    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+    return userPrincipal == null ? null :userPrincipal.getUser();
   }
 }

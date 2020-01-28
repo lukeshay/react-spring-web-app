@@ -82,17 +82,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     if (request != null
         && request.getQueryString() != null
         && request.getQueryString().contains("remember=true")) {
-      LOG.debug("Creating refresh token for {}", authResult.getPrincipal().toString());
+      LOG.debug("Creating refresh token for {}",
+          ((UserPrincipal) authResult.getPrincipal()).getUser().getId());
       refreshClaims = jwtService.buildRefreshClaims(principal.getUser());
       refreshToken = jwtService.buildToken(refreshClaims);
     }
 
     Session session =
         sessionService.createSession(
-            jwtToken,
+            SecurityProperties.TOKEN_PREFIX + jwtToken,
             jwtClaims,
             JwtService.getExpirationInMinutes(jwtClaims),
-            refreshToken,
+            SecurityProperties.TOKEN_PREFIX +  refreshToken,
             refreshClaims,
             principal.getUser().getId());
     //    sessionService.saveSession(session);

@@ -6,7 +6,6 @@ import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
 import com.lukeshay.restapi.utils.Models;
 import java.time.Instant;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Document
 public class Session implements Persistable<String> {
-  @Id @Expose UUID id;
+  @Id @Expose String id;
   @Expose private RouteRatingJwt tokens;
   @Expose private String userId;
 
@@ -38,6 +37,7 @@ public class Session implements Persistable<String> {
   @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean active;
 
+  @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean persistable;
 
   public Session(RouteRatingJwt tokens, String userId) {
@@ -48,7 +48,7 @@ public class Session implements Persistable<String> {
   }
 
   public String getId() {
-    return id.toString();
+    return id;
   }
 
   @Override

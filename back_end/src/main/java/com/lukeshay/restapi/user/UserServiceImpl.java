@@ -1,6 +1,7 @@
 package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.security.UserPrincipal;
+import com.lukeshay.restapi.utils.AuthenticationUtils;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ class UserServiceImpl implements UserService {
 
   @Override
   public boolean isEmailTaken(Authentication authentication, String email) {
-    User user = ((UserPrincipal) authentication.getPrincipal()).getUser();
+    User user = AuthenticationUtils.getUser(authentication);
 
     return (user == null || !user.getEmail().equals(email))
         && userRepository.findByEmail(email).orElse(null) != null;
@@ -98,7 +99,7 @@ class UserServiceImpl implements UserService {
 
   @Override
   public boolean isUsernameTaken(Authentication authentication, String username) {
-    User user = ((UserPrincipal) authentication.getPrincipal()).getUser();
+    User user = AuthenticationUtils.getUser(authentication);
 
     return (user == null || !user.getUsername().equals(username))
         && userRepository.findByUsername(username).orElse(null) != null;
@@ -115,7 +116,7 @@ class UserServiceImpl implements UserService {
       String state,
       String country) {
 
-    User user = ((UserPrincipal) authentication.getPrincipal()).getUser();
+    User user = AuthenticationUtils.getUser(authentication);
 
     assert user != null;
     User toUpdate = userRepository.findById(user.getUserId()).orElse(null);

@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -59,13 +59,13 @@ public class UserController {
   @ApiOperation(value = "Update a user.", response = User.class)
   public ResponseEntity<?> updateUser(
       Authentication authentication,
-      @JsonProperty("username") String username,
-      @JsonProperty("email") String email,
-      @JsonProperty("firstName") String firstName,
-      @JsonProperty("lastName") String lastName,
-      @JsonProperty("city") String city,
-      @JsonProperty("state") String state,
-      @JsonProperty("country") String country) {
+      @RequestParam("username") String username,
+      @RequestParam("email") String email,
+      @RequestParam("firstName") String firstName,
+      @RequestParam("lastName") String lastName,
+      @RequestParam("city") String city,
+      @RequestParam("state") String state,
+      @RequestParam("country") String country) {
 
     LOG.debug("Updating user.");
 
