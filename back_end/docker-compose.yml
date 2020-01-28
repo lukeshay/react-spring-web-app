@@ -15,8 +15,10 @@ services:
       - SECRET_KEY=$SECRET_KEY
     depends_on:
       - mongo
+      - sqldb
     links:
       - mongo
+      - sqldb
 
   mongo:
     image: mongo
@@ -26,3 +28,12 @@ services:
       - $HOME/data/rest-api-mongo-bkp:/data/bkp
     restart: always
 
+  sqldb:
+    image: postgres
+    container_name: rest-api-postgres
+    environment:
+      POSTGRES_USER: standard
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: routerating
+    volumes:
+      - db-data:/var/lib/postgresql/data

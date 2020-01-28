@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.user;
 
-import java.util.List;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
@@ -11,7 +10,7 @@ public interface UserService {
 
   User deleteUserByUserId(String userId);
 
-  List<User> getAllUsers();
+  Iterable<User> getAllUsers();
 
   User getUser(Authentication authentication);
 

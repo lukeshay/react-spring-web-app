@@ -2,39 +2,34 @@ package com.lukeshay.restapi.wall;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
-public class Wall implements Persistable<String> {
-  @Id @Expose private String id;
+@Entity
+public class Wall extends Auditable<String> {
+  @Id @GeneratedValue @Expose private String id;
 
   @Expose private String gymId;
   @Expose private String name;
-  @Expose private List<WallTypes> types;
-  private boolean persistable;
+  @ElementCollection @Expose private List<WallTypes> types;
 
   public Wall(String gymId, String name, List<WallTypes> types) {
     this.gymId = gymId;
     this.name = name;
     this.types = types;
-    persistable = false;
-  }
-
-  @Override
-  public boolean isNew() {
-    return !persistable;
   }
 
   @Override
@@ -44,11 +39,6 @@ public class Wall implements Persistable<String> {
 
   @Override
   public boolean equals(Object obj) {
-    if (!obj.getClass().equals(this.getClass())) {
-      return false;
-    } else {
-      Wall wall = (Wall) obj;
-      return toString().equals(wall.toString()) && persistable == wall.isPersistable();
-    }
+    return obj.getClass().equals(this.getClass()) && toString().equals(((Wall) obj).toString());
   }
 }

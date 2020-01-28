@@ -1,7 +1,8 @@
 package com.lukeshay.restapi.session;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SessionRepository extends MongoRepository<Session, String> {}
+public interface SessionRepository extends JpaRepository<Session, String> {}

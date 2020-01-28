@@ -2,25 +2,26 @@ package com.lukeshay.restapi.rating.route;
 
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
+import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
+import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
-public class RouteRating {
-  @Id @Expose private String id;
+@Entity
+public class RouteRating extends Auditable<String> {
+  @Id @GeneratedValue @Expose private String id;
   @Expose private String creatorId;
   @Expose private String creatorUsername;
-  @CreatedDate @Expose private String createdDate;
   @Expose private String routeId;
   @Expose private String review;
   @Expose private Grade grade;

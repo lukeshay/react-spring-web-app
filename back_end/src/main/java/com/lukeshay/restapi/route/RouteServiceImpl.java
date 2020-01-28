@@ -8,6 +8,7 @@ import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import com.lukeshay.restapi.wall.WallRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class RouteServiceImpl implements RouteService {
         || gym == null
         || wall == null
         || gym.getAuthorizedEditors() == null
-        || !gym.getAuthorizedEditors().contains(user.getUserId())
+        || !gym.getAuthorizedEditors().contains(user.getId())
         || body.getName() == null
         || body.getHoldColor() == null
         || !wall.getGymId().equals(body.getGymId())) {
@@ -72,11 +73,11 @@ public class RouteServiceImpl implements RouteService {
         || !route.getGymId().equals(gymId)
         || gym == null
         || user == null
-        || !gym.getAuthorizedEditors().contains(user.getUserId())) {
+        || !gym.getAuthorizedEditors().contains(user.getId())) {
       return null;
     }
 
-    if (wallId != null && !wallId.equals("")) {
+    if (wallId != null && !wallId.toString().equals("")) {
       Wall newWall = wallRepository.findById(wallId).orElse(null);
 
       if (newWall != null && newWall.getGymId() != null && newWall.getGymId().equals(gymId)) {
@@ -102,8 +103,6 @@ public class RouteServiceImpl implements RouteService {
       route.setName(name);
     }
 
-    route.setPersistable(true);
-
     return routeRepository.save(route);
   }
 
@@ -122,7 +121,7 @@ public class RouteServiceImpl implements RouteService {
         || gym == null
         || user == null
         || !route.getGymId().equals(body.getGymId())
-        || !gym.getAuthorizedEditors().contains(user.getUserId())) {
+        || !gym.getAuthorizedEditors().contains(user.getId())) {
       return null;
     }
 

@@ -36,10 +36,10 @@ public class Requests {
 
     try {
       id =
-          JWT.require(HMAC512(SecurityProperties.JWT_SECRET.getBytes()))
-              .build()
-              .verify(token)
-              .getSubject();
+              JWT.require(HMAC512(SecurityProperties.JWT_SECRET.getBytes()))
+                  .build()
+                  .verify(token)
+                  .getSubject();
     } catch (SignatureVerificationException | TokenExpiredException ignored) {
       id = null;
     }

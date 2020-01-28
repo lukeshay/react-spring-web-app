@@ -4,7 +4,6 @@ import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,7 +155,7 @@ public class UserController {
   public ResponseEntity<?> getAllUsers(HttpServletRequest request) {
     LOG.debug("Getting all users.");
 
-    List<User> users = userService.getAllUsers();
+    Iterable<User> users = userService.getAllUsers();
 
     return Response.ok(users);
   }

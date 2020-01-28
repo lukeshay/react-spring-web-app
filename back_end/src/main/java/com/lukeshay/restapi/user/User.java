@@ -3,59 +3,77 @@ package com.lukeshay.restapi.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.GenericGenerator;
 
-/** The type User. */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
-public class User implements Persistable<String> {
+@Entity
+@Table(name = "users")
+public class User extends Auditable<String> {
 
-  @Id @Expose private String userId;
-
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String createdDate;
-
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modifiedDate;
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
   @JsonProperty(access = Access.WRITE_ONLY)
+  @Column(name = "password")
   private String password;
 
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private boolean persistable;
-
-  @Indexed(unique = true)
+  @Column(name = "username", unique = true)
   @Expose
   private String username;
 
-  @Indexed(unique = true)
+  @Column(name = "email", unique = true)
   @Expose
   private String email;
 
-  @Expose private String firstName;
-  @Expose private String lastName;
-  @Expose private String phoneNumber;
-  @Expose private String city;
-  @Expose private String state;
-  @Expose private String country;
-  @Expose private List<String> authorities;
-  @Expose private List<String> roles;
+  @Column(name = "first_name")
+  @Expose
+  private String firstName;
+
+  @Column(name = "last_name")
+  @Expose
+  private String lastName;
+
+  @Column(name = "phone_number")
+  @Expose
+  private String phoneNumber;
+
+  @Column(name = "city")
+  @Expose
+  private String city;
+
+  @Column(name = "state")
+  @Expose
+  private String state;
+
+  @Column(name = "country")
+  @Expose
+  private String country;
+
+  @Column(name = "authoritie")
+  @Expose
+  private String authority;
+
+  @Column(name = "role")
+  @Expose
+  private String role;
 
   public User(
       String username,
@@ -74,16 +92,6 @@ public class User implements Persistable<String> {
     this.state = state;
     this.country = country;
     this.password = password;
-  }
-
-  @Override
-  public String getId() {
-    return userId;
-  }
-
-  @Override
-  public boolean isNew() {
-    return !persistable;
   }
 
   @Override

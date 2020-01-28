@@ -2,6 +2,7 @@ package com.lukeshay.restapi.wall;
 
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
 public interface WallService {

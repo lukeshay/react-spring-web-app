@@ -17,10 +17,10 @@ public class UserPrincipal implements UserDetails {
   }
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
+  public Collection<GrantedAuthority> getAuthorities() {
     List<GrantedAuthority> authorities = new ArrayList<>();
-    user.getAuthorities()
-        .forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
+    authorities.add(new SimpleGrantedAuthority(user.getAuthority()));
+    authorities.add(new SimpleGrantedAuthority(user.getRole()));
     return authorities;
   }
 

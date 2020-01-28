@@ -2,8 +2,6 @@ package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.security.UserPrincipal;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
-import java.util.Collections;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,8 +31,8 @@ class UserServiceImpl implements UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
-      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
+      user.setAuthority(UserTypes.ADMIN.authority());
+      user.setRole(UserTypes.ADMIN.role());
 
       return userRepository.save(user);
 
@@ -50,13 +48,14 @@ class UserServiceImpl implements UserService {
         && user.getLastName() != null
         && user.getEmail() != null
         && user.getPhoneNumber() != null
+        && user.getCity() != null
         && user.getState() != null
         && user.getCountry() != null
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
-      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
+      user.setAuthority(UserTypes.ADMIN.authority());
+      user.setRole(UserTypes.ADMIN.role());
 
       return userRepository.save(user);
 
@@ -85,7 +84,7 @@ class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<User> getAllUsers() {
+  public Iterable<User> getAllUsers() {
     return userRepository.findAll();
   }
 
@@ -119,7 +118,7 @@ class UserServiceImpl implements UserService {
     User user = AuthenticationUtils.getUser(authentication);
 
     assert user != null;
-    User toUpdate = userRepository.findById(user.getUserId()).orElse(null);
+    User toUpdate = userRepository.findById(user.getId()).orElse(null);
 
     if (toUpdate == null) {
       return null;
@@ -152,8 +151,6 @@ class UserServiceImpl implements UserService {
     if (country != null && !country.equals("")) {
       toUpdate.setCountry(country);
     }
-
-    toUpdate.setPersistable(true);
 
     return userRepository.save(toUpdate);
   }

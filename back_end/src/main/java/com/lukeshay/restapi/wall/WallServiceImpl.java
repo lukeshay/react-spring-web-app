@@ -6,6 +6,7 @@ import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class WallServiceImpl implements WallService {
 
     Gym gym = gymRepository.findById(body.getGymId()).orElse(null);
 
-    if (gym == null || !gym.getAuthorizedEditors().contains(user.getUserId())) {
+    if (gym == null || !gym.getAuthorizedEditors().contains(user.getId())) {
       return null;
     }
 
@@ -54,7 +55,7 @@ public class WallServiceImpl implements WallService {
 
     Gym gym = gymRepository.findById(wall.getGymId()).orElse(null);
 
-    if (gym == null || !gym.getAuthorizedEditors().contains(user.getUserId())) {
+    if (gym == null || !gym.getAuthorizedEditors().contains(user.getId())) {
       return null;
     }
 
@@ -88,7 +89,7 @@ public class WallServiceImpl implements WallService {
     Wall wall = wallRepository.findById(wallId).orElse(null);
     Gym gym = gymRepository.findById(gymId).orElse(null);
 
-    if (gym == null || wall == null || !gym.getAuthorizedEditors().contains(user.getUserId())) {
+    if (gym == null || wall == null || !gym.getAuthorizedEditors().contains(user.getId())) {
       return null;
     }
 
@@ -99,8 +100,6 @@ public class WallServiceImpl implements WallService {
     if (updatedTypes != null && updatedTypes.size() > 0) {
       wall.setTypes(updatedTypes);
     }
-
-    wall.setPersistable(true);
 
     return wallRepository.save(wall);
   }

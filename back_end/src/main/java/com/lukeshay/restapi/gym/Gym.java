@@ -1,39 +1,27 @@
 package com.lukeshay.restapi.gym;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
 import java.util.List;
+import java.util.UUID;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /** The type Gym. */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
-public class Gym implements Persistable<String> {
-  @Id @Expose private String id;
-
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String createdDate;
-
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modifiedDate;
-
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private boolean persistable;
+@Entity
+public class Gym extends Auditable<String> {
+  @Id @GeneratedValue @Expose private String id;
 
   @Expose private String name;
   @Expose private String address;
@@ -45,7 +33,8 @@ public class Gym implements Persistable<String> {
   @Expose private String phoneNumber;
   @Expose private String logoUrl;
   @Expose private String photoUrl;
-  @Expose private List<String> authorizedEditors;
+
+  @ElementCollection @Expose private List<String> authorizedEditors;
 
   public Gym(
       String name,
@@ -66,11 +55,6 @@ public class Gym implements Persistable<String> {
     this.email = email;
     this.phoneNumber = phoneNumber;
     this.authorizedEditors = authorizedEditors;
-  }
-
-  @Override
-  public boolean isNew() {
-    return false;
   }
 
   @Override

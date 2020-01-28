@@ -1,8 +1,12 @@
 package com.lukeshay.restapi.rating.route;
 
 import java.util.List;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RouteRatingRepository extends MongoRepository<RouteRating, String> {
+@Repository
+public interface RouteRatingRepository extends JpaRepository<RouteRating, String> {
+
   List<RouteRating> findAllByRouteId(String routeId);
 }

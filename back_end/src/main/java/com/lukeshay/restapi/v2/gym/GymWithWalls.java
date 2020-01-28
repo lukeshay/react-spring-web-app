@@ -18,9 +18,6 @@ public class GymWithWalls extends Gym {
   public GymWithWalls(Gym gym, List<WallWithRoutes> walls) {
     super(
         gym.getId(),
-        gym.getCreatedDate(),
-        gym.getModifiedDate(),
-        gym.isPersistable(),
         gym.getName(),
         gym.getAddress(),
         gym.getCity(),

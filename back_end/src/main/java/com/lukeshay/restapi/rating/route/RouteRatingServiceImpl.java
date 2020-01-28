@@ -7,6 +7,7 @@ import com.lukeshay.restapi.utils.AuthenticationUtils;
 import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.utils.Response;
 import java.util.List;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,6 @@ public class RouteRatingServiceImpl implements RouteRatingService {
     route.addUserRating(newRating.getRating());
 
     route.updateAverages();
-
-    route.setPersistable(true);
 
     routeRepository.save(route);
 

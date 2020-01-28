@@ -1,6 +1,7 @@
 package com.lukeshay.restapi.gym;
 
 import java.util.List;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ public interface GymService {
 
   Gym createGym(Gym gym);
 
-  List<Gym> getAllGyms();
+  Iterable<Gym> getAllGyms();
 
   Gym getGymById(String gymId);
 

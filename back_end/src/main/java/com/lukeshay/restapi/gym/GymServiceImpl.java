@@ -31,7 +31,7 @@ public class GymServiceImpl implements GymService {
   }
 
   @Override
-  public List<Gym> getAllGyms() {
+  public Iterable<Gym> getAllGyms() {
     return gymRepository.findAll();
   }
 
@@ -61,7 +61,7 @@ public class GymServiceImpl implements GymService {
         || user == null
         || ((gym.getAuthorizedEditors() == null
                 || !gym.getAuthorizedEditors().contains(user.getId()))
-            && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
+            && !user.getAuthority().equals(UserTypes.ADMIN.authority()))) {
       return null;
     }
 
@@ -101,8 +101,6 @@ public class GymServiceImpl implements GymService {
       gym.setAuthorizedEditors(authorizedEditors);
     }
 
-    gym.setPersistable(true);
-
     return gymRepository.save(gym);
   }
 
@@ -116,7 +114,7 @@ public class GymServiceImpl implements GymService {
         || user == null
         || ((gym.getAuthorizedEditors() == null
                 || !gym.getAuthorizedEditors().contains(user.getId()))
-            && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
+            && !user.getAuthority().equals(UserTypes.ADMIN.authority()))) {
       return Response.unauthorized(Body.error("You are unauthorized to perform this action."));
     }
 

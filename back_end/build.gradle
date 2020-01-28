@@ -37,11 +37,13 @@ repositories {
 dependencies {
     // Spring boot dependencies
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: project.springBootVersion
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: project.springBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: project.springBootVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.springBootVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: project.springBootVersion
 
     implementation 'com.google.code.gson:gson'
+
+    runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
 
     // Test dependencies
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
