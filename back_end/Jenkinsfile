@@ -9,9 +9,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-  agent {
-    label: "master"
-  }
+  agent { label: "master" }
 
   environment {
     SECRET_KEY = credentials('jenkins-aws-secret-key-id')
