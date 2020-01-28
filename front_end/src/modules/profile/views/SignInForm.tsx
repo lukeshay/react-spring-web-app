@@ -4,8 +4,8 @@ import * as UserActions from "../../../context/user/userActions";
 import { useUserContext } from "../../../context/user/userStore";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
-import Input from "../../common/inputs/Input";
 import CheckBox from "../../common/inputs/CheckBox";
+import Input from "../../common/inputs/Input";
 
 export interface IPropsLogInForm {
   handleSignUpClick(event: any): void;

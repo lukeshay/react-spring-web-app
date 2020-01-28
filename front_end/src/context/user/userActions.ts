@@ -1,5 +1,5 @@
 import * as UserApi from "../../api/userApi";
-import { User, AuthBody } from "../../types";
+import { AuthBody, User } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
 
