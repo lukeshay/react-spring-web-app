@@ -23,11 +23,13 @@ export async function signIn(
     const signInBody: AuthBody = await signInResponse.json();
     const { session } = signInBody;
     const jwtToken = session.tokens.jwtToken;
+    const refreshToken = session.tokens.refreshToken;
     const user = signInBody.user;
 
     user.session = session;
 
     Cookies.setJwtToken(jwtToken);
+    Cookies.setRefreshToken(refreshToken);
 
     dispatch({
       actionType: Types.SIGN_IN,

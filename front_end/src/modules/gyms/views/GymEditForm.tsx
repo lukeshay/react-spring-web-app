@@ -205,7 +205,7 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
           Upload Gym Photo
         </Button>
       </ImageInput>
-      <Typography variant="h6">Gym Photo</Typography>
+      <Typography variant="h6">Gym Logo</Typography>
       <ImageInput
         src={logo ? URL.createObjectURL(logo) : "https://" + gym.logoUrl}
         alt="No logo yet"

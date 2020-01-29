@@ -1,6 +1,6 @@
 import { Route } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
-import { handleError } from "./apiUtils";
+import { handleError, jsonHeaders } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL + "routes";
 
@@ -19,10 +19,7 @@ export const getRoutesOfWall = async (
 export const createRoute = async (route: Route): Promise<void | Response> => {
   return fetch(baseUrl, {
     body: JSON.stringify(route),
-    headers: {
-      Authorization: Cookies.getJwtToken(),
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "POST"
   })
     .then(
@@ -36,10 +33,7 @@ export const createRoute = async (route: Route): Promise<void | Response> => {
 export const updateRoute = async (route: Route): Promise<void | Response> => {
   return fetch(baseUrl, {
     body: JSON.stringify(route),
-    headers: {
-      Authorization: Cookies.getJwtToken(),
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "PUT"
   })
     .then(
@@ -53,10 +47,7 @@ export const updateRoute = async (route: Route): Promise<void | Response> => {
 export const deleteRoute = async (route: Route): Promise<void | Response> => {
   return fetch(baseUrl, {
     body: JSON.stringify(route),
-    headers: {
-      Authorization: Cookies.getJwtToken(),
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "DELETE"
   })
     .then(
