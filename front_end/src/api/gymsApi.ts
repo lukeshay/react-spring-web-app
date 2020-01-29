@@ -1,5 +1,5 @@
 import { Gym } from "../types";
-import { handleError, jsonHeaders, authHeaders } from "./apiUtils";
+import { authHeaders, handleError, jsonHeaders } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL;
 const gymsUrl = baseUrl + "gyms";
