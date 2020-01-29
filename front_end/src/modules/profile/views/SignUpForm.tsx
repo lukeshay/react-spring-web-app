@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { toast } from "react-toastify";
 import * as UserActions from "../../../context/user/userActions";
-import { UserContext } from "../../../context/user/userStore";
+import { useUserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
 import * as ResponseUtils from "../../../utils/responseUtils";
 import Button from "../../common/buttons/ButtonSecondary";
@@ -17,7 +17,7 @@ export interface IPropsSignUpForm {
 const SignUpForm: React.FC<IPropsSignUpForm> = (
   props: IPropsSignUpForm
 ): JSX.Element => {
-  const { dispatch } = useContext(UserContext);
+  const { dispatch } = useUserContext();
   const [firstName, setFirstName] = React.useState<string>("");
   const [lastName, setLastName] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
@@ -32,26 +32,6 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   const [phoneNumberMessage, setPhoneNumberMessage] = React.useState<string>(
     ""
   );
-
-  React.useEffect(() => {
-    validatePassword();
-  }, [password]);
-
-  React.useEffect(() => {
-    validateEmail();
-  }, [email]);
-
-  React.useEffect(() => {
-    validatePhoneNumber();
-  }, [phoneNumber]);
-
-  React.useEffect(() => {
-    if (repeatPassword !== password) {
-      setRepeatPasswordMessage("Passwords do not match.");
-    } else {
-      setRepeatPasswordMessage("");
-    }
-  }, [repeatPassword]);
 
   const validatePassword = (): boolean => {
     const lowerCaseLetters = /[a-z]/g;
@@ -113,6 +93,26 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
     }
   };
 
+  React.useEffect(() => {
+    validatePassword();
+  }, [password]);
+
+  React.useEffect(() => {
+    validateEmail();
+  }, [email]);
+
+  React.useEffect(() => {
+    validatePhoneNumber();
+  }, [phoneNumber]);
+
+  React.useEffect(() => {
+    if (repeatPassword !== password) {
+      setRepeatPasswordMessage("Passwords do not match.");
+    } else {
+      setRepeatPasswordMessage("");
+    }
+  }, [password, repeatPassword]);
+
   const handleChange = async (event: any): Promise<void> => {
     event.preventDefault();
     const { id, value } = event.target;
@@ -163,7 +163,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="First Name"
         id="firstName"
         value={firstName}
-        handleChange={handleChange}
+        onChange={handleChange}
         type="text"
         autoComplete="first-name"
         autoCapitalize="true"
@@ -172,7 +172,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="Last Name"
         id="lastName"
         value={lastName}
-        handleChange={handleChange}
+        onChange={handleChange}
         type="text"
         autoComplete="last-name"
         autoCapitalize="true"
@@ -181,7 +181,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="Email"
         id="email"
         value={email}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={emailMessage}
         type="text"
         autoComplete="email"
@@ -190,7 +190,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="Phone Number"
         id="phoneNumber"
         value={phoneNumber}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={phoneNumberMessage}
         type="text"
         autoComplete="phone-number"
@@ -199,7 +199,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="Password"
         id="password"
         value={password}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={passwordMessage}
         type="password"
         autoComplete="password"
@@ -208,7 +208,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         placeholder="Repeat Password"
         id="repeatPassword"
         value={repeatPassword}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={repeatPasswordMessage}
         type="password"
       />

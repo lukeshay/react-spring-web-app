@@ -1,5 +1,5 @@
 import * as UserApi from "../../api/userApi";
-import { User } from "../../types";
+import { AuthBody, User } from "../../types";
 import * as Cookies from "../../utils/cookiesUtils";
 import Types from "./userActionTypes";
 
@@ -14,16 +14,22 @@ export async function signOut(dispatch: any): Promise<void> {
 export async function signIn(
   dispatch: any,
   username: string,
-  password: string
+  password: string,
+  rememberMe: boolean
 ): Promise<void | Response> {
-  const signInResponse = await UserApi.signIn(username, password);
+  const signInResponse = await UserApi.signIn(username, password, rememberMe);
 
   if (signInResponse instanceof Response && signInResponse.ok) {
-    const signInBody = await signInResponse.json();
-    const jwtToken = signInBody.Authorization;
+    const signInBody: AuthBody = await signInResponse.json();
+    const { session } = signInBody;
+    const jwtToken = session.tokens.jwtToken;
+    const refreshToken = session.tokens.refreshToken;
     const user = signInBody.user;
 
+    user.session = session;
+
     Cookies.setJwtToken(jwtToken);
+    Cookies.setRefreshToken(refreshToken);
 
     dispatch({
       actionType: Types.SIGN_IN,
@@ -41,7 +47,7 @@ export async function createUser(
   const createUserResponse = await UserApi.createUser(newUser);
 
   return !(createUserResponse instanceof Response) || createUserResponse.ok
-    ? await signIn(dispatch, newUser.username, newUser.password)
+    ? await signIn(dispatch, newUser.username, newUser.password, false)
     : createUserResponse;
 }
 

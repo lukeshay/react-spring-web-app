@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   restapi:
-    build: .
+    image: rest-api
     restart: always
     container_name: rest-api
     ports:
@@ -10,6 +10,7 @@ services:
     working_dir: /opt/app
     environment:
       - JWT_SECRET=$JWT_SECRET
+      - REFRESH_SECRET=$REFRESH_SECRET
       - ACCESS_KEY=$ACCESS_KEY
       - SECRET_KEY=$SECRET_KEY
     depends_on:

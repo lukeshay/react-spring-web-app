@@ -2,8 +2,8 @@ package com.lukeshay.restapi.gym;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.Models;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -80,6 +80,6 @@ public class Gym implements Persistable<String> {
 
   @Override
   public String toString() {
-    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+    return Models.toString(this);
   }
 }

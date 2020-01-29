@@ -35,7 +35,7 @@ const WallRow: React.FC<IWallRowProps> = ({
 
   let types = "";
 
-  wall.types.forEach((value) => {
+  wall.types?.forEach((value) => {
     if (types.length !== 0) {
       types += ", ";
     }

@@ -4,6 +4,7 @@ import * as UserActions from "../../../context/user/userActions";
 import { useUserContext } from "../../../context/user/userStore";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
+import CheckBox from "../../common/inputs/CheckBox";
 import Input from "../../common/inputs/Input";
 
 export interface IPropsLogInForm {
@@ -16,6 +17,7 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
   const [emailMessage, setEmailMessage] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [passwordMessage, setPasswordMessage] = React.useState<string>("");
+  const [rememberMe, setRememberMe] = React.useState<boolean>(false);
 
   const handleChange = async (event: any): Promise<void> => {
     const { id, value } = event.target;
@@ -24,21 +26,25 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
       setEmail(value);
     } else if (id === "password") {
       setPassword(value);
+    } else if (id === "rememberMe") {
+      setRememberMe(!rememberMe);
     }
   };
 
   const handleSubmit = (event: any): void => {
     event.preventDefault();
 
-    UserActions.signIn(userDispatch, email, password).then((response) => {
-      if (response instanceof Response && response.status === 401) {
-        setPasswordMessage(
-          "User not found or incorrect password. Try a different username or password."
-        );
-      } else if (!(response instanceof Response)) {
-        setPasswordMessage("There was an error. Please try again.");
+    UserActions.signIn(userDispatch, email, password, rememberMe).then(
+      (response) => {
+        if (response instanceof Response && response.status === 401) {
+          setPasswordMessage(
+            "User not found or incorrect password. Try a different username or password."
+          );
+        } else if (!(response instanceof Response)) {
+          setPasswordMessage("There was an error. Please try again.");
+        }
       }
-    });
+    );
   };
 
   const formInputs: JSX.Element = (
@@ -47,7 +53,7 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
         placeholder="Email"
         id="email"
         value={email}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={emailMessage}
         type="text"
         autoComplete="email"
@@ -56,10 +62,17 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
         placeholder="Password"
         id="password"
         value={password}
-        handleChange={handleChange}
+        onChange={handleChange}
         helpText={passwordMessage}
         type="password"
         autoComplete="current-password"
+      />
+      <CheckBox
+        checked={rememberMe}
+        value="REMEMBER_ME"
+        onChange={handleChange}
+        id="rememberMe"
+        label="Remember Me"
       />
     </React.Fragment>
   );

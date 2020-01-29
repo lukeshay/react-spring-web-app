@@ -1,6 +1,6 @@
 import { User } from "../types";
 import * as Cookies from "../utils/cookiesUtils";
-import { handleError } from "./apiUtils";
+import { handleError, jsonHeaders } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL;
 const signInUrl = baseUrl + "login";
@@ -8,13 +8,13 @@ const userUrl = baseUrl + "users";
 
 export async function signIn(
   username: string,
-  password: string
+  password: string,
+  rememberMe: boolean
 ): Promise<void | Response> {
-  return fetch(signInUrl, {
+  const remember = rememberMe ? "?remember=true" : "";
+  return fetch(signInUrl + remember, {
     body: JSON.stringify({ username, password }),
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "POST"
   })
     .then(
@@ -26,10 +26,8 @@ export async function signIn(
 }
 
 export async function getUser(): Promise<void | Response> {
-  const token = Cookies.getJwtToken();
-
   return fetch(userUrl, {
-    headers: { Authorization: token },
+    headers: jsonHeaders,
     method: "GET"
   })
     .then(
@@ -43,9 +41,7 @@ export async function getUser(): Promise<void | Response> {
 export async function createUser(user: User): Promise<void | Response> {
   return fetch(baseUrl + "users/new", {
     body: JSON.stringify(user),
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "POST"
   })
     .then(
@@ -57,14 +53,9 @@ export async function createUser(user: User): Promise<void | Response> {
 }
 
 export async function updateUser(user: User): Promise<void | Response> {
-  const token = Cookies.getJwtToken();
-
   return fetch(userUrl, {
     body: JSON.stringify(user),
-    headers: {
-      Authorization: token,
-      "Content-Type": "application/json"
-    },
+    headers: jsonHeaders,
     method: "PUT"
   })
     .then(

@@ -1,31 +1,22 @@
 package com.lukeshay.restapi.v2.gym;
 
+import com.lukeshay.restapi.TestBase;
 import com.lukeshay.restapi.gym.Gym;
-import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.route.Route;
-import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
-import com.lukeshay.restapi.wall.WallRepository;
 import java.util.Collections;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@SpringBootTest
-@AutoConfigureDataMongo
-public class GymControllerV2Test {
+public class GymControllerV2Test extends TestBase {
   @Autowired private GymV2Controller gymController;
-  @Autowired private GymRepository gymRepository;
-  @Autowired private WallRepository wallRepository;
-  @Autowired private RouteRepository routeRepository;
 
   private Gym testGym;
   private Wall testWall;

@@ -65,13 +65,11 @@ const GymEditPage: React.FC = (): JSX.Element => {
         GymsActions.updateGymPhoto(gymsDispatch, photo, gym).then(
           (responseTwo) => {
             if (
-              responseTwo instanceof Response &&
-              responseTwo.status === 200 &&
-              responseOne instanceof Response &&
-              responseOne.status === 200
+              !(responseTwo instanceof Response) ||
+              responseTwo.status !== 200 ||
+              !(responseOne instanceof Response) ||
+              responseOne.status !== 200
             ) {
-              toast.success("Gym updated.");
-            } else {
               toast.error("Error updating gym.");
             }
           }

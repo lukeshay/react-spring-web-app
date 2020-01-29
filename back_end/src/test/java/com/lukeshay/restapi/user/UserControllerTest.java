@@ -1,60 +1,33 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.services.Requests;
-import com.lukeshay.restapi.utils.Bodys;
-import javax.servlet.http.HttpServletRequest;
+import com.lukeshay.restapi.TestBase;
+import com.lukeshay.restapi.security.UserPrincipal;
+import com.lukeshay.restapi.utils.Body;
+import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@SpringBootTest
-@AutoConfigureDataMongo
-class UserControllerTest {
+class UserControllerTest extends TestBase {
 
   private UserController userController;
-
-  @Autowired private UserRepository userRepository;
-
-  @Autowired private PasswordEncoder passwordEncoder;
-
-  @Mock private HttpServletRequest request;
-
-  @Mock private Requests requests;
-
-  private User testUser;
+  @Autowired private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userRepository.deleteAll();
-    testUser =
-        new User(
-            "test.user@email.com",
-            "Test",
-            "User",
-            "test.user@email.com",
-            "1111111111",
-            "Iowa",
-            "USA",
-            "password");
-    testUser = userRepository.save(testUser);
-
-    Mockito.when(requests.getUserFromRequest(request)).thenReturn(testUser);
-
-    userController = new UserController(new UserService(userRepository, passwordEncoder, requests));
+    userController = new UserController(userService);
   }
 
   @Test
-  @WithMockUser
   void createUserTest() {
+    authentication =
+        new UsernamePasswordAuthenticationToken(
+            new UserPrincipal(null), null, Collections.emptyList());
     User testUserTwo =
         new User(
             "TestUserTwo",
@@ -67,29 +40,24 @@ class UserControllerTest {
             "password");
     testUserTwo.setLastName("User");
 
-    ResponseEntity<?> getUser = userController.createUser(request, testUserTwo);
+    ResponseEntity<?> getUser = userController.createUser(authentication, testUserTwo);
     testUserTwo = userRepository.findByUsername(testUserTwo.getUsername()).get();
 
     Assertions.assertEquals(testUserTwo, getUser.getBody());
-  }
 
-  @Test
-  @WithMockUser
-  void createUserDuplicateTest() {
-    Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
-
-    ResponseEntity<?> responseEmail = userController.createUser(request, testUser);
+    testUser.setUserId("");
+    ResponseEntity<?> responseEmail = userController.createUser(authentication, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Email taken."), responseEmail.getBody()),
+        () -> Assertions.assertEquals(Body.error("Email taken."), responseEmail.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEmail.getStatusCode()));
 
     testUser.setEmail("testtest@email.com");
 
-    ResponseEntity<?> responseUsername = userController.createUser(request, testUser);
+    ResponseEntity<?> responseUsername = userController.createUser(authentication, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Username taken."), responseUsername.getBody()),
+        () -> Assertions.assertEquals(Body.error("Username taken."), responseUsername.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUsername.getStatusCode()));
   }
 
@@ -103,7 +71,7 @@ class UserControllerTest {
 
     ResponseEntity<?> updatedUser =
         userController.updateUser(
-            request,
+            authentication,
             testUser.getUsername(),
             null,
             testUser.getFirstName(),
@@ -128,10 +96,10 @@ class UserControllerTest {
 
     ResponseEntity<?> response =
         userController.updateUser(
-            request, "test.user@email.com", null, null, null, null, null, null);
+            authentication, "test.user@email.com", null, null, null, null, null, null);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Bodys.error("Username taken."), response.getBody()),
+        () -> Assertions.assertEquals(Body.error("Username taken."), response.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()));
   }
 }

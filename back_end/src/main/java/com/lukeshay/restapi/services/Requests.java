@@ -5,7 +5,7 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.lukeshay.restapi.config.security.JwtProperties;
+import com.lukeshay.restapi.security.SecurityProperties;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserRepository;
 import javax.servlet.http.HttpServletRequest;
@@ -24,18 +24,22 @@ public class Requests {
 
   public User getUserFromRequest(HttpServletRequest request) {
 
-    String authHeader = request.getHeader(JwtProperties.HEADER_STRING);
+    String authHeader = request.getHeader(SecurityProperties.JWT_HEADER_STRING);
 
     if (authHeader == null || authHeader.equals("")) {
       return null;
     }
 
-    String token = authHeader.replace(JwtProperties.TOKEN_PREFIX, "");
+    String token = authHeader.replace(SecurityProperties.TOKEN_PREFIX, "");
 
     String id;
 
     try {
-      id = JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
+      id =
+          JWT.require(HMAC512(SecurityProperties.JWT_SECRET.getBytes()))
+              .build()
+              .verify(token)
+              .getSubject();
     } catch (SignatureVerificationException | TokenExpiredException ignored) {
       id = null;
     }

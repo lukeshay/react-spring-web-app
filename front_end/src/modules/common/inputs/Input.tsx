@@ -13,7 +13,7 @@ export interface IPropsInput {
   autoCapitalize?: "true" | undefined;
   rows?: number;
   error?: boolean;
-  handleChange?(event: any): void;
+  onChange?(event: any): void;
 }
 
 const Input: React.FC<IPropsInput> = ({
@@ -23,7 +23,7 @@ const Input: React.FC<IPropsInput> = ({
   type,
   value,
   placeholder,
-  handleChange,
+  onChange,
   autoComplete,
   autoCapitalize,
   error,
@@ -37,7 +37,7 @@ const Input: React.FC<IPropsInput> = ({
     name={name}
     variant="outlined"
     margin="normal"
-    onChange={handleChange}
+    onChange={onChange}
     value={(value || "").toString()}
     fullWidth={fullWidth}
     autoComplete={autoComplete}

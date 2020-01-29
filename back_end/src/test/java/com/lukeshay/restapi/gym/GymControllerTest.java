@@ -1,50 +1,30 @@
 package com.lukeshay.restapi.gym;
 
-import com.lukeshay.restapi.services.AwsService;
-import com.lukeshay.restapi.services.Requests;
-import com.lukeshay.restapi.user.User;
-import com.lukeshay.restapi.user.UserTypes;
-import com.lukeshay.restapi.utils.Bodys;
+import com.lukeshay.restapi.TestBase;
+import com.lukeshay.restapi.utils.Body;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
-import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.multipart.MultipartFile;
 
-@SpringBootTest
-@AutoConfigureDataMongo
-class GymControllerTest {
+class GymControllerTest extends TestBase {
 
   private GymController gymController;
-
-  @Autowired private GymRepository gymRepository;
-
-  @Mock private AwsService awsService;
-  @Mock private HttpServletRequest request;
-  @Mock private Requests requests;
-
   private Gym testGym;
   private MultipartFile testFile;
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
-
     // Initialize objects
     testGym =
         new Gym(
@@ -56,21 +36,7 @@ class GymControllerTest {
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
-            Collections.singletonList("1111111111"));
-
-    User user =
-        new User(
-            "test.user@email.com",
-            "Test",
-            "User",
-            "test.user@email.com",
-            "1111111111",
-            "Iowa",
-            "USA",
-            "password");
-
-    user.setUserId("1111111111");
-    user.setAuthorities(Collections.singletonList(UserTypes.BASIC.authority()));
+            Collections.singletonList(testUser.getUserId()));
 
     // Setup files
     Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
@@ -90,12 +56,11 @@ class GymControllerTest {
     testGym = gymRepository.save(testGym);
 
     // Mock methods
-    Mockito.when(requests.getUserFromRequest(request)).thenReturn(user);
     Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
         .thenReturn("some/url.jpg");
 
     // Create class under test
-    gymController = new GymController(new GymService(gymRepository, requests, awsService));
+    gymController = new GymController(new GymServiceImpl(gymRepository, awsService));
   }
 
   @Test
@@ -113,20 +78,40 @@ class GymControllerTest {
   void updateGymByIdTest() {
     ResponseEntity<?> response =
         gymController.updateGym(
-            request,
+            authentication,
             testGym.getId(),
             new Gym("Jimmy", null, null, null, null, null, null, null, null));
 
     testGym = gymRepository.findById(testGym.getId()).get();
 
     Assertions.assertEquals(testGym, response.getBody());
+
+    ResponseEntity<?> gymNotFoundResponse =
+        gymController.updateGym(
+            authentication, "", new Gym("Jimmy", null, null, null, null, null, null, null, null));
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, gymNotFoundResponse.getStatusCode()),
+        () -> Assertions.assertEquals(Body.error("Gym not found"), gymNotFoundResponse.getBody()));
+
+    testUserPrincipal.getUser().setUserId("1");
+
+    ResponseEntity<?> unauthorizedResponse =
+        gymController.updateGym(
+            authentication,
+            testGym.getId(),
+            new Gym("Jimmy", null, null, null, null, null, null, null, null));
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, unauthorizedResponse.getStatusCode()),
+        () -> Assertions.assertEquals(Body.error("Gym not found"), unauthorizedResponse.getBody()));
   }
 
   @Test
   void uploadLogoTest() {
 
     ResponseEntity<?> response =
-        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
+        gymController.uploadLogo(authentication, testFile, testGym.getId(), "logo");
 
     testGym = gymRepository.findById(testGym.getId()).orElse(null);
 
@@ -135,37 +120,36 @@ class GymControllerTest {
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()));
 
     ResponseEntity<?> invalidNameResponse =
-        gymController.uploadLogo(request, testFile, testGym.getId(), "invalid");
+        gymController.uploadLogo(authentication, testFile, testGym.getId(), "invalid");
 
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(Bodys.error("Invalid upload."), invalidNameResponse.getBody()),
+        () -> Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
     Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
         .thenReturn(null);
 
     ResponseEntity<?> errorResponse =
-        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
+        gymController.uploadLogo(authentication, testFile, testGym.getId(), "logo");
 
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(
                 HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
         () ->
-            Assertions.assertEquals(Bodys.error("Error uploading file."), errorResponse.getBody()));
+            Assertions.assertEquals(Body.error("Error uploading file."), errorResponse.getBody()));
 
-    Mockito.when(requests.getUserFromRequest(request)).thenReturn(null);
+    testUserPrincipal.getUser().setUserId("1");
 
     ResponseEntity<?> unauthorizedResponse =
-        gymController.uploadLogo(request, testFile, testGym.getId(), "logo");
+        gymController.uploadLogo(authentication, testFile, testGym.getId(), "logo");
 
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Bodys.error("You are unauthorized to perform this action."),
+                Body.error("You are unauthorized to perform this action."),
                 unauthorizedResponse.getBody()));
   }
 }

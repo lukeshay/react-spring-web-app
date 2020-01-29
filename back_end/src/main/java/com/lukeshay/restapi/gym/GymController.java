@@ -1,16 +1,16 @@
 package com.lukeshay.restapi.gym;
 
-import com.lukeshay.restapi.utils.Bodys;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,13 +40,13 @@ public class GymController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update a gym.", response = Gym.class)
   public ResponseEntity<?> updateGym(
-      HttpServletRequest request, @PathVariable String gymId, @RequestBody Gym gym) {
+      Authentication authentication, @PathVariable String gymId, @RequestBody Gym gym) {
 
     LOG.debug("Updating {}", gymId);
 
     gym =
         gymService.updateGym(
-            request,
+            authentication,
             gymId,
             gym.getName(),
             gym.getAddress(),
@@ -59,9 +59,9 @@ public class GymController {
             gym.getAuthorizedEditors());
 
     if (gym == null) {
-      return Responses.notFoundJsonResponse(Bodys.error("Gym not found"));
+      return Response.badRequest(Body.error("Gym not found"));
     } else {
-      return Responses.okJsonResponse(gym);
+      return Response.ok(gym);
     }
   }
 
@@ -71,7 +71,7 @@ public class GymController {
   public ResponseEntity<?> createGym(@RequestBody Gym body) {
     Gym gym = gymService.createGym(body);
 
-    return Responses.okJsonResponse(gym);
+    return Response.ok(gym);
   }
 
   @GetMapping("")
@@ -82,7 +82,7 @@ public class GymController {
 
     List<Gym> gyms = gymService.getAllGyms();
 
-    return Responses.okJsonResponse(gyms);
+    return Response.ok(gyms);
   }
 
   @GetMapping("/{gymId}")
@@ -94,9 +94,9 @@ public class GymController {
     Gym foundGym = gymService.getGymById(gymId);
 
     if (foundGym == null) {
-      return Responses.notFoundJsonResponse(Bodys.error("Gym not found."));
+      return Response.badRequest(Body.error("Gym not found."));
     } else {
-      return Responses.okJsonResponse(foundGym);
+      return Response.ok(foundGym);
     }
   }
 
@@ -104,12 +104,12 @@ public class GymController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Upload the gym's logo.", response = Gym.class)
   public ResponseEntity<?> uploadLogo(
-      HttpServletRequest request,
+      Authentication authentication,
       @RequestParam("file") MultipartFile file,
       @RequestParam("gymId") String gymId,
       @PathVariable String imageName) {
     LOG.debug("Uploading logo to gym {}", gymId);
 
-    return gymService.uploadLogo(request, file, gymId, imageName);
+    return gymService.uploadLogo(authentication, file, gymId, imageName);
   }
 }

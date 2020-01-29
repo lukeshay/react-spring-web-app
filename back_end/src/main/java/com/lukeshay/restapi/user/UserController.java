@@ -1,8 +1,7 @@
 package com.lukeshay.restapi.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lukeshay.restapi.utils.Bodys;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -40,16 +41,16 @@ public class UserController {
   @GetMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Get a user by email.", response = User.class)
-  public ResponseEntity<?> getUser(HttpServletRequest request) {
+  public ResponseEntity<?> getUser(Authentication authentication) {
     LOG.debug("Getting user.");
 
-    User user = userService.getUser(request);
+    User user = userService.getUser(authentication);
 
     if (user == null) {
       LOG.debug("Could not find user");
-      return Responses.notFoundJsonResponse(Bodys.error("User not found."));
+      return Response.notFound(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -57,42 +58,44 @@ public class UserController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update a user.", response = User.class)
   public ResponseEntity<?> updateUser(
-      HttpServletRequest request,
-      @JsonProperty("username") String username,
-      @JsonProperty("email") String email,
-      @JsonProperty("firstName") String firstName,
-      @JsonProperty("lastName") String lastName,
-      @JsonProperty("city") String city,
-      @JsonProperty("state") String state,
-      @JsonProperty("country") String country) {
+      Authentication authentication,
+      @RequestParam("username") String username,
+      @RequestParam("email") String email,
+      @RequestParam("firstName") String firstName,
+      @RequestParam("lastName") String lastName,
+      @RequestParam("city") String city,
+      @RequestParam("state") String state,
+      @RequestParam("country") String country) {
 
     LOG.debug("Updating user.");
 
-    ResponseEntity<?> response = checkDuplicate(request, email, username);
+    ResponseEntity<?> response = checkDuplicate(authentication, email, username);
 
     if (response != null) {
       return response;
     }
 
     User user =
-        userService.updateUser(request, username, email, firstName, lastName, city, state, country);
+        userService.updateUser(
+            authentication, username, email, firstName, lastName, city, state, country);
 
     if (user == null) {
       LOG.debug("User was not found");
 
-      return Responses.badRequestJsonResponse(Bodys.error("User not found."));
+      return Response.badRequest(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
   @PostMapping("/admin")
   @PreAuthorize("hasAuthority('ADMIN')")
   @ApiOperation(value = "Create an admin user.", response = User.class)
-  public ResponseEntity<?> createAdminUser(HttpServletRequest request, @RequestBody User user) {
+  public ResponseEntity<?> createAdminUser(Authentication authentication, @RequestBody User user) {
     LOG.debug("Creating admin user {}", user.toString());
 
-    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
+    ResponseEntity<?> response =
+        checkDuplicate(authentication, user.getEmail(), user.getUsername());
 
     if (response != null) {
       return response;
@@ -103,32 +106,34 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create admin user.");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Field missing for user."));
+      return Response.badRequest(Body.error("Field missing for user."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
   @DeleteMapping("/{userId}")
   @PreAuthorize("hasAuthority('ADMIN')")
   @ApiOperation(value = "Delete a user.", response = User.class)
-  public ResponseEntity<?> deleteUserByUserId(@PathVariable String userId) {
+  public ResponseEntity<?> deleteUserByUserId(
+      Authentication authentication, @PathVariable String userId) {
     User deletedUser = userService.deleteUserByUserId(userId);
 
     if (deletedUser == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("User not found."));
+      return Response.badRequest(Body.error("User not found."));
     } else {
-      return Responses.okJsonResponse(deletedUser);
+      return Response.ok(deletedUser);
     }
   }
 
   @PostMapping("/new")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Create a user.", response = User.class)
-  public ResponseEntity<?> createUser(HttpServletRequest request, @RequestBody User user) {
+  public ResponseEntity<?> createUser(Authentication authentication, @RequestBody User user) {
     LOG.debug("Creating user {}", user.toString());
 
-    ResponseEntity<?> response = checkDuplicate(request, user.getEmail(), user.getUsername());
+    ResponseEntity<?> response =
+        checkDuplicate(authentication, user.getEmail(), user.getUsername());
 
     if (response != null) {
       return response;
@@ -139,9 +144,9 @@ public class UserController {
     if (newUser == null) {
       LOG.warn("Could not create user.");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Field missing for user."));
+      return Response.badRequest(Body.error("Field missing for user."));
     } else {
-      return Responses.okJsonResponse(user);
+      return Response.ok(user);
     }
   }
 
@@ -153,22 +158,22 @@ public class UserController {
 
     List<User> users = userService.getAllUsers();
 
-    return Responses.okJsonResponse(users);
+    return Response.ok(users);
   }
 
   private ResponseEntity<?> checkDuplicate(
-      HttpServletRequest request, String email, String username) {
+      Authentication authentication, String email, String username) {
 
-    if (userService.isEmailTaken(request, email)) {
+    if (userService.isEmailTaken(authentication, email)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Email taken."));
+      return Response.badRequest(Body.error("Email taken."));
     }
 
-    if (userService.isUsernameTaken(request, username)) {
+    if (userService.isUsernameTaken(authentication, username)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Responses.badRequestJsonResponse(Bodys.error("Username taken."));
+      return Response.badRequest(Body.error("Username taken."));
     }
 
     return null;

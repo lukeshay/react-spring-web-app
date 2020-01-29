@@ -1,11 +1,10 @@
 package com.lukeshay.restapi.wall;
 
-import com.lukeshay.restapi.utils.Bodys;
-import com.lukeshay.restapi.utils.Responses;
+import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,47 +40,47 @@ public class WallController {
   @PostMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Create a new wall", response = Wall.class)
-  public ResponseEntity<?> createWall(HttpServletRequest request, @RequestBody Wall body) {
+  public ResponseEntity<?> createWall(Authentication authentication, @RequestBody Wall body) {
     LOG.debug("Adding wall {}", body);
 
-    Wall wall = wallService.createWall(request, body);
+    Wall wall = wallService.createWall(authentication, body);
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error adding wall."));
+      return Response.badRequest(Body.error("Error adding wall."));
     } else {
-      return Responses.okJsonResponse(wall);
+      return Response.ok(wall);
     }
   }
 
   @PutMapping("")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update an existing wall.", response = Wall.class)
-  public ResponseEntity<?> updateWall(HttpServletRequest request, @RequestBody Wall body) {
+  public ResponseEntity<?> updateWall(Authentication authentication, @RequestBody Wall body) {
     LOG.debug("Updating wall {}", body.toString());
 
     Wall wall =
         wallService.updateWall(
-            request, body.getId(), body.getGymId(), body.getName(), body.getTypes());
+            authentication, body.getId(), body.getGymId(), body.getName(), body.getTypes());
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error updating wall."));
+      return Response.badRequest(Body.error("Error updating wall."));
     } else {
-      return Responses.okJsonResponse(wall);
+      return Response.ok(wall);
     }
   }
 
   @DeleteMapping("/{wallId}")
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Delete an existing wall.", response = Wall.class)
-  public ResponseEntity<?> deleteWall(HttpServletRequest request, @PathVariable String wallId) {
+  public ResponseEntity<?> deleteWall(Authentication authentication, @PathVariable String wallId) {
     LOG.debug("Deleting wall {}", wallId);
 
-    Wall wall = wallService.deleteWall(request, wallId);
+    Wall wall = wallService.deleteWall(authentication, wallId);
 
     if (wall == null) {
-      return Responses.badRequestJsonResponse(Bodys.error("Error deleting wall."));
+      return Response.badRequest(Body.error("Error deleting wall."));
     } else {
-      return Responses.okJsonResponse(wall);
+      return Response.ok(wall);
     }
   }
 
@@ -88,7 +88,7 @@ public class WallController {
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Get a gyms walls.", response = Wall.class)
   public ResponseEntity<List<Wall>> getWalls(
-      HttpServletRequest request, @PathVariable String gymId) {
+      Authentication authentication, @PathVariable String gymId) {
     LOG.debug("Getting gym {} walls", gymId);
 
     List<Wall> walls = wallService.getWalls(gymId);
@@ -101,6 +101,6 @@ public class WallController {
   @ApiIgnore
   public ResponseEntity<?> deleteAll() {
     wallService.deleteAllWalls();
-    return Responses.okJsonResponse(null);
+    return Response.ok(null);
   }
 }
