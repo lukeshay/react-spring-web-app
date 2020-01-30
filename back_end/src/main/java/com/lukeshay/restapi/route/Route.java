@@ -1,14 +1,16 @@
 package com.lukeshay.restapi.route;
 
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.rating.route.RouteRating;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -53,23 +55,13 @@ public class Route { // extends Auditable<String> {
   private String holdColor;
 
   @Column(name = "types")
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @Expose
   private List<WallTypes> types;
-
-  @Column(name = "user_grade")
-  @ElementCollection
-  @Expose
-  private List<Grade> userGrade = new ArrayList<>();
 
   @Column(name = "average_grade")
   @Expose
   private Grade averageGrade;
-
-  @Column(name = "user_rating")
-  @ElementCollection
-  @Expose
-  private List<Integer> userRating = new ArrayList<>();;
 
   @Column(name = "average_rating")
   @Expose
@@ -90,22 +82,22 @@ public class Route { // extends Auditable<String> {
     this.types = types;
   }
 
-  public void addUserGrade(Grade grade) {
-    userGrade.add(grade);
-  }
+  public void updateAverages(List<RouteRating> ratings) {
+    List<Grade> userGrades = new ArrayList<>();
+    List<Integer> userRatings = new ArrayList<>();
 
-  public void addUserRating(Integer rating) {
-    userRating.add(rating);
-  }
+    ratings.forEach((rating) -> {
+      userGrades.add(rating.getGrade());
+      userRatings.add(rating.getRating());
+    });
 
-  public void updateAverages() {
-    int numberGrades = userGrade.size();
-    int numberRatings = userRating.size();
+    int numberGrades = userGrades.size();
+    int numberRatings = userRatings.size();
     double averageGrade;
     double averageRating;
 
-    averageGrade = userGrade.stream().mapToDouble(Grade::getValue).sum() / numberGrades;
-    averageRating = userRating.stream().mapToDouble(element -> element).sum() / numberRatings;
+    averageGrade = userGrades.stream().mapToDouble(Grade::getValue).sum() / numberGrades;
+    averageRating = userRatings.stream().mapToDouble(element -> element).sum() / numberRatings;
 
     setAverageRating(averageRating);
     setAverageGrade(Grade.getGrade(averageGrade));
@@ -113,11 +105,11 @@ public class Route { // extends Auditable<String> {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof Route && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

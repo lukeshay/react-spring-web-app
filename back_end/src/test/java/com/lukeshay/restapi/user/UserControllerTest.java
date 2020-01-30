@@ -35,6 +35,7 @@ class UserControllerTest extends TestBase {
             "User",
             "test.user.two@email.com",
             "1111111111",
+            "Des Moines",
             "Iowa",
             "USA",
             "password");

@@ -1,12 +1,13 @@
 package com.lukeshay.restapi.wall;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.ModelUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -39,7 +40,7 @@ public class Wall { // extends Auditable<String> {
   private String name;
 
   @Column(name = "types")
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @Expose
   private List<WallTypes> types;
 
@@ -51,11 +52,11 @@ public class Wall { // extends Auditable<String> {
 
   @Override
   public String toString() {
-    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+    return ModelUtils.toString(this);
   }
 
   @Override
   public boolean equals(Object obj) {
-    return obj.getClass().equals(this.getClass()) && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 }

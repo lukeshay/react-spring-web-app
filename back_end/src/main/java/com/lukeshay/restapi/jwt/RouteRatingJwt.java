@@ -3,7 +3,7 @@ package com.lukeshay.restapi.jwt;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +24,6 @@ public class RouteRatingJwt {
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

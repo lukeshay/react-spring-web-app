@@ -100,15 +100,7 @@ public class UserController {
       return response;
     }
 
-    User newUser = userService.createAdminUser(user);
-
-    if (newUser == null) {
-      LOG.warn("Could not create admin user.");
-
-      return Response.badRequest(Body.error("Field missing for user."));
-    } else {
-      return Response.ok(user);
-    }
+    return userService.createAdminUser(user);
   }
 
   @DeleteMapping("/{userId}")
@@ -138,15 +130,7 @@ public class UserController {
       return response;
     }
 
-    User newUser = userService.createUser(user);
-
-    if (newUser == null) {
-      LOG.warn("Could not create user.");
-
-      return Response.badRequest(Body.error("Field missing for user."));
-    } else {
-      return Response.ok(user);
-    }
+    return userService.createUser(user);
   }
 
   @GetMapping("/all")

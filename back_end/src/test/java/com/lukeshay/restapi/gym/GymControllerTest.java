@@ -129,7 +129,7 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
-    Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
+    Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class)))
         .thenReturn(null);
 
     ResponseEntity<?> errorResponse =

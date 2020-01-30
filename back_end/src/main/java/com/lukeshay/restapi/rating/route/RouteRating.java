@@ -2,7 +2,7 @@ package com.lukeshay.restapi.rating.route;
 
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,11 +61,11 @@ public class RouteRating { // extends Auditable<String> {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof RouteRating && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

@@ -3,7 +3,7 @@ package com.lukeshay.restapi.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -80,6 +80,7 @@ public class User { // extends Auditable<String> {
       String lastName,
       String email,
       String phoneNumber,
+      String city,
       String state,
       String country,
       String password) {
@@ -88,6 +89,7 @@ public class User { // extends Auditable<String> {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.city = city;
     this.state = state;
     this.country = country;
     this.password = password;
@@ -95,11 +97,11 @@ public class User { // extends Auditable<String> {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof User && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

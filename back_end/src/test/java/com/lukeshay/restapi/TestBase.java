@@ -15,11 +15,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class TestBase {
   @Autowired protected GymRepository gymRepository;
   @Autowired protected RouteRatingRepository routeRatingRepository;
@@ -37,11 +41,6 @@ public class TestBase {
   @BeforeEach
   protected void setUpClasses() {
     MockitoAnnotations.initMocks(this);
-    gymRepository.deleteAll();
-    routeRatingRepository.deleteAll();
-    routeRepository.deleteAll();
-    userRepository.deleteAll();
-    wallRepository.deleteAll();
 
     testUser =
         new User(
@@ -50,6 +49,7 @@ public class TestBase {
             "User",
             "test.user@email.com",
             "1111111111",
+            "Des Moines",
             "Iowa",
             "USA",
             "password");
@@ -62,6 +62,7 @@ public class TestBase {
     testUserPrincipal = new UserPrincipal(testUser);
 
     Mockito.when(authentication.getPrincipal()).thenReturn(testUserPrincipal);
+    Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class))).thenReturn("url.com");
   }
 
   @AfterEach

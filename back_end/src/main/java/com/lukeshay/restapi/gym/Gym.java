@@ -1,11 +1,12 @@
 package com.lukeshay.restapi.gym;
 
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -71,7 +72,7 @@ public class Gym { // extends Auditable<String> {
   private String photoUrl;
 
   @Column(name = "authorized_editors")
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @Expose
   private List<String> authorizedEditors;
 
@@ -98,11 +99,11 @@ public class Gym { // extends Auditable<String> {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof Gym && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

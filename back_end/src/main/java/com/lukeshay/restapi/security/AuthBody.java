@@ -3,7 +3,7 @@ package com.lukeshay.restapi.security;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.session.Session;
 import com.lukeshay.restapi.user.User;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.ModelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,6 +15,6 @@ public class AuthBody {
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

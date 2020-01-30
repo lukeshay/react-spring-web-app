@@ -105,7 +105,7 @@ public class GymServiceImpl implements GymService {
   }
 
   @Override
-  public ResponseEntity<?> uploadLogo(
+  public ResponseEntity<?> uploadPhoto(
       Authentication authentication, MultipartFile file, String gymId, String imageName) {
     Gym gym = gymRepository.findById(gymId).orElse(null);
     User user = AuthenticationUtils.getUser(authentication);
@@ -123,8 +123,7 @@ public class GymServiceImpl implements GymService {
     }
 
     String url =
-        awsService.uploadFileToS3(
-            String.format("%s/%s.jpg", gym.getId().toString(), imageName), file);
+        awsService.uploadFileToS3(String.format("gyms/%s/%s.jpg", gym.getId(), imageName), file);
 
     if (url == null) {
       return Response.internalServerError(Body.error("Error uploading file."));

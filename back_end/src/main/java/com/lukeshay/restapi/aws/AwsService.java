@@ -30,12 +30,11 @@ public class AwsService {
     String accessKey = System.getenv("ACCESS_KEY");
     String secretKey = System.getenv("SECRET_KEY");
 
-    if (accessKey == null) {
+    if (accessKey == null || secretKey == null) {
       credentialsProvider = new AWSStaticCredentialsProvider(new BasicAWSCredentials("", ""));
     } else {
       credentialsProvider =
-          new AWSStaticCredentialsProvider(
-              new BasicAWSCredentials(System.getenv("ACCESS_KEY"), System.getenv("SECRET_KEY")));
+          new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey));
     }
   }
 

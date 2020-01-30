@@ -1,7 +1,10 @@
 package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.utils.AuthenticationUtils;
+import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User createAdminUser(User user) {
+  public ResponseEntity<?> createAdminUser(User user) {
     if (user.getUsername() != null
         && user.getFirstName() != null
         && user.getLastName() != null
@@ -33,15 +36,18 @@ class UserServiceImpl implements UserService {
       user.setAuthority(UserTypes.ADMIN.authority());
       user.setRole(UserTypes.ADMIN.role());
 
-      return userRepository.save(user);
+      LOG.debug("Creating admin user: {}", user);
+
+      return Response.ok(userRepository.save(user));
 
     } else {
-      return null;
+      LOG.debug("Could not create admin user: {}", user);
+      return Response.badRequest(Body.error("Field missing for user."));
     }
   }
 
   @Override
-  public User createUser(User user) {
+  public ResponseEntity<?> createUser(User user) {
     if (user.getUsername() != null
         && user.getFirstName() != null
         && user.getLastName() != null
@@ -56,10 +62,13 @@ class UserServiceImpl implements UserService {
       user.setAuthority(UserTypes.ADMIN.authority());
       user.setRole(UserTypes.ADMIN.role());
 
-      return userRepository.save(user);
+      LOG.debug("Creating basic user: {}", user);
+
+      return Response.ok(userRepository.save(user));
 
     } else {
-      return null;
+      LOG.debug("Could not create basic user: {}", user);
+      return Response.badRequest(Body.error("Field missing for user."));
     }
   }
 

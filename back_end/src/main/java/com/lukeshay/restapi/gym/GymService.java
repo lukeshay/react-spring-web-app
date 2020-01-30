@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface GymService {
-  Logger LOG = LoggerFactory.getLogger(GymServiceImpl.class.getName());
+  Logger LOG = LoggerFactory.getLogger(GymService.class.getName());
 
   Gym createGym(Gym gym);
 
@@ -29,6 +29,6 @@ public interface GymService {
       String website,
       List<String> authorizedEditors);
 
-  ResponseEntity<?> uploadLogo(
+  ResponseEntity<?> uploadPhoto(
       Authentication authentication, MultipartFile file, String gymId, String imageName);
 }

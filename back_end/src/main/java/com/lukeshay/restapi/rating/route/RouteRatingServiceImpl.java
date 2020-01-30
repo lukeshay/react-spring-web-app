@@ -26,11 +26,12 @@ public class RouteRatingServiceImpl implements RouteRatingService {
   public ResponseEntity<?> createRating(Authentication authentication, RouteRating rating) {
     LOG.debug("Creating rating {}", rating.toString());
     User user = AuthenticationUtils.getUser(authentication);
+    String routeId = rating.getRouteId();
 
     rating.setCreatorId(user.getId());
     rating.setCreatorUsername(user.getUsername());
 
-    Route route = routeRepository.findById(rating.getRouteId()).orElse(null);
+    Route route = routeRepository.findById(routeId).orElse(null);
 
     if (!validateRating(rating) || route == null) {
       LOG.debug("Rating is invalid");
@@ -39,10 +40,9 @@ public class RouteRatingServiceImpl implements RouteRatingService {
 
     RouteRating newRating = ratingRepository.save(rating);
 
-    route.addUserGrade(newRating.getGrade());
-    route.addUserRating(newRating.getRating());
+    List<RouteRating> ratings = ratingRepository.findAllByRouteId(routeId);
 
-    route.updateAverages();
+    route.updateAverages(ratings);
 
     routeRepository.save(route);
 

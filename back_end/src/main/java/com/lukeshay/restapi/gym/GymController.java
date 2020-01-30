@@ -109,6 +109,6 @@ public class GymController {
       @PathVariable String imageName) {
     LOG.debug("Uploading logo to gym {}", gymId);
 
-    return gymService.uploadLogo(authentication, file, gymId, imageName);
+    return gymService.uploadPhoto(authentication, file, gymId, imageName);
   }
 }
