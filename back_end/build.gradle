@@ -5,7 +5,6 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
-    id 'de.lukaskoerfer.gradle.delombok' version '0.2'
     id 'com.github.sherter.google-java-format' version '0.8'
     id 'jacoco'
     id 'org.sonarqube' version '2.7'
@@ -52,10 +51,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-
-    // Lombok dependencies
-    compileOnly 'org.projectlombok:lombok:1.18.10'
-    annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     // Security dependencies
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.springBootVersion

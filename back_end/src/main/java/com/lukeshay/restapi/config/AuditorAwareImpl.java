@@ -15,8 +15,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
       userId =
           AuthenticationUtils.getUser(SecurityContextHolder.getContext().getAuthentication())
               .getId();
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception ignore) {
     }
     return Optional.of(userId);
   }

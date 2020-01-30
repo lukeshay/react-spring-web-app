@@ -1,6 +1,7 @@
 package com.lukeshay.restapi.wall;
 
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.ModelUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
@@ -11,19 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "walls")
-public class Wall { // extends Auditable<String> {
+public class Wall extends Auditable<String> {
   @Column(name = "id", unique = true, updatable = false)
   @Expose
   @GeneratedValue(generator = "pg-uuid")
@@ -44,9 +37,50 @@ public class Wall { // extends Auditable<String> {
   @Expose
   private List<WallTypes> types;
 
+  public Wall() {}
+
   public Wall(String gymId, String name, List<WallTypes> types) {
     this.gymId = gymId;
     this.name = name;
+    this.types = types;
+  }
+
+  public Wall(String id, String gymId, String name, List<WallTypes> types) {
+    this.id = id;
+    this.gymId = gymId;
+    this.name = name;
+    this.types = types;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getGymId() {
+    return gymId;
+  }
+
+  public void setGymId(String gymId) {
+    this.gymId = gymId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<WallTypes> getTypes() {
+    return types;
+  }
+
+  public void setTypes(List<WallTypes> types) {
     this.types = types;
   }
 

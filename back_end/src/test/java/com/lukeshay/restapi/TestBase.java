@@ -62,7 +62,8 @@ public class TestBase {
     testUserPrincipal = new UserPrincipal(testUser);
 
     Mockito.when(authentication.getPrincipal()).thenReturn(testUserPrincipal);
-    Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class))).thenReturn("url.com");
+    Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class)))
+        .thenReturn("url.com");
   }
 
   @AfterEach

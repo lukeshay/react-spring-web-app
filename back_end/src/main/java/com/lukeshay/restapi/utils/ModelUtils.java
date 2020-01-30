@@ -8,6 +8,7 @@ public class ModelUtils {
   }
 
   public static <T, U> Boolean equals(T modelOne, U modelTwo) {
-    return modelOne.getClass().equals(modelTwo.getClass()) && modelOne.toString().equals(modelTwo.toString());
+    return modelOne.getClass().equals(modelTwo.getClass())
+        && modelOne.toString().equals(modelTwo.toString());
   }
 }
