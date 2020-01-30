@@ -121,7 +121,7 @@ jacocoTestCoverageVerification {
             }
             limit {
                 counter = 'BRANCH'
-                minimum = 0.50
+                minimum = 0.40
             }
         }
     }

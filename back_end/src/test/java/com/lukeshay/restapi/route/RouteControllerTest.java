@@ -85,6 +85,16 @@ public class RouteControllerTest extends TestBase {
         () ->
             Assertions.assertEquals(
                 BodyUtils.error("Error creating route."), responseNotEditor.getBody()));
+
+    gymRepository.deleteAll();
+
+    ResponseEntity<?> responseNoGym = routeController.createRoute(authentication, testRoute);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoGym.getStatusCode()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error creating route."), responseNoGym.getBody()));
   }
 
   @Test
@@ -134,14 +144,26 @@ public class RouteControllerTest extends TestBase {
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
         () -> Assertions.assertEquals(testRoute, response.getBody()));
 
-    wallRepository.deleteAll();
+    routeRepository.deleteAll();
 
-    ResponseEntity<?> responseNoWall = routeController.deleteRoute(authentication, testRoute);
+    ResponseEntity<?> responseNoRoute = routeController.deleteRoute(authentication, testRoute);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWall.getStatusCode()),
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoRoute.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                BodyUtils.error("Error deleting route."), responseNoWall.getBody()));
+                BodyUtils.error("Error deleting route."), responseNoRoute.getBody()));
+
+    testGym.setAuthorizedEditors(Collections.emptyList());
+    testGym = gymRepository.save(testGym);
+    testRoute = routeRepository.save(testRoute);
+
+    ResponseEntity<?> responseNotEditor = routeController.deleteRoute(authentication, testRoute);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNotEditor.getStatusCode()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error deleting route."), responseNotEditor.getBody()));
   }
 }
