@@ -1,52 +1,66 @@
 package com.lukeshay.restapi.route;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
+import com.lukeshay.restapi.rating.route.RouteRating;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.Auditable;
+import com.lukeshay.restapi.utils.ModelUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Document
-public class Route implements Persistable<String> {
-  @Id @Expose String id;
+@Entity
+@Table(name = "routes")
+public class Route extends Auditable<String> {
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String createdDate;
+  @Column(name = "wall_id", updatable = false)
+  @Expose
+  private String wallId;
 
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modifiedDate;
+  @Column(name = "gym_id", updatable = false)
+  @Expose
+  private String gymId;
 
-  @Expose String wallId;
-  @Expose String gymId;
+  @Column(name = "name")
+  @Expose
+  private String name;
 
-  @Expose private String name;
-  @Expose private String setter;
-  @Expose private String holdColor;
-  @Expose private List<WallTypes> types;
+  @Column(name = "setter")
+  @Expose
+  private String setter;
 
-  @Expose private List<Grade> userGrade = new ArrayList<>();
-  @Expose private Grade averageGrade;
-  @Expose private List<Integer> userRating = new ArrayList<>();;
-  @Expose private double averageRating;
-  private boolean persistable;
+  @Column(name = "hold_color")
+  @Expose
+  private String holdColor;
+
+  @Column(name = "types")
+  @ElementCollection(fetch = FetchType.EAGER)
+  @Expose
+  private List<WallTypes> types;
+
+  @Column(name = "average_grade")
+  @Expose
+  private Grade averageGrade;
+
+  @Column(name = "average_rating")
+  @Expose
+  private double averageRating;
+
+  Route() {}
 
   public Route(
       String wallId,
@@ -63,39 +77,107 @@ public class Route implements Persistable<String> {
     this.types = types;
   }
 
-  public void addUserGrade(Grade grade) {
-    userGrade.add(grade);
+  public String getId() {
+    return id;
   }
 
-  public void addUserRating(Integer rating) {
-    userRating.add(rating);
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public void updateAverages() {
-    int numberGrades = userGrade.size();
-    int numberRatings = userRating.size();
+  public String getWallId() {
+    return wallId;
+  }
+
+  public void setWallId(String wallId) {
+    this.wallId = wallId;
+  }
+
+  public String getGymId() {
+    return gymId;
+  }
+
+  public void setGymId(String gymId) {
+    this.gymId = gymId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getSetter() {
+    return setter;
+  }
+
+  public void setSetter(String setter) {
+    this.setter = setter;
+  }
+
+  public String getHoldColor() {
+    return holdColor;
+  }
+
+  public void setHoldColor(String holdColor) {
+    this.holdColor = holdColor;
+  }
+
+  public List<WallTypes> getTypes() {
+    return types;
+  }
+
+  public void setTypes(List<WallTypes> types) {
+    this.types = types;
+  }
+
+  public Grade getAverageGrade() {
+    return averageGrade;
+  }
+
+  public void setAverageGrade(Grade averageGrade) {
+    this.averageGrade = averageGrade;
+  }
+
+  public double getAverageRating() {
+    return averageRating;
+  }
+
+  public void setAverageRating(double averageRating) {
+    this.averageRating = averageRating;
+  }
+
+  public void updateAverages(List<RouteRating> ratings) {
+    List<Grade> userGrades = new ArrayList<>();
+    List<Integer> userRatings = new ArrayList<>();
+
+    ratings.forEach(
+        (rating) -> {
+          userGrades.add(rating.getGrade());
+          userRatings.add(rating.getRating());
+        });
+
+    int numberGrades = userGrades.size();
+    int numberRatings = userRatings.size();
     double averageGrade;
     double averageRating;
 
-    averageGrade = userGrade.stream().mapToDouble(Grade::getValue).sum() / numberGrades;
-    averageRating = userRating.stream().mapToDouble(element -> element).sum() / numberRatings;
+    averageGrade = userGrades.stream().mapToDouble(Grade::getValue).sum() / numberGrades;
+    averageRating = userRatings.stream().mapToDouble(element -> element).sum() / numberRatings;
 
     setAverageRating(averageRating);
     setAverageGrade(Grade.getGrade(averageGrade));
   }
 
   @Override
-  public boolean isNew() {
-    return !persistable;
-  }
-
-  @Override
   public boolean equals(Object obj) {
-    return obj instanceof Route && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

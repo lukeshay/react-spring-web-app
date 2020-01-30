@@ -1,10 +1,9 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,9 +47,9 @@ public class UserController {
 
     if (user == null) {
       LOG.debug("Could not find user");
-      return Response.notFound(Body.error("User not found."));
+      return ResponseUtils.notFound(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(user);
+      return ResponseUtils.ok(user);
     }
   }
 
@@ -82,9 +81,9 @@ public class UserController {
     if (user == null) {
       LOG.debug("User was not found");
 
-      return Response.badRequest(Body.error("User not found."));
+      return ResponseUtils.badRequest(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(user);
+      return ResponseUtils.ok(user);
     }
   }
 
@@ -101,15 +100,7 @@ public class UserController {
       return response;
     }
 
-    User newUser = userService.createAdminUser(user);
-
-    if (newUser == null) {
-      LOG.warn("Could not create admin user.");
-
-      return Response.badRequest(Body.error("Field missing for user."));
-    } else {
-      return Response.ok(user);
-    }
+    return userService.createAdminUser(user);
   }
 
   @DeleteMapping("/{userId}")
@@ -117,12 +108,12 @@ public class UserController {
   @ApiOperation(value = "Delete a user.", response = User.class)
   public ResponseEntity<?> deleteUserByUserId(
       Authentication authentication, @PathVariable String userId) {
-    User deletedUser = userService.deleteUserByUserId(userId);
+    User deletedUser = userService.deleteUserById(userId);
 
     if (deletedUser == null) {
-      return Response.badRequest(Body.error("User not found."));
+      return ResponseUtils.badRequest(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(deletedUser);
+      return ResponseUtils.ok(deletedUser);
     }
   }
 
@@ -139,15 +130,7 @@ public class UserController {
       return response;
     }
 
-    User newUser = userService.createUser(user);
-
-    if (newUser == null) {
-      LOG.warn("Could not create user.");
-
-      return Response.badRequest(Body.error("Field missing for user."));
-    } else {
-      return Response.ok(user);
-    }
+    return userService.createUser(user);
   }
 
   @GetMapping("/all")
@@ -156,9 +139,9 @@ public class UserController {
   public ResponseEntity<?> getAllUsers(HttpServletRequest request) {
     LOG.debug("Getting all users.");
 
-    List<User> users = userService.getAllUsers();
+    Iterable<User> users = userService.getAllUsers();
 
-    return Response.ok(users);
+    return ResponseUtils.ok(users);
   }
 
   private ResponseEntity<?> checkDuplicate(
@@ -167,13 +150,13 @@ public class UserController {
     if (userService.isEmailTaken(authentication, email)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Response.badRequest(Body.error("Email taken."));
+      return ResponseUtils.badRequest(BodyUtils.error("Email taken."));
     }
 
     if (userService.isUsernameTaken(authentication, username)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Response.badRequest(Body.error("Username taken."));
+      return ResponseUtils.badRequest(BodyUtils.error("Username taken."));
     }
 
     return null;

@@ -14,15 +14,20 @@ services:
       - ACCESS_KEY=$ACCESS_KEY
       - SECRET_KEY=$SECRET_KEY
     depends_on:
-      - mongo
+      - sqldb
     links:
-      - mongo
+      - sqldb
 
-  mongo:
-    image: mongo
-    container_name: rest-api-mongo
+  sqldb:
+    image: postgres
+    container_name: rest-api-postgres
+    environment:
+      POSTGRES_USER: standard
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: routerating
     volumes:
-      - $HOME/data/rest-api-mongo-data:/data/db
-      - $HOME/data/rest-api-mongo-bkp:/data/bkp
-    restart: always
+      - db-data:/var/lib/postgresql/data
 
+volumes:
+  db-data:
+    driver: local

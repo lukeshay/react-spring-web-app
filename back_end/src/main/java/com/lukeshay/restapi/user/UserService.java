@@ -1,17 +1,20 @@
 package com.lukeshay.restapi.user;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
+  Logger LOG = LoggerFactory.getLogger(UserService.class.getName());
 
-  User createAdminUser(User user);
+  ResponseEntity<?> createAdminUser(User user);
 
-  User createUser(User user);
+  ResponseEntity<?> createUser(User user);
 
-  User deleteUserByUserId(String userId);
+  User deleteUserById(String userId);
 
-  List<User> getAllUsers();
+  Iterable<User> getAllUsers();
 
   User getUser(Authentication authentication);
 

@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.wall;
 
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -46,9 +46,9 @@ public class WallController {
     Wall wall = wallService.createWall(authentication, body);
 
     if (wall == null) {
-      return Response.badRequest(Body.error("Error adding wall."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error adding wall."));
     } else {
-      return Response.ok(wall);
+      return ResponseUtils.ok(wall);
     }
   }
 
@@ -63,9 +63,9 @@ public class WallController {
             authentication, body.getId(), body.getGymId(), body.getName(), body.getTypes());
 
     if (wall == null) {
-      return Response.badRequest(Body.error("Error updating wall."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error updating wall."));
     } else {
-      return Response.ok(wall);
+      return ResponseUtils.ok(wall);
     }
   }
 
@@ -78,9 +78,9 @@ public class WallController {
     Wall wall = wallService.deleteWall(authentication, wallId);
 
     if (wall == null) {
-      return Response.badRequest(Body.error("Error deleting wall."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error deleting wall."));
     } else {
-      return Response.ok(wall);
+      return ResponseUtils.ok(wall);
     }
   }
 
@@ -101,6 +101,6 @@ public class WallController {
   @ApiIgnore
   public ResponseEntity<?> deleteAll() {
     wallService.deleteAllWalls();
-    return Response.ok(null);
+    return ResponseUtils.ok(null);
   }
 }

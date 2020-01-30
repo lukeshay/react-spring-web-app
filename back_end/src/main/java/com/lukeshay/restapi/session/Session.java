@@ -4,45 +4,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
-import com.lukeshay.restapi.utils.Models;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.lukeshay.restapi.utils.Auditable;
+import com.lukeshay.restapi.utils.ModelUtils;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Document
-public class Session implements Persistable<String> {
-  @Id @Expose String id;
-  @Expose private RouteRatingJwt tokens;
-  @Expose private String userId;
+@Entity
+@Table(name = "sessions")
+public class Session extends Auditable<String> {
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String created;
+  @Column(name = "tokens")
+  @Expose
+  @Transient
+  private RouteRatingJwt tokens;
 
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modified;
+  @Column(name = "user_id", unique = true, updatable = false)
+  @Expose
+  private String userId;;
 
+  @Column(name = "active")
   @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean active;
 
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private Boolean persistable;
+  public Session() {}
 
   public Session(RouteRatingJwt tokens, String userId) {
     this.tokens = tokens;
     this.userId = userId;
-    persistable = true;
     active = true;
   }
 
@@ -50,13 +49,41 @@ public class Session implements Persistable<String> {
     return id;
   }
 
-  @Override
-  public boolean isNew() {
-    return !persistable;
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public RouteRatingJwt getTokens() {
+    return tokens;
+  }
+
+  public void setTokens(RouteRatingJwt tokens) {
+    this.tokens = tokens;
+  }
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return ModelUtils.equals(this, obj);
   }
 }

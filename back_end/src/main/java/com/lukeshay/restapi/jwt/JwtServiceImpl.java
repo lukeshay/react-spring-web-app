@@ -35,7 +35,8 @@ public class JwtServiceImpl implements JwtService {
         .setExpiration(Date.from(now.plusSeconds(expiration)))
         .setIssuedAt(Date.from(now))
         .setSubject(subject)
-        .setId(user.getId());
+        .setId(user.getId())
+        .setIssuer(SecurityProperties.ISSUER);
 
     return claims;
   }

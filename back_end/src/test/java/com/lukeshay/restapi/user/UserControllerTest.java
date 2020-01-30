@@ -2,7 +2,7 @@ package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.TestBase;
 import com.lukeshay.restapi.security.UserPrincipal;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +35,7 @@ class UserControllerTest extends TestBase {
             "User",
             "test.user.two@email.com",
             "1111111111",
+            "Des Moines",
             "Iowa",
             "USA",
             "password");
@@ -45,11 +46,11 @@ class UserControllerTest extends TestBase {
 
     Assertions.assertEquals(testUserTwo, getUser.getBody());
 
-    testUser.setUserId("");
+    testUser.setId(null);
     ResponseEntity<?> responseEmail = userController.createUser(authentication, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Email taken."), responseEmail.getBody()),
+        () -> Assertions.assertEquals(BodyUtils.error("Email taken."), responseEmail.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEmail.getStatusCode()));
 
     testUser.setEmail("testtest@email.com");
@@ -57,7 +58,8 @@ class UserControllerTest extends TestBase {
     ResponseEntity<?> responseUsername = userController.createUser(authentication, testUser);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Username taken."), responseUsername.getBody()),
+        () ->
+            Assertions.assertEquals(BodyUtils.error("Username taken."), responseUsername.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUsername.getStatusCode()));
   }
 
@@ -67,7 +69,6 @@ class UserControllerTest extends TestBase {
     testUser.setUsername("TestUserChange");
     testUser.setFirstName("First");
     testUser.setLastName("Last");
-    testUser.setPersistable(true);
 
     ResponseEntity<?> updatedUser =
         userController.updateUser(
@@ -90,7 +91,7 @@ class UserControllerTest extends TestBase {
   void updateUserByIdDuplicateTest() {
     testUser.setUsername("test.user2@email.com");
     testUser.setEmail("test.user2@email.com");
-    testUser.setUserId(null);
+    testUser.setId(null);
 
     testUser = userRepository.save(testUser);
 
@@ -99,7 +100,7 @@ class UserControllerTest extends TestBase {
             authentication, "test.user@email.com", null, null, null, null, null, null);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Username taken."), response.getBody()),
+        () -> Assertions.assertEquals(BodyUtils.error("Username taken."), response.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()));
   }
 }

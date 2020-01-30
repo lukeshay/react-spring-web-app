@@ -1,11 +1,11 @@
 package com.lukeshay.restapi.gym;
 
-import com.lukeshay.restapi.services.AwsService;
+import com.lukeshay.restapi.aws.AwsService;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class GymServiceImpl implements GymService {
   }
 
   @Override
-  public List<Gym> getAllGyms() {
+  public Iterable<Gym> getAllGyms() {
     return gymRepository.findAll();
   }
 
@@ -61,7 +61,7 @@ public class GymServiceImpl implements GymService {
         || user == null
         || ((gym.getAuthorizedEditors() == null
                 || !gym.getAuthorizedEditors().contains(user.getId()))
-            && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
+            && !user.getAuthority().equals(UserTypes.ADMIN.authority()))) {
       return null;
     }
 
@@ -101,13 +101,11 @@ public class GymServiceImpl implements GymService {
       gym.setAuthorizedEditors(authorizedEditors);
     }
 
-    gym.setPersistable(true);
-
     return gymRepository.save(gym);
   }
 
   @Override
-  public ResponseEntity<?> uploadLogo(
+  public ResponseEntity<?> uploadPhoto(
       Authentication authentication, MultipartFile file, String gymId, String imageName) {
     Gym gym = gymRepository.findById(gymId).orElse(null);
     User user = AuthenticationUtils.getUser(authentication);
@@ -116,19 +114,20 @@ public class GymServiceImpl implements GymService {
         || user == null
         || ((gym.getAuthorizedEditors() == null
                 || !gym.getAuthorizedEditors().contains(user.getId()))
-            && !user.getAuthorities().contains(UserTypes.ADMIN.authority()))) {
-      return Response.unauthorized(Body.error("You are unauthorized to perform this action."));
+            && !user.getAuthority().equals(UserTypes.ADMIN.authority()))) {
+      return ResponseUtils.unauthorized(
+          BodyUtils.error("You are unauthorized to perform this action."));
     }
 
     if (!imageName.equals("logo") && !imageName.equals("gym")) {
-      return Response.badRequest(Body.error("Invalid upload."));
+      return ResponseUtils.badRequest(BodyUtils.error("Invalid upload."));
     }
 
     String url =
-        awsService.uploadFileToS3(String.format("%s/%s.jpg", gym.getId(), imageName), file);
+        awsService.uploadFileToS3(String.format("gyms/%s/%s.jpg", gym.getId(), imageName), file);
 
     if (url == null) {
-      return Response.internalServerError(Body.error("Error uploading file."));
+      return ResponseUtils.internalServerError(BodyUtils.error("Error uploading file."));
     } else {
       if (imageName.equals("logo")) {
         gym.setLogoUrl(url);
@@ -137,7 +136,7 @@ public class GymServiceImpl implements GymService {
       }
 
       gym = gymRepository.save(gym);
-      return Response.ok(gym);
+      return ResponseUtils.ok(gym);
     }
   }
 }

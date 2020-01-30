@@ -3,13 +3,14 @@ package com.lukeshay.restapi.rating.route;
 import com.lukeshay.restapi.TestBase;
 import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,14 @@ public class RouteRatingControllerTest extends TestBase {
 
   @BeforeEach
   void setUp() {
-    route = new Route("a", "b", "c", "d", "e", Collections.singletonList(WallTypes.BOULDER));
+    route =
+        new Route(
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString(),
+            "c",
+            "d",
+            "e",
+            Collections.singletonList(WallTypes.BOULDER));
 
     route = routeRepository.save(route);
 
@@ -46,7 +54,7 @@ public class RouteRatingControllerTest extends TestBase {
         () -> Assertions.assertEquals(rating, response.getBody()));
 
     rating.setId(null);
-    rating.setRouteId("");
+    rating.setRouteId(UUID.randomUUID().toString());
 
     ResponseEntity<?> invalidRouteResponse = ratingController.createRating(authentication, rating);
 
@@ -54,7 +62,7 @@ public class RouteRatingControllerTest extends TestBase {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidRouteResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Body.error("Rating is invalid."), invalidRouteResponse.getBody()));
+                BodyUtils.error("Rating is invalid."), invalidRouteResponse.getBody()));
   }
 
   @Test

@@ -35,7 +35,7 @@ public class GymControllerV2Test extends TestBase {
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
-            Collections.singletonList("1111111111"));
+            Collections.singletonList(testUser.getId()));
 
     testGym = gymRepository.save(testGym);
 

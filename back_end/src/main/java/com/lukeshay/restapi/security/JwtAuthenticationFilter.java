@@ -5,6 +5,8 @@ import com.lukeshay.restapi.jwt.JwtService;
 import com.lukeshay.restapi.jwt.JwtServiceImpl;
 import com.lukeshay.restapi.session.Session;
 import com.lukeshay.restapi.session.SessionService;
+import com.lukeshay.restapi.session.SessionServiceImpl;
+import com.lukeshay.restapi.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -29,6 +32,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   private AuthenticationManager authenticationManager;
   private JwtService jwtService;
   private SessionService sessionService;
+  private UserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
 
   public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
@@ -69,7 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
           WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
       jwtService = webApplicationContext.getBean(JwtServiceImpl.class);
-      sessionService = webApplicationContext.getBean(SessionService.class);
+      sessionService = webApplicationContext.getBean(SessionServiceImpl.class);
     }
 
     UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();

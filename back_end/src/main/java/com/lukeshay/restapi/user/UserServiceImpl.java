@@ -1,10 +1,10 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.security.UserPrincipal;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
-import java.util.Collections;
-import java.util.List;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User createAdminUser(User user) {
+  public ResponseEntity<?> createAdminUser(User user) {
     if (user.getUsername() != null
         && user.getFirstName() != null
         && user.getLastName() != null
@@ -33,59 +33,64 @@ class UserServiceImpl implements UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
-      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
+      user.setAuthority(UserTypes.ADMIN.authority());
+      user.setRole(UserTypes.ADMIN.role());
 
-      return userRepository.save(user);
+      LOG.debug("Creating admin user: {}", user);
+
+      return ResponseUtils.ok(userRepository.save(user));
 
     } else {
-      return null;
+      LOG.debug("Could not create admin user: {}", user);
+      return ResponseUtils.badRequest(BodyUtils.error("Field missing for user."));
     }
   }
 
   @Override
-  public User createUser(User user) {
+  public ResponseEntity<?> createUser(User user) {
     if (user.getUsername() != null
         && user.getFirstName() != null
         && user.getLastName() != null
         && user.getEmail() != null
         && user.getPhoneNumber() != null
+        && user.getCity() != null
         && user.getState() != null
         && user.getCountry() != null
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthorities(Collections.singletonList(UserTypes.ADMIN.authority()));
-      user.setRoles(Collections.singletonList(UserTypes.ADMIN.role()));
+      user.setAuthority(UserTypes.ADMIN.authority());
+      user.setRole(UserTypes.ADMIN.role());
 
-      return userRepository.save(user);
+      LOG.debug("Creating basic user: {}", user);
+
+      return ResponseUtils.ok(userRepository.save(user));
 
     } else {
-      return null;
+      LOG.debug("Could not create basic user: {}", user);
+      return ResponseUtils.badRequest(BodyUtils.error("Field missing for user."));
     }
   }
 
   @Override
-  public User deleteUserByUserId(String userId) {
-    User deletedUser = userRepository.findById(userId).orElse(null);
+  public User deleteUserById(String id) {
+    User deletedUser = userRepository.findById(id).orElse(null);
 
     if (deletedUser == null) {
       return null;
     } else {
-      userRepository.deleteById(userId);
+      userRepository.deleteById(id);
       return deletedUser;
     }
   }
 
   @Override
   public User getUser(Authentication authentication) {
-    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-    return userPrincipal.getUser();
+    return AuthenticationUtils.getUser(authentication);
   }
 
   @Override
-  public List<User> getAllUsers() {
+  public Iterable<User> getAllUsers() {
     return userRepository.findAll();
   }
 
@@ -119,7 +124,7 @@ class UserServiceImpl implements UserService {
     User user = AuthenticationUtils.getUser(authentication);
 
     assert user != null;
-    User toUpdate = userRepository.findById(user.getUserId()).orElse(null);
+    User toUpdate = userRepository.findById(user.getId()).orElse(null);
 
     if (toUpdate == null) {
       return null;
@@ -152,8 +157,6 @@ class UserServiceImpl implements UserService {
     if (country != null && !country.equals("")) {
       toUpdate.setCountry(country);
     }
-
-    toUpdate.setPersistable(true);
 
     return userRepository.save(toUpdate);
   }

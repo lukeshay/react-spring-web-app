@@ -20,4 +20,5 @@ public class SecurityProperties {
 
   // Claim variables
   public static final String JWT_HEADER_PARAM = "typ";
+  public static final String ISSUER = "route-rating-rest-api";
 }

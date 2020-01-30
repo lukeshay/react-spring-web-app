@@ -1,51 +1,75 @@
 package com.lukeshay.restapi.gym;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Models;
+import com.lukeshay.restapi.utils.Auditable;
+import com.lukeshay.restapi.utils.ModelUtils;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 /** The type Gym. */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Document
-public class Gym implements Persistable<String> {
-  @Id @Expose private String id;
+@Entity
+@Table(name = "gym")
+public class Gym extends Auditable<String> {
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String createdDate;
+  @Column(name = "name")
+  @Expose
+  private String name;
 
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modifiedDate;
+  @Column(name = "address")
+  @Expose
+  private String address;
 
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private boolean persistable;
+  @Column(name = "city")
+  @Expose
+  private String city;
 
-  @Expose private String name;
-  @Expose private String address;
-  @Expose private String city;
-  @Expose private String state;
-  @Expose private String zipCode;
-  @Expose private String website;
-  @Expose private String email;
-  @Expose private String phoneNumber;
-  @Expose private String logoUrl;
-  @Expose private String photoUrl;
-  @Expose private List<String> authorizedEditors;
+  @Column(name = "state")
+  @Expose
+  private String state;
+
+  @Column(name = "zip_code")
+  @Expose
+  private String zipCode;
+
+  @Column(name = "website")
+  @Expose
+  private String website;
+
+  @Column(name = "email")
+  @Expose
+  private String email;
+
+  @Column(name = "phone_number")
+  @Expose
+  private String phoneNumber;
+
+  @Column(name = "logo_url")
+  @Expose
+  private String logoUrl;
+
+  @Column(name = "photo_url")
+  @Expose
+  private String photoUrl;
+
+  @Column(name = "authorized_editors")
+  @ElementCollection(fetch = FetchType.EAGER)
+  @Expose
+  private List<String> authorizedEditors;
+
+  Gym() {}
 
   public Gym(
       String name,
@@ -68,18 +92,136 @@ public class Gym implements Persistable<String> {
     this.authorizedEditors = authorizedEditors;
   }
 
-  @Override
-  public boolean isNew() {
-    return false;
+  public Gym(
+      String id,
+      String name,
+      String address,
+      String city,
+      String state,
+      String zipCode,
+      String website,
+      String email,
+      String phoneNumber,
+      String logoUrl,
+      String photoUrl,
+      List<String> authorizedEditors) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.city = city;
+    this.state = state;
+    this.zipCode = zipCode;
+    this.website = website;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.logoUrl = logoUrl;
+    this.photoUrl = photoUrl;
+    this.authorizedEditors = authorizedEditors;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public String getZipCode() {
+    return zipCode;
+  }
+
+  public void setZipCode(String zipCode) {
+    this.zipCode = zipCode;
+  }
+
+  public String getWebsite() {
+    return website;
+  }
+
+  public void setWebsite(String website) {
+    this.website = website;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public String getLogoUrl() {
+    return logoUrl;
+  }
+
+  public void setLogoUrl(String logoUrl) {
+    this.logoUrl = logoUrl;
+  }
+
+  public String getPhotoUrl() {
+    return photoUrl;
+  }
+
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
+  }
+
+  public List<String> getAuthorizedEditors() {
+    return authorizedEditors;
+  }
+
+  public void setAuthorizedEditors(List<String> authorizedEditors) {
+    this.authorizedEditors = authorizedEditors;
   }
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof Gym && toString().equals(obj.toString());
+    return ModelUtils.equals(this, obj);
   }
 
   @Override
   public String toString() {
-    return Models.toString(this);
+    return ModelUtils.toString(this);
   }
 }

@@ -1,12 +1,13 @@
 package com.lukeshay.restapi.gym;
 
 import com.lukeshay.restapi.TestBase;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class GymControllerTest extends TestBase {
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
-            Collections.singletonList(testUser.getUserId()));
+            Collections.singletonList(testUser.getId()));
 
     // Setup files
     Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
@@ -88,13 +89,17 @@ class GymControllerTest extends TestBase {
 
     ResponseEntity<?> gymNotFoundResponse =
         gymController.updateGym(
-            authentication, "", new Gym("Jimmy", null, null, null, null, null, null, null, null));
+            authentication,
+            UUID.randomUUID().toString(),
+            new Gym("Jimmy", null, null, null, null, null, null, null, null));
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, gymNotFoundResponse.getStatusCode()),
-        () -> Assertions.assertEquals(Body.error("Gym not found"), gymNotFoundResponse.getBody()));
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Gym not found"), gymNotFoundResponse.getBody()));
 
-    testUserPrincipal.getUser().setUserId("1");
+    testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
     ResponseEntity<?> unauthorizedResponse =
         gymController.updateGym(
@@ -104,7 +109,9 @@ class GymControllerTest extends TestBase {
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, unauthorizedResponse.getStatusCode()),
-        () -> Assertions.assertEquals(Body.error("Gym not found"), unauthorizedResponse.getBody()));
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Gym not found"), unauthorizedResponse.getBody()));
   }
 
   @Test
@@ -123,10 +130,12 @@ class GymControllerTest extends TestBase {
         gymController.uploadLogo(authentication, testFile, testGym.getId(), "invalid");
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
-    Mockito.when(awsService.uploadFileToS3(testGym.getId() + "/logo.jpg", testFile))
+    Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class)))
         .thenReturn(null);
 
     ResponseEntity<?> errorResponse =
@@ -137,9 +146,10 @@ class GymControllerTest extends TestBase {
             Assertions.assertEquals(
                 HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
         () ->
-            Assertions.assertEquals(Body.error("Error uploading file."), errorResponse.getBody()));
+            Assertions.assertEquals(
+                BodyUtils.error("Error uploading file."), errorResponse.getBody()));
 
-    testUserPrincipal.getUser().setUserId("1");
+    testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
     ResponseEntity<?> unauthorizedResponse =
         gymController.uploadLogo(authentication, testFile, testGym.getId(), "logo");
@@ -149,7 +159,7 @@ class GymControllerTest extends TestBase {
             Assertions.assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Body.error("You are unauthorized to perform this action."),
+                BodyUtils.error("You are unauthorized to perform this action."),
                 unauthorizedResponse.getBody()));
   }
 }
