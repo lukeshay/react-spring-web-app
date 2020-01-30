@@ -110,8 +110,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     if (jwtClaims != null && jwtClaims.getSubject().equals(SecurityProperties.JWT_HEADER_STRING)) {
       User user = userRepository.findById(jwtClaims.getId()).orElse(null);
+
+      if (user == null) {
+        return null;
+      }
+
       UserPrincipal principal = new UserPrincipal(user);
+
       LOG.debug("This user token is being created.");
+
       authentication =
           new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
     }

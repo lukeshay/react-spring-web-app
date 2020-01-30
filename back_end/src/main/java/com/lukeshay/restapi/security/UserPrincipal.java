@@ -1,6 +1,7 @@
 package com.lukeshay.restapi.security;
 
 import com.lukeshay.restapi.user.User;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails, Principal {
 
   private User user;
 
@@ -18,9 +19,19 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public Collection<GrantedAuthority> getAuthorities() {
+    String role = user.getRole();
+    if (role == null) {
+      role = "BASIC_ROLE";
+    }
+
+    String authority = user.getAuthority();
+    if (authority == null) {
+      authority = "BASIC";
+    }
+
     List<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority(user.getAuthority()));
-    authorities.add(new SimpleGrantedAuthority(user.getRole()));
+    authorities.add(new SimpleGrantedAuthority(authority));
+    authorities.add(new SimpleGrantedAuthority(role));
     return authorities;
   }
 
@@ -56,5 +67,10 @@ public class UserPrincipal implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public String getName() {
+    return user.getFirstName() + " " + user.getLastName();
   }
 }

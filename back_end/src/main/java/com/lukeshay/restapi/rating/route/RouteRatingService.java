@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.rating.route;
 
-import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 

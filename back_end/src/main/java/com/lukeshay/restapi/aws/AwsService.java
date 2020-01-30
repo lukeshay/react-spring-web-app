@@ -1,4 +1,4 @@
-package com.lukeshay.restapi.services;
+package com.lukeshay.restapi.aws;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

@@ -116,7 +116,7 @@ public class UserController {
   @ApiOperation(value = "Delete a user.", response = User.class)
   public ResponseEntity<?> deleteUserByUserId(
       Authentication authentication, @PathVariable String userId) {
-    User deletedUser = userService.deleteUserByUserId(userId);
+    User deletedUser = userService.deleteUserById(userId);
 
     if (deletedUser == null) {
       return Response.badRequest(Body.error("User not found."));

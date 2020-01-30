@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class GymControllerTest extends TestBase {
             "lukeshay.com",
             "climbing@gym.com",
             "phoneNumber",
-            Collections.singletonList(testUser.getUserId()));
+            Collections.singletonList(testUser.getId()));
 
     // Setup files
     Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/logo.jpg");
@@ -88,13 +89,15 @@ class GymControllerTest extends TestBase {
 
     ResponseEntity<?> gymNotFoundResponse =
         gymController.updateGym(
-            authentication, "", new Gym("Jimmy", null, null, null, null, null, null, null, null));
+            authentication,
+            UUID.randomUUID().toString(),
+            new Gym("Jimmy", null, null, null, null, null, null, null, null));
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, gymNotFoundResponse.getStatusCode()),
         () -> Assertions.assertEquals(Body.error("Gym not found"), gymNotFoundResponse.getBody()));
 
-    testUserPrincipal.getUser().setUserId("1");
+    testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
     ResponseEntity<?> unauthorizedResponse =
         gymController.updateGym(
@@ -139,7 +142,7 @@ class GymControllerTest extends TestBase {
         () ->
             Assertions.assertEquals(Body.error("Error uploading file."), errorResponse.getBody()));
 
-    testUserPrincipal.getUser().setUserId("1");
+    testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
     ResponseEntity<?> unauthorizedResponse =
         gymController.uploadLogo(authentication, testFile, testGym.getId(), "logo");

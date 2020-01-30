@@ -6,6 +6,7 @@ import com.lukeshay.restapi.utils.Body;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,8 +67,8 @@ public class WallControllerTest extends TestBase {
         () -> Assertions.assertEquals(Body.error("Error adding wall."), responseWithId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseWithId.getStatusCode()));
 
-    testWall.setId("");
-    testWall.setGymId("asdf");
+    testWall.setId(null);
+    testWall.setGymId(UUID.randomUUID().toString());
 
     ResponseEntity<?> responseInvalidGymId = wallController.createWall(authentication, testWall);
 
@@ -86,8 +87,6 @@ public class WallControllerTest extends TestBase {
     testWall.setName("YEET");
 
     ResponseEntity<?> responseUpdate = wallController.updateWall(authentication, testWall);
-
-    testWall.setPersistable(true);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(testWall, responseUpdate.getBody()),
@@ -139,7 +138,7 @@ public class WallControllerTest extends TestBase {
   @Test
   @WithMockUser
   void unauthorizedEditorTest() {
-    testUser.setUserId("00000000");
+    testUser.setId(UUID.randomUUID().toString());
 
     ResponseEntity<?> responseCreate = wallController.createWall(authentication, testWall);
 
@@ -151,8 +150,6 @@ public class WallControllerTest extends TestBase {
     testWall.setName("YEET");
 
     ResponseEntity<?> responseUpdate = wallController.updateWall(authentication, testWall);
-
-    testWall.setPersistable(true);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(Body.error("Error updating wall."), responseUpdate.getBody()),

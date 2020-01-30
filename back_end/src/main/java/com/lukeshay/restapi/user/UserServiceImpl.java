@@ -1,6 +1,5 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.security.UserPrincipal;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -65,22 +64,20 @@ class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User deleteUserByUserId(String userId) {
-    User deletedUser = userRepository.findById(userId).orElse(null);
+  public User deleteUserById(String id) {
+    User deletedUser = userRepository.findById(id).orElse(null);
 
     if (deletedUser == null) {
       return null;
     } else {
-      userRepository.deleteById(userId);
+      userRepository.deleteById(id);
       return deletedUser;
     }
   }
 
   @Override
   public User getUser(Authentication authentication) {
-    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-    return userPrincipal.getUser();
+    return AuthenticationUtils.getUser(authentication);
   }
 
   @Override

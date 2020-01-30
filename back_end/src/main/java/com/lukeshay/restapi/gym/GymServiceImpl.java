@@ -1,6 +1,6 @@
 package com.lukeshay.restapi.gym;
 
-import com.lukeshay.restapi.services.AwsService;
+import com.lukeshay.restapi.aws.AwsService;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
@@ -123,7 +123,8 @@ public class GymServiceImpl implements GymService {
     }
 
     String url =
-        awsService.uploadFileToS3(String.format("%s/%s.jpg", gym.getId(), imageName), file);
+        awsService.uploadFileToS3(
+            String.format("%s/%s.jpg", gym.getId().toString(), imageName), file);
 
     if (url == null) {
       return Response.internalServerError(Body.error("Error uploading file."));

@@ -2,7 +2,6 @@ package com.lukeshay.restapi.session;
 
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
 import io.jsonwebtoken.Claims;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

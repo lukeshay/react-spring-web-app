@@ -8,7 +8,6 @@ import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import com.lukeshay.restapi.wall.WallRepository;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

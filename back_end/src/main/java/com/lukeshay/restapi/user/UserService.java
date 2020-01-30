@@ -8,7 +8,7 @@ public interface UserService {
 
   User createUser(User user);
 
-  User deleteUserByUserId(String userId);
+  User deleteUserById(String userId);
 
   Iterable<User> getAllUsers();
 

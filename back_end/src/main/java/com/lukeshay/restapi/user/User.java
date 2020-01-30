@@ -3,7 +3,6 @@ package com.lukeshay.restapi.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends Auditable<String> {
+public class User { // extends Auditable<String> {
 
   @Column(name = "id", unique = true, updatable = false)
   @Expose
@@ -31,8 +30,8 @@ public class User extends Auditable<String> {
   @Id
   private String id;
 
-  @JsonProperty(access = Access.WRITE_ONLY)
   @Column(name = "password")
+  @JsonProperty(access = Access.WRITE_ONLY)
   private String password;
 
   @Column(name = "username", unique = true)

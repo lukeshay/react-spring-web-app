@@ -1,18 +1,19 @@
 package com.lukeshay.restapi.gym;
 
 import com.google.gson.annotations.Expose;
-import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
 import java.util.List;
-import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 /** The type Gym. */
 @Getter
@@ -20,21 +21,59 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Gym extends Auditable<String> {
-  @Id @GeneratedValue @Expose private String id;
+@Table(name = "gym")
+public class Gym { // extends Auditable<String> {
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
-  @Expose private String name;
-  @Expose private String address;
-  @Expose private String city;
-  @Expose private String state;
-  @Expose private String zipCode;
-  @Expose private String website;
-  @Expose private String email;
-  @Expose private String phoneNumber;
-  @Expose private String logoUrl;
-  @Expose private String photoUrl;
+  @Column(name = "name")
+  @Expose
+  private String name;
 
-  @ElementCollection @Expose private List<String> authorizedEditors;
+  @Column(name = "address")
+  @Expose
+  private String address;
+
+  @Column(name = "city")
+  @Expose
+  private String city;
+
+  @Column(name = "state")
+  @Expose
+  private String state;
+
+  @Column(name = "zip_code")
+  @Expose
+  private String zipCode;
+
+  @Column(name = "website")
+  @Expose
+  private String website;
+
+  @Column(name = "email")
+  @Expose
+  private String email;
+
+  @Column(name = "phone_number")
+  @Expose
+  private String phoneNumber;
+
+  @Column(name = "logo_url")
+  @Expose
+  private String logoUrl;
+
+  @Column(name = "photo_url")
+  @Expose
+  private String photoUrl;
+
+  @Column(name = "authorized_editors")
+  @ElementCollection
+  @Expose
+  private List<String> authorizedEditors;
 
   public Gym(
       String name,

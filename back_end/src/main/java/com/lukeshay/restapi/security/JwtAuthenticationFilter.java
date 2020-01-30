@@ -2,6 +2,7 @@ package com.lukeshay.restapi.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lukeshay.restapi.jwt.JwtService;
+import com.lukeshay.restapi.jwt.JwtServiceImpl;
 import com.lukeshay.restapi.session.Session;
 import com.lukeshay.restapi.session.SessionService;
 import com.lukeshay.restapi.user.UserRepository;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.Collections;
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -55,8 +59,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     return authenticationManager.authenticate(authenticationToken);
   }
 
-
-
   @Override
   protected void successfulAuthentication(
       HttpServletRequest request,
@@ -64,6 +66,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain,
       Authentication authResult)
       throws IOException {
+
+    if (jwtService == null) {
+      ServletContext servletContext = request.getServletContext();
+      WebApplicationContext webApplicationContext =
+          WebApplicationContextUtils.getWebApplicationContext(servletContext);
+
+      jwtService = webApplicationContext.getBean(JwtServiceImpl.class);
+      sessionService = webApplicationContext.getBean(SessionService.class);
+    }
 
     UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
 

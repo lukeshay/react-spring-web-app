@@ -45,7 +45,7 @@ class UserControllerTest extends TestBase {
 
     Assertions.assertEquals(testUserTwo, getUser.getBody());
 
-    testUser.setUserId("");
+    testUser.setId(null);
     ResponseEntity<?> responseEmail = userController.createUser(authentication, testUser);
 
     Assertions.assertAll(
@@ -67,7 +67,6 @@ class UserControllerTest extends TestBase {
     testUser.setUsername("TestUserChange");
     testUser.setFirstName("First");
     testUser.setLastName("Last");
-    testUser.setPersistable(true);
 
     ResponseEntity<?> updatedUser =
         userController.updateUser(
@@ -90,7 +89,7 @@ class UserControllerTest extends TestBase {
   void updateUserByIdDuplicateTest() {
     testUser.setUsername("test.user2@email.com");
     testUser.setEmail("test.user2@email.com");
-    testUser.setUserId(null);
+    testUser.setId(null);
 
     testUser = userRepository.save(testUser);
 

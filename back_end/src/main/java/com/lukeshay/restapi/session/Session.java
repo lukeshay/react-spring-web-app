@@ -4,39 +4,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.gson.annotations.Expose;
 import com.lukeshay.restapi.jwt.RouteRatingJwt;
-import com.lukeshay.restapi.utils.Auditable;
 import com.lukeshay.restapi.utils.Models;
-import java.time.Instant;
-import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Session extends Auditable<String> {
-  @Id @GeneratedValue @Expose String id;
-  @Transient @Expose private RouteRatingJwt tokens;
-  @Expose private String userId;
+@Table(name = "sessions")
+public class Session { // extends Auditable<String> {
+  @Column(name = "id", unique = true, updatable = false)
+  @Expose
+  @GeneratedValue(generator = "pg-uuid")
+  @GenericGenerator(name = "pg-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  @Id
+  private String id;
 
-  @CreatedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String created;
+  @Column(name = "tokens")
+  @Expose
+  @Transient
+  private RouteRatingJwt tokens;
 
-  @LastModifiedDate
-  @JsonProperty(access = Access.WRITE_ONLY)
-  private String modified;
+  @Column(name = "user_id", unique = true, updatable = false)
+  @Expose
+  private String userId;;
 
+  @Column(name = "active")
   @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean active;
 
@@ -44,10 +48,6 @@ public class Session extends Auditable<String> {
     this.tokens = tokens;
     this.userId = userId;
     active = true;
-  }
-
-  public String getId() {
-    return id;
   }
 
   @Override

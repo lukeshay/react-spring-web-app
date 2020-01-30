@@ -41,8 +41,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.springBootVersion
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: project.springBootVersion
 
-    implementation 'com.google.code.gson:gson'
-
+    // Database dependencies
     runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
 
     // Test dependencies
@@ -52,7 +51,6 @@ dependencies {
     }
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
 
     // Lombok dependencies
@@ -61,7 +59,6 @@ dependencies {
 
     // Security dependencies
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.springBootVersion
-    implementation group: 'com.auth0', name: 'java-jwt', version: '3.4.1'
     api group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.7'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.7'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-orgjson', version: '0.10.7'
@@ -76,6 +73,8 @@ dependencies {
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228')
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    implementation 'com.google.code.gson:gson'
 }
 
 test {
