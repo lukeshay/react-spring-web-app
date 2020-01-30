@@ -103,6 +103,10 @@ jacocoTestCoverageVerification {
                     '**/*Filter.class',
                     '**/*Exception.class',
                     '**/*SpringMain.class',
+                    '**/*Utils.class',
+                    '**/*Auditable.class',
+                    '**/*config/*',
+                    '**/*security/*',
                 ]
             )
         })

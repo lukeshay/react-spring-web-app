@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-public class Response {
+public class ResponseUtils {
   public static <T> ResponseEntity<?> ok(T body) {
     return httpJsonResponse(HttpStatus.OK, body);
   }

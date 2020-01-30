@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.route;
 
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -44,9 +44,9 @@ public class RouteController {
     Route route = routeService.createRoute(authentication, body);
 
     if (route == null) {
-      return Response.badRequest(Body.error("Error creating route."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error creating route."));
     } else {
-      return Response.ok(route);
+      return ResponseUtils.ok(route);
     }
   }
 
@@ -58,7 +58,7 @@ public class RouteController {
 
     List<Route> routes = routeService.getRoutesByWall(wallId);
 
-    return Response.ok(routes);
+    return ResponseUtils.ok(routes);
   }
 
   @PutMapping("")
@@ -79,9 +79,9 @@ public class RouteController {
             body.getName());
 
     if (route == null) {
-      return Response.badRequest(Body.error("Error updating route."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error updating route."));
     } else {
-      return Response.ok(route);
+      return ResponseUtils.ok(route);
     }
   }
 
@@ -94,9 +94,9 @@ public class RouteController {
     Route route = routeService.deleteRoute(authentication, body);
 
     if (route == null) {
-      return Response.badRequest(Body.error("Error deleting route."));
+      return ResponseUtils.badRequest(BodyUtils.error("Error deleting route."));
     } else {
-      return Response.ok(route);
+      return ResponseUtils.ok(route);
     }
   }
 }

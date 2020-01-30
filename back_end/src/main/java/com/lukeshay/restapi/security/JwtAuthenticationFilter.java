@@ -5,6 +5,7 @@ import com.lukeshay.restapi.jwt.JwtService;
 import com.lukeshay.restapi.jwt.JwtServiceImpl;
 import com.lukeshay.restapi.session.Session;
 import com.lukeshay.restapi.session.SessionService;
+import com.lukeshay.restapi.session.SessionServiceImpl;
 import com.lukeshay.restapi.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
           WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
       jwtService = webApplicationContext.getBean(JwtServiceImpl.class);
-      sessionService = webApplicationContext.getBean(SessionService.class);
+      sessionService = webApplicationContext.getBean(SessionServiceImpl.class);
     }
 
     UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();

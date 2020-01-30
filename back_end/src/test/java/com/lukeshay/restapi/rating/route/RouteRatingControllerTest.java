@@ -3,7 +3,7 @@ package com.lukeshay.restapi.rating.route;
 import com.lukeshay.restapi.TestBase;
 import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.route.RouteProperties.Grade;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class RouteRatingControllerTest extends TestBase {
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidRouteResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Body.error("Rating is invalid."), invalidRouteResponse.getBody()));
+                BodyUtils.error("Rating is invalid."), invalidRouteResponse.getBody()));
   }
 
   @Test

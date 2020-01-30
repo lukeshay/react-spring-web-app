@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.gym;
 
 import com.lukeshay.restapi.TestBase;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -95,7 +95,9 @@ class GymControllerTest extends TestBase {
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, gymNotFoundResponse.getStatusCode()),
-        () -> Assertions.assertEquals(Body.error("Gym not found"), gymNotFoundResponse.getBody()));
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Gym not found"), gymNotFoundResponse.getBody()));
 
     testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
@@ -107,7 +109,9 @@ class GymControllerTest extends TestBase {
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, unauthorizedResponse.getStatusCode()),
-        () -> Assertions.assertEquals(Body.error("Gym not found"), unauthorizedResponse.getBody()));
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Gym not found"), unauthorizedResponse.getBody()));
   }
 
   @Test
@@ -126,7 +130,9 @@ class GymControllerTest extends TestBase {
         gymController.uploadLogo(authentication, testFile, testGym.getId(), "invalid");
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Invalid upload."), invalidNameResponse.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Invalid upload."), invalidNameResponse.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, invalidNameResponse.getStatusCode()));
 
     Mockito.when(awsService.uploadFileToS3(Mockito.anyString(), Mockito.any(MultipartFile.class)))
@@ -140,7 +146,8 @@ class GymControllerTest extends TestBase {
             Assertions.assertEquals(
                 HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode()),
         () ->
-            Assertions.assertEquals(Body.error("Error uploading file."), errorResponse.getBody()));
+            Assertions.assertEquals(
+                BodyUtils.error("Error uploading file."), errorResponse.getBody()));
 
     testUserPrincipal.getUser().setId(UUID.randomUUID().toString());
 
@@ -152,7 +159,7 @@ class GymControllerTest extends TestBase {
             Assertions.assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode()),
         () ->
             Assertions.assertEquals(
-                Body.error("You are unauthorized to perform this action."),
+                BodyUtils.error("You are unauthorized to perform this action."),
                 unauthorizedResponse.getBody()));
   }
 }

@@ -5,6 +5,7 @@ import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.rating.route.RouteRatingRepository;
 import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.security.UserPrincipal;
+import com.lukeshay.restapi.session.SessionRepository;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserRepository;
 import com.lukeshay.restapi.user.UserTypes;
@@ -28,6 +29,7 @@ public class TestBase {
   @Autowired protected GymRepository gymRepository;
   @Autowired protected RouteRatingRepository routeRatingRepository;
   @Autowired protected RouteRepository routeRepository;
+  @Autowired protected SessionRepository sessionRepository;
   @Autowired protected UserRepository userRepository;
   @Autowired protected WallRepository wallRepository;
   @Autowired protected PasswordEncoder passwordEncoder;
@@ -71,6 +73,7 @@ public class TestBase {
     gymRepository.deleteAll();
     routeRatingRepository.deleteAll();
     routeRepository.deleteAll();
+    sessionRepository.deleteAll();
     userRepository.deleteAll();
     wallRepository.deleteAll();
   }

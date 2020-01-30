@@ -3,6 +3,7 @@ package com.lukeshay.restapi.security;
 import com.lukeshay.restapi.jwt.JwtService;
 import com.lukeshay.restapi.jwt.JwtServiceImpl;
 import com.lukeshay.restapi.session.SessionService;
+import com.lukeshay.restapi.session.SessionServiceImpl;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -47,7 +48,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
           WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
       jwtService = webApplicationContext.getBean(JwtServiceImpl.class);
-      sessionService = webApplicationContext.getBean(SessionService.class);
+      sessionService = webApplicationContext.getBean(SessionServiceImpl.class);
     }
 
     String header = request.getHeader(SecurityProperties.JWT_HEADER_STRING);

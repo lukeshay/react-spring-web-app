@@ -18,8 +18,12 @@ public class RouteRatingJwt {
   @JsonProperty(access = Access.WRITE_ONLY)
   private Claims refreshClaims;
 
-  public RouteRatingJwt(String jwtToken, Claims jwtClaims, Long expiresIn,
-      String refreshToken, Claims refreshClaims) {
+  public RouteRatingJwt(
+      String jwtToken,
+      Claims jwtClaims,
+      Long expiresIn,
+      String refreshToken,
+      Claims refreshClaims) {
     this.jwtToken = jwtToken;
     this.jwtClaims = jwtClaims;
     this.expiresIn = expiresIn;
@@ -50,5 +54,10 @@ public class RouteRatingJwt {
   @Override
   public String toString() {
     return ModelUtils.toString(this);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return ModelUtils.equals(this, obj);
   }
 }

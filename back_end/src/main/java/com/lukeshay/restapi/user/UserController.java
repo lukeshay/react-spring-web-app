@@ -1,7 +1,7 @@
 package com.lukeshay.restapi.user;
 
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
@@ -47,9 +47,9 @@ public class UserController {
 
     if (user == null) {
       LOG.debug("Could not find user");
-      return Response.notFound(Body.error("User not found."));
+      return ResponseUtils.notFound(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(user);
+      return ResponseUtils.ok(user);
     }
   }
 
@@ -81,9 +81,9 @@ public class UserController {
     if (user == null) {
       LOG.debug("User was not found");
 
-      return Response.badRequest(Body.error("User not found."));
+      return ResponseUtils.badRequest(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(user);
+      return ResponseUtils.ok(user);
     }
   }
 
@@ -111,9 +111,9 @@ public class UserController {
     User deletedUser = userService.deleteUserById(userId);
 
     if (deletedUser == null) {
-      return Response.badRequest(Body.error("User not found."));
+      return ResponseUtils.badRequest(BodyUtils.error("User not found."));
     } else {
-      return Response.ok(deletedUser);
+      return ResponseUtils.ok(deletedUser);
     }
   }
 
@@ -141,7 +141,7 @@ public class UserController {
 
     Iterable<User> users = userService.getAllUsers();
 
-    return Response.ok(users);
+    return ResponseUtils.ok(users);
   }
 
   private ResponseEntity<?> checkDuplicate(
@@ -150,13 +150,13 @@ public class UserController {
     if (userService.isEmailTaken(authentication, email)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Response.badRequest(Body.error("Email taken."));
+      return ResponseUtils.badRequest(BodyUtils.error("Email taken."));
     }
 
     if (userService.isUsernameTaken(authentication, username)) {
       LOG.debug("Not creating user because email is taken");
 
-      return Response.badRequest(Body.error("Username taken."));
+      return ResponseUtils.badRequest(BodyUtils.error("Username taken."));
     }
 
     return null;

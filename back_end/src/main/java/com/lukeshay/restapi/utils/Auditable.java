@@ -2,6 +2,7 @@ package com.lukeshay.restapi.utils;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import com.google.gson.annotations.Expose;
 import java.util.Date;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
@@ -16,14 +17,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable<U> {
 
-  @CreatedBy protected U createdBy;
+  @CreatedBy @Expose protected U createdBy;
 
+  @Expose
   @CreatedDate
   @Temporal(TIMESTAMP)
   protected Date creationDate;
 
-  @LastModifiedBy protected U lastModifiedBy;
+  @Expose @LastModifiedBy protected U lastModifiedBy;
 
+  @Expose
   @LastModifiedDate
   @Temporal(TIMESTAMP)
   protected Date lastModifiedDate;

@@ -2,7 +2,7 @@ package com.lukeshay.restapi.wall;
 
 import com.lukeshay.restapi.TestBase;
 import com.lukeshay.restapi.gym.Gym;
-import com.lukeshay.restapi.utils.Body;
+import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.Collections;
 import java.util.List;
@@ -64,7 +64,9 @@ public class WallControllerTest extends TestBase {
     ResponseEntity<?> responseWithId = wallController.createWall(authentication, testWall);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Error adding wall."), responseWithId.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error adding wall."), responseWithId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseWithId.getStatusCode()));
 
     testWall.setId(null);
@@ -75,7 +77,7 @@ public class WallControllerTest extends TestBase {
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(
-                Body.error("Error adding wall."), responseInvalidGymId.getBody()),
+                BodyUtils.error("Error adding wall."), responseInvalidGymId.getBody()),
         () ->
             Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseInvalidGymId.getStatusCode()));
   }
@@ -106,7 +108,8 @@ public class WallControllerTest extends TestBase {
 
     Assertions.assertAll(
         () ->
-            Assertions.assertEquals(Body.error("Error updating wall."), responseNoWallId.getBody()),
+            Assertions.assertEquals(
+                BodyUtils.error("Error updating wall."), responseNoWallId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoWallId.getStatusCode()));
 
     testWall.setId(wallId);
@@ -116,7 +119,8 @@ public class WallControllerTest extends TestBase {
 
     Assertions.assertAll(
         () ->
-            Assertions.assertEquals(Body.error("Error updating wall."), responseNoGymId.getBody()),
+            Assertions.assertEquals(
+                BodyUtils.error("Error updating wall."), responseNoGymId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseNoGymId.getStatusCode()));
   }
 
@@ -142,10 +146,12 @@ public class WallControllerTest extends TestBase {
 
     ResponseEntity<?> responseCreate = wallController.createWall(authentication, testWall);
 
-    System.out.println("YEET: " + Body.error("ERROROROROR").toString());
+    System.out.println("YEET: " + BodyUtils.error("ERROROROROR").toString());
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Error adding wall."), responseCreate.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error adding wall."), responseCreate.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseCreate.getStatusCode()));
 
     testWall = wallRepository.save(testWall);
@@ -154,13 +160,17 @@ public class WallControllerTest extends TestBase {
     ResponseEntity<?> responseUpdate = wallController.updateWall(authentication, testWall);
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Error updating wall."), responseUpdate.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error updating wall."), responseUpdate.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseUpdate.getStatusCode()));
 
     ResponseEntity<?> responseDelete = wallController.deleteWall(authentication, testWall.getId());
 
     Assertions.assertAll(
-        () -> Assertions.assertEquals(Body.error("Error deleting wall."), responseDelete.getBody()),
+        () ->
+            Assertions.assertEquals(
+                BodyUtils.error("Error deleting wall."), responseDelete.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseDelete.getStatusCode()));
   }
 

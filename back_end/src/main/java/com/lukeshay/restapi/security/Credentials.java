@@ -5,8 +5,7 @@ public class Credentials {
   private String password;
   private Boolean remember;
 
-  public Credentials() {
-  }
+  public Credentials() {}
 
   public Credentials(String username, String password, Boolean remember) {
     this.username = username;

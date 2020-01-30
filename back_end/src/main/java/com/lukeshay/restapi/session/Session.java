@@ -37,7 +37,7 @@ public class Session extends Auditable<String> {
   @JsonProperty(access = Access.WRITE_ONLY)
   private Boolean active;
 
-  Session() {}
+  public Session() {}
 
   public Session(RouteRatingJwt tokens, String userId) {
     this.tokens = tokens;

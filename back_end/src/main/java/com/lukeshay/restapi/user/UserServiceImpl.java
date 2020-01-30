@@ -1,8 +1,8 @@
 package com.lukeshay.restapi.user;
 
 import com.lukeshay.restapi.utils.AuthenticationUtils;
-import com.lukeshay.restapi.utils.Body;
-import com.lukeshay.restapi.utils.Response;
+import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -38,11 +38,11 @@ class UserServiceImpl implements UserService {
 
       LOG.debug("Creating admin user: {}", user);
 
-      return Response.ok(userRepository.save(user));
+      return ResponseUtils.ok(userRepository.save(user));
 
     } else {
       LOG.debug("Could not create admin user: {}", user);
-      return Response.badRequest(Body.error("Field missing for user."));
+      return ResponseUtils.badRequest(BodyUtils.error("Field missing for user."));
     }
   }
 
@@ -64,11 +64,11 @@ class UserServiceImpl implements UserService {
 
       LOG.debug("Creating basic user: {}", user);
 
-      return Response.ok(userRepository.save(user));
+      return ResponseUtils.ok(userRepository.save(user));
 
     } else {
       LOG.debug("Could not create basic user: {}", user);
-      return Response.badRequest(Body.error("Field missing for user."));
+      return ResponseUtils.badRequest(BodyUtils.error("Field missing for user."));
     }
   }
 
