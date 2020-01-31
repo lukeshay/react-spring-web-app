@@ -33,6 +33,7 @@ public class GymServiceImpl implements GymService {
     return gymRepository.save(gym);
   }
 
+  @Deprecated
   @Override
   public Iterable<Gym> getAllGyms() {
     return gymRepository.findAll();
