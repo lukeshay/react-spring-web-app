@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import { toast } from "react-toastify";

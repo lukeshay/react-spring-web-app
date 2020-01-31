@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   CssBaseline,
   FormControlLabel,
@@ -20,19 +19,7 @@ import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import { darkTheme, getTheme, lightTheme } from "./theme";
 
-interface Style {
-  marginLeft: string;
-  marginRight: string;
-  marginTop: string;
-}
-
 const App: React.FC = (): JSX.Element => {
-  const [style, setStyle] = React.useState<Style>({
-    marginLeft: "0px",
-    marginRight: "0px",
-    marginTop: "0px"
-  });
-
   const { state: userState, dispatch: userDispatch } = useUserContext();
   const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
@@ -40,40 +27,42 @@ const App: React.FC = (): JSX.Element => {
     if (!userState.user || !userState.user.userId) {
       UserActions.loadUserFromCookies(userDispatch);
     }
-  }, [userState.user]);
+  }, [userDispatch, userState.user]);
+
+  const handleResize = React.useCallback((): void => {
+    const width = window.innerWidth;
+    const { theme } = viewState;
+
+    if (width < 600 && !viewState.mobile) {
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
+    } else if (viewState.mobile) {
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
+    }
+  }, [viewDispatch, viewState]);
 
   React.useEffect(() => {
-    const handleResize = (): void => {
-      const width = window.innerWidth;
-      const { theme } = viewState;
-
-      if (width < 600) {
-        setStyle({
-          marginLeft: "10px",
-          marginRight: "10px",
-          marginTop: "60px"
-        });
-
-        viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
-      } else {
-        setStyle({
-          marginLeft: "180px",
-          marginRight: "10px",
-          marginTop: "0px"
-        });
-
-        viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
-      }
-    };
-
     handleResize();
 
     window.addEventListener("resize", handleResize);
     return (): void => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [handleResize, viewDispatch, viewState]);
 
   return (
-    <div style={style}>
+    <div
+      style={
+        viewState.mobile
+          ? {
+              marginLeft: "10px",
+              marginRight: "10px",
+              marginTop: "60px"
+            }
+          : {
+              marginLeft: "180px",
+              marginRight: "10px",
+              marginTop: "0px"
+            }
+      }
+    >
       <ThemeProvider
         theme={getTheme(
           viewState.theme === DARK_THEME ? darkTheme : lightTheme
