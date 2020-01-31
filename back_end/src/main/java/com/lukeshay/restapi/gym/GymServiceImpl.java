@@ -8,6 +8,9 @@ import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.utils.ResponseUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,23 @@ public class GymServiceImpl implements GymService {
   @Override
   public Iterable<Gym> getAllGyms() {
     return gymRepository.findAll();
+  }
+
+  @Override
+  public Page<Gym> getGyms(String query, Integer limit, Integer page) {
+    if (limit == null || limit == 0) {
+      limit = 20;
+    }
+
+    if (page == null || page == 0) {
+      page = 1;
+    }
+
+    if (query == null) {
+      query = "";
+    }
+
+    return gymRepository.findAllByNameContaining(PageRequest.of(page - 1, limit, Direction.ASC, "name"), query);
   }
 
   @Override
