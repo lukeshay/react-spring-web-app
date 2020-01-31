@@ -13,6 +13,7 @@ public interface GymService {
 
   Gym createGym(Gym gym);
 
+  @Deprecated
   Iterable<Gym> getAllGyms();
 
   Page<Gym> getGyms(String query, Integer limit, Integer page);

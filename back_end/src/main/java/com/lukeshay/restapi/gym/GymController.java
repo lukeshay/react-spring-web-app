@@ -75,6 +75,7 @@ public class GymController {
     return ResponseUtils.ok(gym);
   }
 
+  @Deprecated
   @GetMapping("/all")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Gets all gyms.", response = Gym.class)
@@ -89,12 +90,12 @@ public class GymController {
   @GetMapping("")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Gets gyms.", response = Gym.class)
-  public ResponseEntity<?> getAllGyms(@PathParam("query") String query, @PathParam("limit") Integer limit, @PathParam("page") Integer page) {
+  public ResponseEntity<Page<Gym>> getGyms(@PathParam("query") String query, @PathParam("limit") Integer limit, @PathParam("page") Integer page) {
     LOG.debug("Getting gyms, query: {}, limit: {}, page: {}", query, limit, page);
 
     Page<Gym> gyms = gymService.getGyms(query, limit, page);
 
-    return ResponseUtils.ok(gyms);
+    return ResponseUtils.okOfType(gyms);
   }
 
   @GetMapping("/{gymId}")
