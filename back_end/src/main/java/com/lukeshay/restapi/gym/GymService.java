@@ -35,5 +35,4 @@ public interface GymService {
 
   ResponseEntity<?> uploadPhoto(
       Authentication authentication, MultipartFile file, String gymId, String imageName);
-
 }

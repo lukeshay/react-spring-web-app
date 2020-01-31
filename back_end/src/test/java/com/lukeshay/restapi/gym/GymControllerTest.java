@@ -175,8 +175,7 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(20, response.getBody().getTotalElements()),
         () -> Assertions.assertEquals(20, response.getBody().getNumberOfElements()),
         () -> Assertions.assertEquals(1, response.getBody().getTotalPages()),
-        () -> Assertions.assertEquals(20, response.getBody().getContent().size())
-    );
+        () -> Assertions.assertEquals(20, response.getBody().getContent().size()));
 
     ResponseEntity<Page<Gym>> responseNums = gymController.getGyms(null, 5, 2);
 
@@ -185,8 +184,7 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(20, responseNums.getBody().getTotalElements()),
         () -> Assertions.assertEquals(5, responseNums.getBody().getNumberOfElements()),
         () -> Assertions.assertEquals(4, responseNums.getBody().getTotalPages()),
-        () -> Assertions.assertEquals(5, responseNums.getBody().getContent().size())
-    );
+        () -> Assertions.assertEquals(5, responseNums.getBody().getContent().size()));
 
     ResponseEntity<Page<Gym>> responseQuery = gymController.getGyms("1", null, null);
 
@@ -195,12 +193,11 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(10, responseQuery.getBody().getTotalElements()),
         () -> Assertions.assertEquals(10, responseQuery.getBody().getNumberOfElements()),
         () -> Assertions.assertEquals(1, responseQuery.getBody().getTotalPages()),
-        () -> Assertions.assertEquals(10, responseQuery.getBody().getContent().size())
-    );
+        () -> Assertions.assertEquals(10, responseQuery.getBody().getContent().size()));
   }
 
   private void populateGyms() {
-    for(int i = 0; i < 19; i++) {
+    for (int i = 0; i < 19; i++) {
       Gym gym =
           new Gym(
               "Jim" + i,
