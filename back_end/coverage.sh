@@ -1,3 +1,3 @@
 #!/bin/bash
-./gradlew clean build
+./gradlew clean build -x verifyGoogleJavaFormat
 ./gradlew jacocoTestCoverageVerification

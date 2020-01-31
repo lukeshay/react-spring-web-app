@@ -134,9 +134,4 @@ jacocoTestReport {
     }
 }
 
-run {
-    systemProperties System.getProperties()
-}
-
 check.dependsOn jacocoTestReport
-check.doFirst run as Action<? super Task>

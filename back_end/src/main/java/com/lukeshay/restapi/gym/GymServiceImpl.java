@@ -53,7 +53,8 @@ public class GymServiceImpl implements GymService {
       query = "";
     }
 
-    return gymRepository.findAllByNameContaining(PageRequest.of(page - 1, limit, Direction.ASC, "name"), query);
+    return gymRepository.findAllByNameContaining(
+        PageRequest.of(page - 1, limit, Direction.ASC, "name"), query);
   }
 
   @Override
