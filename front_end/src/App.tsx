@@ -15,6 +15,7 @@ import {
   Types,
   useViewContext
 } from "./context/view/viewStore";
+import * as Hooks from "./modules/common/hooks";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import { darkTheme, getTheme, lightTheme } from "./theme";
@@ -23,11 +24,11 @@ const App: React.FC = (): JSX.Element => {
   const { state: userState, dispatch: userDispatch } = useUserContext();
   const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
-  React.useMemo(() => {
+  Hooks.onMount(() => {
     if (!userState.user || !userState.user.userId) {
       UserActions.loadUserFromCookies(userDispatch);
     }
-  }, [userDispatch, userState.user]);
+  });
 
   const handleResize = React.useCallback((): void => {
     const width = window.innerWidth;
@@ -41,8 +42,6 @@ const App: React.FC = (): JSX.Element => {
   }, [viewDispatch, viewState]);
 
   React.useEffect(() => {
-    handleResize();
-
     window.addEventListener("resize", handleResize);
     return (): void => window.removeEventListener("resize", handleResize);
   }, [handleResize, viewDispatch, viewState]);

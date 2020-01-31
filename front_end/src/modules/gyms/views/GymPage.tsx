@@ -12,6 +12,7 @@ import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
+import * as Hooks from "../../common/hooks";
 import GymInformation from "./GymInformation";
 import RatingAddModal from "./RatingAddModal";
 import RatingPage from "./RatingPage";
@@ -64,7 +65,7 @@ const GymPage: React.FC = (): JSX.Element => {
       .pop()
   );
 
-  React.useEffect(() => {
+  Hooks.onMount(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -82,7 +83,7 @@ const GymPage: React.FC = (): JSX.Element => {
         );
       }
     }
-  }, [gymId, gymsDispatch, gymsState.gyms, history]);
+  });
 
   React.useEffect(() => {
     const tempGym = gymsState.gyms
@@ -94,6 +95,9 @@ const GymPage: React.FC = (): JSX.Element => {
 
       const { user } = userState;
       const { authorizedEditors } = tempGym;
+
+      console.log(user);
+      console.log(tempGym);
 
       const tempWall = tempGym.walls
         ? tempGym.walls.find((element: Wall) => element.id === wallId)
