@@ -1,7 +1,7 @@
 import { Session } from "./session";
 
 export interface User {
-  userId: string;
+  id: string;
   firstName: string;
   lastName: string;
   username: string;

@@ -12,7 +12,6 @@ import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
 import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
-import * as Hooks from "../../common/hooks";
 import GymInformation from "./GymInformation";
 import RatingAddModal from "./RatingAddModal";
 import RatingPage from "./RatingPage";
@@ -65,7 +64,7 @@ const GymPage: React.FC = (): JSX.Element => {
       .pop()
   );
 
-  Hooks.onMount(() => {
+  React.useEffect(() => {
     const tempGym = gymsState.gyms
       .filter((element) => element.id === gymId)
       .pop();
@@ -83,7 +82,7 @@ const GymPage: React.FC = (): JSX.Element => {
         );
       }
     }
-  });
+  }, []);
 
   React.useEffect(() => {
     const tempGym = gymsState.gyms
@@ -97,7 +96,7 @@ const GymPage: React.FC = (): JSX.Element => {
       const { authorizedEditors } = tempGym;
 
       console.log(user);
-      console.log(tempGym);
+      console.log(authorizedEditors);
 
       const tempWall = tempGym.walls
         ? tempGym.walls.find((element: Wall) => element.id === wallId)
@@ -121,14 +120,16 @@ const GymPage: React.FC = (): JSX.Element => {
       if (
         user &&
         authorizedEditors &&
-        authorizedEditors.find((editorId: string) => editorId === user.userId)
+        authorizedEditors.find((editorId: string) => editorId === user.id)
       ) {
+        console.log(true);
         setCanEdit(true);
       } else {
+        console.log(false);
         setCanEdit(false);
       }
     }
-  }, [gymId, gymsState, route, userState, wallId]);
+  }, [gymId, gymsState, userState]);
 
   const handleWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls

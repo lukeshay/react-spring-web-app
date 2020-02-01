@@ -15,7 +15,6 @@ import {
   Types,
   useViewContext
 } from "./context/view/viewStore";
-import * as Hooks from "./modules/common/hooks";
 import NavigationBar from "./modules/navigation/NavigationBar";
 import Router from "./Router";
 import { darkTheme, getTheme, lightTheme } from "./theme";
@@ -24,11 +23,11 @@ const App: React.FC = (): JSX.Element => {
   const { state: userState, dispatch: userDispatch } = useUserContext();
   const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
-  Hooks.onMount(() => {
-    if (!userState.user || !userState.user.userId) {
+  React.useEffect(() => {
+    if (!userState.user || !userState.user.id) {
       UserActions.loadUserFromCookies(userDispatch);
     }
-  });
+  }, []);
 
   const handleResize = React.useCallback((): void => {
     const width = window.innerWidth;

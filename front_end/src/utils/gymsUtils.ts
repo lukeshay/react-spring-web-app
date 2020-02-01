@@ -15,7 +15,7 @@ export const getGymById = (gyms: Gym[], gymId: string): Gym | undefined =>
 
 export const isAuthorizedEditor = (gym: Gym, user: User): boolean =>
   gym.authorizedEditors !== undefined &&
-  gym.authorizedEditors.find((editorId: string) => editorId === user.userId) !==
+  gym.authorizedEditors.find((editorId: string) => editorId === user.id) !==
     undefined;
 
 export const getWallById = (gym: Gym, wallId: string): Wall | undefined =>
