@@ -90,8 +90,7 @@ export const loadRoutes = (
 
 export const updateGym = async (
   dispatch: any,
-  updatedGym: Gym,
-  oldGym: Gym
+  updatedGym: Gym
 ): Promise<void | Response> => {
   return GymsApi.updateGym(updatedGym).then((response: Response) => {
     // if (response instanceof Response && response.ok) {

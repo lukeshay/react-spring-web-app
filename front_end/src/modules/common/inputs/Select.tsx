@@ -49,7 +49,9 @@ const Selector: React.FC<ISelectorProps> = ({
   const inputLabel = React.useRef<HTMLLabelElement>(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
-    setLabelWidth(inputLabel.current!.offsetWidth);
+    if (inputLabel && inputLabel.current) {
+      setLabelWidth(inputLabel.current.offsetWidth);
+    }
   }, []);
 
   return (

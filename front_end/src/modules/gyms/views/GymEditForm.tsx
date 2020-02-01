@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import PublishIcon from "@material-ui/icons/Publish";
@@ -47,7 +46,6 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
   const [gymId] = React.useState<string>(gym.id);
   const [name, setName] = React.useState<string>(gym.name);
   const [website, setWebsite] = React.useState<string>(gym.website);
-  const [websiteMessage, setWebsiteMessage] = React.useState<string>("");
   const [address, setAddress] = React.useState<string>(gym.address);
   const [addressMessage, setAddressMessage] = React.useState<string>("");
   const [city, setCity] = React.useState<string>(gym.city);
@@ -241,7 +239,6 @@ const GymEditForm: React.FunctionComponent<IGymEditPageProps> = ({
         onChange={handleChange}
         type="text"
         autoComplete="website"
-        helpText={websiteMessage}
       />
       <Input
         placeholder="Address"

@@ -16,19 +16,18 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
   const [firstName, setFirstName] = React.useState<string>(user.firstName);
   const [lastName, setLastName] = React.useState<string>(user.lastName);
   const [email, setEmail] = React.useState<string>(user.email);
-  const [password, setPassword] = React.useState<string>("");
   const [phoneNumber, setPhoneNumber] = React.useState<string>(
     user.phoneNumber
   );
 
   async function handleSignOutClick(): Promise<void> {
-    UserActions.signOut(userDispatch);
+    await UserActions.signOut(userDispatch);
   }
 
   async function handleSubmit(event: any): Promise<void> {
     event.preventDefault();
 
-    UserActions.updateUser(userDispatch, {
+    await UserActions.updateUser(userDispatch, {
       ...user,
       email,
       firstName,
@@ -47,8 +46,8 @@ const ProfileForm: React.FC<IPropsProfileForm> = ({ user }): JSX.Element => {
       setLastName(value);
     } else if (id === "email") {
       setEmail(value);
-    } else if (id === "password") {
-      setPassword(value);
+      // } else if (id === "password") {
+      //   setPassword(value);
     } else if (id === "phoneNumber") {
       setPhoneNumber(value);
     }

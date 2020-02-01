@@ -1,9 +1,9 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as GymsActions from "../../../context/gyms/gymsActions";
-import { GymsContext } from "../../../context/gyms/gymsStore";
+import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
@@ -32,21 +32,21 @@ const GymRow: React.FC<IGymRowProps> = ({ gym }): JSX.Element => {
 };
 
 const GymsPage: React.FC = (): JSX.Element => {
-  const { state, dispatch } = useContext(GymsContext);
+  const { state, dispatch } = useGymsContext();
+
+  const loadGyms = (): void => {
+    if (state.gyms.length === 0) {
+      GymsActions.loadGyms(dispatch).then((response) => {
+        if (!response || !(response instanceof Response) || !response.ok) {
+          toast.error("Error getting gyms.");
+        }
+      });
+    }
+  };
 
   React.useEffect(() => {
     loadGyms();
   }, []);
-
-  const loadGyms = async (): Promise<void> => {
-    if (state.gyms.length === 0) {
-      const response = await GymsActions.loadGyms(dispatch);
-
-      if (!response || !(response instanceof Response) || !response.ok) {
-        toast.error("Error getting gyms.");
-      }
-    }
-  };
 
   return (
     <Table

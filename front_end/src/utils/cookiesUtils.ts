@@ -6,7 +6,16 @@ const JWT_TOKEN = "JWT_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 const THEME = "THEME";
 
-export function setCookie(key: string, value: string, options: any): void {
+interface ICookieOptions {
+  path?: string;
+  expires?: Date;
+}
+
+export function setCookie(
+  key: string,
+  value: string,
+  options: ICookieOptions
+): void {
   cookies.set(key, value, options);
 }
 

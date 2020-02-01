@@ -5,7 +5,6 @@ import {
   FormHelperText,
   FormLabel,
   makeStyles,
-  SvgIcon,
   Theme
 } from "@material-ui/core";
 import React from "react";
