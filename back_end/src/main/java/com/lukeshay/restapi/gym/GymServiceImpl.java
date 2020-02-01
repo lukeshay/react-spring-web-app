@@ -5,12 +5,11 @@ import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.user.UserTypes;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
 import com.lukeshay.restapi.utils.BodyUtils;
+import com.lukeshay.restapi.utils.PageableUtils;
 import com.lukeshay.restapi.utils.ResponseUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -40,21 +39,13 @@ public class GymServiceImpl implements GymService {
   }
 
   @Override
-  public Page<Gym> getGyms(String query, Integer limit, Integer page) {
-    if (limit == null || limit == 0) {
-      limit = 20;
-    }
-
-    if (page == null || page == 0) {
-      page = 1;
-    }
-
+  public Page<Gym> getGyms(String query, String sorts, Integer limit, Integer page) {
     if (query == null) {
       query = "";
     }
 
     return gymRepository.findAllByNameContaining(
-        PageRequest.of(page - 1, limit, Direction.ASC, "name"), query);
+        PageableUtils.buildPageRequest(page, limit, sorts), query);
   }
 
   @Override

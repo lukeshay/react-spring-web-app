@@ -92,11 +92,12 @@ public class GymController {
   @ApiOperation(value = "Gets gyms.", response = Gym.class)
   public ResponseEntity<Page<Gym>> getGyms(
       @PathParam("query") String query,
+      @PathParam("sort") String sort,
       @PathParam("limit") Integer limit,
       @PathParam("page") Integer page) {
     LOG.debug("Getting gyms, query: {}, limit: {}, page: {}", query, limit, page);
 
-    Page<Gym> gyms = gymService.getGyms(query, limit, page);
+    Page<Gym> gyms = gymService.getGyms(query, sort, limit, page);
 
     return ResponseUtils.okOfType(gyms);
   }

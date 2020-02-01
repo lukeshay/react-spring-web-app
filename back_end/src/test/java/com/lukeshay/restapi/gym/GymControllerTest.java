@@ -168,7 +168,7 @@ class GymControllerTest extends TestBase {
   void getGymsTest() {
     populateGyms();
 
-    ResponseEntity<Page<Gym>> response = gymController.getGyms(null, 0, 0);
+    ResponseEntity<Page<Gym>> response = gymController.getGyms(null, null, 0, 0);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
@@ -177,7 +177,7 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(1, response.getBody().getTotalPages()),
         () -> Assertions.assertEquals(20, response.getBody().getContent().size()));
 
-    ResponseEntity<Page<Gym>> responseNums = gymController.getGyms(null, 5, 2);
+    ResponseEntity<Page<Gym>> responseNums = gymController.getGyms(null, null, 5, 2);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.OK, responseNums.getStatusCode()),
@@ -186,7 +186,7 @@ class GymControllerTest extends TestBase {
         () -> Assertions.assertEquals(4, responseNums.getBody().getTotalPages()),
         () -> Assertions.assertEquals(5, responseNums.getBody().getContent().size()));
 
-    ResponseEntity<Page<Gym>> responseQuery = gymController.getGyms("1", null, null);
+    ResponseEntity<Page<Gym>> responseQuery = gymController.getGyms("1", null, null, null);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.OK, responseQuery.getStatusCode()),

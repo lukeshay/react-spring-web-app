@@ -16,7 +16,7 @@ public interface GymService {
   @Deprecated
   Iterable<Gym> getAllGyms();
 
-  Page<Gym> getGyms(String query, Integer limit, Integer page);
+  Page<Gym> getGyms(String query, String sorts, Integer limit, Integer page);
 
   Gym getGymById(String gymId);
 
