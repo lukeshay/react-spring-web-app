@@ -1,9 +1,8 @@
 import { TableCell, TableRow } from "@material-ui/core";
 import React from "react";
-import { toast } from "react-toastify";
-import * as RouteRatingsApi from "../../../api/routeRatingsApi";
-import { Route, RouteRating } from "../../../types";
+import { Route } from "../../../types";
 import * as GradeUtils from "../../../utils/gradeUtils";
+import * as GymUtils from "../../../utils/gymsUtils";
 import Table from "../../common/table/Table";
 
 interface IRouteInformationRowProps {
@@ -28,43 +27,21 @@ export interface IRatingPageProps {
 const RatingPage: React.FunctionComponent<IRatingPageProps> = ({
   route
 }): JSX.Element => {
-  const [ratings, setRatings] = React.useState<RouteRating[]>([]);
-  const { id, name, averageGrade, averageRating, setter, holdColor } = route;
-  let types = "";
+  // const [ratings, setRatings] = React.useState<RouteRating[]>([]);
+  const { name, averageGrade, averageRating, setter, holdColor } = route;
+  const types = GymUtils.parseTypesToString(route);
 
-  route.types.forEach((value) => {
-    if (types.length !== 0) {
-      types += ", ";
-    }
-
-    if (value === "LEAD") {
-      types += "Lead";
-    }
-
-    if (value === "TOP_ROPE") {
-      types += "Top rope";
-    }
-
-    if (value === "BOULDER") {
-      types += "Boulder";
-    }
-
-    if (value === "AUTO_BELAY") {
-      types += "Auto belay";
-    }
-  });
-
-  React.useEffect(() => {
-    RouteRatingsApi.getRouteRatings(id).then((response: Response) => {
-      if (response instanceof Response && response.ok) {
-        response.json().then((body: RouteRating[]) => {
-          setRatings(body);
-        });
-      } else {
-        toast.error("Error getting ratings.");
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   RouteRatingsApi.getRouteRatings(id).then((response: Response) => {
+  //     if (response instanceof Response && response.ok) {
+  //       response.json().then((body: RouteRating[]) => {
+  //         setRatings(body);
+  //       });
+  //     } else {
+  //       toast.error("Error getting ratings.");
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Table

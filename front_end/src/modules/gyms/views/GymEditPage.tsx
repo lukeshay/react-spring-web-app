@@ -32,9 +32,7 @@ const GymEditPage: React.FC = (): JSX.Element => {
       tempGym &&
       user &&
       tempGym.authorizedEditors &&
-      tempGym.authorizedEditors.find(
-        (editorId: string) => editorId === user.userId
-      )
+      tempGym.authorizedEditors.find((editorId: string) => editorId === user.id)
     ) {
       setGym(tempGym);
     } else {
@@ -47,14 +45,10 @@ const GymEditPage: React.FC = (): JSX.Element => {
     photo: File | null,
     logo: File | null
   ): void => {
-    GymsActions.updateGym(
-      gymsDispatch,
-      {
-        id: gym.id,
-        ...updatedGym
-      } as Gym,
-      gym
-    ).then((responseOne) => {
+    GymsActions.updateGym(gymsDispatch, {
+      id: gym.id,
+      ...updatedGym
+    } as Gym).then((responseOne) => {
       if (!photo && !logo) {
         if (responseOne instanceof Response && responseOne.status === 200) {
           toast.success("Gym updated.");

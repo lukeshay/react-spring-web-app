@@ -1,5 +1,4 @@
 import { RouteRating } from "../types";
-import * as Cookies from "../utils/cookiesUtils";
 import { handleError, jsonHeaders } from "./apiUtils";
 
 const baseUrl = process.env.BASE_URL;

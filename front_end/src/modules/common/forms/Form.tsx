@@ -52,9 +52,6 @@ const Form: React.FC<IFormProps> = ({
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         {icon}
-        {/*
-            <GradeIcon fontSize="small" />
-        <GradeIcon fontSize="small" /> */}
         <Typography component="h1" variant="h5">
           {title}
         </Typography>
@@ -66,7 +63,7 @@ const Form: React.FC<IFormProps> = ({
           <Grid container>
             {helpElements &&
               helpElements.map((element) => (
-                // tslint:disable-next-line: jsx-key
+                // eslint-disable-next-line react/jsx-key
                 <Grid item>{element}</Grid>
               ))}
           </Grid>

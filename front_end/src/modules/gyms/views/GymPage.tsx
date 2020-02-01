@@ -82,7 +82,7 @@ const GymPage: React.FC = (): JSX.Element => {
         );
       }
     }
-  }, [gymId, gymsDispatch, gymsState.gyms, history]);
+  }, []);
 
   React.useEffect(() => {
     const tempGym = gymsState.gyms
@@ -94,6 +94,9 @@ const GymPage: React.FC = (): JSX.Element => {
 
       const { user } = userState;
       const { authorizedEditors } = tempGym;
+
+      console.log(user);
+      console.log(authorizedEditors);
 
       const tempWall = tempGym.walls
         ? tempGym.walls.find((element: Wall) => element.id === wallId)
@@ -117,14 +120,16 @@ const GymPage: React.FC = (): JSX.Element => {
       if (
         user &&
         authorizedEditors &&
-        authorizedEditors.find((editorId: string) => editorId === user.userId)
+        authorizedEditors.find((editorId: string) => editorId === user.id)
       ) {
+        console.log(true);
         setCanEdit(true);
       } else {
+        console.log(false);
         setCanEdit(false);
       }
     }
-  }, [gymId, gymsState, route, userState, wallId]);
+  }, [gymId, gymsState, userState]);
 
   const handleWallRowClick = async (rowWallId: string): Promise<void> => {
     const tempWall = gym.walls

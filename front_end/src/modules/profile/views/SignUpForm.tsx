@@ -1,10 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import { toast } from "react-toastify";
 import * as UserActions from "../../../context/user/userActions";
 import { useUserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
+import * as RegexUtils from "../../../utils/regexUtils";
 import * as ResponseUtils from "../../../utils/responseUtils";
 import Button from "../../common/buttons/ButtonSecondary";
 import Form from "../../common/forms/Form";
@@ -34,27 +34,22 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   );
 
   const validatePassword = (): boolean => {
-    const lowerCaseLetters = /[a-z]/g;
-    const upperCaseLetters = /[A-Z]/g;
-    const numbers = /[0-9]/g;
-    const specialCharacters = /[!@#\$%\^\&*\)\(+=._-]/g;
-
     if (password.length === 0) {
       setPasswordMessage("");
       return false;
     } else if (password.length < 8) {
       setPasswordMessage("Password must be at least 8 characters long.");
       return false;
-    } else if (!password.match(lowerCaseLetters)) {
+    } else if (!RegexUtils.containsLowercase(password)) {
       setPasswordMessage("Password must contain a lower case letter.");
       return false;
-    } else if (!password.match(upperCaseLetters)) {
+    } else if (!RegexUtils.containsUppercase(password)) {
       setPasswordMessage("Password must contain an upper case letter.");
       return false;
-    } else if (!password.match(numbers)) {
+    } else if (!RegexUtils.containsNumber(password)) {
       setPasswordMessage("Password must contain a number.");
       return false;
-    } else if (!password.match(specialCharacters)) {
+    } else if (!RegexUtils.containsSpecialCharacter(password)) {
       setPasswordMessage("Password must contain a special character.");
       return false;
     } else {
@@ -64,12 +59,10 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   };
 
   const validateEmail = (): boolean => {
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
     if (email.length === 0) {
       setEmailMessage("");
       return false;
-    } else if (!email.match(emailRegex)) {
+    } else if (!RegexUtils.validEmail(email)) {
       setEmailMessage("Invalid email.");
       return false;
     } else {
@@ -79,12 +72,14 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
   };
 
   const validatePhoneNumber = (): boolean => {
-    const tenDigits = /[0-9]{10}/;
-
     if (phoneNumber.length === 0) {
       setPhoneNumberMessage("");
       return false;
-    } else if (!phoneNumber.match(tenDigits) || phoneNumber.length > 10) {
+    } else if (
+      !RegexUtils.containsOnlyNumbers(phoneNumber) ||
+      phoneNumber.length > 10 ||
+      phoneNumber.length < 10
+    ) {
       setPhoneNumberMessage("Invalid phone number. Format: ##########");
       return false;
     } else {

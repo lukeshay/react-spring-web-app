@@ -14,7 +14,6 @@ export interface IPropsLogInForm {
 const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
   const { dispatch: userDispatch } = useUserContext();
   const [email, setEmail] = React.useState<string>("");
-  const [emailMessage, setEmailMessage] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [passwordMessage, setPasswordMessage] = React.useState<string>("");
   const [rememberMe, setRememberMe] = React.useState<boolean>(false);
@@ -54,7 +53,6 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
         id="email"
         value={email}
         onChange={handleChange}
-        helpText={emailMessage}
         type="text"
         autoComplete="email"
       />

@@ -1,12 +1,11 @@
-import { useContext, useState } from "react";
 import React from "react";
-import { UserContext } from "../../context/user/userStore";
+import { useUserContext } from "../../context/user/userStore";
 import ProfileForm from "./views/ProfileForm";
 import SignInForm from "./views/SignInForm";
 import SignUpForm from "./views/SignUpForm";
 
 const ProfilePage: React.FC = (): JSX.Element => {
-  const { state } = useContext(UserContext);
+  const { state } = useUserContext();
   const [createAccount, setCreateAccount] = React.useState<boolean>(true);
 
   const handleSignInClick = (event: any): void => {
