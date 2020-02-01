@@ -4,12 +4,11 @@ import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
+import javax.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -56,7 +55,7 @@ public class WallController {
   @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "Update an existing wall.", response = Wall.class)
   public ResponseEntity<?> updateWall(Authentication authentication, @RequestBody Wall body) {
-    LOG.debug("Updating wall {}", body.toString());
+    LOG.debug("Updating wall {}", body);
 
     Wall wall =
         wallService.updateWall(
@@ -87,13 +86,16 @@ public class WallController {
   @GetMapping("/{gymId}")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Get a gyms walls.", response = Wall.class)
-  public ResponseEntity<List<Wall>> getWalls(
-      Authentication authentication, @PathVariable String gymId) {
+  public ResponseEntity<Page<Wall>> getWalls(
+      Authentication authentication,
+      @PathVariable String gymId,
+      @PathParam("query") String query,
+      @PathParam("sort") String sort,
+      @PathParam("limit") Integer limit,
+      @PathParam("page") Integer page) {
     LOG.debug("Getting gym {} walls", gymId);
 
-    List<Wall> walls = wallService.getWalls(gymId);
-
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(walls);
+    return wallService.getWalls(gymId, query, sort, limit, page);
   }
 
   @DeleteMapping("")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
 public interface WallService {
@@ -16,10 +17,7 @@ public interface WallService {
 
   Wall deleteWall(Authentication authentication, String wallId);
 
-  @Deprecated
-  List<Wall> getWalls(String gymId);
-
-  Page<Wall> getWalls(String query, Integer limit, Integer page);
+  ResponseEntity<Page<Wall>> getWalls(String gymId, String query, String sort, Integer limit, Integer page);
 
   Wall updateWall(
       Authentication authentication,

@@ -4,12 +4,14 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
+import com.lukeshay.restapi.utils.ExceptionUtils;
+import com.lukeshay.restapi.utils.PageableUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -67,27 +69,15 @@ public class WallServiceImpl implements WallService {
   }
 
   @Override
-  @Deprecated
-  public List<Wall> getWalls(String gymId) {
-    return wallRepository.findAllByGymId(gymId);
-  }
+  public ResponseEntity<Page<Wall>> getWalls(
+      String gymId, String query, String sort, Integer limit, Integer page) {
+    Gym gym = gymRepository.findById(gymId).orElseThrow(() -> ExceptionUtils.badRequest("Gym does not exist."));
 
-  @Override
-  public Page<Wall> getWalls(String query, Integer limit, Integer page) {
-    if (limit == null || limit == 0) {
-      limit = 20;
-    }
+    Page<Wall> wallPage =
+        wallRepository.findAllByGymIdAndNameContaining(
+            PageableUtils.buildPageRequest(page, limit, sort), gymId, query);
 
-    if (page == null || page == 0) {
-      page = 1;
-    }
-
-    if (query == null) {
-      query = "";
-    }
-
-    return wallRepository.findAllByNameContaining(
-        PageRequest.of(page - 1, limit, Direction.ASC, "name"), query);
+    return ResponseUtils.okOfType(wallPage);
   }
 
   @Override
