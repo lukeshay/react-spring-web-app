@@ -9,7 +9,8 @@ public class ExceptionUtils {
     return httpClientErrorException(HttpStatus.BAD_REQUEST, message);
   }
 
-  private static HttpClientErrorException httpClientErrorException(HttpStatus status, String message) {
+  private static HttpClientErrorException httpClientErrorException(
+      HttpStatus status, String message) {
     return HttpClientErrorException.create(status, message, HttpHeaders.EMPTY, null, null);
   }
 }

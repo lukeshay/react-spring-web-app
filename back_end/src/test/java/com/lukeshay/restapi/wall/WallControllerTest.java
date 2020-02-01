@@ -178,14 +178,14 @@ public class WallControllerTest extends TestBase {
   void getWallsTest() {
     testWall = wallRepository.save(testWall);
 
-    ResponseEntity<Page<Wall>> response = wallController.getWalls(authentication, testGym.getId(), "", null, null, null);
+    ResponseEntity<Page<Wall>> response =
+        wallController.getWalls(authentication, testGym.getId(), "", null, null, null);
 
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
         () -> Assertions.assertEquals(1, response.getBody().getTotalElements()),
         () -> Assertions.assertEquals(1, response.getBody().getNumberOfElements()),
         () -> Assertions.assertEquals(1, response.getBody().getTotalPages()),
-        () -> Assertions.assertEquals(1, response.getBody().getContent().size())
-    );
+        () -> Assertions.assertEquals(1, response.getBody().getContent().size()));
   }
 }

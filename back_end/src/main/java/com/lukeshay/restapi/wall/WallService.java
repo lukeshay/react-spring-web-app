@@ -17,7 +17,8 @@ public interface WallService {
 
   Wall deleteWall(Authentication authentication, String wallId);
 
-  ResponseEntity<Page<Wall>> getWalls(String gymId, String query, String sort, Integer limit, Integer page);
+  ResponseEntity<Page<Wall>> getWalls(
+      String gymId, String query, String sort, Integer limit, Integer page);
 
   Wall updateWall(
       Authentication authentication,

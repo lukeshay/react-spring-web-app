@@ -71,7 +71,10 @@ public class WallServiceImpl implements WallService {
   @Override
   public ResponseEntity<Page<Wall>> getWalls(
       String gymId, String query, String sort, Integer limit, Integer page) {
-    Gym gym = gymRepository.findById(gymId).orElseThrow(() -> ExceptionUtils.badRequest("Gym does not exist."));
+    Gym gym =
+        gymRepository
+            .findById(gymId)
+            .orElseThrow(() -> ExceptionUtils.badRequest("Gym does not exist."));
 
     Page<Wall> wallPage =
         wallRepository.findAllByGymIdAndNameContaining(
