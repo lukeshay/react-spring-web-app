@@ -4,9 +4,14 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
+import com.lukeshay.restapi.utils.ExceptionUtils;
+import com.lukeshay.restapi.utils.PageableUtils;
+import com.lukeshay.restapi.utils.ResponseUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -64,8 +69,18 @@ public class WallServiceImpl implements WallService {
   }
 
   @Override
-  public List<Wall> getWalls(String gymId) {
-    return wallRepository.findAllByGymId(gymId);
+  public ResponseEntity<Page<Wall>> getWalls(
+      String gymId, String query, String sort, Integer limit, Integer page) {
+    Gym gym =
+        gymRepository
+            .findById(gymId)
+            .orElseThrow(() -> ExceptionUtils.badRequest("Gym does not exist."));
+
+    Page<Wall> wallPage =
+        wallRepository.findAllByGymIdAndNameContaining(
+            PageableUtils.buildPageRequest(page, limit, sort), gymId, query);
+
+    return ResponseUtils.okOfType(wallPage);
   }
 
   @Override

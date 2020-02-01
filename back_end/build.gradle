@@ -90,7 +90,7 @@ task verifyFormatting(type: VerifyGoogleJavaFormat) {
 
 jacocoTestCoverageVerification {
     afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
+        classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it,
                 include: [
                     'com/lukeshay/restapi/**',
@@ -109,8 +109,7 @@ jacocoTestCoverageVerification {
                     '**/*security/*',
                 ]
             )
-        })
-
+        }))
     }
 
     violationRules {
@@ -134,9 +133,4 @@ jacocoTestReport {
     }
 }
 
-run {
-    systemProperties System.getProperties()
-}
-
 check.dependsOn jacocoTestReport
-check.doFirst run as Action<? super Task>

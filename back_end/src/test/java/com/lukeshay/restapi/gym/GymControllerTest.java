@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -161,5 +162,55 @@ class GymControllerTest extends TestBase {
             Assertions.assertEquals(
                 BodyUtils.error("You are unauthorized to perform this action."),
                 unauthorizedResponse.getBody()));
+  }
+
+  @Test
+  void getGymsTest() {
+    populateGyms();
+
+    ResponseEntity<Page<Gym>> response = gymController.getGyms(null, null, 0, 0);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
+        () -> Assertions.assertEquals(20, response.getBody().getTotalElements()),
+        () -> Assertions.assertEquals(20, response.getBody().getNumberOfElements()),
+        () -> Assertions.assertEquals(1, response.getBody().getTotalPages()),
+        () -> Assertions.assertEquals(20, response.getBody().getContent().size()));
+
+    ResponseEntity<Page<Gym>> responseNums = gymController.getGyms(null, null, 5, 2);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.OK, responseNums.getStatusCode()),
+        () -> Assertions.assertEquals(20, responseNums.getBody().getTotalElements()),
+        () -> Assertions.assertEquals(5, responseNums.getBody().getNumberOfElements()),
+        () -> Assertions.assertEquals(4, responseNums.getBody().getTotalPages()),
+        () -> Assertions.assertEquals(5, responseNums.getBody().getContent().size()));
+
+    ResponseEntity<Page<Gym>> responseQuery = gymController.getGyms("1", null, null, null);
+
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.OK, responseQuery.getStatusCode()),
+        () -> Assertions.assertEquals(10, responseQuery.getBody().getTotalElements()),
+        () -> Assertions.assertEquals(10, responseQuery.getBody().getNumberOfElements()),
+        () -> Assertions.assertEquals(1, responseQuery.getBody().getTotalPages()),
+        () -> Assertions.assertEquals(10, responseQuery.getBody().getContent().size()));
+  }
+
+  private void populateGyms() {
+    for (int i = 0; i < 19; i++) {
+      Gym gym =
+          new Gym(
+              "Jim" + i,
+              "street",
+              "city",
+              "state",
+              "50014",
+              "lukeshay.com",
+              "climbing@gym.com",
+              "phoneNumber",
+              Collections.singletonList(testUser.getId()));
+
+      gymRepository.save(gym);
+    }
   }
 }

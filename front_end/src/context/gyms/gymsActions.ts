@@ -2,7 +2,7 @@ import * as GymsApi from "../../api/gymsApi";
 import * as RouteRatingsApi from "../../api/routeRatingsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, Route, RouteRating, Wall } from "../../types";
+import { Gym, GymPage, Route, RouteRating, Wall } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
 import { Dispatch } from "react";
@@ -12,10 +12,10 @@ export const loadGyms = (
 ): Promise<void | Response> => {
   return GymsApi.getGyms().then((response: Response) => {
     if (response instanceof Response && response.ok) {
-      response.json().then((body: Gym[]) => {
+      response.json().then((body: GymPage) => {
         dispatch({
           actionType: Types.LOAD_GYMS,
-          gyms: body
+          gyms: body.content
         } as IGymsContextAction);
       });
 

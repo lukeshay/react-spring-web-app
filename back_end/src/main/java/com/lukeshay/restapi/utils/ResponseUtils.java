@@ -9,6 +9,10 @@ public class ResponseUtils {
     return httpJsonResponse(HttpStatus.OK, body);
   }
 
+  public static <T> ResponseEntity<T> okOfType(T body) {
+    return httpJsonResponseOfType(HttpStatus.OK, body);
+  }
+
   public static <T> ResponseEntity<?> notFound(T body) {
     return httpJsonResponse(HttpStatus.NOT_FOUND, body);
   }
@@ -26,6 +30,10 @@ public class ResponseUtils {
   }
 
   private static <T> ResponseEntity<?> httpJsonResponse(HttpStatus status, T body) {
+    return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(body);
+  }
+
+  private static <T> ResponseEntity<T> httpJsonResponseOfType(HttpStatus status, T body) {
     return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 }

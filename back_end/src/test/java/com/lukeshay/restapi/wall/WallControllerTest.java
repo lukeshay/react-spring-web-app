@@ -5,13 +5,13 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -178,8 +178,14 @@ public class WallControllerTest extends TestBase {
   void getWallsTest() {
     testWall = wallRepository.save(testWall);
 
-    List<Wall> walls = wallController.getWalls(authentication, testGym.getId()).getBody();
+    ResponseEntity<Page<Wall>> response =
+        wallController.getWalls(authentication, testGym.getId(), "", null, null, null);
 
-    Assertions.assertIterableEquals(walls, Collections.singletonList(testWall));
+    Assertions.assertAll(
+        () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
+        () -> Assertions.assertEquals(1, response.getBody().getTotalElements()),
+        () -> Assertions.assertEquals(1, response.getBody().getNumberOfElements()),
+        () -> Assertions.assertEquals(1, response.getBody().getTotalPages()),
+        () -> Assertions.assertEquals(1, response.getBody().getContent().size()));
   }
 }

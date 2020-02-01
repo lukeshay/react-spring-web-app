@@ -4,9 +4,11 @@ import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.utils.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -73,7 +75,8 @@ public class GymController {
     return ResponseUtils.ok(gym);
   }
 
-  @GetMapping("")
+  @Deprecated
+  @GetMapping("/all")
   @PreAuthorize("permitAll()")
   @ApiOperation(value = "Gets all gyms.", response = Gym.class)
   public ResponseEntity<?> getAllGyms() {
@@ -82,6 +85,21 @@ public class GymController {
     Iterable<Gym> gyms = gymService.getAllGyms();
 
     return ResponseUtils.ok(gyms);
+  }
+
+  @GetMapping("")
+  @PreAuthorize("permitAll()")
+  @ApiOperation(value = "Gets gyms.", response = Gym.class)
+  public ResponseEntity<Page<Gym>> getGyms(
+      @PathParam("query") String query,
+      @PathParam("sort") String sort,
+      @PathParam("limit") Integer limit,
+      @PathParam("page") Integer page) {
+    LOG.debug("Getting gyms, query: {}, limit: {}, page: {}", query, limit, page);
+
+    Page<Gym> gyms = gymService.getGyms(query, sort, limit, page);
+
+    return ResponseUtils.okOfType(gyms);
   }
 
   @GetMapping("/{gymId}")
