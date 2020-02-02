@@ -18,7 +18,8 @@
     "format": "prettier --write \"**/*.+(ts|tsx|json|css|md)\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "validate": "yarn typecheck && yarn lint",
-    "test": "jest"
+    "test": "jest",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.2",

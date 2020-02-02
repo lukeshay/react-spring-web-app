@@ -1,9 +1,9 @@
 import React from "react";
 import ProfilePage from "../ProfilePage";
-import { IUserContextState, UserStore } from "../../../context/user/userStore";
-import { mount, render, shallow } from "../../../../configs/setupEnzyme";
+import { IUserContextState } from "../../../context/user/userStore";
+import { mount, shallow } from "../../../../configs/setupEnzyme";
 import UserStoreMock from "../../../__mocks__/userStoreMock";
-import { Session, User } from "../../../types";
+import { User } from "../../../types";
 
 const testUser: User = {
   username: "username",

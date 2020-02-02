@@ -15,19 +15,3 @@ exports[`<Main /> should render correctly 1`] = `
   </HashRouter>
 </Memo(StoreCombiner)>
 `;
-
-exports[`main should render correctly 1`] = `
-<Memo(StoreCombiner)
-  stores={
-    Array [
-      [Function],
-      [Function],
-      [Function],
-    ]
-  }
->
-  <HashRouter>
-    <App />
-  </HashRouter>
-</Memo(StoreCombiner)>
-`;

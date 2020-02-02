@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" time="6.815">
-  <testsuite name="&lt;Main /&gt;" errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:25:17" time="1.51" tests="1">
-    <testcase classname="" name="&lt;Main /&gt; should render correctly" time="0.009">
+<testsuites name="jest tests" tests="7" failures="0" time="12.963">
+  <testsuite name="GradeUtils" errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:50:47" time="0.54" tests="2">
+    <testcase classname="" name="GradeUtils convert a grade to a string." time="0.003">
+    </testcase>
+    <testcase classname="" name="GradeUtils convert a string to a grade." time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="&lt;ProfilePage /&gt; " errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:25:17" time="3.814" tests="3">
-    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign up form." time="0.009">
+  <testsuite name="&lt;Main /&gt;" errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:50:48" time="3.828" tests="1">
+    <testcase classname="" name="&lt;Main /&gt; should render correctly" time="0.005">
     </testcase>
-    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign in form." time="0.156">
+  </testsuite>
+  <testsuite name="GymUtils" errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:50:47" time="6.182" tests="1">
+    <testcase classname="" name="GymUtils get whether user is authorized." time="0.003">
     </testcase>
-    <testcase classname="" name="&lt;ProfilePage /&gt;  should render profile form." time="0.026">
+  </testsuite>
+  <testsuite name="&lt;ProfilePage /&gt; " errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:50:47" time="6.398" tests="3">
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign up form." time="0.012">
+    </testcase>
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign in form." time="0.182">
+    </testcase>
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render profile form." time="0.022">
     </testcase>
   </testsuite>
 </testsuites>
