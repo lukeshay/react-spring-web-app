@@ -34,10 +34,11 @@ public class GymV2ServiceImpl implements GymV2Service {
 
     List<WallWithRoutes> wallsWithRoutes = new ArrayList<>();
 
-    walls.forEach((wall) -> {
-      List<Route> routes = routeRepository.findAllByWallId(wall.getId());
-      wallsWithRoutes.add(new WallWithRoutes(wall, routes));
-    });
+    walls.forEach(
+        (wall) -> {
+          List<Route> routes = routeRepository.findAllByWallId(wall.getId());
+          wallsWithRoutes.add(new WallWithRoutes(wall, routes));
+        });
 
     return new GymWithWalls(gym, wallsWithRoutes);
   }

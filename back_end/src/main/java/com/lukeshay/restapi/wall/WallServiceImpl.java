@@ -27,12 +27,15 @@ public class WallServiceImpl implements WallService {
     User user = AuthenticationUtils.getUser(authentication);
 
     if (user == null || (body.getId() != null && !body.getId().equals(""))) {
-      return ResponseUtils.badRequest(BodyUtils.error("Invalid route."));
+      return ResponseUtils.badRequest(BodyUtils.error("Invalid wall."));
     }
 
     Gym gym = gymRepository.findById(body.getGymId()).orElse(null);
 
-    if (gym == null || !gym.getAuthorizedEditors().contains(user.getId())) {
+    if (gym == null) {
+      return ResponseUtils.badRequest(BodyUtils.error("Gym doesn't exist."));
+    }
+    if (!gym.getAuthorizedEditors().contains(user.getId())) {
       return ResponseUtils.unauthorized(BodyUtils.error("Not an editor."));
     }
 

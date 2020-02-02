@@ -6,7 +6,6 @@ import com.lukeshay.restapi.utils.BodyUtils;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +65,6 @@ class UserControllerTest extends TestBase {
 
   @Test
   @WithMockUser
-  @Disabled
   void updateUserByIdTest() {
     testUser.setUsername("TestUserChange");
     testUser.setFirstName("First");

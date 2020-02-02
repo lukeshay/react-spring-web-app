@@ -19,7 +19,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable<U> {
 
-  @CreatedBy @Expose @JsonProperty(access = Access.WRITE_ONLY)protected U createdBy;
+  @CreatedBy
+  @Expose
+  @JsonProperty(access = Access.WRITE_ONLY)
+  protected U createdBy;
 
   @Expose
   @CreatedDate
@@ -27,7 +30,10 @@ public class Auditable<U> {
   @JsonProperty(access = Access.WRITE_ONLY)
   protected Date creationDate;
 
-  @Expose @LastModifiedBy @JsonProperty(access = Access.WRITE_ONLY)protected U lastModifiedBy;
+  @Expose
+  @LastModifiedBy
+  @JsonProperty(access = Access.WRITE_ONLY)
+  protected U lastModifiedBy;
 
   @Expose
   @LastModifiedDate
