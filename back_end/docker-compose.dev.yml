@@ -1,0 +1,35 @@
+version: "3.3"
+
+services:
+  restapi:
+    image: rest-api
+    restart: always
+    container_name: rest-api
+    ports:
+      - 5000:8080
+    working_dir: /opt/app
+    environment:
+      - JWT_SECRET=$JWT_SECRET
+      - REFRESH_SECRET=$REFRESH_SECRET
+      - ACCESS_KEY=$ACCESS_KEY
+      - SECRET_KEY=$SECRET_KEY
+    depends_on:
+      - sqldb
+    links:
+      - sqldb
+
+  sqldb:
+    image: postgres
+    container_name: rest-api-postgres
+    environment:
+      POSTGRES_USER: standard
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: routerating
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+    - 5433:5432
+
+volumes:
+  db-data:
+    driver: local

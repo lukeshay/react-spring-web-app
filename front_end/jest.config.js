@@ -1,8 +1,11 @@
 module.exports = {
   collectCoverageFrom: [
-    "!**/node_modules/**",
     "**/src/**/*.{ts,tsx}",
-    "!**/*.d.ts"
+    "!**/node_modules/**",
+    "!**/*.d.ts",
+    "!**/types/**",
+    "!**/__mocks__/**",
+    "!**/__tests__/**"
   ],
   coverageThreshold: {
     global: {

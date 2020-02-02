@@ -3,22 +3,7 @@ import ProfilePage from "../ProfilePage";
 import { IUserContextState } from "../../../context/user/userStore";
 import { mount, shallow } from "../../../../configs/setupEnzyme";
 import UserStoreMock from "../../../__mocks__/userStoreMock";
-import { User } from "../../../types";
-
-const testUser: User = {
-  username: "username",
-  email: "email",
-  password: "password",
-  id: "id",
-  authority: "ADMIN",
-  country: "USA",
-  state: "IA",
-  firstName: "Name",
-  lastName: "Last",
-  phoneNumber: "1111111111",
-  role: "ADMIN_ROLE",
-  session: null
-};
+import * as TypeMocks from "../../../__mocks__/typeMocks";
 
 describe("<ProfilePage /> ", () => {
   it("should render sign up form.", function() {
@@ -60,7 +45,7 @@ describe("<ProfilePage /> ", () => {
 
   it("should render profile form.", () => {
     const mockState: IUserContextState = {
-      user: testUser
+      user: TypeMocks.testUser
     };
 
     const profilePage = mount(

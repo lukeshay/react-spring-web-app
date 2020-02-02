@@ -38,3 +38,6 @@ export const parseTypesToString = (route: Route): string => {
 
   return types;
 };
+
+export const getGymById = (gyms: Gym[], gymId: string): Gym | undefined =>
+  gyms.filter((element) => element.id === gymId).pop();

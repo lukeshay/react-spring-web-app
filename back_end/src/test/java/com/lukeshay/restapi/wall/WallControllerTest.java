@@ -146,8 +146,6 @@ public class WallControllerTest extends TestBase {
 
     ResponseEntity<?> responseCreate = wallController.createWall(authentication, testWall);
 
-    System.out.println("YEET: " + BodyUtils.error("ERROROROROR").toString());
-
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(

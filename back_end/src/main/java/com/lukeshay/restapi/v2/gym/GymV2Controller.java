@@ -23,12 +23,7 @@ public class GymV2Controller {
 
   private static Logger LOG = LoggerFactory.getLogger(GymV2Controller.class.getName());
 
-  private GymV2Service gymV2Service;
-
-  @Autowired
-  public GymV2Controller(GymV2Service gymV2Service) {
-    this.gymV2Service = gymV2Service;
-  }
+  @Autowired private GymV2Service gymV2Service;
 
   @GetMapping("/{gymId}")
   @PreAuthorize("permitAll()")
@@ -37,6 +32,8 @@ public class GymV2Controller {
     LOG.debug("Getting all gym information of {}", gymId);
 
     GymWithWalls gym = gymV2Service.getGym(gymId);
+
+    LOG.debug("The gym with walls: {}", gym);
 
     if (gym == null) {
       return ResponseUtils.badRequest(BodyUtils.error("Error getting gym."));

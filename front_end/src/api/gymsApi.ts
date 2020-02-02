@@ -1,5 +1,6 @@
 import { Gym } from "../types";
-import { authHeaders, handleError, jsonHeaders } from "./apiUtils";
+import { handleError } from "./apiUtils";
+import * as Cookies from "../utils/cookiesUtils";
 
 const baseUrl = process.env.BASE_URL;
 const gymsUrl = baseUrl + "gyms";
@@ -28,7 +29,11 @@ export const getGymV2 = async (gymId: string): Promise<void | Response> => {
 export const updateGym = async (updatedGym: Gym): Promise<void | Response> => {
   return fetch(gymsUrl + "/" + updatedGym.id, {
     body: JSON.stringify(updatedGym),
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "PUT"
   })
     .then(
@@ -49,7 +54,10 @@ export const updateGymPhoto = async (
 
   return fetch(gymsUrl + "/image/gym", {
     body: data,
-    headers: authHeaders,
+    headers: {
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "POST"
   })
     .then(
@@ -70,7 +78,10 @@ export const updateGymLogo = async (
 
   return fetch(gymsUrl + "/image/logo", {
     body: data,
-    headers: authHeaders,
+    headers: {
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "POST"
   })
     .then(

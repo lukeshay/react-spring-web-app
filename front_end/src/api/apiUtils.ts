@@ -5,13 +5,3 @@ export function handleError(error: Error): void {
   console.error("API call failed. " + error);
   throw error;
 }
-
-export const authHeaders = {
-  Authorization: Cookies.getJwtToken(),
-  Refresh: Cookies.getRefreshToken()
-};
-
-export const jsonHeaders = {
-  "Content-Type": "application/json",
-  ...authHeaders
-};

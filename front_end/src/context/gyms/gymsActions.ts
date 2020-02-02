@@ -2,7 +2,7 @@ import * as GymsApi from "../../api/gymsApi";
 import * as RouteRatingsApi from "../../api/routeRatingsApi";
 import * as RoutesApi from "../../api/routesApi";
 import * as WallsApi from "../../api/wallsApi";
-import { Gym, GymPage, Route, RouteRating, Wall } from "../../types";
+import { Gym, GymPage, Route, RouteRating, Wall, WallPage } from "../../types";
 import Types from "./gymsActionTypes";
 import { IGymsContextAction } from "./gymsStore";
 import { Dispatch } from "react";
@@ -31,6 +31,8 @@ export const loadGymV2 = (
   return GymsApi.getGymV2(gymId).then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: Gym) => {
+        console.log(body);
+
         dispatch({
           actionType: Types.UPDATE_GYM,
           gym: body
@@ -48,8 +50,8 @@ export const loadWalls = (
 ): Promise<void | Response> => {
   return WallsApi.getWalls(gym.id).then((response: Response) => {
     if (response instanceof Response && response.ok) {
-      response.json().then((body: Wall[]) => {
-        gym.walls = body;
+      response.json().then((body: WallPage) => {
+        gym.walls = body.content;
 
         dispatch({
           actionType: Types.UPDATE_GYM,
