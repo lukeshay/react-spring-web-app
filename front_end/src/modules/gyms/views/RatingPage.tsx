@@ -2,7 +2,7 @@ import { TableCell, TableRow } from "@material-ui/core";
 import React from "react";
 import { Route } from "../../../types";
 import * as GradeUtils from "../../../utils/gradeUtils";
-import * as GymUtils from "../../../utils/gymsUtils";
+import * as GymUtils from "../../../utils/gymUtils";
 import Table from "../../common/table/Table";
 
 interface IRouteInformationRowProps {

@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 public interface WallService {
   Logger LOG = LoggerFactory.getLogger(WallService.class.getName());
 
-  Wall createWall(Authentication authentication, Wall body);
+  ResponseEntity<?> createWall(Authentication authentication, Wall body);
 
   void deleteAllWalls();
 

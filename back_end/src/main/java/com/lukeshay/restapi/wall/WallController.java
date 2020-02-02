@@ -41,14 +41,7 @@ public class WallController {
   @ApiOperation(value = "Create a new wall", response = Wall.class)
   public ResponseEntity<?> createWall(Authentication authentication, @RequestBody Wall body) {
     LOG.debug("Adding wall {}", body);
-
-    Wall wall = wallService.createWall(authentication, body);
-
-    if (wall == null) {
-      return ResponseUtils.badRequest(BodyUtils.error("Error adding wall."));
-    } else {
-      return ResponseUtils.ok(wall);
-    }
+    return wallService.createWall(authentication, body);
   }
 
   @PutMapping("")

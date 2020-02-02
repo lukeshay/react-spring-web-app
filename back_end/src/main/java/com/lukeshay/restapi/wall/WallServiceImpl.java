@@ -4,6 +4,7 @@ import com.lukeshay.restapi.gym.Gym;
 import com.lukeshay.restapi.gym.GymRepository;
 import com.lukeshay.restapi.user.User;
 import com.lukeshay.restapi.utils.AuthenticationUtils;
+import com.lukeshay.restapi.utils.BodyUtils;
 import com.lukeshay.restapi.utils.ExceptionUtils;
 import com.lukeshay.restapi.utils.PageableUtils;
 import com.lukeshay.restapi.utils.ResponseUtils;
@@ -22,20 +23,23 @@ public class WallServiceImpl implements WallService {
   @Autowired private GymRepository gymRepository;
 
   @Override
-  public Wall createWall(Authentication authentication, Wall body) {
+  public ResponseEntity<?> createWall(Authentication authentication, Wall body) {
     User user = AuthenticationUtils.getUser(authentication);
 
     if (user == null || (body.getId() != null && !body.getId().equals(""))) {
-      return null;
+      return ResponseUtils.badRequest(BodyUtils.error("Invalid wall."));
     }
 
     Gym gym = gymRepository.findById(body.getGymId()).orElse(null);
 
-    if (gym == null || !gym.getAuthorizedEditors().contains(user.getId())) {
-      return null;
+    if (gym == null) {
+      return ResponseUtils.badRequest(BodyUtils.error("Gym doesn't exist."));
+    }
+    if (!gym.getAuthorizedEditors().contains(user.getId())) {
+      return ResponseUtils.unauthorized(BodyUtils.error("Not an editor."));
     }
 
-    return wallRepository.save(body);
+    return ResponseUtils.ok(wallRepository.save(body));
   }
 
   @Override
@@ -75,6 +79,10 @@ public class WallServiceImpl implements WallService {
         gymRepository
             .findById(gymId)
             .orElseThrow(() -> ExceptionUtils.badRequest("Gym does not exist."));
+
+    if (query == null) {
+      query = "";
+    }
 
     Page<Wall> wallPage =
         wallRepository.findAllByGymIdAndNameContaining(

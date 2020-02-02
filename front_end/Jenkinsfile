@@ -28,6 +28,7 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Testing...'
+        sh 'cd front_end && yarn test'
       }
     }
     stage('Coverage') {

@@ -142,12 +142,8 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         username: email
       } as User);
 
-      if (response instanceof Response && response.url.split("/")[3]) {
-        if (response.status !== 200) {
-          ResponseUtils.createUserResponse(response).then((message) =>
-            toast.error("Error: " + message)
-          );
-        }
+      if (response instanceof Response && !response.ok) {
+        toast.error("Error creating user.");
       }
     }
   }
@@ -217,6 +213,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button
+          id="signIn"
           onClick={props.handleSignInClick}
           type="button"
           variant="outlined"

@@ -82,6 +82,7 @@ const SignInForm: React.FC<IPropsLogInForm> = (props): JSX.Element => {
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button
+          id="signUp"
           onClick={props.handleSignUpClick}
           type="button"
           variant="outlined"

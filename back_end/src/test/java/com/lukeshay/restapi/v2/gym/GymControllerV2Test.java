@@ -6,7 +6,6 @@ import com.lukeshay.restapi.route.Route;
 import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallProperties.WallTypes;
 import java.util.Collections;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,13 +58,6 @@ public class GymControllerV2Test extends TestBase {
             testGym,
             Collections.singletonList(
                 new WallWithRoutes(testWall, Collections.singletonList(testRoute))));
-  }
-
-  @AfterEach
-  void tearDown() {
-    gymRepository.deleteAll();
-    wallRepository.deleteAll();
-    routeRepository.deleteAll();
   }
 
   @Test

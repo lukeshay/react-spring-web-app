@@ -10,7 +10,7 @@ export interface User {
   state: string;
   password: string;
   phoneNumber: string;
-  authorities: string[];
-  roles: string[];
+  authority: string;
+  role: string;
   session: Session | null;
 }

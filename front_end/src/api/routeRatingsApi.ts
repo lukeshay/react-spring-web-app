@@ -1,5 +1,6 @@
 import { RouteRating } from "../types";
-import { handleError, jsonHeaders } from "./apiUtils";
+import { handleError } from "./apiUtils";
+import * as Cookies from "../utils/cookiesUtils";
 
 const baseUrl = process.env.BASE_URL;
 const routeRatingsUrl = baseUrl + "ratings/routes";
@@ -19,7 +20,11 @@ export const createRouteRating = (
 ): Promise<void | Response> => {
   return fetch(routeRatingsUrl, {
     body: JSON.stringify(rating),
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "POST"
   });
 };

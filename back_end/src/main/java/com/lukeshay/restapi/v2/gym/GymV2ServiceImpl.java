@@ -7,6 +7,7 @@ import com.lukeshay.restapi.route.RouteRepository;
 import com.lukeshay.restapi.wall.Wall;
 import com.lukeshay.restapi.wall.WallRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,20 +22,23 @@ public class GymV2ServiceImpl implements GymV2Service {
   public GymWithWalls getGym(String gymId) {
     Gym gym = gymRepository.findById(gymId).orElse(null);
 
+    LOG.debug("Found gym: {}", gym);
+
     if (gym == null) {
       return null;
     }
 
     List<Wall> walls = wallRepository.findAllByGymId(gymId);
 
+    LOG.debug("Found walls: {}", Arrays.toString(walls.toArray()));
+
     List<WallWithRoutes> wallsWithRoutes = new ArrayList<>();
 
-    for (Wall wall : walls) {
-      List<Route> routes = routeRepository.findAllByWallId(wall.getId());
-      WallWithRoutes wallWithRoutes = new WallWithRoutes(wall, routes);
-
-      wallsWithRoutes.add(wallWithRoutes);
-    }
+    walls.forEach(
+        (wall) -> {
+          List<Route> routes = routeRepository.findAllByWallId(wall.getId());
+          wallsWithRoutes.add(new WallWithRoutes(wall, routes));
+        });
 
     return new GymWithWalls(gym, wallsWithRoutes);
   }

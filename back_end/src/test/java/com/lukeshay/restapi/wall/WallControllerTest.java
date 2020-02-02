@@ -64,9 +64,7 @@ public class WallControllerTest extends TestBase {
     ResponseEntity<?> responseWithId = wallController.createWall(authentication, testWall);
 
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(
-                BodyUtils.error("Error adding wall."), responseWithId.getBody()),
+        () -> Assertions.assertEquals(BodyUtils.error("Invalid wall."), responseWithId.getBody()),
         () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseWithId.getStatusCode()));
 
     testWall.setId(null);
@@ -77,7 +75,7 @@ public class WallControllerTest extends TestBase {
     Assertions.assertAll(
         () ->
             Assertions.assertEquals(
-                BodyUtils.error("Error adding wall."), responseInvalidGymId.getBody()),
+                BodyUtils.error("Gym doesn't exist."), responseInvalidGymId.getBody()),
         () ->
             Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseInvalidGymId.getStatusCode()));
   }
@@ -146,13 +144,9 @@ public class WallControllerTest extends TestBase {
 
     ResponseEntity<?> responseCreate = wallController.createWall(authentication, testWall);
 
-    System.out.println("YEET: " + BodyUtils.error("ERROROROROR").toString());
-
     Assertions.assertAll(
-        () ->
-            Assertions.assertEquals(
-                BodyUtils.error("Error adding wall."), responseCreate.getBody()),
-        () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseCreate.getStatusCode()));
+        () -> Assertions.assertEquals(BodyUtils.error("Not an editor."), responseCreate.getBody()),
+        () -> Assertions.assertEquals(HttpStatus.UNAUTHORIZED, responseCreate.getStatusCode()));
 
     testWall = wallRepository.save(testWall);
     testWall.setName("YEET");

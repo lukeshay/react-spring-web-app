@@ -1,5 +1,6 @@
 import { User } from "../types";
-import { handleError, jsonHeaders } from "./apiUtils";
+import { handleError } from "./apiUtils";
+import * as Cookies from "../utils/cookiesUtils";
 
 const baseUrl = process.env.BASE_URL;
 const signInUrl = baseUrl + "login";
@@ -13,7 +14,11 @@ export async function signIn(
   const remember = rememberMe ? "?remember=true" : "";
   return fetch(signInUrl + remember, {
     body: JSON.stringify({ username, password }),
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "POST"
   })
     .then(
@@ -26,7 +31,11 @@ export async function signIn(
 
 export async function getUser(): Promise<void | Response> {
   return fetch(userUrl, {
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "GET"
   })
     .then(
@@ -40,7 +49,11 @@ export async function getUser(): Promise<void | Response> {
 export async function createUser(user: User): Promise<void | Response> {
   return fetch(baseUrl + "users/new", {
     body: JSON.stringify(user),
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "POST"
   })
     .then(
@@ -54,7 +67,11 @@ export async function createUser(user: User): Promise<void | Response> {
 export async function updateUser(user: User): Promise<void | Response> {
   return fetch(userUrl, {
     body: JSON.stringify(user),
-    headers: jsonHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.getJwtToken(),
+      Refresh: Cookies.getRefreshToken()
+    },
     method: "PUT"
   })
     .then(

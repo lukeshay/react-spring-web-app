@@ -11,7 +11,8 @@ import { useGymsContext } from "../../../context/gyms/gymsStore";
 import { useUserContext } from "../../../context/user/userStore";
 import { Routes } from "../../../routes";
 import { Gym, Route, Wall } from "../../../types";
-import { shouldBeVisible, shouldDisplay } from "../../../utils/styleUtils";
+import * as StyleUtils from "../../../utils/styleUtils";
+import * as GymUtils from "../../../utils/gymUtils";
 import GymInformation from "./GymInformation";
 import RatingAddModal from "./RatingAddModal";
 import RatingPage from "./RatingPage";
@@ -21,6 +22,7 @@ import RoutesList from "./RoutesList";
 import WallAddModal from "./WallAddModal";
 import WallEditModal from "./WallEditModal";
 import WallList from "./WallList";
+import * as ResponseUtils from "../../../utils/responseUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,9 +67,10 @@ const GymPage: React.FC = (): JSX.Element => {
   );
 
   React.useEffect(() => {
-    const tempGym = gymsState.gyms
-      .filter((element) => element.id === gymId)
-      .pop();
+    if (!gymId) {
+      return;
+    }
+    const tempGym = GymUtils.getGymById(gymsState.gyms, gymId);
 
     if (!tempGym) {
       history.push(Routes.GYMS);
@@ -75,9 +78,7 @@ const GymPage: React.FC = (): JSX.Element => {
       if (tempGym.id) {
         GymsActions.loadGymV2(gymsDispatch, tempGym.id).then(
           (response: Response) => {
-            if (!response || !(response instanceof Response) || !response.ok) {
-              toast.error("Error getting gym.");
-            }
+            ResponseUtils.toastIfNotOk(response, "Error getting gym.");
           }
         );
       }
@@ -94,9 +95,6 @@ const GymPage: React.FC = (): JSX.Element => {
 
       const { user } = userState;
       const { authorizedEditors } = tempGym;
-
-      console.log(user);
-      console.log(authorizedEditors);
 
       const tempWall = tempGym.walls
         ? tempGym.walls.find((element: Wall) => element.id === wallId)
@@ -132,11 +130,21 @@ const GymPage: React.FC = (): JSX.Element => {
   }, [gymId, gymsState, userState]);
 
   const handleWallRowClick = async (rowWallId: string): Promise<void> => {
-    const tempWall = gym.walls
-      ? gym.walls.find((element: Wall) => element.id === rowWallId)
-      : null;
+    const tempWall = GymUtils.getWallById(gym, rowWallId);
 
     if (tempWall) {
+      if (!tempWall.routes || tempWall.routes.length === 0) {
+        const response = await GymsActions.loadRoutes(
+          gymsDispatch,
+          gym,
+          tempWall.id
+        );
+
+        if (!ResponseUtils.isOk(response)) {
+          toast.error("Error getting routes.");
+        }
+      }
+
       setView("ROUTE");
       setRoutes(tempWall.routes);
       setWallId(tempWall.id);
@@ -182,9 +190,7 @@ const GymPage: React.FC = (): JSX.Element => {
           { id: routeId, gymId } as Route,
           gymId
         ).then((response: Response) => {
-          if (!response || !(response instanceof Response) || !response.ok) {
-            toast.error("Error deleting route.");
-          }
+          ResponseUtils.toastIfNotOk(response, "Error deleting route.");
         });
       } else {
         toast.error("Error deleting route.");
@@ -239,7 +245,7 @@ const GymPage: React.FC = (): JSX.Element => {
             setRoute(undefined);
           }
         }}
-        style={shouldBeVisible(view !== "WALL")}
+        style={StyleUtils.shouldBeVisible(view !== "WALL")}
       >
         <ArrowBackIcon className={classes.icons} />
         Back
@@ -251,7 +257,7 @@ const GymPage: React.FC = (): JSX.Element => {
         fullWidth={false}
         size="medium"
         type="button"
-        style={shouldBeVisible(
+        style={StyleUtils.shouldBeVisible(
           canEdit || (view === "RATING" && userState.user !== null)
         )}
       >
@@ -349,7 +355,9 @@ const GymPage: React.FC = (): JSX.Element => {
       <GymInformation gym={gym} canEdit={canEdit} />
       <div
         className={classes.wallList}
-        style={shouldDisplay((gym.walls && gym.walls.length !== 0) || canEdit)}
+        style={StyleUtils.shouldDisplay(
+          (gym.walls && gym.walls.length !== 0) || canEdit
+        )}
       >
         <Buttons />
         <CurrentView />
