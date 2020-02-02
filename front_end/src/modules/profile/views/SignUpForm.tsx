@@ -217,6 +217,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
       </div>
       <div style={{ float: "right", marginLeft: "25px" }}>
         <Button
+          id="signIn"
           onClick={props.handleSignInClick}
           type="button"
           variant="outlined"

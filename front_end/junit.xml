@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" time="6.815">
+  <testsuite name="&lt;Main /&gt;" errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:25:17" time="1.51" tests="1">
+    <testcase classname="" name="&lt;Main /&gt; should render correctly" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="&lt;ProfilePage /&gt; " errors="0" failures="0" skipped="0" timestamp="2020-02-02T05:25:17" time="3.814" tests="3">
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign up form." time="0.009">
+    </testcase>
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render sign in form." time="0.156">
+    </testcase>
+    <testcase classname="" name="&lt;ProfilePage /&gt;  should render profile form." time="0.026">
+    </testcase>
+  </testsuite>
+</testsuites>
