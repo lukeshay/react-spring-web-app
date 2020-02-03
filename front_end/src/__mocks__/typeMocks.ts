@@ -40,14 +40,30 @@ export const testWallTwo: Wall = {
   types: ["LEAD", "TOP_ROPE"]
 };
 
-export const testGym: Gym = {
+export const testGymOne: Gym = {
   address: "1234 Five Street",
   authorizedEditors: ["id"],
   city: "Ames",
   email: "abc@d.com",
   id: "gym1",
   logoUrl: "",
-  name: "Gym",
+  name: "Gym One",
+  phoneNumber: "1234567890",
+  photoUrl: "",
+  state: "Iowa",
+  walls: [testWallOne, testWallTwo],
+  website: "lukeshay.com",
+  zipCode: "50014"
+};
+
+export const testGymTwo: Gym = {
+  address: "1234 Five Street",
+  authorizedEditors: ["id"],
+  city: "Ames",
+  email: "abc@d.com",
+  id: "gym2",
+  logoUrl: "",
+  name: "Gym Two",
   phoneNumber: "1234567890",
   photoUrl: "",
   state: "Iowa",

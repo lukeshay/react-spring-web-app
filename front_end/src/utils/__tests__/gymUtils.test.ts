@@ -4,22 +4,22 @@ import * as TypeMocks from "../../__mocks__/typeMocks";
 describe("GymUtils", () => {
   it("get whether user is authorized.", () => {
     expect(
-      GymUtils.isAuthorizedEditor(TypeMocks.testGym, TypeMocks.testUser)
+      GymUtils.isAuthorizedEditor(TypeMocks.testGymOne, TypeMocks.testUser)
     ).toBeTruthy();
     TypeMocks.testUser.id = "1";
     expect(
-      GymUtils.isAuthorizedEditor(TypeMocks.testGym, TypeMocks.testUser)
+      GymUtils.isAuthorizedEditor(TypeMocks.testGymOne, TypeMocks.testUser)
     ).toBeFalsy();
   });
 
   it("get the wall by id", () => {
     expect(
-      GymUtils.getWallById(TypeMocks.testGym, TypeMocks.testWallOne.id)
+      GymUtils.getWallById(TypeMocks.testGymOne, TypeMocks.testWallOne.id)
     ).toBe(TypeMocks.testWallOne);
     expect(
-      GymUtils.getWallById(TypeMocks.testGym, TypeMocks.testWallTwo.id)
+      GymUtils.getWallById(TypeMocks.testGymOne, TypeMocks.testWallTwo.id)
     ).toBe(TypeMocks.testWallTwo);
-    expect(GymUtils.getWallById(TypeMocks.testGym, "id")).toBeUndefined();
+    expect(GymUtils.getWallById(TypeMocks.testGymOne, "id")).toBeUndefined();
   });
 
   it("get the route by id", () => {

@@ -1,6 +1,5 @@
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
-import { toast } from "react-toastify";
 import * as UserActions from "../../../context/user/userActions";
 import { useUserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
@@ -142,9 +141,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         username: email
       } as User);
 
-      if (response instanceof Response && !response.ok) {
-        toast.error("Error creating user.");
-      }
+      ResponseUtils.toastIfNotOk(response, "Error creating user.");
     }
   }
 
