@@ -83,12 +83,12 @@ const GymsPage: React.FC = (): JSX.Element => {
   };
 
   const handleKeyPress = (event: any): void => {
-    if (event.key === "Enter")
+    if (event.key === "Enter") {
       GymsActions.loadGymsQuery(gymsDispatch, search).then((response) => {
         if (!response || !(response instanceof Response) || !response.ok) {
           toast.error("Error getting gyms.");
         }
-      });{
+      });
     }
   };
 
