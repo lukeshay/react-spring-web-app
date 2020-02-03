@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GymsPage /> should render correctly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "dispatch": [Function],
+      "state": Object {
+        "gyms": Array [
+          Object {
+            "address": "1234 Five Street",
+            "authorizedEditors": Array [
+              "id",
+            ],
+            "city": "Ames",
+            "email": "abc@d.com",
+            "id": "gym1",
+            "logoUrl": "",
+            "name": "Gym One",
+            "phoneNumber": "1234567890",
+            "photoUrl": "",
+            "state": "Iowa",
+            "walls": Array [
+              Object {
+                "gymId": "gym1",
+                "id": "wall1",
+                "name": "Wall1",
+                "routes": Array [
+                  Object {
+                    "averageGrade": "GRADE_5_9",
+                    "averageRating": 4,
+                    "gymId": "gym1",
+                    "holdColor": "Blue",
+                    "id": "route1",
+                    "name": "RouteOne",
+                    "setter": "Luke",
+                    "types": Array [
+                      "TOP_ROPE",
+                      "LEAD",
+                    ],
+                    "wallId": "wall1",
+                  },
+                  Object {
+                    "averageGrade": "GRADE_5_12ab",
+                    "averageRating": 4,
+                    "gymId": "gym1",
+                    "holdColor": "Blue",
+                    "id": "route2",
+                    "name": "RouteTwo",
+                    "setter": "Luke",
+                    "types": Array [
+                      "TOP_ROPE",
+                      "LEAD",
+                    ],
+                    "wallId": "wall1",
+                  },
+                ],
+                "types": Array [
+                  "LEAD",
+                  "TOP_ROPE",
+                ],
+              },
+              Object {
+                "gymId": "gym1",
+                "id": "wall2",
+                "name": "Wall1",
+                "routes": Array [],
+                "types": Array [
+                  "LEAD",
+                  "TOP_ROPE",
+                ],
+              },
+            ],
+            "website": "lukeshay.com",
+            "zipCode": "50014",
+          },
+          Object {
+            "address": "1234 Five Street",
+            "authorizedEditors": Array [
+              "id",
+            ],
+            "city": "Ames",
+            "email": "abc@d.com",
+            "id": "gym2",
+            "logoUrl": "",
+            "name": "Gym Two",
+            "phoneNumber": "1234567890",
+            "photoUrl": "",
+            "state": "Iowa",
+            "walls": Array [
+              Object {
+                "gymId": "gym1",
+                "id": "wall1",
+                "name": "Wall1",
+                "routes": Array [
+                  Object {
+                    "averageGrade": "GRADE_5_9",
+                    "averageRating": 4,
+                    "gymId": "gym1",
+                    "holdColor": "Blue",
+                    "id": "route1",
+                    "name": "RouteOne",
+                    "setter": "Luke",
+                    "types": Array [
+                      "TOP_ROPE",
+                      "LEAD",
+                    ],
+                    "wallId": "wall1",
+                  },
+                  Object {
+                    "averageGrade": "GRADE_5_12ab",
+                    "averageRating": 4,
+                    "gymId": "gym1",
+                    "holdColor": "Blue",
+                    "id": "route2",
+                    "name": "RouteTwo",
+                    "setter": "Luke",
+                    "types": Array [
+                      "TOP_ROPE",
+                      "LEAD",
+                    ],
+                    "wallId": "wall1",
+                  },
+                ],
+                "types": Array [
+                  "LEAD",
+                  "TOP_ROPE",
+                ],
+              },
+              Object {
+                "gymId": "gym1",
+                "id": "wall2",
+                "name": "Wall1",
+                "routes": Array [],
+                "types": Array [
+                  "LEAD",
+                  "TOP_ROPE",
+                ],
+              },
+            ],
+            "website": "lukeshay.com",
+            "zipCode": "50014",
+          },
+        ],
+      },
+    }
+  }
+>
+  <Memo(GymsPage) />
+</ContextProvider>
+`;
