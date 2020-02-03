@@ -2,8 +2,7 @@ import {
   createStyles,
   makeStyles,
   TableCell,
-  TableRow,
-  Theme
+  TableRow
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -58,7 +57,7 @@ const GymRow: React.FC<IGymRowProps> = ({ gym }): JSX.Element => {
 
 const GymsPage: React.FC = (): JSX.Element => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
-  const { state: viewState, dispatch: viewDispatch } = useViewContext();
+  const { state: viewState } = useViewContext();
 
   const [search, setSearch] = React.useState<string>("");
 
@@ -102,7 +101,6 @@ const GymsPage: React.FC = (): JSX.Element => {
           placeholder="Search"
           fullWidth={false}
           onChange={(event: any): void => {
-            console.log(event);
             setSearch(event.target.value);
           }}
           value={search}

@@ -1,6 +1,5 @@
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
-import { toast } from "react-toastify";
 import * as UserActions from "../../../context/user/userActions";
 import { useUserContext } from "../../../context/user/userStore";
 import { User } from "../../../types";
