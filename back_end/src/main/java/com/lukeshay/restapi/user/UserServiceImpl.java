@@ -59,8 +59,8 @@ class UserServiceImpl implements UserService {
         && user.getPassword() != null) {
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setAuthority(UserTypes.ADMIN.authority());
-      user.setRole(UserTypes.ADMIN.role());
+      user.setAuthority(UserTypes.BASIC.authority());
+      user.setRole(UserTypes.BASIC.role());
 
       LOG.debug("Creating basic user: {}", user);
 
