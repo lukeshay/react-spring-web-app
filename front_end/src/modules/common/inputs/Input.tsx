@@ -13,7 +13,9 @@ export interface IPropsInput {
   autoCapitalize?: "true" | undefined;
   rows?: number;
   error?: boolean;
+  className?: string;
   onChange?(event: any): void;
+  onKeyPress?(even: any): void;
 }
 
 const Input: React.FC<IPropsInput> = ({
@@ -28,10 +30,13 @@ const Input: React.FC<IPropsInput> = ({
   autoCapitalize,
   error,
   rows,
-  fullWidth
+  className,
+  fullWidth,
+  onKeyPress
 }): JSX.Element => (
   <TextField
     id={id}
+    className={className}
     type={type}
     label={placeholder}
     name={name}
@@ -46,6 +51,7 @@ const Input: React.FC<IPropsInput> = ({
     error={helpText !== "" && error}
     rows={rows}
     multiline={rows !== undefined && rows > 1}
+    onKeyPress={onKeyPress}
   />
 );
 

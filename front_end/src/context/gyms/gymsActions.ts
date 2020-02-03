@@ -10,7 +10,25 @@ import { Dispatch } from "react";
 export const loadGyms = (
   dispatch: Dispatch<IGymsContextAction>
 ): Promise<void | Response> => {
-  return GymsApi.getGyms().then((response: Response) => {
+  return GymsApi.getGyms("").then((response: Response) => {
+    if (response instanceof Response && response.ok) {
+      response.json().then((body: GymPage) => {
+        dispatch({
+          actionType: Types.LOAD_GYMS,
+          gyms: body.content
+        } as IGymsContextAction);
+      });
+
+      return response;
+    }
+  });
+};
+
+export const loadGymsQuery = (
+  dispatch: Dispatch<IGymsContextAction>,
+  query: string
+): Promise<void | Response> => {
+  return GymsApi.getGyms(query).then((response: Response) => {
     if (response instanceof Response && response.ok) {
       response.json().then((body: GymPage) => {
         dispatch({

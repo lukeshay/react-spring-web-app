@@ -1,4 +1,10 @@
-import { TableCell, TableRow } from "@material-ui/core";
+import {
+  createStyles,
+  makeStyles,
+  TableCell,
+  TableRow,
+  Theme
+} from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +14,24 @@ import { Routes } from "../../../routes";
 import { Gym } from "../../../types";
 import Table from "../../common/table/Table";
 import Input from "../../common/inputs/Input";
+import { useViewContext } from "../../../context/view/viewStore";
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    div: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      width: "100%"
+    },
+    search: {
+      width: "60%"
+    },
+    searchMobile: {
+      width: "96%"
+    }
+  })
+);
 
 interface IGymRowProps {
   gym: Gym;
@@ -33,13 +57,16 @@ const GymRow: React.FC<IGymRowProps> = ({ gym }): JSX.Element => {
 };
 
 const GymsPage: React.FC = (): JSX.Element => {
-  const { state, dispatch } = useGymsContext();
+  const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
+  const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
   const [search, setSearch] = React.useState<string>("");
 
+  const classes = useStyles();
+
   const loadGyms = (): void => {
-    if (state.gyms.length === 0) {
-      GymsActions.loadGyms(dispatch).then((response) => {
+    if (gymsState.gyms.length === 0) {
+      GymsActions.loadGymsQuery(gymsDispatch, "").then((response) => {
         if (!response || !(response instanceof Response) || !response.ok) {
           toast.error("Error getting gyms.");
         }
@@ -51,19 +78,38 @@ const GymsPage: React.FC = (): JSX.Element => {
     loadGyms();
   }, []);
 
+  const searchClass = (): string => {
+    return viewState.mobile ? classes.searchMobile : classes.search;
+  };
+
+  const handleKeyPress = (event: any): void => {
+    if (event.key === "Enter")
+      GymsActions.loadGymsQuery(gymsDispatch, search).then((response) => {
+        if (!response || !(response instanceof Response) || !response.ok) {
+          toast.error("Error getting gyms.");
+        }
+      });{
+    }
+  };
+
   return (
     <React.Fragment>
-      <Input
-        type="text"
-        id="search"
-        placeholder="Search"
-        fullWidth={false}
-        onChange={(event: any): void => {
-          setSearch(event.target.value);
-        }}
-        value={search}
-        name="search"
-      />
+      <div className={classes.div}>
+        <Input
+          className={searchClass()}
+          type="text"
+          id="search"
+          placeholder="Search"
+          fullWidth={false}
+          onChange={(event: any): void => {
+            console.log(event);
+            setSearch(event.target.value);
+          }}
+          value={search}
+          name="search"
+          onKeyPress={handleKeyPress}
+        />
+      </div>
       <Table
         head={
           <TableRow>
@@ -72,7 +118,7 @@ const GymsPage: React.FC = (): JSX.Element => {
             <TableCell key="website">Website</TableCell>
           </TableRow>
         }
-        body={state.gyms.map((gym) => (
+        body={gymsState.gyms.map((gym) => (
           <GymRow key={gym.id} gym={gym} />
         ))}
       />
