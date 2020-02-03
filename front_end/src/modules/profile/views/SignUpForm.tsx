@@ -142,9 +142,7 @@ const SignUpForm: React.FC<IPropsSignUpForm> = (
         username: email
       } as User);
 
-      if (response instanceof Response && !response.ok) {
-        toast.error("Error creating user.");
-      }
+      ResponseUtils.toastIfNotOk(response, "Error creating user.");
     }
   }
 
