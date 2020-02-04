@@ -1,8 +1,12 @@
 import {
+  Card,
+  CardContent,
+  CardMedia,
   createStyles,
   makeStyles,
   TableCell,
-  TableRow
+  TableRow,
+  Typography
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -23,8 +27,37 @@ const useStyles = makeStyles(() =>
       justifyContent: "center",
       width: "100%"
     },
+    card: {
+      height: "200px",
+      width: "700px",
+      display: "flex"
+    },
+    cardWrapper: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      paddingBottom: "10px",
+      paddingTop: "10px",
+      width: "100%"
+    },
+    content: {},
+    information: {
+      paddingLeft: "10px"
+    },
+    photo: {
+      width: "90%"
+    },
+    photoWrapper: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
+      width: "50%"
+    },
+    root: {
+      width: "100%"
+    },
     search: {
-      width: "60%"
+      width: "50%"
     },
     searchMobile: {
       width: "96%"
@@ -32,28 +65,56 @@ const useStyles = makeStyles(() =>
   })
 );
 
-interface IGymRowProps {
+interface IGymCardProps {
   gym: Gym;
 }
 
-const GymRow: React.FC<IGymRowProps> = ({ gym }): JSX.Element => {
+const GymCard: React.FC<IGymCardProps> = ({ gym }): JSX.Element => {
+  const classes = useStyles();
   const history = useHistory();
 
   return (
-    <TableRow
-      hover
+    <div
+      className={classes.cardWrapper}
       onClick={(): void => history.push(Routes.GYMS + "/" + gym.id)}
     >
-      <TableCell>{gym.name}</TableCell>
-      <TableCell>
-        {gym.address}
-        <br />
-        {gym.city + ", " + gym.state + " " + gym.zipCode}
-      </TableCell>
-      <TableCell>{gym.website}</TableCell>
-    </TableRow>
+      <Card className={classes.card}>
+        <CardMedia className={classes.photoWrapper}>
+          <img
+            src={"https://" + gym.logoUrl}
+            alt="This gym does not have a photo."
+            className={classes.photo}
+          />
+        </CardMedia>
+        <CardContent className={classes.content}>
+          <Typography variant="h4">{gym.name}</Typography>
+          <div className={classes.information}>
+            <Typography variant="body1">{gym.website}</Typography>
+            <Typography variant="body1">
+              {gym.address}
+              <br />
+              {gym.city + ", " + gym.state + " " + gym.zipCode}
+            </Typography>
+            <Typography variant="body1">{gym.email}</Typography>
+            <Typography variant="body1">{gym.phoneNumber}</Typography>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
+
+interface IGymsListProps {
+  gyms: Gym[];
+}
+
+const GymsList: React.FC<IGymsListProps> = ({ gyms }): JSX.Element => (
+  <React.Fragment>
+    {gyms.map((gym) => (
+      <GymCard key={gym.id} gym={gym} />
+    ))}
+  </React.Fragment>
+);
 
 const GymsPage: React.FC = (): JSX.Element => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
@@ -92,7 +153,7 @@ const GymsPage: React.FC = (): JSX.Element => {
   };
 
   return (
-    <React.Fragment>
+    <div className={classes.root}>
       <div className={classes.div}>
         <Input
           className={searchClass()}
@@ -108,19 +169,8 @@ const GymsPage: React.FC = (): JSX.Element => {
           onKeyPress={handleKeyPress}
         />
       </div>
-      <Table
-        head={
-          <TableRow>
-            <TableCell key="gym">Gym</TableCell>
-            <TableCell key="location">Location</TableCell>
-            <TableCell key="website">Website</TableCell>
-          </TableRow>
-        }
-        body={gymsState.gyms.map((gym) => (
-          <GymRow key={gym.id} gym={gym} />
-        ))}
-      />
-    </React.Fragment>
+      <GymsList gyms={gymsState.gyms} />
+    </div>
   );
 };
 
