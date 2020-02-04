@@ -15,10 +15,17 @@ test: clean
       	rest-api:latest || exit 1
 
 dev: build
-	docker-compose -f docker-compose.dev.yml up -d || exit
+	docker-compose -f docker-compose.dev.yml up -d || exit 1
 
 run: build
-	docker-compose up -d || exit 11
+	docker-compose up -d || exit 1
+
+lint:
+	./gradlew verifyGoogleJavaFormat
+
+coverage:
+	./gradlew clean build -x verifyGoogleJavaFormat
+	./gradlew jacocoTestCoverageVerification
 
 logs:
 	docker ps | grep rest-api | awk 'NR == 1{print $$1}' | xargs docker logs
