@@ -11,5 +11,6 @@ public interface WallRepository extends JpaRepository<Wall, String> {
 
   List<Wall> findAllByGymId(String gymId);
 
-  Page<Wall> findAllByGymIdAndNameIgnoreCaseContaining(Pageable pageable, String gymId, String name);
+  Page<Wall> findAllByGymIdAndNameIgnoreCaseContaining(
+      Pageable pageable, String gymId, String name);
 }
