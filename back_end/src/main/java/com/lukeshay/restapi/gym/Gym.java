@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 /** The type Gym. */
 @Entity
-@Table(name = "gyms")
+@Table(name = "gym")
 public class Gym extends Auditable<String> {
   @Column(name = "id", unique = true, updatable = false)
   @Expose
