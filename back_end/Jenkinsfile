@@ -22,25 +22,25 @@ pipeline {
       steps {
         echo 'Building...'
         setBuildStatus('Starting build', 'PENDING')
-        sh 'cd back_end && ./build.sh'
+        sh 'cd back_end && make build'
       }
     }
     stage('Lint') {
       steps {
         echo 'Linting...'
-        sh 'cd back_end && ./lint.sh'
+        sh 'cd back_end && make lint'
       }
     }
     stage('Test') {
       steps {
         echo 'Testing...'
-        sh 'cd back_end && ./test.sh'
+        sh 'cd back_end && make test'
       }
     }
     stage('Coverage') {
       steps {
         echo 'Getting coverage...'
-        sh 'cd back_end && ./coverage.sh'
+        sh 'cd back_end && make coverage'
       }
     }
     stage('Deploy') {

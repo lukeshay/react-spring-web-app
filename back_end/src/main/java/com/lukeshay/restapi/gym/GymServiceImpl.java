@@ -44,7 +44,7 @@ public class GymServiceImpl implements GymService {
       query = "";
     }
 
-    return gymRepository.findAllByNameContaining(
+    return gymRepository.findAllByNameIgnoreCaseContaining(
         PageableUtils.buildPageRequest(page, limit, sorts), query);
   }
 

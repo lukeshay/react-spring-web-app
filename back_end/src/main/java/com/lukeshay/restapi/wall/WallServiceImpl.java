@@ -85,7 +85,7 @@ public class WallServiceImpl implements WallService {
     }
 
     Page<Wall> wallPage =
-        wallRepository.findAllByGymIdAndNameContaining(
+        wallRepository.findAllByGymIdAndNameIgnoreCaseContaining(
             PageableUtils.buildPageRequest(page, limit, sort), gymId, query);
 
     return ResponseUtils.okOfType(wallPage);

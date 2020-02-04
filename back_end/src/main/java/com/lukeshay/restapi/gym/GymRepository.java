@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GymRepository extends JpaRepository<Gym, String> {
 
-  Page<Gym> findAllByNameContaining(Pageable pageable, String query);
+  Page<Gym> findAllByNameIgnoreCaseContaining(Pageable pageable, String query);
 }

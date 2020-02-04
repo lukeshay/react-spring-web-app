@@ -105,6 +105,8 @@ public class RouteControllerTest extends TestBase {
 
     ResponseEntity<?> response = routeController.updateRoute(authentication, testRoute);
 
+    testRoute = routeRepository.findById(testRoute.getId()).get();
+
     Assertions.assertAll(
         () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode()),
         () -> Assertions.assertEquals(testRoute, response.getBody()));
