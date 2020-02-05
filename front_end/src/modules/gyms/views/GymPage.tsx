@@ -23,6 +23,7 @@ import WallAddModal from "./WallAddModal";
 import WallEditModal from "./WallEditModal";
 import WallList from "./WallList";
 import * as ResponseUtils from "../../../utils/responseUtils";
+import { useViewContext } from "../../../context/view/viewStore";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const GymPage: React.FC = (): JSX.Element => {
   const { state: gymsState, dispatch: gymsDispatch } = useGymsContext();
   const { state: userState } = useUserContext();
+  const { state: viewState } = useViewContext();
 
   const [gym, setGym] = React.useState<Gym>({} as Gym);
   const [view, setView] = React.useState<"WALL" | "ROUTE" | "RATING">("WALL");
@@ -352,7 +354,7 @@ const GymPage: React.FC = (): JSX.Element => {
 
   return (
     <React.Fragment>
-      <GymInformation gym={gym} canEdit={canEdit} />
+      <GymInformation gym={gym} canEdit={canEdit} mobile={viewState.mobile} />
       <div
         className={classes.wallList}
         style={StyleUtils.shouldDisplay(
