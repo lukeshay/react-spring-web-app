@@ -23,32 +23,38 @@ const App: React.FC = (): JSX.Element => {
   const { state: userState, dispatch: userDispatch } = useUserContext();
   const { state: viewState, dispatch: viewDispatch } = useViewContext();
 
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    setIsMobile(viewState.mobile);
+  }, [viewState, isMobile]);
+
+  const handleResize = (): void => {
+    const width = window.innerWidth;
+    const { theme } = viewState;
+
+    if (width < 600) {
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
+    } else if (width >= 600) {
+      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
+    }
+  };
+
   React.useEffect(() => {
     if (!userState.user || !userState.user.id) {
       UserActions.loadUserFromCookies(userDispatch);
     }
-  }, []);
 
-  const handleResize = React.useCallback((): void => {
-    const width = window.innerWidth;
-    const { theme } = viewState;
+    handleResize();
 
-    if (width < 600 && !viewState.mobile) {
-      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: true });
-    } else if (viewState.mobile) {
-      viewDispatch({ actionType: Types.UPDATE_VIEW, theme, mobile: false });
-    }
-  }, [viewDispatch, viewState]);
-
-  React.useEffect(() => {
     window.addEventListener("resize", handleResize);
     return (): void => window.removeEventListener("resize", handleResize);
-  }, [handleResize, viewDispatch, viewState]);
+  }, []);
 
   return (
     <div
       style={
-        viewState.mobile
+        isMobile
           ? {
               marginLeft: "10px",
               marginRight: "10px",

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(2)
     },
     photo: {
-      width: "90%"
+      width: "100%"
     },
     photoWrapper: {
       alignItems: "center",
